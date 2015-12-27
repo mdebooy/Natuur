@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
+    <ui:define name="head">
+    </ui:define>
+    <ui:define name="body">
+      <h:form class="form-horizontal" id="formGebied">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-10">
+            <t:div rendered="#{!natuur.readonly}">
+              <h2>#{i18nTeksten.tekst(natuur.subTitel)}</h2>
+            </t:div>
+            <t:div rendered="#{natuur.readonly}">
+              <h2>#{Natuur.subTitel}</h2>
+            </t:div>
+          </div>
+          <div class="row" />
+          <div class="form-group form-group-sm">
+            <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
+            <div class="col-sm-9">
+              <t:inputText id="naam" styleClass="form-control" value="#{natuur.gebied.naam}" maxlength="100" size="100" readonly="#{natuur.readonly}" />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="landId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.land')}</label>
+            <div class="col-sm-9">
+              <t:inputText id="landId" styleClass="form-control" value="#{natuur.gebied.landId}" maxlength="10" size="10" readonly="#{natuur.readonly}" />
+            </div>
+          </div>
+
+          <h:commandLink action="#{natuur.saveGebied}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuur.saveGebied}" id="modify" styleClass="btn btn-default" rendered="#{natuur.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <a class="btn btn-default" href="/natuur/gebieden/gebieden.jsf">#{i18nTeksten.tekst('button.cancel')}</a>
+
+          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

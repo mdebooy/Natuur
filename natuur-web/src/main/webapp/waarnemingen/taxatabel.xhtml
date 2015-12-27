@@ -1,0 +1,29 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+  <table class="table table-striped table-condensed table-datatable display compact" id="taxaTabel">
+    <colgroup>
+      <col />
+      <col />
+      <col />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>#{i18nTeksten.tekst('label.naam')}</th>
+        <th>#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+        <th>#{i18nTeksten.tekst('biologie.rang.kl')}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <t:dataList var="detail" value="#{lijst}" rowIndexVar="idx">
+        <tr>
+          <td>#{detail.naam}</td>
+          <td><em>#{detail.latijnsenaam}</em></td>
+          <td>#{detail.parentNaam}</td>
+        </tr>
+      </t:dataList>
+    </tbody>
+  </table>
+</ui:composition>

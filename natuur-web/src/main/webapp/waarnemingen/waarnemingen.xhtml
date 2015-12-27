@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
+    <ui:define name="head">
+      <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+          $('#taxaTabel').dataTable( {
+            "order": [[0, "asc"]],
+            "columns": [
+                      { "orderable": true },
+                      { "orderable": true },
+                      { "orderable": true }
+                  ],
+            "pagingType": "full_numbers",
+            "lengthMenu": #{i18nTeksten.tekst('pager.rijen.per.pagina')},
+            "language": {
+              "paginate": {
+                "first": "#{i18nTeksten.tekst('pager.paginate.first')}",
+                "last": "#{i18nTeksten.tekst('pager.paginate.last')}",
+                "next": "#{i18nTeksten.tekst('pager.paginate.next')}",
+                "previous": "#{i18nTeksten.tekst('pager.paginate.previous')}"
+              },
+              "lengthMenu": "#{i18nTeksten.tekst('pager.length.menu')}",
+              "search": "#{i18nTeksten.tekst('pager.search')}",
+              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+              "info": "#{i18nTeksten.tekst('pager.info')}",
+              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+            }
+          } );
+        } );
+      </script>
+    </ui:define>
+    <ui:define name="body">
+      <h:form id="formTaxa">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-10">
+            <h2>#{i18nTeksten.tekst('natuur.titel.waarnemingen')}</h2>
+          </div>
+          <div align="right" class="col-md-2" >
+            <h:commandLink action="#{natuur.waarnemingen}" actionFor="#{formTaxa}">
+              <f:setPropertyActionListener target="#{natuur.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
+            </h:commandLink>
+          </div>
+
+          <ui:include src="taxatabel.xhtml">
+            <ui:param name="form" value="formTaxa" />
+            <ui:param name="lijst" value="#{natuur.soorten}" />
+          </ui:include>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>
