@@ -18,6 +18,7 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -43,7 +45,10 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="TAXA", schema="NATUUR")
-@NamedQuery(name="soort", query="select t from TaxonDto t where t.rang='so'")
+@NamedQueries({
+  @NamedQuery(name="kinderen", query="select t from TaxonDto t where t.parentId=:ouder"),
+  @NamedQuery(name="ouders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind"),
+  @NamedQuery(name="soort", query="select t from TaxonDto t where t.rang='so'")})
 public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
@@ -63,22 +68,28 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   /**
    * Sorteren op de naam van het taxon.
    */
-  public static class LatijnsenaamComparator implements Comparator<TaxonDto> {
+  public static class LatijnsenaamComparator
+      implements Comparator<TaxonDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return taxonDto1.latijnsenaam.compareTo(taxonDto2.latijnsenaam);
     }
-  };
+  }
 
   /**
    * Sorteren op de naam van het taxon.
    */
-  public static class NaamComparator implements Comparator<TaxonDto> {
+  public static class NaamComparator
+      implements Comparator<TaxonDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return taxonDto1.naam.compareTo(taxonDto2.naam);
     }
-  };
+  }
   
   @Override
   public TaxonDto clone() throws CloneNotSupportedException {
@@ -87,6 +98,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
     return clone;
   }
 
+  @Override
   public int compareTo(TaxonDto taxonDto) {
     return new CompareToBuilder().append(naam, taxonDto.naam)
                                  .toComparison();

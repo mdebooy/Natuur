@@ -8,6 +8,35 @@
   <ui:composition template="/WEB-INF/templates/template.xhtml">
     <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
     <ui:define name="head">
+      <script type="text/javascript" charset="utf-8">
+        $(document).ready(function() {
+          $('#taxaTabel').dataTable( {
+            "order": [[1, "asc"]],
+            "columns": [
+                      { "orderable": false },
+                      { "orderable": true },
+                      { "orderable": true },
+                      { "orderable": false }
+                  ],
+            "pagingType": "full_numbers",
+            "lengthMenu": #{i18nTeksten.tekst('pager.rijen.per.pagina')},
+            "language": {
+              "paginate": {
+                "first": "#{i18nTeksten.tekst('pager.paginate.first')}",
+                "last": "#{i18nTeksten.tekst('pager.paginate.last')}",
+                "next": "#{i18nTeksten.tekst('pager.paginate.next')}",
+                "previous": "#{i18nTeksten.tekst('pager.paginate.previous')}"
+              },
+              "lengthMenu": "#{i18nTeksten.tekst('pager.length.menu')}",
+              "search": "#{i18nTeksten.tekst('pager.search')}",
+              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+              "info": "#{i18nTeksten.tekst('pager.info')}",
+              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+            }
+          } );
+        } );
+      </script>
     </ui:define>
     <ui:define name="body">
       <h:form class="form-horizontal" id="formTaxon">
@@ -21,25 +50,46 @@
             </t:div>
           </div>
           <div class="row" />
+          <div class="form-group form-group-sm">
+            <label for="parentId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
+            <div class="col-sm-1">
+              <h:commandLink action="#{natuur.bekijkTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+            </div>
+            <div class="col-sm-8">
+              <h:selectOneMenu id="parentId" value="#{natuur.taxon.parentId}" disabled="#{natuur.readonly}" >
+                <t:selectItems value="#{natuur.selectOuders(natuur.taxon.rang)}" />
+              </h:selectOneMenu>
+            </div>
+          </div>
           <t:div rendered="#{!natuur.readonly}">
             <div class="form-group form-group-sm">
               <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.naam')}</label>
               <div class="col-sm-9">
-                <t:inputText id="naam" styleClass="form-control" value="#{natuur.taxon.naam}" maxlength="255" size="100" />
+                <t:inputText id="naam" styleClass="form-control" value="#{natuur.taxon.naam}" maxlength="255" size="100" readonly="#{natuur.readonly}" />
               </div>
             </div>
-            <div class="form-group form-group-sm">
-              <label for="latijnsenaam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.latijnsenaam')}</label>
-              <div class="col-sm-9">
-                <t:inputText id="latijnsenaam" styleClass="form-control" value="#{natuur.taxon.latijnsenaam}" maxlength="255" size="100" />
-              </div>
+          </t:div>
+          <div class="form-group form-group-sm">
+            <label for="latijnsenaam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.latijnsenaam')}</label>
+            <div class="col-sm-9">
+              <t:inputText id="latijnsenaam" styleClass="form-control" value="#{natuur.taxon.latijnsenaam}" maxlength="255" size="100" readonly="#{natuur.readonly}" />
             </div>
-            <div class="form-group form-group-sm">
-              <label for="rang" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
-              <div class="col-sm-1">
-                <t:inputText id="rang" styleClass="form-control" value="#{natuur.taxon.rang}" maxlength="3" size="3" readonly="#{natuur.readonly}" />
-              </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="rang" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
+            <div class="col-sm-1">
+              <h:selectOneMenu id="rang" value="#{natuur.taxon.rang}" disabled="#{natuur.readonly}" >
+                <t:selectItems value="#{natuur.selectRangen}" />
+              </h:selectOneMenu>
             </div>
+          </div>
+
+          <t:div rendered="#{!natuur.nieuw}">
+            <div class="row" />
+            <ui:include src="taxatabel.xhtml">
+              <ui:param name="form" value="formTaxon" />
+              <ui:param name="lijst" value="#{natuur.getKinderen(natuur.taxon.taxonId)}" />
+            </ui:include>
           </t:div>
 
           <h:commandLink action="#{natuur.saveTaxon}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>

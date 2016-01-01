@@ -31,6 +31,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+
 /**
  * @author Marco de Booij
  */
@@ -44,10 +45,11 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   @JoinColumn(name="GEBIED_ID", nullable=false, updatable=false)
   private GebiedDto gebied;
   @Id
-  @Column(name="TAXON_ID", nullable=false, unique=true)
-  private Long      taxonId;
+  @OneToOne(cascade=CascadeType.ALL)
+  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false)
+  private TaxonDto  taxon;
   @Id
-  @Column(name="TAXON_SEQ", nullable=false, unique=true)
+  @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq;
   
   @Override
@@ -58,7 +60,9 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   }
 
   public int compareTo(FotoDto fotoDto) {
-    return new CompareToBuilder().append(taxonSeq, fotoDto.taxonSeq)
+    return new CompareToBuilder().append(taxon.getTaxonId(),
+                                         fotoDto.getTaxon().getTaxonId())
+                                 .append(taxonSeq, fotoDto.taxonSeq)
                                  .toComparison();
   }
 
@@ -72,7 +76,9 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     }
 
     FotoDto fotoDto = (FotoDto) object;
-    return new EqualsBuilder().append(taxonSeq, fotoDto.taxonSeq)
+    return new EqualsBuilder().append(taxon.getTaxonId(),
+                                      fotoDto.getTaxon().getTaxonId())
+                              .append(taxonSeq, fotoDto.taxonSeq)
                               .isEquals();
   }
 
@@ -84,10 +90,10 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   }
 
   /**
-   * @return de taxonId
+   * @return de taxon
    */
-  public Long getTaxonId() {
-    return taxonId;
+  public TaxonDto getTaxon() {
+    return taxon;
   }
 
   /**
@@ -100,6 +106,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonSeq)
+                                .append(taxonSeq)
                                 .toHashCode();
   }
 
@@ -111,10 +118,10 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   }
 
   /**
-   * @param taxonId de waarde van taxonId
+   * @param TaxonDto de Taxon
    */
-  public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+  public void setTaxon(TaxonDto taxon) {
+    this.taxon  = taxon;
   }
 
   /**

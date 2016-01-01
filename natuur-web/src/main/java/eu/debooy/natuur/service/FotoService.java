@@ -19,13 +19,11 @@ package eu.debooy.natuur.service;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.FotoPK;
 import eu.debooy.natuur.form.Foto;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -44,13 +42,12 @@ import org.slf4j.LoggerFactory;
 @Named("natuurFotoService")
 @Lock(LockType.WRITE)
 public class FotoService {
-  private static  Logger  logger  =
-      LoggerFactory.getLogger(FotoService.class);
+  private Logger  logger  = LoggerFactory.getLogger(FotoService.class);
 
   @Inject
-  private FotoDao   fotoDao;
+  private FotoDao     fotoDao;
 
-  private Set<Foto> fotos;
+  private List<Foto>  fotos;
 
   /**
    * Initialisatie.
@@ -69,10 +66,10 @@ public class FotoService {
    * 
    * @return Een List met Fotos.
    */
-  public Set<Foto> lijst() {
+  public List<Foto> lijst() {
     if (null == fotos) {
-      fotos = new HashSet<Foto>();
-      Collection<FotoDto>  rows    = fotoDao.getAll();
+      fotos = new ArrayList<Foto>();
+      List<FotoDto> rows  = fotoDao.getAll();
       for (FotoDto fotoDto : rows) {
         fotos.add(new Foto(fotoDto));
       }
@@ -102,10 +99,11 @@ public class FotoService {
    * 
    * @return Een Foto.
    */
-  public Foto foto(Long fotoId) {
-    FotoDto foto  = fotoDao.getByPrimaryKey(fotoId);
+  public FotoDto foto(Long taxonId, Long taxonSeq) {
+    FotoPK  sleutel = new FotoPK(taxonId, taxonSeq);
+    FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
 
-    return new Foto(foto);
+    return foto;
   }
 
   /**

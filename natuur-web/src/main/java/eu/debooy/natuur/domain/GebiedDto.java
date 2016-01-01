@@ -18,6 +18,7 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import javax.persistence.Column;
@@ -51,12 +52,15 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
   /**
    * Sorteren op de naam van het gebied.
    */
-  public static class NaamComparator implements Comparator<GebiedDto> {
+  public static class NaamComparator
+      implements Comparator<GebiedDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
       return gebiedDto1.naam.compareTo(gebiedDto2.naam);
     }
-  };
+  }
 
   @Override
   public GebiedDto clone() throws CloneNotSupportedException {

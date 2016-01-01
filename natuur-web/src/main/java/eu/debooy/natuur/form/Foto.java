@@ -28,23 +28,34 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Foto implements Comparable<Foto>, Serializable {
+public class Foto implements Cloneable, Comparable<Foto>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
 
-  private Long    taxonId;
+  private Gebied  gebied;
+  private Taxon   taxon;
   private Long    taxonSeq;
 
   public Foto() {}
 
   public Foto(FotoDto fotoDto) {
+    gebied    = new Gebied(fotoDto.getGebied());
+    taxon     = new Taxon(fotoDto.getTaxon());
     taxonSeq  = fotoDto.getTaxonSeq();
+  }
+  
+  @Override
+  public Foto clone() throws CloneNotSupportedException {
+    Foto  clone = (Foto) super.clone();
+
+    return clone;
   }
 
   @Override
   public int compareTo(Foto andere) {
-    return new CompareToBuilder().append(taxonId, andere.getTaxonId())
+    return new CompareToBuilder().append(taxon.getTaxonId(),
+                                         andere.taxon.getTaxonId())
                                  .append(taxonSeq, andere.getTaxonSeq())
                                  .toComparison();
   }
@@ -59,16 +70,24 @@ public class Foto implements Comparable<Foto>, Serializable {
     }
 
     Foto  andere  = (Foto) object;
-    return new EqualsBuilder().append(taxonId, andere.taxonId)
+    return new EqualsBuilder().append(taxon.getTaxonId(),
+                                      andere.taxon.getTaxonId())
                               .append(taxonSeq, andere.taxonSeq)
                               .isEquals();
   }
 
   /**
-   * @return de taxonId
+   * @return het gebied
    */
-  public Long getTaxonId() {
-    return taxonId;
+  public Gebied getGebied() {
+    return gebied;
+  }
+
+  /**
+   * @return de taxon
+   */
+  public Taxon getTaxon() {
+    return taxon;
   }
 
   /**
@@ -80,7 +99,7 @@ public class Foto implements Comparable<Foto>, Serializable {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(taxonId).append(taxonSeq)
+    return new HashCodeBuilder().append(taxon.getTaxonId()).append(taxonSeq)
                                 .toHashCode();
   }
 
@@ -104,17 +123,18 @@ public class Foto implements Comparable<Foto>, Serializable {
   }
 
   /**
-   * @param Long de waarde van taxonId
+   * @param gebied de waarde van gebied
    */
-  public void setTaxonId(Long taxonId) {
-    if (!new EqualsBuilder().append(this.taxonId, taxonId).isEquals()) {
-      gewijzigd = true;
-      if (null == taxonId) {
-        this.taxonId  = null;
-      } else {
-        this.taxonId  = taxonId;
-      }
-    }
+  public void setGebied(Gebied gebied) throws CloneNotSupportedException {
+    this.gebied = gebied.clone();
+  }
+
+  /**
+   * @param taxon de waarde van taxon
+   * @throws CloneNotSupportedException 
+   */
+  public void setTaxon(Taxon taxon) throws CloneNotSupportedException {
+    this.taxon = taxon.clone();
   }
 
   /**
@@ -130,5 +150,18 @@ public class Foto implements Comparable<Foto>, Serializable {
         this.taxonSeq = taxonSeq;
       }
     }
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder resultaat = new StringBuilder();
+    resultaat.append("Foto (")
+             .append("[").append(gebied.toString()).append("], ")
+             .append("[").append(taxon.toString()).append("], ")
+             .append("taxonSeq=[").append(taxonSeq).append("], ")
+             .append("class=[").append(this.getClass().getSimpleName())
+             .append("])");
+
+    return resultaat.toString();
   }
 }

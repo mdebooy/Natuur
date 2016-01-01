@@ -3,28 +3,29 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-  <table class="table table-striped table-condensed table-datatable display compact" id="gebiedenTabel">
+  <table class="table table-striped table-condensed table-datatable display compact" id="rangenTabel">
     <colgroup>
-      <col width="45px" />
+      <col width="50px" />
       <col />
       <col />
     </colgroup>
     <thead>
       <tr>
         <th></th>
-        <th>#{i18nTeksten.tekst('label.gebied')}</th>
-        <th>#{i18nTeksten.tekst('label.land')}</th>
+        <th>#{i18nTeksten.tekst('label.niveau')}</th>
+        <th>#{i18nTeksten.tekst('label.rang')}</th>
       </tr>
     </thead>
     <tbody>
-      <t:dataList var="gebied" value="#{lijst}" rowIndexVar="idx">
+      <t:dataList var="rang" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuur.wijzigGebied(gebied.gebiedId)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <h:commandLink action="#{natuur.wijzigRang(rang.rang)}" actionFor="formRangen"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
             <h:commandLink onclick="$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
-          <td>#{gebied.naam}</td>
-          <td>#{i18nLandnaam.landnaam(gebied.landId)}</td>
+          <td>#{rang.niveau}</td>
+          <ui:param name="rang" value="biologie.rang.#{rang.rang}"/>
+          <td>#{i18nTeksten.tekst(rang)}</td>
         </tr>
       </t:dataList>
     </tbody>

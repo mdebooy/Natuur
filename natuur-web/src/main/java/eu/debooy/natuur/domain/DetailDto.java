@@ -18,6 +18,7 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 import javax.persistence.Column;
@@ -51,6 +52,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="NAAM", insertable= false, updatable=false)
   private String    naam;
+  @ReadOnly
+  @Column(name="NIVEAU", insertable= false, updatable=false)
+  private Long      niveau;
   @Id
   @ReadOnly
   @Column(name="PARENT_ID", insertable= false, updatable=false)
@@ -72,11 +76,13 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Column(name="TAXON_ID", insertable= false, updatable=false)
   private Long      taxonId;
 
-
   /**
    * Sorteren op de parentnaam en naam van het detail.
    */
-  public static class LijstComparator implements Comparator<DetailDto> {
+  public static class LijstComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(DetailDto detailDto1, DetailDto detailDto2) {
       return new CompareToBuilder().append(detailDto1.parentNaam,
@@ -84,7 +90,21 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
                                    .append(detailDto1.naam, detailDto2.naam)
                                    .toComparison();
     }
-  };
+  }
+
+  /**
+   * Sorteren op de parentnaam en naam van het detail.
+   */
+  public static class NaamComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
+      return new CompareToBuilder().append(detailDto1.naam, detailDto2.naam)
+                                   .toComparison();
+    }
+  }
 
   @Override
   public int compareTo(DetailDto detailDto) {

@@ -19,7 +19,7 @@ package eu.debooy.natuur.access;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.natuur.domain.TaxonDto;
 
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,16 +42,46 @@ public class TaxonDao extends Dao<TaxonDto> {
     return em;
   }
 
+
   /**
    * Haal de soorten op.
    * 
    * @return Collection<TaxonDto>
    */
   @SuppressWarnings("unchecked")
-  public Collection<TaxonDto> getSoorten() {
+  public List<TaxonDto> getKinderen(Long parentId) {
+    Query   query         =
+        getEntityManager().createNamedQuery("kinderen")
+                          .setParameter("ouder", parentId);
+
+    return query.getResultList();
+  }
+
+  /**
+   * Geef de mogelijke 'ouders' van de gevraagde rang.
+   * 
+   * @param kind
+   * @return List<DetailDto>
+   */
+  @SuppressWarnings("unchecked")
+  public List<TaxonDto> getOuders(Long kind) {
+    Query   query         =
+        getEntityManager().createNamedQuery("ouders")
+                          .setParameter("kind", kind);
+
+    return query.getResultList();
+  }
+
+  /**
+   * Haal de soorten op.
+   * 
+   * @return Collection<TaxonDto>
+   */
+  @SuppressWarnings("unchecked")
+  public List<TaxonDto> getSoorten() {
     Query   query         =
         getEntityManager().createNamedQuery("soort");
 
-    return convertToCollection(query.getResultList());
+    return query.getResultList();
   }
 }

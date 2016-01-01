@@ -17,46 +17,25 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
-import eu.debooy.natuur.domain.DetailDto;
-
-import java.util.List;
+import eu.debooy.natuur.domain.RangDto;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
 
 /**
  * @author Marco de Booij
  */
-public class DetailDao extends Dao<DetailDto> {
+public class RangDao extends Dao<RangDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
-  public DetailDao() {
-    super(DetailDto.class);
+  public RangDao() {
+    super(RangDto.class);
   }
 
   @Override
   protected EntityManager getEntityManager() {
     return em;
-  }
-
-  @Override
-  public DetailDto create(DetailDto dto) {
-    return null;
-  }
-
-  /**
-   * Haal de soorten op.
-   * 
-   * @return List<DetailDto>
-   */
-  @SuppressWarnings("unchecked")
-  public List<DetailDto> getSoortenMetKlasse() {
-    Query   query         =
-        getEntityManager().createNamedQuery("soortMetKlasse");
-
-    return query.getResultList();
   }
 }

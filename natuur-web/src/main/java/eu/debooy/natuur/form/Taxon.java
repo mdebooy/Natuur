@@ -29,7 +29,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Taxon implements Comparable<Taxon>, Serializable {
+public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
@@ -53,28 +53,39 @@ public class Taxon implements Comparable<Taxon>, Serializable {
   /**
    * Sorteren op de naam van het taxon.
    */
-  public static Comparator<Taxon> latijnsenaamComparator  =
-      new Comparator<Taxon>() {
+  public static class LatijnsenaamComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return taxon1.latijnsenaam.compareTo(taxon2.latijnsenaam);
     }
-  };
+  }
 
   /**
    * Sorteren op de naam van het taxon.
    */
-  public static Comparator<Taxon> naamComparator  =
-      new Comparator<Taxon>() {
+  public static class NaamComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return taxon1.naam.compareTo(taxon2.naam);
     }
-  };
+  }
+  
+  @Override
+  public Taxon clone() throws CloneNotSupportedException {
+    Taxon clone = (Taxon) super.clone();
+
+    return clone;
+  }
 
   @Override
   public int compareTo(Taxon andere) {
-    return new CompareToBuilder().append(naam, andere.naam)
+    return new CompareToBuilder().append(taxonId, andere.taxonId)
                                  .toComparison();
   }
 

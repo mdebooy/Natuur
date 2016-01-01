@@ -23,9 +23,7 @@ import eu.debooy.natuur.form.Taxon;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -50,7 +48,7 @@ public class TaxonService {
   @Inject
   private TaxonDao    taxonDao;
 
-  private Set<Taxon>  taxa;
+  private List<Taxon> taxa;
 
   /**
    * Initialisatie.
@@ -65,13 +63,23 @@ public class TaxonService {
   }
 
   /**
+   * Geef de mogelijke 'ouders' van de gevraagde rang.
+   * 
+   * @param kind
+   * @return List<DetailDto>
+   */
+  public List<TaxonDto> getOuders(Long kind) {
+    return taxonDao.getOuders(kind);
+  }
+
+  /**
    * Geef alle soorten/waarnemingen.
    * 
-   * @return Set<Taxon>
+   * @return List<Taxon>
    */
-  public Set<Taxon> getSoorten() {
-    Set<Taxon>            soorten = new HashSet<Taxon>();
-    Collection<TaxonDto>  rows    = taxonDao.getSoorten();
+  public List<Taxon> getSoorten() {
+    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<TaxonDto>  rows    = taxonDao.getSoorten();
     for (TaxonDto taxonDto : rows) {
       soorten.add(new Taxon(taxonDto));
     }
@@ -80,13 +88,28 @@ public class TaxonService {
   }
 
   /**
+   * Geef alle kinderen.
+   * 
+   * @return List<Taxon>
+   */
+  public List<Taxon> getKinderen(Long parentId) {
+    List<Taxon>     kinderen  = new ArrayList<Taxon>();
+    List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
+    for (TaxonDto taxonDto : rows) {
+      kinderen.add(new Taxon(taxonDto));
+    }
+
+    return kinderen;
+  }
+
+  /**
    * Geef alle Taxons.
    * 
    * @return Set<Taxon>
    */
-  public Set<Taxon> lijst() {
+  public List<Taxon> lijst() {
     if (null == taxa) {
-      taxa  = new HashSet<Taxon>();
+      taxa  = new ArrayList<Taxon>();
       Collection<TaxonDto>  rows  = taxonDao.getAll();
       for (TaxonDto taxonDto : rows) {
         taxa.add(new Taxon(taxonDto));

@@ -23,9 +23,7 @@ import eu.debooy.natuur.form.Gebied;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -48,9 +46,9 @@ public class GebiedService {
       LoggerFactory.getLogger(GebiedService.class);
 
   @Inject
-  private GebiedDao   gebiedDao;
+  private GebiedDao     gebiedDao;
 
-  private Set<Gebied> gebieden;
+  private List<Gebied>  gebieden;
 
   /**
    * Initialisatie.
@@ -69,9 +67,9 @@ public class GebiedService {
    * 
    * @return Een Set met Gebieden.
    */
-  public Set<Gebied> lijst() {
+  public List<Gebied> lijst() {
     if (null == gebieden) {
-      gebieden  = new HashSet<Gebied>();
+      gebieden  = new ArrayList<Gebied>();
       Collection<GebiedDto>  rows    = gebiedDao.getAll();
       for (GebiedDto gebiedDto : rows) {
         gebieden.add(new Gebied(gebiedDto));

@@ -29,7 +29,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Gebied implements Comparable<Gebied>, Serializable {
+public class Gebied implements Cloneable, Comparable<Gebied>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
@@ -49,13 +49,22 @@ public class Gebied implements Comparable<Gebied>, Serializable {
   /**
    * Sorteren op de naam van het gebied.
    */
-  public static Comparator<Gebied> naamComparator  =
-      new Comparator<Gebied>() {
+  public static class NaamComparator
+      implements Comparator<Gebied>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
     @Override
     public int compare(Gebied gebied1, Gebied gebied2) {
       return gebied1.naam.compareTo(gebied2.naam);
     }
-  };
+  }
+  
+  @Override
+  public Gebied clone() throws CloneNotSupportedException {
+    Gebied clone = (Gebied) super.clone();
+
+    return clone;
+  }
 
   @Override
   public int compareTo(Gebied andere) {
@@ -148,5 +157,18 @@ public class Gebied implements Comparable<Gebied>, Serializable {
    */
   public void setNaam(String naam) {
     this.naam = naam;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder resultaat = new StringBuilder();
+    resultaat.append("Gebied (")
+             .append("gebiedId=[").append(gebiedId).append("], ")
+             .append("naam=[").append(naam).append("], ")
+             .append("landId=[").append(landId).append("], ")
+             .append("class=[").append(this.getClass().getSimpleName())
+             .append("])");
+
+    return resultaat.toString();
   }
 }

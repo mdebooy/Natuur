@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
+    <ui:define name="head">
+    </ui:define>
+    <ui:define name="body">
+      <h:form class="form-horizontal" id="formFoto">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-10">
+            <h2>#{i18nTeksten.tekst(natuur.subTitel)}</h2>
+          </div>
+          <div class="row" />
+          <t:div rendered="#{!natuur.readonly}">
+            <div class="form-group form-group-sm">
+              <label for="taxonSeq" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.seq')}</label>
+              <div class="col-sm-9">
+                <t:inputText id="taxonSeq" styleClass="form-control" value="#{natuur.foto.taxonSeq}" maxlength="3" size="3" />
+              </div>
+            </div>
+          </t:div>
+          <div class="form-group form-group-sm">
+            <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
+            <div class="col-sm-9">
+              <t:inputText id="naam" styleClass="form-control" value="#{natuur.foto.taxon.naam}" maxlength="255" size="100" />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="taxon" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
+            <div class="col-sm-1">
+              <h:selectOneMenu id="taxon" value="#{natuur.foto.taxon}" converter="TaxonConverter" >
+                <t:selectItems value="#{natuur.selectWaarnemingen}" />
+              </h:selectOneMenu>
+            </div>
+          </div>
+          <!--
+          <div class="form-group form-group-sm">
+            <label for="gebied" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
+            <div class="col-sm-1">
+              <h:selectOneMenu id="gebied" value="#{natuur.foto.gebied}" converter="GebiedConverter" >
+                <t:selectItems value="#{natuur.selectGebieden}" />
+              </h:selectOneMenu>
+            </div>
+          </div>
+          -->
+
+          <h:commandLink action="#{natuur.saveFoto}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuur.saveFoto}" id="modify" styleClass="btn btn-default" rendered="#{natuur.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <a class="btn btn-default" href="/natuur/fotos/fotos.jsf">#{i18nTeksten.tekst('button.cancel')}</a>
+
+          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

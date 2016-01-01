@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class FotoPK implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  private Long  taxonId;
+  private Long  taxon;
   private Long  taxonSeq;
 
   /**
@@ -37,12 +37,12 @@ public class FotoPK implements Serializable {
   public FotoPK() {}
 
   /**
-   * @param Long taxonId
+   * @param Long taxon
    * @param Long taxonSeq
    */
-  public FotoPK(Long taxonId, Long taxonSeq) {
+  public FotoPK(Long taxon, Long taxonSeq) {
     super();
-    this.taxonId  = taxonId;
+    this.taxon    = taxon;
     this.taxonSeq = taxonSeq;
   }
 
@@ -52,16 +52,16 @@ public class FotoPK implements Serializable {
        return false;
      }
      FotoPK fotoPK  = (FotoPK) object;
-     return new EqualsBuilder().append(taxonId, fotoPK.taxonId)
+     return new EqualsBuilder().append(taxon, fotoPK.getTaxon())
                                .append(taxonSeq, fotoPK.taxonSeq)
                                .isEquals();
    }
 
   /**
-   * @return Long de taxonId
+   * @return Long de taxon
    */
-  public Long getTaxonID() {
-    return taxonId;
+  public Long getTaxon() {
+    return taxon;
   }
 
   /**
@@ -73,15 +73,15 @@ public class FotoPK implements Serializable {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(taxonId)
+    return new HashCodeBuilder().append(taxon)
                                 .append(taxonSeq).toHashCode();
   }
 
   /**
-   * @param Long taxonId de waarde van taxonId
+   * @param TaxonDto taxon de waarde van taxon
    */
-  public void setTaxonID(Long taxonId) {
-    this.taxonId  = taxonId;
+  public void setTaxonId(Long taxon) {
+    this.taxon  = taxon;
   }
 
   /**
@@ -94,7 +94,7 @@ public class FotoPK implements Serializable {
   @Override
   public String toString() {
     return new StringBuilder().append("FotoPK")
-                              .append(" (taxonId=").append(taxonId)
+                              .append(" (taxon=").append(taxon)
                               .append(", taxonSeq=").append(taxonSeq)
                               .append(")").toString();
   }

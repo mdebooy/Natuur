@@ -13,24 +13,21 @@
       <h:form class="form-horizontal" id="formGebied">
         <div class="col-md-10 col-md-offset-1">
           <div class="col-md-10">
-            <t:div rendered="#{!natuur.readonly}">
-              <h2>#{i18nTeksten.tekst(natuur.subTitel)}</h2>
-            </t:div>
-            <t:div rendered="#{natuur.readonly}">
-              <h2>#{Natuur.subTitel}</h2>
-            </t:div>
+            <h2>#{i18nTeksten.tekst(natuur.subTitel)}</h2>
           </div>
           <div class="row" />
           <div class="form-group form-group-sm">
             <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
             <div class="col-sm-9">
-              <t:inputText id="naam" styleClass="form-control" value="#{natuur.gebied.naam}" maxlength="100" size="100" readonly="#{natuur.readonly}" />
+              <t:inputText id="naam" styleClass="form-control" value="#{natuur.gebied.naam}" maxlength="100" size="100" />
             </div>
           </div>
           <div class="form-group form-group-sm">
             <label for="landId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.land')}</label>
             <div class="col-sm-9">
-              <t:inputText id="landId" styleClass="form-control" value="#{natuur.gebied.landId}" maxlength="10" size="10" readonly="#{natuur.readonly}" />
+              <h:selectOneMenu id="landId" value="#{natuur.gebied.landId}" >
+                <t:selectItems value="#{i18nLandnaam.selectLandnamen()}" />
+              </h:selectOneMenu>
             </div>
           </div>
 

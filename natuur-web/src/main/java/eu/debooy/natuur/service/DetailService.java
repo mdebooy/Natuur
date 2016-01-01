@@ -46,8 +46,6 @@ public class DetailService {
   @Inject
   private DetailDao       detailDao;
 
-  private List<DetailDto> details;
-
   /**
    * Initialisatie.
    */
@@ -58,11 +56,9 @@ public class DetailService {
   /**
    * Geef alle waarnemingen.
    * 
-   * @return Set<Taxon>
+   * @return Set<DetailDto>
    */
   public List<DetailDto> getSoortenMetKlasse() {
-    details = detailDao.getSoortenMetKlasse();
-
-    return details;
+    return detailDao.getSoortenMetKlasse();
   }
 }
