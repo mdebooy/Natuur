@@ -11,7 +11,7 @@
   <packaging>pom</packaging>
   <name>Natuur</name>
   <description>Waarnemingen in de natuur.</description>
-  <inceptionYear>2013</inceptionYear>
+  <inceptionYear>2015</inceptionYear>
   <scm>
     <developerConnection>scm:svn:http://svn.debooy.eu/svn/Natuur/trunk</developerConnection>
     <connection>scm:svn:http://svn.debooy.eu/svn/Natuur/trunk</connection>

@@ -14,15 +14,13 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-/**
- * 
- */
 package eu.debooy.natuur.service;
 
 import eu.debooy.natuur.access.DetailDao;
 import eu.debooy.natuur.domain.DetailDto;
+import eu.debooy.natuur.form.Rangtotaal;
 
-import java.util.List;
+import java.util.Collection;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -33,6 +31,7 @@ import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+
 /**
  * @author Marco de Booij
  */
@@ -40,7 +39,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurDetailService")
 @Lock(LockType.WRITE)
 public class DetailService {
-  private static  Logger  logger  =
+  private static final  Logger  logger  =
       LoggerFactory.getLogger(DetailService.class);
 
   @Inject
@@ -56,9 +55,18 @@ public class DetailService {
   /**
    * Geef alle waarnemingen.
    * 
-   * @return Set<DetailDto>
+   * @return Collection<DetailDto>
    */
-  public List<DetailDto> getSoortenMetKlasse() {
+  public Collection<DetailDto> getSoortenMetKlasse() {
     return detailDao.getSoortenMetKlasse();
+  }
+
+  /**
+   * Geef alle waarnemingen.
+   * 
+   * @return Collection<DetailDto>
+   */
+  public Collection<Rangtotaal> getTotalenVoorRang(String rang) {
+    return detailDao.getTotalenVoorRang(rang);
   }
 }

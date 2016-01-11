@@ -23,7 +23,9 @@ import eu.debooy.natuur.form.Gebied;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -42,13 +44,13 @@ import org.slf4j.LoggerFactory;
 @Named("natuurGebiedService")
 @Lock(LockType.WRITE)
 public class GebiedService {
-  private static  Logger  logger  =
+  private static final  Logger  logger  =
       LoggerFactory.getLogger(GebiedService.class);
 
   @Inject
   private GebiedDao     gebiedDao;
 
-  private List<Gebied>  gebieden;
+  private Set<Gebied>   gebieden;
 
   /**
    * Initialisatie.
@@ -67,12 +69,12 @@ public class GebiedService {
    * 
    * @return Een Set met Gebieden.
    */
-  public List<Gebied> lijst() {
+  public Collection<Gebied> lijst() {
     if (null == gebieden) {
-      gebieden  = new ArrayList<Gebied>();
-      Collection<GebiedDto>  rows    = gebiedDao.getAll();
-      for (GebiedDto gebiedDto : rows) {
-        gebieden.add(new Gebied(gebiedDto));
+      gebieden  = new HashSet<Gebied>();
+      Collection<GebiedDto> rijen = gebiedDao.getAll();
+      for (GebiedDto rij : rijen) {
+        gebieden.add(new Gebied(rij));
       }
     }
 
@@ -85,10 +87,8 @@ public class GebiedService {
    * @param gebied
    */
   public void save(Gebied gebied) {
-    logger.debug(gebied.toString());
     GebiedDto  dto = new GebiedDto();
     gebied.persist(dto);
-    logger.debug(dto.toString());
 
     if (null == gebied.getGebiedId()) {
       gebiedDao.create(dto);
@@ -96,6 +96,7 @@ public class GebiedService {
     } else {
       gebiedDao.update(dto);
     }
+
     if (null != gebieden) {
       gebieden.remove(gebied);
       gebieden.add(gebied);

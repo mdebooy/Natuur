@@ -23,7 +23,10 @@ import eu.debooy.natuur.domain.FotoPK;
 import eu.debooy.natuur.form.Foto;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -42,12 +45,13 @@ import org.slf4j.LoggerFactory;
 @Named("natuurFotoService")
 @Lock(LockType.WRITE)
 public class FotoService {
-  private Logger  logger  = LoggerFactory.getLogger(FotoService.class);
+  private static final  Logger  logger  =
+      LoggerFactory.getLogger(FotoService.class);
 
   @Inject
   private FotoDao     fotoDao;
 
-  private List<Foto>  fotos;
+  private Set<Foto>   fotos;
 
   /**
    * Initialisatie.
@@ -66,12 +70,12 @@ public class FotoService {
    * 
    * @return Een List met Fotos.
    */
-  public List<Foto> lijst() {
+  public Collection<Foto> lijst() {
     if (null == fotos) {
-      fotos = new ArrayList<Foto>();
-      List<FotoDto> rows  = fotoDao.getAll();
-      for (FotoDto fotoDto : rows) {
-        fotos.add(new Foto(fotoDto));
+      fotos = new HashSet<Foto>();
+      Collection<FotoDto> rijen = fotoDao.getAll();
+      for (FotoDto rij : rijen) {
+        fotos.add(new Foto(rij));
       }
     }
 
@@ -87,7 +91,8 @@ public class FotoService {
     FotoDto  dto = new FotoDto();
     foto.persist(dto);
 
-// TODO Update of Create?
+    fotoDao.update(dto);
+
     if (null != fotos) {
       fotos.remove(foto);
       fotos.add(foto);
@@ -102,6 +107,9 @@ public class FotoService {
   public FotoDto foto(Long taxonId, Long taxonSeq) {
     FotoPK  sleutel = new FotoPK(taxonId, taxonSeq);
     FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
+    // TODO Waarom dit statement er moet staan om de Taxon gegevens te zien?
+    @SuppressWarnings("unused")
+    String  dummy   = foto.getTaxon().toString();
 
     return foto;
   }

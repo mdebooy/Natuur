@@ -52,11 +52,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
-  @Column(name="NAAM", length=225, nullable=false)
-  private String    naam;
   @Column(name="LATIJNSENAAM", length=225, nullable=false)
   private String    latijnsenaam;
-  @Column(name="PARENT_ID", nullable=false, updatable=false)
+  @Column(name="NAAM", length=225, nullable=false)
+  private String    naam;
+  @Column(name="OPMERKING", length=2000)
+  private String    opmerking;
+  @Column(name="PARENT_ID", nullable=false)
   private Long      parentId;
   @Column(name="RANG", length=3, nullable=false)
   private String    rang;
@@ -119,6 +121,13 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   /**
+   * @return de latijnsenaam
+   */
+  public String getLatijnsenaam() {
+    return latijnsenaam;
+  }
+
+  /**
    * @return de naam
    */
   public String getNaam() {
@@ -126,10 +135,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   /**
-   * @return de latijnsenaam
+   * @return de opmerking
    */
-  public String getLatijnsenaam() {
-    return latijnsenaam;
+  public String getOpmerking() {
+    return opmerking;
   }
 
   /**
@@ -159,6 +168,13 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   /**
+   * @param latijnsenaam de waarde van latijnsenaam
+   */
+  public void setLatijnsenaam(String latijnsenaam) {
+    this.latijnsenaam = latijnsenaam;
+  }
+
+  /**
    * @param naam de waarde van naam
    */
   public void setNaam(String naam) {
@@ -166,10 +182,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   /**
-   * @param latijnsenaam de waarde van latijnsenaam
+   * @param opmerking de waarde van opmerking
    */
-  public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam;
+  public void setOpmerking(String opmerking) {
+    this.opmerking  = opmerking;
   }
 
   /**

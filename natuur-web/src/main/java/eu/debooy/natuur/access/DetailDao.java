@@ -18,8 +18,12 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.natuur.domain.DetailDto;
+import eu.debooy.natuur.form.Rangtotaal;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -50,13 +54,35 @@ public class DetailDao extends Dao<DetailDto> {
   /**
    * Haal de soorten op.
    * 
-   * @return List<DetailDto>
+   * @return Collection<DetailDto>
    */
   @SuppressWarnings("unchecked")
-  public List<DetailDto> getSoortenMetKlasse() {
+  public Collection<DetailDto> getSoortenMetKlasse() {
     Query   query         =
         getEntityManager().createNamedQuery("soortMetKlasse");
 
     return query.getResultList();
+  }
+
+
+  /**
+   * Haal het aantal soorten per groep op.
+   * 
+   * @param String
+   * @return Collection<Rangtotaal>
+   */
+  @SuppressWarnings("unchecked")
+  public Collection<Rangtotaal> getTotalenVoorRang(String groep) {
+    Query   query         =
+        getEntityManager().createNamedQuery("totalen")
+                          .setParameter("groep", groep);
+    List<Object[]>  rijen = query.getResultList();
+    Set<Rangtotaal> totalen = new HashSet<Rangtotaal>();
+    for (Object[] rij : rijen) {
+      Rangtotaal  totaal  = new Rangtotaal(rij);
+      totalen.add(totaal);
+    }
+
+    return totalen;
   }
 }

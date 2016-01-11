@@ -32,6 +32,7 @@ import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 
+
 /**
  * @author Marco de Booij
  */
@@ -42,7 +43,7 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
 
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
-  @Column(name="GEBIED_ID", nullable=false, unique=true)
+  @Column(name="GEBIED_ID", nullable=false, unique=true, updatable=false)
   private Long    gebiedId;
   @Column(name="LAND_ID", nullable=false)
   private Long    landId    = Long.valueOf(0);
@@ -71,8 +72,8 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
 
   @Override
   public int compareTo(GebiedDto gebiedDto) {
-    return new CompareToBuilder().append(gebiedId,
-                                         gebiedDto.gebiedId).toComparison();
+    return new CompareToBuilder().append(gebiedId, gebiedDto.gebiedId)
+                                 .toComparison();
   }
 
   @Override

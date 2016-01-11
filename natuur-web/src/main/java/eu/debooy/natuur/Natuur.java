@@ -29,17 +29,24 @@ import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Rang;
+import eu.debooy.natuur.form.Rangtotaal;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.service.DetailService;
 import eu.debooy.natuur.service.FotoService;
 import eu.debooy.natuur.service.GebiedService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
+import eu.debooy.sedes.component.business.II18nLandnaam;
 
+import java.text.MessageFormat;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -57,8 +64,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class Natuur extends DoosBean {
   private static final  long    serialVersionUID  = 1L;
-
-  private static  Logger  logger  =
+  private static final  Logger  logger            =
       LoggerFactory.getLogger(Natuur.class);
 
   private Foto      foto;
@@ -72,17 +78,21 @@ public class Natuur extends DoosBean {
   private transient RangService   rangService;
   private transient TaxonService  taxonService;
 
-  public static final String  ADMIN_ROLE        = "natuur-admin";
-  public static final String  APPLICATIE_NAAM   = "Natuur";
-  public static final String  FOTO_REDIRECT     = "/fotos/foto.jsf";
-  public static final String  FOTOS_REDIRECT    = "/fotos/fotos.jsf";
-  public static final String  GEBIED_REDIRECT   = "/gebieden/gebied.jsf";
-  public static final String  GEBIEDEN_REDIRECT = "/gebieden/gebieden.jsf";
-  public static final String  RANG_REDIRECT     = "/rangen/rang.jsf";
-  public static final String  RANGEN_REDIRECT   = "/rangen/rangen.jsf";
-  public static final String  TAXON_REDIRECT    = "/taxa/taxon.jsf";
-  public static final String  TAXA_REDIRECT     = "/taxa/taxa.jsf";
-  public static final String  USER_ROLE         = "natuur-user";
+  @EJB
+  private II18nLandnaam i18nLandnaamBean;
+
+  public static final String  ADMIN_ROLE            = "natuur-admin";
+  public static final String  APPLICATIE_NAAM       = "Natuur";
+  public static final String  FOTO_REDIRECT         = "/fotos/foto.jsf";
+  public static final String  FOTOS_REDIRECT        = "/fotos/fotos.jsf";
+  public static final String  GEBIED_REDIRECT       = "/gebieden/gebied.jsf";
+  public static final String  GEBIEDEN_REDIRECT     = "/gebieden/gebieden.jsf";
+  public static final String  RANG_REDIRECT         = "/rangen/rang.jsf";
+  public static final String  RANGEN_REDIRECT       = "/rangen/rangen.jsf";
+  public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.jsf";
+  public static final String  TAXON_REDIRECT        = "/taxa/taxon.jsf";
+  public static final String  TAXA_REDIRECT         = "/taxa/taxa.jsf";
+  public static final String  USER_ROLE             = "natuur-user";
 
   public Natuur() {
     setAdminRole(getExternalContext().isUserInRole(ADMIN_ROLE));
@@ -99,7 +109,7 @@ public class Natuur extends DoosBean {
    */
   private DetailService getDetailService() {
     if (null == detailService) {
-      detailService  = (DetailService)
+      detailService = (DetailService)
           new JNDI.JNDINaam().metBean(DetailService.class).locate();
     }
 
@@ -113,10 +123,13 @@ public class Natuur extends DoosBean {
    */
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
-    List<DetailDto>   rijen = getDetailService().getSoortenMetKlasse();
-    Collections.sort(rijen, new DetailDto.NaamComparator());
-    for (DetailDto detailDto : rijen) {
-      items.add(new SelectItem(detailDto.getTaxonId(), detailDto.getNaam()));
+    Set<DetailDto>    rijen =
+        new TreeSet<DetailDto>(new DetailDto.NaamComparator());
+    rijen.addAll(getDetailService().getSoortenMetKlasse());
+    for (DetailDto rij : rijen) {
+      items.add(new SelectItem(new Taxon(rij),
+                               rij.getNaam() + " (" + rij.getLatijnsenaam()
+                                   + ")"));
     }
 
     return items;
@@ -125,9 +138,9 @@ public class Natuur extends DoosBean {
   /**
    * Geef de lijst met waarnemingen.
    * 
-   * @return List<DetailDto> met DetailDto objecten.
+   * @return Collection<DetailDto> met DetailDto objecten.
    */
-  public List<DetailDto> getSoorten() {
+  public Collection<DetailDto> getSoorten() {
     return getDetailService().getSoortenMetKlasse();
   }
 
@@ -138,7 +151,7 @@ public class Natuur extends DoosBean {
     ExportData  exportData  = new ExportData();
 
     exportData.addMetadata("application", getApplicatieNaam());
-    exportData.addMetadata("auteur",      "Marco DE BOOIJ");
+    exportData.addMetadata("auteur",      getGebruikerNaam());
     exportData.addMetadata("lijstnaam",   "waarnemingen");
     exportData.setKleuren(getLijstKleuren());
 
@@ -177,6 +190,53 @@ public class Natuur extends DoosBean {
 
   // Fotos
   /**
+   * Raport met Waarnemingen.
+   */
+  public void fotolijst() {
+    ExportData  exportData  = new ExportData();
+
+    exportData.addMetadata("application", getApplicatieNaam());
+    exportData.addMetadata("auteur",      getGebruikerNaam());
+    exportData.addMetadata("lijstnaam",   "fotolijst");
+    exportData.setKleuren(getLijstKleuren());
+
+    exportData.setKolommen(new String[] { "sequence", "land",
+                                          "naam", "gebied" });
+    exportData.setType(getType());
+    exportData.addVeld("ReportTitel",
+                       getTekst("natuur.titel.fotolijst"));
+
+    Set<Foto> rijen = new TreeSet<Foto>(new Foto.LijstComparator());
+    rijen.addAll(getFotoService().lijst());
+    String      taal  = getGebruikersTaal();
+    for (Foto rij : rijen) {
+      exportData.addData(new String[] {rij.getTaxonSeq().toString(),
+                                       i18nLandnaamBean
+                                           .getI18nLandnaam(rij.getGebied()
+                                                               .getLandId(),
+                                                            taal),
+                                       rij.getTaxon().getNaam(),
+                                       rij.getGebied().getNaam()});
+
+    }
+
+    HttpServletResponse response  =
+        (HttpServletResponse) FacesContext.getCurrentInstance()
+                                          .getExternalContext().getResponse();
+    try {
+      Export.export(response, exportData);
+    } catch (IllegalArgumentException e) {
+      generateExceptionMessage(e);
+      return;
+    } catch (TechnicalException e) {
+      generateExceptionMessage(e);
+      return;
+    }
+
+    FacesContext.getCurrentInstance().responseComplete();
+  }
+
+  /**
    * Geef de geselecteerde foto.
    * 
    * @return Foto
@@ -188,9 +248,9 @@ public class Natuur extends DoosBean {
   /**
    * Geef de lijst met fotos.
    * 
-   * @return List<Foto> met Gebied objecten.
+   * @return Collection<Foto> met Gebied objecten.
    */
-  public List<Foto> getFotos() {
+  public Collection<Foto> getFotos() {
     return getFotoService().lijst();
   }
 
@@ -249,7 +309,6 @@ public class Natuur extends DoosBean {
    */
   public void wijzigFoto(Long taxonId, Long taxonSeq) {
     foto  = new Foto(getFotoService().foto(taxonId, taxonSeq));
-    logger.debug(foto.toString());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
     redirect(FOTO_REDIRECT);
@@ -268,9 +327,9 @@ public class Natuur extends DoosBean {
   /**
    * Geef de lijst met gebieden.
    * 
-   * @return List<Gebied> met Gebied objecten.
+   * @return Collection<Gebied> met Gebied objecten.
    */
-  public List<Gebied> getGebieden() {
+  public Collection<Gebied> getGebieden() {
     return getGebiedService().lijst();
   }
 
@@ -295,10 +354,10 @@ public class Natuur extends DoosBean {
    */
   public List<SelectItem> getSelectGebieden() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
-    List<Gebied>      rijen = getGebiedService().lijst();
-    Collections.sort(rijen, new Gebied.NaamComparator());
-    for (Gebied gebied : rijen) {
-      items.add(new SelectItem(gebied.getGebiedId(), gebied.getNaam()));
+    Set<Gebied>       rijen = new TreeSet<Gebied>(new Gebied.NaamComparator());
+    rijen.addAll(getGebiedService().lijst());
+    for (Gebied rij : rijen) {
+      items.add(new SelectItem(rij, rij.getNaam()));
     }
 
     return items;
@@ -353,6 +412,20 @@ public class Natuur extends DoosBean {
 
   // Rangen
   /**
+   * Zet de Rang die gevraagd is klaar.
+   * 
+   * @param String rang
+   */
+  public void bekijkRang(String rang) {
+    this.rang = new Rang(getRangService().rang(rang));
+    setAktie(PersistenceConstants.RETRIEVE);
+    setSubTitel(MessageFormat.format(getTekst("natuur.titel.rang.totalen"),
+                                     getTekst("biologie.rang."
+                                         + this.rang.getRang())));
+    redirect(RANG_TOTALEN_REDIRECT);
+  }
+
+  /**
    * Geef de geselecteerde rang.
    * 
    * @return Rang
@@ -364,9 +437,9 @@ public class Natuur extends DoosBean {
   /**
    * Geef de lijst met rangen.
    * 
-   * @return List<Rang> met Gebied objecten.
+   * @return Collection<Rang> met Gebied objecten.
    */
-  public List<Rang> getRangen() {
+  public Collection<Rang> getRangen() {
     return getRangService().lijst();
   }
 
@@ -385,17 +458,26 @@ public class Natuur extends DoosBean {
   }
 
   /**
+   * Geef de lijst met totalen voor de rang.
+   * 
+   * @return Collection<Rangtotaal>
+   */
+  public Collection<Rangtotaal> getRangtotalen() {
+    return getDetailService().getTotalenVoorRang(rang.getRang());
+  }
+
+  /**
    * Geef alle rangen als SelectItems.
    * 
    * @return
    */
   public List<SelectItem> getSelectRangen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
-    List<Rang>        rijen = getRangService().lijst();
-    Collections.sort(rijen, new Rang.NiveauComparator());
-    for (Rang rang : rijen) {
-      items.add(new SelectItem(rang.getRang(),
-                               getTekst("biologie.rang." + rang.getRang())));
+    Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
+    rijen.addAll(getRangService().lijst());
+    for (Rang rij : rijen) {
+      items.add(new SelectItem(rij.getRang(),
+                               getTekst("biologie.rang." + rij.getRang())));
     }
 
     return items;
@@ -423,7 +505,7 @@ public class Natuur extends DoosBean {
       return;
     }
 
-    getGebiedService().save(gebied);
+    getRangService().save(rang);
     redirect(RANGEN_REDIRECT);
   }
 
@@ -463,18 +545,18 @@ public class Natuur extends DoosBean {
   /**
    * Geef de lijst met kinderen van de taxon.
    * 
-   * @return List<Taxon> met Taxon objecten.
+   * @return Collection<Taxon> met Taxon objecten.
    */
-  public List<Taxon> getKinderen(Long parentId) {
+  public Collection<Taxon> getKinderen(Long parentId) {
     return getTaxonService().getKinderen(parentId);
   }
 
   /**
    * Geef de lijst met taxa.
    * 
-   * @return List<Taxon> met Taxon objecten.
+   * @return Collection<Taxon> met Taxon objecten.
    */
-  public List<Taxon> getTaxa() {
+  public Collection<Taxon> getTaxa() {
     return getTaxonService().lijst();
   }
 
@@ -505,7 +587,18 @@ public class Natuur extends DoosBean {
    * Prepareer een nieuw taxon.
    */
   public void nieuweTaxon() {
-    taxon     = new Taxon();
+    taxon = new Taxon();
+    setAktie(PersistenceConstants.CREATE);
+    setSubTitel("natuur.titel.taxon.create");
+    redirect(TAXON_REDIRECT);
+  }
+
+  /**
+   * Prepareer een nieuw taxon met parentId.
+   */
+  public void nieuweTaxon(Long parentId) {
+    taxon = new Taxon();
+    taxon.setParentId(parentId);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.taxon.create");
     redirect(TAXON_REDIRECT);
@@ -524,7 +617,7 @@ public class Natuur extends DoosBean {
     }
 
     getTaxonService().save(taxon);
-    redirect(TAXA_REDIRECT);
+    redirect(TAXON_REDIRECT);
   }
 
   /**
@@ -539,14 +632,14 @@ public class Natuur extends DoosBean {
     } else {
       niveau  = getRangService().rang(rang).getNiveau();
     }
-    List<SelectItem>  items   = new LinkedList<SelectItem>();
-    List<TaxonDto>    rijen   =
-        new LinkedList<TaxonDto>(getTaxonService().getOuders(niveau));
-    Collections.sort(rijen, new TaxonDto.NaamComparator());
-    for (TaxonDto taxonDto : rijen) {
-      items.add(new SelectItem(taxonDto.getTaxonId(),
-                               taxonDto.getNaam() + " ("
-                                   + taxonDto.getLatijnsenaam() + ")"));
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    Set<TaxonDto>     rijen =
+        new TreeSet<TaxonDto>(new TaxonDto.NaamComparator());
+    rijen.addAll(getTaxonService().getOuders(niveau));
+    for (TaxonDto rij : rijen) {
+      items.add(new SelectItem(rij.getTaxonId(),
+                               rij.getNaam() + " (" + rij.getLatijnsenaam()
+                                   + ")"));
     }
 
     return items;
@@ -566,7 +659,7 @@ public class Natuur extends DoosBean {
    * @param Long
    */
   public void wijzigTaxon(Long taxonId) {
-    taxon     = new Taxon(getTaxonService().taxon(taxonId));
+    taxon = new Taxon(getTaxonService().taxon(taxonId));
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.taxon.update");
     redirect(TAXON_REDIRECT);

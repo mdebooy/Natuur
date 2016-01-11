@@ -65,4 +65,30 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
+
+  <login-config>
+    <auth-method>BASIC</auth-method>
+    <realm-name>default</realm-name>
+  </login-config>
+  <security-role>
+    <role-name>natuur-admin</role-name>
+  </security-role>
+  <security-role>
+    <role-name>natuur-user</role-name>
+  </security-role>
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Natuur</web-resource-name>
+      <description>De hele applicatie.</description>
+      <url-pattern>/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>natuur-admin</role-name>
+      <role-name>natuur-user</role-name>
+    </auth-constraint>
+    <user-data-constraint>
+      <description>Geen encryptie nodig.</description>
+      <transport-guarantee>NONE</transport-guarantee>
+    </user-data-constraint>
+  </security-constraint>
 </web-app>

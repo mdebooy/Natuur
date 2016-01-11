@@ -51,6 +51,9 @@
             <h:commandLink action="#{natuur.nieuweFoto}" actionFor="#{formFotos}">
               <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
             </h:commandLink>
+            <h:commandLink action="#{natuur.fotolijst}" actionFor="#{formFotos}">
+              <f:setPropertyActionListener target="#{natuur.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
+            </h:commandLink>
           </div>
 
           <ui:include src="fotostabel.xhtml">

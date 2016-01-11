@@ -42,7 +42,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
   @OneToOne(cascade=CascadeType.ALL)
-  @JoinColumn(name="GEBIED_ID", nullable=false, updatable=false)
+  @JoinColumn(name="GEBIED_ID", nullable=false)
   private GebiedDto gebied;
   @Id
   @OneToOne(cascade=CascadeType.ALL)

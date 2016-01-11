@@ -68,7 +68,7 @@ public class Gebied implements Cloneable, Comparable<Gebied>, Serializable {
 
   @Override
   public int compareTo(Gebied andere) {
-    return new CompareToBuilder().append(naam, andere.getNaam())
+    return new CompareToBuilder().append(gebiedId, andere.gebiedId)
                                  .toComparison();
   }
 

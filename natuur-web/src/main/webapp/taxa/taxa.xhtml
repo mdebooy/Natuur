@@ -7,7 +7,6 @@
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
     <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
-    <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('confirmatie.titel.verwijder.taxon')}" />
     <ui:define name="head">
       <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
@@ -61,7 +60,10 @@
       </h:form>
     </ui:define>
     <ui:define name="modal">
-      <ui:include src="/WEB-INF/templates/confirmatie.xhtml" />
+      <ui:include src="/WEB-INF/templates/confirmatie.xhtml">
+        <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
+        <ui:param name="object" value="taxon" />
+      </ui:include>
     </ui:define>
   </ui:composition>
 </html>

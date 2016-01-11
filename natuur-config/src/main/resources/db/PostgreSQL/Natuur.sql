@@ -96,6 +96,7 @@ CREATE TABLE NATUUR.RANGEN (
 CREATE TABLE NATUUR.TAXA (
   LATIJNSENAAM                    VARCHAR(255)    NOT NULL,
   NAAM                            VARCHAR(255)    NOT NULL,
+  OPMERKING                       VARCHAR(2000),
   PARENT_ID                       INTEGER,
   RANG                            VARCHAR(3)      NOT NULL,
   TAXON_ID                        INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_TAXA'::REGCLASS),
@@ -103,17 +104,6 @@ CREATE TABLE NATUUR.TAXA (
 );
 
 -- Views
-CREATE OR REPLACE VIEW natuur.details AS
-SELECT   t.parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
-         p.latijnsenaam AS parent_latijnsenaam,
-         r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam
-FROM     natuur.taxonomie t
-           JOIN natuur.taxa p
-             ON  p.taxon_id<>t.taxon_id
-             AND (p.taxon_id =ANY(t.path))
-           JOIN natuur.rangen r
-             ON  t.rang=r.rang;
-
 CREATE OR REPLACE VIEW natuur.foto_overzicht AS 
  SELECT   tax.naam, tax.latijnsenaam, fot.taxon_seq, geb.naam AS gebied
  FROM     natuur.fotos fot
@@ -131,10 +121,22 @@ WITH RECURSIVE q AS (
   FROM   q q_1
            JOIN natuur.taxa hi ON hi.parent_id = (q_1.h).taxon_id)
 SELECT   (q.h).taxon_id AS taxon_id, (q.h).parent_id AS parent_id, (q.h).rang AS rang,
-         (q.h).naam AS naam, (q.h).latijnsenaam AS latijnsenaam, q.level,
+         (q.h).naam AS naam, (q.h).latijnsenaam AS latijnsenaam,
+         (q.h).opmerking AS opmerking, q.level,
          q.breadcrumb AS path
 FROM     q
 ORDER BY q.breadcrumb;
+
+CREATE OR REPLACE VIEW natuur.details AS
+SELECT   t.parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
+         p.latijnsenaam AS parent_latijnsenaam,
+         r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam, t.opmerking
+FROM     natuur.taxonomie t
+           JOIN natuur.taxa p
+             ON  p.taxon_id<>t.taxon_id
+             AND (p.taxon_id =ANY(t.path))
+           JOIN natuur.rangen r
+             ON  t.rang=r.rang;
 
 -- Constraints
 ALTER TABLE NATUUR.FOTOS
@@ -195,6 +197,7 @@ COMMENT ON COLUMN NATUUR.RANGEN.RANG              IS 'De rang van een taxon.';
 COMMENT ON TABLE  NATUUR.TAXA                     IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
 COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM        IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.NAAM                IS 'De nederlandse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.OPMERKING           IS 'Een opmerking voor deze taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID           IS 'De parent van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.RANG                IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID            IS 'De sleutel van de taxon.';

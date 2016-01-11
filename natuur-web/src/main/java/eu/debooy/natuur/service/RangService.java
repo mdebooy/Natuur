@@ -23,9 +23,11 @@ import eu.debooy.natuur.form.Rang;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -44,13 +46,13 @@ import org.slf4j.LoggerFactory;
 @Named("natuurRangService")
 @Lock(LockType.WRITE)
 public class RangService {
-  private static  Logger  logger  =
+  private static final  Logger  logger  =
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
   private RangDao     rangDao;
 
-  private List<Rang>  rangen;
+  private Set<Rang>   rangen;
 
   /**
    * Initialisatie.
@@ -67,14 +69,14 @@ public class RangService {
   /**
    * Geef alle Rangen.
    * 
-   * @return List<Rang>
+   * @return Collection<Rang>
    */
-  public List<Rang> lijst() {
+  public Collection<Rang> lijst() {
     if (null == rangen) {
-      rangen  = new ArrayList<Rang>();
-      Collection<RangDto>  rows  = rangDao.getAll();
-      for (RangDto rangDto : rows) {
-        rangen.add(new Rang(rangDto));
+      rangen  = new HashSet<Rang>();
+      Collection<RangDto> rijen = rangDao.getAll();
+      for (RangDto rij : rijen) {
+        rangen.add(new Rang(rij));
       }
     }
 
@@ -93,23 +95,17 @@ public class RangService {
   }
 
   /**
-   * Maak of wijzig de Rang in de database.
+   * Maak de Rang in de database.
    * 
    * @param Rang
    */
   public void save(Rang rang) {
     RangDto dto = new RangDto();
     rang.persist(dto);
-    logger.debug(dto.toString());
 
-    if (null == rang.getRang()) {
-      rangDao.create(dto);
-      rang.setRang(dto.getRang());
-    } else {
-      rangDao.update(dto);
-    }
+    rangDao.create(dto);
+
     if (null != rangen) {
-      rangen.remove(rang);
       rangen.add(rang);
     }
   }
@@ -121,10 +117,11 @@ public class RangService {
    */
   public List<SelectItem> selectRangen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
-    List<RangDto>     rijen = rangDao.getAll();
-    Collections.sort(rijen, new RangDto.NiveauComparator());
-    for (RangDto rangDto : rijen) {
-      items.add(new SelectItem(rangDto.getRang(), rangDto.getRang()));
+    Set<RangDto>      rijen =
+        new TreeSet<RangDto>(new RangDto.NiveauComparator());
+    rijen.addAll(rangDao.getAll());
+    for (RangDto rij : rijen) {
+      items.add(new SelectItem(rij.getRang(), rij.getRang()));
     }
 
     return items;

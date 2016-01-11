@@ -17,8 +17,11 @@
 package eu.debooy.natuur.form;
 
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 
 import java.io.Serializable;
+import java.util.Comparator;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -43,6 +46,22 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     gebied    = new Gebied(fotoDto.getGebied());
     taxon     = new Taxon(fotoDto.getTaxon());
     taxonSeq  = fotoDto.getTaxonSeq();
+  }
+
+  /**
+   * Sorteren op de naam van de Taxon en de taxonSeq.
+   */
+  public static class LijstComparator
+      implements Comparator<Foto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(Foto foto1, Foto foto2) {
+      return new CompareToBuilder().append(foto1.taxon.getNaam(),
+                                           foto2.taxon.getNaam())
+                                   .append(foto1.taxonSeq, foto2.taxonSeq)
+                                   .toComparison();
+    }
   }
   
   @Override
@@ -116,6 +135,18 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
    * @param FotoDto
    */
   public void persist(FotoDto parameter) {
+    if (!new EqualsBuilder().append(this.gebied, parameter.getGebied())
+                            .isEquals()) {
+      GebiedDto gebiedDto = new GebiedDto();
+      gebied.persist(gebiedDto);
+      parameter.setGebied(gebiedDto);
+    }
+    if (!new EqualsBuilder().append(this.taxon, parameter.getTaxon())
+                            .isEquals()) {
+      TaxonDto  taxonDto  = new TaxonDto();
+      taxon.persist(taxonDto);
+      parameter.setTaxon(taxonDto);
+    }
     if (!new EqualsBuilder().append(this.taxonSeq,
                                     parameter.getTaxonSeq()).isEquals()) {
       parameter.setTaxonSeq(this.taxonSeq);
@@ -155,9 +186,19 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
   @Override
   public String toString() {
     StringBuilder resultaat = new StringBuilder();
-    resultaat.append("Foto (")
-             .append("[").append(gebied.toString()).append("], ")
-             .append("[").append(taxon.toString()).append("], ")
+    resultaat.append("Foto (").append("[");
+    if (null == gebied) {
+      resultaat.append("Gebied <null>");
+    } else {
+      resultaat.append(gebied.toString());
+    }
+    resultaat.append("], ").append("[");
+    if (null == taxon) {
+      resultaat.append("Taxon <null>");
+    } else {
+      resultaat.append(taxon.toString());
+    }
+    resultaat.append("], ")
              .append("taxonSeq=[").append(taxonSeq).append("], ")
              .append("class=[").append(this.getClass().getSimpleName())
              .append("])");

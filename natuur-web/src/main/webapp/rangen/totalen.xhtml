@@ -7,14 +7,13 @@
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
     <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
-    <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('confirmatie.titel.verwijder.rang')}" />
     <ui:define name="head">
       <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-          $('#rangenTabel').dataTable( {
-            "order": [[1, "asc"]],
+          $('#totalenTabel').dataTable( {
+            "order": [[0, "asc"]],
             "columns": [
-                      { "orderable": false },
+                      { "orderable": true },
                       { "orderable": true },
                       { "orderable": true }
                   ],
@@ -40,29 +39,38 @@
     </ui:define>
     <ui:define name="body">
       <h:form id="formRangen">
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-8 col-md-offset-2">
           <div class="col-md-10">
-            <h2>#{i18nTeksten.tekst('natuur.titel.rangen')}</h2>
-          </div>
-          <div align="right" class="col-md-2" >
-            <h:commandLink action="#{natuur.nieuweRang}" actionFor="#{formRangen}">
-              <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-            </h:commandLink>
+            <h2>#{natuur.subTitel}</h2>
           </div>
 
-          <ui:include src="rangentabel.xhtml">
-            <ui:param name="form" value="formRangen" />
-            <ui:param name="lijst" value="#{natuur.rangen}" />
-          </ui:include>
+          <table class="table table-striped table-condensed table-datatable display compact" id="totalenTabel">
+            <colgroup>
+              <col />
+              <col />
+              <col />
+            </colgroup>
+            <thead>
+              <tr>
+                <th>#{i18nTeksten.tekst('label.naam')}</th>
+                <th>#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+                <th>#{i18nTeksten.tekst('label.aantal')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t:dataList var="totaal" value="#{natuur.rangtotalen}" rowIndexVar="idx">
+                <tr>
+                  <td>#{totaal.naam}</td>
+                  <td>#{totaal.latijnsenaam}</td>
+                  <td>#{totaal.totaal}</td>
+                </tr>
+              </t:dataList>
+            </tbody>
+          </table>
 
-          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+          <a class="btn btn-default" href="/natuur/rangen/rangen.jsf">#{i18nTeksten.tekst('button.back')}</a>
         </div>
       </h:form>
-    </ui:define>
-    <ui:define name="modal">
-      <ui:include src="/WEB-INF/templates/confirmatie.xhtml">
-        <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('natuur.titel.rang.delete')}" />
-      </ui:include>
     </ui:define>
   </ui:composition>
 </html>

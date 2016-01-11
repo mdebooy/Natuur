@@ -20,8 +20,8 @@
       <t:dataList var="rang" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuur.wijzigRang(rang.rang)}" actionFor="formRangen"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink onclick="$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#{natuur.bekijkRang(rang.rang)}" actionFor="formRangen"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+            <h:commandLink action="#{natuur.verwijderRang(rang.rang)}" actionFor="formRangen" onclick="$('#object').val($(this).data('rang.rang'));$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td>#{rang.niveau}</td>
           <ui:param name="rang" value="biologie.rang.#{rang.rang}"/>

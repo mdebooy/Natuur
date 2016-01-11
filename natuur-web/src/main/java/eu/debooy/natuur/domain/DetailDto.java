@@ -25,6 +25,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
@@ -42,7 +43,9 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
-@NamedQuery(name="soortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang='so'")
+@NamedQueries({
+  @NamedQuery(name="soortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang='so'"),
+  @NamedQuery(name="totalen", query="select d.parentNaam as naam, d.parentLatijnsenaam as latijnsenaam, count(d.naam) as totaal from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentNaam, d.parentLatijnsenaam order by d.parentNaam, d.parentLatijnsenaam")})
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -55,6 +58,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="NIVEAU", insertable= false, updatable=false)
   private Long      niveau;
+  @ReadOnly
+  @Column(name="OPMERKING", insertable= false, updatable=false)
+  private String    opmerking;
   @Id
   @ReadOnly
   @Column(name="PARENT_ID", insertable= false, updatable=false)
@@ -140,6 +146,13 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
    */
   public String getNaam() {
     return naam;
+  }
+
+  /**
+   * @return de opmerking
+   */
+  public String getOpmerking() {
+    return opmerking;
   }
 
   /**

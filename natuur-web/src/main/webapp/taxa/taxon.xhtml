@@ -49,18 +49,12 @@
               <h2>#{natuur.subTitel}</h2>
             </t:div>
           </div>
-          <div class="row" />
-          <div class="form-group form-group-sm">
-            <label for="parentId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
-            <div class="col-sm-1">
-              <h:commandLink action="#{natuur.bekijkTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-            </div>
-            <div class="col-sm-8">
-              <h:selectOneMenu id="parentId" value="#{natuur.taxon.parentId}" disabled="#{natuur.readonly}" >
-                <t:selectItems value="#{natuur.selectOuders(natuur.taxon.rang)}" />
-              </h:selectOneMenu>
-            </div>
+          <div align="right" class="col-md-2" >
+            <h:commandLink action="#{natuur.nieuweTaxon(natuur.taxon.taxonId)}" actionFor="#{formTaxon}">
+              <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+            </h:commandLink>
           </div>
+          <div class="row" />
           <t:div rendered="#{!natuur.readonly}">
             <div class="form-group form-group-sm">
               <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.naam')}</label>
@@ -83,6 +77,26 @@
               </h:selectOneMenu>
             </div>
           </div>
+          <div class="form-group form-group-sm">
+            <label for="opmerking" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.opmerking')}</label>
+            <div class="col-sm-9">
+              <t:inputTextarea id="opmerking" styleClass="form-control" value="#{natuur.taxon.opmerking}" readonly="#{natuur.readonly}" />
+            </div>
+          </div>
+          <t:div rendered="#{!empty natuur.taxon.parentId or natuur.nieuw}">
+            <div class="form-group form-group-sm">
+              <label for="parentId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
+              <div class="col-sm-1">
+                <h:commandLink action="#{natuur.bekijkTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+                <h:commandLink action="#{natuur.wijzigTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+              </div>
+              <div class="col-sm-8">
+                <h:selectOneMenu id="parentId" value="#{natuur.taxon.parentId}" disabled="#{natuur.readonly}" >
+                  <t:selectItems value="#{natuur.selectOuders(natuur.taxon.rang)}" />
+                </h:selectOneMenu>
+              </div>
+            </div>
+          </t:div>
 
           <t:div rendered="#{!natuur.nieuw}">
             <div class="row" />

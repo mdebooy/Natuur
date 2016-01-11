@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 
 import java.io.Serializable;
@@ -34,8 +35,9 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
 
   private boolean gewijzigd = false;
 
-  private String  naam;
   private String  latijnsenaam;
+  private String  naam;
+  private String  opmerking;
   private Long    parentId;
   private String  rang;
   private Long    taxonId;
@@ -43,11 +45,26 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   public Taxon() {}
 
   public Taxon(TaxonDto taxonDto) {
-    naam          = taxonDto.getNaam();
     latijnsenaam  = taxonDto.getLatijnsenaam();
+    naam          = taxonDto.getNaam();
+    opmerking     = taxonDto.getOpmerking();
     parentId      = taxonDto.getParentId();
     rang          = taxonDto.getRang();
     taxonId       = taxonDto.getTaxonId();
+  }
+
+  /**
+   * Gebruikt om de Taxon van een Detail te krijgen.
+   * 
+   * @param detailDto
+   */
+  public Taxon(DetailDto detailDto) {
+    latijnsenaam  = detailDto.getLatijnsenaam();
+    naam          = detailDto.getNaam();
+    opmerking     = detailDto.getOpmerking();
+    parentId      = detailDto.getParentId();
+    rang          = detailDto.getRang();
+    taxonId       = detailDto.getTaxonId();
   }
 
   /**
@@ -103,6 +120,13 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   }
 
   /**
+   * @return de latijnsenaam
+   */
+  public String getLatijnsenaam() {
+    return latijnsenaam;
+  }
+
+  /**
    * @return de naam
    */
   public String getNaam() {
@@ -110,10 +134,10 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   }
 
   /**
-   * @return de latijnsenaam
+   * @return de opmerking
    */
-  public String getLatijnsenaam() {
-    return latijnsenaam;
+  public String getOpmerking() {
+    return opmerking;
   }
 
   /**
@@ -150,9 +174,9 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   }
 
   /**
-   * Zet de gegevens in een GebiedDto
+   * Zet de gegevens in een TaxonDto
    *
-   * @param GebiedDto
+   * @param TaxonDto
    */
   public void persist(TaxonDto parameter) {
     if (!new EqualsBuilder().append(this.latijnsenaam,
@@ -162,6 +186,10 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
     if (!new EqualsBuilder().append(this.naam,
                                     parameter.getNaam()).isEquals()) {
       parameter.setNaam(this.naam);
+    }
+    if (!new EqualsBuilder().append(this.opmerking,
+                                    parameter.getOpmerking()).isEquals()) {
+      parameter.setOpmerking(this.opmerking);
     }
     if (!new EqualsBuilder().append(this.parentId,
                                     parameter.getParentId()).isEquals()) {
@@ -178,6 +206,13 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   }
 
   /**
+   * @param latijnsenaam de waarde van latijnsenaam
+   */
+  public void setLatijnsenaam(String latijnsenaam) {
+    this.latijnsenaam = latijnsenaam;
+  }
+
+  /**
    * @param naam de waarde van naam
    */
   public void setNaam(String naam) {
@@ -185,10 +220,10 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
   }
 
   /**
-   * @param latijnsenaam de waarde van latijnsenaam
+   * @param opmerking de waarde van opmerking
    */
-  public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam;
+  public void setOpmerking(String opmerking) {
+    this.opmerking  = opmerking;
   }
 
   /**
@@ -219,6 +254,8 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
              .append("taxonId=[").append(taxonId).append("], ")
              .append("latijnsenaam=[").append(latijnsenaam).append("], ")
              .append("naam=[").append(naam).append("], ")
+             .append("opmerking=[").append(opmerking.substring(1, 30))
+                                   .append("], ")
              .append("parentId=[").append(parentId).append("], ")
              .append("rang=[").append(rang).append("], ")
              .append("class=[").append(this.getClass().getSimpleName())

@@ -23,7 +23,9 @@ import eu.debooy.natuur.form.Taxon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -42,13 +44,13 @@ import org.slf4j.LoggerFactory;
 @Named("natuurTaxonService")
 @Lock(LockType.WRITE)
 public class TaxonService {
-  private static  Logger  logger  =
+  private static final  Logger  logger  =
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
   private TaxonDao    taxonDao;
 
-  private List<Taxon> taxa;
+  private Set<Taxon>  taxa;
 
   /**
    * Initialisatie.
@@ -66,18 +68,18 @@ public class TaxonService {
    * Geef de mogelijke 'ouders' van de gevraagde rang.
    * 
    * @param kind
-   * @return List<DetailDto>
+   * @return Collection<DetailDto>
    */
-  public List<TaxonDto> getOuders(Long kind) {
+  public Collection<TaxonDto> getOuders(Long kind) {
     return taxonDao.getOuders(kind);
   }
 
   /**
    * Geef alle soorten/waarnemingen.
    * 
-   * @return List<Taxon>
+   * @return Collection<Taxon>
    */
-  public List<Taxon> getSoorten() {
+  public Collection<Taxon> getSoorten() {
     List<Taxon>     soorten = new ArrayList<Taxon>();
     List<TaxonDto>  rows    = taxonDao.getSoorten();
     for (TaxonDto taxonDto : rows) {
@@ -90,9 +92,9 @@ public class TaxonService {
   /**
    * Geef alle kinderen.
    * 
-   * @return List<Taxon>
+   * @return Collection<Taxon>
    */
-  public List<Taxon> getKinderen(Long parentId) {
+  public Collection<Taxon> getKinderen(Long parentId) {
     List<Taxon>     kinderen  = new ArrayList<Taxon>();
     List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
     for (TaxonDto taxonDto : rows) {
@@ -105,14 +107,14 @@ public class TaxonService {
   /**
    * Geef alle Taxons.
    * 
-   * @return Set<Taxon>
+   * @return Collection<Taxon>
    */
-  public List<Taxon> lijst() {
+  public Collection<Taxon> lijst() {
     if (null == taxa) {
-      taxa  = new ArrayList<Taxon>();
-      Collection<TaxonDto>  rows  = taxonDao.getAll();
-      for (TaxonDto taxonDto : rows) {
-        taxa.add(new Taxon(taxonDto));
+      taxa  = new HashSet<Taxon>();
+      Collection<TaxonDto>  rijen = taxonDao.getAll();
+      for (TaxonDto rij : rijen) {
+        taxa.add(new Taxon(rij));
       }
     }
 
@@ -125,10 +127,8 @@ public class TaxonService {
    * @param taxon
    */
   public void save(Taxon taxon) {
-    logger.debug(taxon.toString());
     TaxonDto  dto = new TaxonDto();
     taxon.persist(dto);
-    logger.debug(dto.toString());
 
     if (null == taxon.getTaxonId()) {
       taxonDao.create(dto);
@@ -136,6 +136,7 @@ public class TaxonService {
     } else {
       taxonDao.update(dto);
     }
+
     if (null != taxa) {
       taxa.remove(taxon);
       taxa.add(taxon);

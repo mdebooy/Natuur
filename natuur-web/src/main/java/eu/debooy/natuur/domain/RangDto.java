@@ -38,7 +38,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class RangDto extends Dto implements Comparable<RangDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
-  @Column(name="NIVEAU", nullable=false)
+  @Column(name="NIVEAU", nullable=false, updatable=false)
   private Long    niveau;
   @Id
   @Column(name="RANG", length=3, nullable=false)
