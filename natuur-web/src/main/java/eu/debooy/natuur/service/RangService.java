@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurRangService")
 @Lock(LockType.WRITE)
 public class RangService {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
@@ -58,7 +58,7 @@ public class RangService {
    * Initialisatie.
    */
   public RangService() {
-    logger.debug("init RangService");
+    LOGGER.debug("init RangService");
   }
 
   public void delete(Long rangId) {

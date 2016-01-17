@@ -43,25 +43,22 @@
 		<band height="12" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="12"/>
-				<textField isStretchWithOverflow="true">
+				<textField>
 					<reportElement style="Row" isPrintRepeatedValues="false" x="0" y="0" width="200" height="12"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{naam}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+        <textField>
+          <reportElement style="Row" x="202" y="0" width="25" height="12"/>
+          <textElement textAlignment="Right"/>
+          <textFieldExpression><![CDATA[$F{sequence}]]></textFieldExpression>
+        </textField>
+				<textField>
 					<reportElement style="Row" x="229" y="0" width="200" height="12"/>
-					<textElement>
-						<font isItalic="false"/>
-					</textElement>
 					<textFieldExpression><![CDATA[$F{gebied}]]></textFieldExpression>
 				</textField>
 				<textField>
-					<reportElement x="202" y="0" width="25" height="12"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{sequence}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement x="431" y="0" width="124" height="12"/>
+					<reportElement style="Row" x="431" y="0" width="124" height="12"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{land}]]></textFieldExpression>
 				</textField>

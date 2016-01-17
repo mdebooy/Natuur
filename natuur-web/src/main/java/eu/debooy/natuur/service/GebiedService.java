@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurGebiedService")
 @Lock(LockType.WRITE)
 public class GebiedService {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(GebiedService.class);
 
   @Inject
@@ -56,7 +56,7 @@ public class GebiedService {
    * Initialisatie.
    */
   public GebiedService() {
-    logger.debug("init GebiedService");
+    LOGGER.debug("init GebiedService");
   }
 
   public void delete(Long gebiedId) {

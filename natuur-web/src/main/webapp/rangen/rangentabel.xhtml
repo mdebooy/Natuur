@@ -6,7 +6,7 @@
   <table class="table table-striped table-condensed table-datatable display compact" id="rangenTabel">
     <colgroup>
       <col width="50px" />
-      <col />
+      <col width="60px" />
       <col />
     </colgroup>
     <thead>
@@ -21,9 +21,9 @@
         <tr>
           <td>
             <h:commandLink action="#{natuur.bekijkRang(rang.rang)}" actionFor="formRangen"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-            <h:commandLink action="#{natuur.verwijderRang(rang.rang)}" actionFor="formRangen" onclick="$('#object').val($(this).data('rang.rang'));$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#{natuur.verwijderRang(rang.rang)}" actionFor="formRangen" onclick="$('#object').val('#rang.rang');$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
-          <td>#{rang.niveau}</td>
+          <td class="text-right">#{rang.niveau}</td>
           <ui:param name="rang" value="biologie.rang.#{rang.rang}"/>
           <td>#{i18nTeksten.tekst(rang)}</td>
         </tr>

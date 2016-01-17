@@ -64,7 +64,7 @@ import org.slf4j.LoggerFactory;
 @SessionScoped
 public class Natuur extends DoosBean {
   private static final  long    serialVersionUID  = 1L;
-  private static final  Logger  logger            =
+  private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(Natuur.class);
 
   private Foto      foto;
@@ -98,7 +98,7 @@ public class Natuur extends DoosBean {
     setAdminRole(getExternalContext().isUserInRole(ADMIN_ROLE));
     setApplicatieNaam(APPLICATIE_NAAM);
     setUserRole(getExternalContext().isUserInRole(USER_ROLE));
-    logger.debug("Nieuwe Natuur Sessie geopend.");
+    LOGGER.debug("Nieuwe Natuur Sessie geopend.");
   }
 
   // Details

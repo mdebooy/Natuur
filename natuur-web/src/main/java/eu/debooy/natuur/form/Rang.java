@@ -115,13 +115,13 @@ public class Rang implements Cloneable, Comparable<Rang>, Serializable {
    * @param RangDto
    */
   public void persist(RangDto parameter) {
-    if (!new EqualsBuilder().append(this.niveau,
+    if (!new EqualsBuilder().append(niveau,
                                     parameter.getNiveau()).isEquals()) {
-      parameter.setNiveau(this.niveau);
+      parameter.setNiveau(niveau);
     }
-    if (!new EqualsBuilder().append(this.rang,
+    if (!new EqualsBuilder().append(rang,
                                     parameter.getRang()).isEquals()) {
-      parameter.setRang(this.rang);
+      parameter.setRang(rang);
     }
   }
 

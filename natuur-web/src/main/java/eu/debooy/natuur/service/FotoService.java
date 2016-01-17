@@ -45,7 +45,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurFotoService")
 @Lock(LockType.WRITE)
 public class FotoService {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(FotoService.class);
 
   @Inject
@@ -57,7 +57,7 @@ public class FotoService {
    * Initialisatie.
    */
   public FotoService() {
-    logger.debug("init FotoService");
+    LOGGER.debug("init FotoService");
   }
 
   public void delete(Long fotoId) {

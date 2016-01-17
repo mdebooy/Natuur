@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurTaxonService")
 @Lock(LockType.WRITE)
 public class TaxonService {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
@@ -56,7 +56,7 @@ public class TaxonService {
    * Initialisatie.
    */
   public TaxonService() {
-    logger.debug("init TaxonService");
+    LOGGER.debug("init TaxonService");
   }
 
   public void delete(Long taxonId) {

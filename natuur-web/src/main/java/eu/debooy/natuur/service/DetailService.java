@@ -39,7 +39,7 @@ import org.slf4j.LoggerFactory;
 @Named("natuurDetailService")
 @Lock(LockType.WRITE)
 public class DetailService {
-  private static final  Logger  logger  =
+  private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(DetailService.class);
 
   @Inject
@@ -49,7 +49,7 @@ public class DetailService {
    * Initialisatie.
    */
   public DetailService() {
-    logger.debug("init DetailService");
+    LOGGER.debug("init DetailService");
   }
 
   /**
