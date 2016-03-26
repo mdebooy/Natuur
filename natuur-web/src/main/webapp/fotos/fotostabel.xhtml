@@ -24,8 +24,10 @@
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuur.wijzigFoto(foto.taxon.taxonId, foto.taxonSeq)}" actionFor="formFotos"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink onclick="$('#bevestiging').modal('show'); return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#{natuur.wijzigFoto(foto.taxon.taxonId, foto.taxonSeq)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <ui:param name="fototekst" value="#{foto.taxonSeq} #{foto.taxon.naam}"/>
+            <h:commandLink action="#{natuur.verwijderFoto(foto.fotoId, fototekst)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink onclick="confirmatie(this, '#{fototekst}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{foto.taxonSeq}</td>
           <td>#{foto.taxon.naam}</td>

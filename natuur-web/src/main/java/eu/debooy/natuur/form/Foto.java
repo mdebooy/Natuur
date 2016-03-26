@@ -36,6 +36,7 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
 
   private boolean gewijzigd = false;
 
+  private Long    fotoId;
   private Gebied  gebied;
   private Taxon   taxon;
   private Long    taxonSeq;
@@ -43,6 +44,7 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
   public Foto() {}
 
   public Foto(FotoDto fotoDto) {
+    fotoId    = fotoDto.getFotoId();
     gebied    = new Gebied(fotoDto.getGebied());
     taxon     = new Taxon(fotoDto.getTaxon());
     taxonSeq  = fotoDto.getTaxonSeq();
@@ -55,7 +57,6 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
       implements Comparator<Foto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(Foto foto1, Foto foto2) {
       return new CompareToBuilder().append(foto1.taxon.getNaam(),
                                            foto2.taxon.getNaam())
@@ -64,22 +65,16 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     }
   }
   
-  @Override
   public Foto clone() throws CloneNotSupportedException {
     Foto  clone = (Foto) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(Foto andere) {
-    return new CompareToBuilder().append(taxon.getTaxonId(),
-                                         andere.taxon.getTaxonId())
-                                 .append(taxonSeq, andere.getTaxonSeq())
-                                 .toComparison();
+    return new CompareToBuilder().append(fotoId, andere.fotoId).toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Foto)) {
       return false;
@@ -89,10 +84,14 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     }
 
     Foto  andere  = (Foto) object;
-    return new EqualsBuilder().append(taxon.getTaxonId(),
-                                      andere.taxon.getTaxonId())
-                              .append(taxonSeq, andere.taxonSeq)
-                              .isEquals();
+    return new EqualsBuilder().append(fotoId, andere.fotoId).isEquals();
+  }
+
+  /**
+   * @return de fotoId
+   */
+  public Long getFotoId() {
+    return fotoId;
   }
 
   /**
@@ -116,10 +115,8 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     return taxonSeq;
   }
 
-  @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(taxon.getTaxonId()).append(taxonSeq)
-                                .toHashCode();
+    return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
   /**
@@ -154,6 +151,13 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
   }
 
   /**
+   * @param fotoId de waarde van fotoId
+   */
+  public void setFotoId(Long fotoId) {
+    this.fotoId = fotoId;
+  }
+
+  /**
    * @param gebied de waarde van gebied
    */
   public void setGebied(Gebied gebied) throws CloneNotSupportedException {
@@ -183,7 +187,6 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     }
   }
 
-  @Override
   public String toString() {
     StringBuilder resultaat = new StringBuilder();
     resultaat.append("Foto (").append("[");

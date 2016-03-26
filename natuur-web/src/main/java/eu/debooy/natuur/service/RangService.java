@@ -16,12 +16,11 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -32,12 +31,16 @@ import java.util.TreeSet;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Marco de Booij
@@ -61,9 +64,17 @@ public class RangService {
     LOGGER.debug("init RangService");
   }
 
-  public void delete(Long rangId) {
-    RangDto rang  = rangDao.getByPrimaryKey(rangId);
+  /**
+   * Verwijder de Rang
+   * 
+   * @param String sleutel
+   */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void delete(String sleutel) {
+    RangDto rang  = rangDao.getByPrimaryKey(sleutel);
     rangDao.delete(rang);
+    rangen.remove(new Rang(rang));
   }
 
   /**
@@ -71,6 +82,7 @@ public class RangService {
    * 
    * @return Collection<Rang>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Rang> lijst() {
     if (null == rangen) {
       rangen  = new HashSet<Rang>();
@@ -84,10 +96,33 @@ public class RangService {
   }
 
   /**
+   * Geef alle Rangen.
+   * 
+   * @return Collection<Rang>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Rang> lijst(Long niveau) {
+    if (null == rangen) {
+      lijst();
+    }
+
+    Set<Rang> groter  = new HashSet<Rang>();
+    for (Rang rang : rangen) {
+      if (rang.getNiveau().compareTo(niveau) > 0) {
+        groter.add(rang);
+      }
+    }
+
+    return groter;
+  }
+
+  /**
    * Geef een Rang.
    * 
-   * @return Een RangDto.
+   * @param String rang
+   * @return RangDto
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public RangDto rang(String rang) {
     RangDto rangDto = rangDao.getByPrimaryKey(rang);
 
@@ -99,6 +134,8 @@ public class RangService {
    * 
    * @param Rang
    */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
     RangDto dto = new RangDto();
     rang.persist(dto);
@@ -115,6 +152,7 @@ public class RangService {
    *  
    * @return List<SelectItem>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<SelectItem> selectRangen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<RangDto>      rijen =
@@ -125,14 +163,5 @@ public class RangService {
     }
 
     return items;
-  }
-
-  /**
-   * Valideer de Rang.
-   */
-  public List<Message> valideer(Rang rang) {
-    List<Message> fouten  = new ArrayList<Message>();
-
-    return fouten;
   }
 }

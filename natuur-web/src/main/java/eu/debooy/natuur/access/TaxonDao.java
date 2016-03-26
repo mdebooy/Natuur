@@ -26,6 +26,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
+
 /**
  * @author Marco de Booij
  */
@@ -42,7 +43,6 @@ public class TaxonDao extends Dao<TaxonDto> {
     return em;
   }
 
-
   /**
    * Haal de soorten op.
    * 
@@ -50,9 +50,8 @@ public class TaxonDao extends Dao<TaxonDto> {
    */
   @SuppressWarnings("unchecked")
   public List<TaxonDto> getKinderen(Long parentId) {
-    Query   query         =
-        getEntityManager().createNamedQuery("kinderen")
-                          .setParameter("ouder", parentId);
+    Query           query = getEntityManager().createNamedQuery("kinderen")
+                                              .setParameter("ouder", parentId);
 
     return query.getResultList();
   }

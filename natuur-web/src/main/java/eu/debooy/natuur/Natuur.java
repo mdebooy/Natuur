@@ -22,7 +22,10 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.components.bean.DoosBean;
+import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.doosutils.service.JNDI;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -36,13 +39,20 @@ import eu.debooy.natuur.service.FotoService;
 import eu.debooy.natuur.service.GebiedService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
+import eu.debooy.natuur.validator.FotoValidator;
+import eu.debooy.natuur.validator.GebiedValidator;
+import eu.debooy.natuur.validator.RangValidator;
+import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.sedes.component.business.II18nLandnaam;
 
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -72,6 +82,10 @@ public class Natuur extends DoosBean {
   private Rang      rang;
   private Taxon     taxon;
 
+  private Map<String, String> menu;
+  private Long                ouderNiveau;
+  private String              path;
+
   private transient DetailService detailService;
   private transient FotoService   fotoService;
   private transient GebiedService gebiedService;
@@ -79,19 +93,20 @@ public class Natuur extends DoosBean {
   private transient TaxonService  taxonService;
 
   @EJB
-  private II18nLandnaam i18nLandnaamBean;
+  private transient II18nLandnaam i18nLandnaam;
 
   public static final String  ADMIN_ROLE            = "natuur-admin";
   public static final String  APPLICATIE_NAAM       = "Natuur";
-  public static final String  FOTO_REDIRECT         = "/fotos/foto.jsf";
-  public static final String  FOTOS_REDIRECT        = "/fotos/fotos.jsf";
-  public static final String  GEBIED_REDIRECT       = "/gebieden/gebied.jsf";
-  public static final String  GEBIEDEN_REDIRECT     = "/gebieden/gebieden.jsf";
-  public static final String  RANG_REDIRECT         = "/rangen/rang.jsf";
-  public static final String  RANGEN_REDIRECT       = "/rangen/rangen.jsf";
-  public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.jsf";
-  public static final String  TAXON_REDIRECT        = "/taxa/taxon.jsf";
-  public static final String  TAXA_REDIRECT         = "/taxa/taxa.jsf";
+  public static final String  FOTO_REDIRECT         = "/fotos/foto.xhtml";
+  public static final String  FOTOS_REDIRECT        = "/fotos/fotos.xhtml";
+  public static final String  GEBIED_REDIRECT       = "/gebieden/gebied.xhtml";
+  public static final String  GEBIEDEN_REDIRECT     =
+      "/gebieden/gebieden.xhtml";
+  public static final String  RANG_REDIRECT         = "/rangen/rang.xhtml";
+  public static final String  RANGEN_REDIRECT       = "/rangen/rangen.xhtml";
+  public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.xhtml";
+  public static final String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
+  public static final String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
   public static final String  USER_ROLE             = "natuur-user";
 
   public Natuur() {
@@ -99,6 +114,30 @@ public class Natuur extends DoosBean {
     setApplicatieNaam(APPLICATIE_NAAM);
     setUserRole(getExternalContext().isUserInRole(USER_ROLE));
     LOGGER.debug("Nieuwe Natuur Sessie geopend.");
+    menu  = new LinkedHashMap<String, String>();
+    path  = getExternalContext().getRequestContextPath();
+    if (isAdministrator()) {
+      menu.put(path + "/admin/parameters.xhtml",  "menu.parameters");
+    }
+    menu.put(path + RANGEN_REDIRECT,                    "menu.rangen");
+    menu.put(path + GEBIEDEN_REDIRECT,                  "menu.gebieden");
+    menu.put(path + TAXA_REDIRECT,                      "menu.taxa");
+    menu.put(path + "/waarnemingen/waarnemingen.xhtml", "menu.waarnemingen");
+    menu.put(path + FOTOS_REDIRECT,                     "menu.fotos");
+  }
+
+  // Algemeen
+  public Set<Entry<String, String>> getMenu() {
+    return menu.entrySet();
+  }
+
+  public Long getOuderNiveau() {
+    return ouderNiveau;
+  }
+
+  // TODO Naar DoosBean
+  public String getPath() {
+    return path;
   }
 
   // Details
@@ -145,7 +184,7 @@ public class Natuur extends DoosBean {
   }
 
   /**
-   * Raport met Waarnemingen.
+   * Rapport met Waarnemingen.
    */
   public void waarnemingen() {
     ExportData  exportData  = new ExportData();
@@ -190,7 +229,7 @@ public class Natuur extends DoosBean {
 
   // Fotos
   /**
-   * Raport met Waarnemingen.
+   * Rapport met Waarnemingen.
    */
   public void fotolijst() {
     ExportData  exportData  = new ExportData();
@@ -211,7 +250,7 @@ public class Natuur extends DoosBean {
     String      taal  = getGebruikersTaal();
     for (Foto rij : rijen) {
       exportData.addData(new String[] {rij.getTaxonSeq().toString(),
-                                       i18nLandnaamBean
+                                       i18nLandnaam
                                            .getI18nLandnaam(rij.getGebied()
                                                                .getLandId(),
                                                             taal),
@@ -284,13 +323,28 @@ public class Natuur extends DoosBean {
    * @param Foto
    */
   public void saveFoto() {
-    List<Message> messages  = getFotoService().valideer(foto);
+    List<Message> messages  = FotoValidator.valideer(foto);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    getFotoService().save(foto);
+    try {
+      getFotoService().save(foto);
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, foto.getTaxon().getNaam() + " "
+                                               + foto.getTaxonSeq());
+      return;
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, foto.getTaxon().getNaam() + " "
+                                              + foto.getTaxonSeq());
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+
     redirect(FOTOS_REDIRECT);
   }
 
@@ -299,7 +353,18 @@ public class Natuur extends DoosBean {
    * 
    * @param Foto
    */
-  public void verwijderFoto(Foto foto) {
+  public void verwijderFoto(Long fotoId, String naam) {
+    try {
+      getFotoService().delete(fotoId);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, naam);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    addInfo("info.delete", "'" + naam + "'");
   }
 
   /**
@@ -307,8 +372,8 @@ public class Natuur extends DoosBean {
    * 
    * @param Long gebiedId
    */
-  public void wijzigFoto(Long taxonId, Long taxonSeq) {
-    foto  = new Foto(getFotoService().foto(taxonId, taxonSeq));
+  public void wijzigFoto(Long fotoId) {
+    foto  = new Foto(getFotoService().foto(fotoId));
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
     redirect(FOTO_REDIRECT);
@@ -364,7 +429,7 @@ public class Natuur extends DoosBean {
   }
 
   /**
-   * Prepareer een nieuw gebied.
+   * Prepareer een nieuw Gebied.
    */
   public void nieuwGebied() {
     gebied  = new Gebied();
@@ -380,22 +445,47 @@ public class Natuur extends DoosBean {
    * @param Gebied
    */
   public void saveGebied() {
-    List<Message> messages  = getGebiedService().valideer(gebied);
+    List<Message> messages  = GebiedValidator.valideer(gebied);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    getGebiedService().save(gebied);
+    try {
+      getGebiedService().save(gebied);
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, gebied.getNaam());
+      return;
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+
     redirect(GEBIEDEN_REDIRECT);
   }
 
   /**
    * Verwijder het Gebied
    * 
-   * @param Gebied
+   * @param Long gebiedId
+   * @param String naam
    */
-  public void verwijderGebied(Gebied gebied) {
+  public void verwijderGebied(Long gebiedId, String naam) {
+    try {
+      getGebiedService().delete(gebiedId);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, naam);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    addInfo("info.delete", naam);
   }
 
   /**
@@ -499,22 +589,65 @@ public class Natuur extends DoosBean {
    * @param Rang
    */
   public void saveRang() {
-    List<Message> messages  = getRangService().valideer(rang);
+    List<Message> messages  = RangValidator.valideer(rang);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    getRangService().save(rang);
+    try {
+      getRangService().save(rang);
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, rang.getRang());
+      return;
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, rang.getRang());
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+
     redirect(RANGEN_REDIRECT);
   }
 
   /**
-   * Verwijder de Rang
+   * Geef rangen 'groter' dan de rang van de ouder als SelectItems.
    * 
-   * @param Rang
+   * @param Long niveau
+   * @return List<SelectItem>
    */
-  public void verwijderRang(Rang rang) {
+  public List<SelectItem> selectRangen(Long niveau) {
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
+    rijen.addAll(getRangService().lijst(niveau));
+    LOGGER.debug("#rangen > niveau " + niveau + ": " + rijen.size());
+    for (Rang rij : rijen) {
+      items.add(new SelectItem(rij.getRang(),
+                               getTekst("biologie.rang." + rij.getRang())));
+    }
+
+    return items;
+  }
+
+  /**
+   * Verwijder de rang
+   * 
+   * @param String
+   */
+  public void verwijderRang(String rang) {
+    try {
+      getRangService().delete(rang);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, rang);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    addInfo("info.delete", getTekst("biologie.rang." + rang));
   }
 
   /**
@@ -536,7 +669,9 @@ public class Natuur extends DoosBean {
    * @param Long taxonId
    */
   public void bekijkTaxon(Long taxonId) {
-    taxon = new Taxon(getTaxonService().taxon(taxonId));
+    taxon       = new Taxon(getTaxonService().taxon(taxonId));
+    String  ouderRang = getTaxonService().taxon(taxon.getParentId()).getRang();
+    ouderNiveau = getRangService().rang(ouderRang).getNiveau();
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel(taxon.getNaam());
     redirect(TAXON_REDIRECT);
@@ -570,6 +705,16 @@ public class Natuur extends DoosBean {
   }
 
   /**
+   * Geef de gevraagde Taxon.
+   * 
+   * @param Long taxonId
+   * @return Taxon
+   */
+  public Taxon getTaxon(Long taxonId) {
+    return new Taxon(getTaxonService().taxon(taxonId));
+  }
+
+  /**
    * Geef de TaxonService. Als die nog niet gekend is haal het dan op.
    * 
    * @return TaxonService
@@ -587,7 +732,8 @@ public class Natuur extends DoosBean {
    * Prepareer een nieuw taxon.
    */
   public void nieuweTaxon() {
-    taxon = new Taxon();
+    taxon       = new Taxon();
+    ouderNiveau = new Long(0);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.taxon.create");
     redirect(TAXON_REDIRECT);
@@ -597,7 +743,8 @@ public class Natuur extends DoosBean {
    * Prepareer een nieuw taxon met parentId.
    */
   public void nieuweTaxon(Long parentId) {
-    taxon = new Taxon();
+    taxon       = new Taxon();
+    ouderNiveau = new Long(0);
     taxon.setParentId(parentId);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.taxon.create");
@@ -610,14 +757,32 @@ public class Natuur extends DoosBean {
    * @param Taxon
    */
   public void saveTaxon() {
-    List<Message> messages  = getTaxonService().valideer(taxon);
+    List<Message> messages  = TaxonValidator.valideer(taxon);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    getTaxonService().save(taxon);
-    redirect(TAXON_REDIRECT);
+    try {
+      getTaxonService().save(taxon);
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, taxon.getLatijnsenaam());
+      return;
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, taxon.getNaam());
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+
+    if (getAktie().isNieuw()) {
+      addInfo("info.create", taxon.getNaam());
+      setAktie(PersistenceConstants.RETRIEVE);
+    } else {
+      addInfo("info.update", taxon.getNaam());
+    }
   }
 
   /**
@@ -650,7 +815,18 @@ public class Natuur extends DoosBean {
    * 
    * @param Taxon
    */
-  public void verwijderTaxon(Taxon taxon) {
+  public void verwijderTaxon(Long taxonId, String naam) {
+    try {
+      getTaxonService().delete(taxonId);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, naam);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    addInfo("info.delete", naam);
   }
 
   /**
@@ -659,7 +835,9 @@ public class Natuur extends DoosBean {
    * @param Long
    */
   public void wijzigTaxon(Long taxonId) {
-    taxon = new Taxon(getTaxonService().taxon(taxonId));
+    taxon       = new Taxon(getTaxonService().taxon(taxonId));
+    String  ouderRang = getTaxonService().taxon(taxon.getParentId()).getRang();
+    ouderNiveau = getRangService().rang(ouderRang).getNiveau();
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.taxon.update");
     redirect(TAXON_REDIRECT);

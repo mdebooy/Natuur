@@ -52,9 +52,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
-  @Column(name="LATIJNSENAAM", length=225, nullable=false)
+  @Column(name="LATIJNSENAAM", length=255, nullable=false)
   private String    latijnsenaam;
-  @Column(name="NAAM", length=225, nullable=false)
+  @Column(name="NAAM", length=255, nullable=false)
   private String    naam;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;

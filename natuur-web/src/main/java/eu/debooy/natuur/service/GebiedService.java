@@ -16,22 +16,23 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.access.GebiedDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,16 +60,37 @@ public class GebiedService {
     LOGGER.debug("init GebiedService");
   }
 
+  /**
+   * Verwijder het Gebied.
+   * 
+   * @param LonggebiedId
+   */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long gebiedId) {
     GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
     gebiedDao.delete(gebied);
+    gebieden.remove(new Gebied(gebied));
+  }
+
+  /**
+   * Geef een Gebied.
+   * 
+   * @return GebiedDto
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public GebiedDto gebied(Long gebiedId) {
+    GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
+
+    return gebied;
   }
 
   /**
    * Geef alle Gebieden.
    * 
-   * @return Een Set met Gebieden.
+   * @return Collection<Gebied>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Gebied> lijst() {
     if (null == gebieden) {
       gebieden  = new HashSet<Gebied>();
@@ -84,8 +106,10 @@ public class GebiedService {
   /**
    * Maak of wijzig de Gebied in de database.
    * 
-   * @param gebied
+   * @param Gebied gebied
    */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Gebied gebied) {
     GebiedDto  dto = new GebiedDto();
     gebied.persist(dto);
@@ -101,25 +125,5 @@ public class GebiedService {
       gebieden.remove(gebied);
       gebieden.add(gebied);
     }
-  }
-
-  /**
-   * Geef een Gebied.
-   * 
-   * @return Een Gebied.
-   */
-  public GebiedDto gebied(Long gebiedId) {
-    GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
-
-    return gebied;
-  }
-
-  /**
-   * Valideer de Gebied.
-   */
-  public List<Message> valideer(Gebied gebied) {
-    List<Message> fouten  = new ArrayList<Message>();
-
-    return fouten;
   }
 }

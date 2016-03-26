@@ -30,9 +30,11 @@
           </div>
 
           <h:commandLink action="#{natuur.saveRang}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <a class="btn btn-default" href="/natuur/rangen/rangen.jsf">#{i18nTeksten.tekst('button.cancel')}</a>
+          <a class="btn btn-default" href="#{natuur.path}/rangen/rangen.xhtml">#{i18nTeksten.tekst('button.cancel')}</a>
 
-          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+          <br />
+          <br />
+          <t:messages  globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
         </div>
       </h:form>
     </ui:define>

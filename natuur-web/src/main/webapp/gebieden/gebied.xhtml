@@ -19,7 +19,7 @@
           <div class="form-group form-group-sm">
             <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
             <div class="col-sm-9">
-              <t:inputText id="naam" styleClass="form-control" value="#{natuur.gebied.naam}" maxlength="100" size="100" />
+              <t:inputText id="naam" styleClass="form-control" value="#{natuur.gebied.naam}" maxlength="255" size="100" />
             </div>
           </div>
           <div class="form-group form-group-sm">
@@ -33,7 +33,7 @@
 
           <h:commandLink action="#{natuur.saveGebied}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
           <h:commandLink action="#{natuur.saveGebied}" id="modify" styleClass="btn btn-default" rendered="#{natuur.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <a class="btn btn-default" href="/natuur/gebieden/gebieden.jsf">#{i18nTeksten.tekst('button.cancel')}</a>
+          <a class="btn btn-default" href="/natuur/gebieden/gebieden.xhtml">#{i18nTeksten.tekst('button.cancel')}</a>
 
           <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
         </div>

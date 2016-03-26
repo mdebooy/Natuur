@@ -19,9 +19,12 @@ package eu.debooy.natuur.access;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.natuur.domain.RangDto;
 
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
+import javax.persistence.Query;
 
 /**
  * @author Marco de Booij
@@ -37,5 +40,19 @@ public class RangDao extends Dao<RangDto> {
   @Override
   protected EntityManager getEntityManager() {
     return em;
+  }
+
+  /**
+   * Haal de soorten op.
+   * 
+   * @return Collection<TaxonDto>
+   */
+  @SuppressWarnings("unchecked")
+  public List<RangDto>  getVanaf(Long niveau) {
+    Query   query         =
+        getEntityManager().createNamedQuery("vanaf")
+                          .setParameter("niveau", niveau);
+
+    return query.getResultList();
   }
 }

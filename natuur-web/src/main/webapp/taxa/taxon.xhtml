@@ -73,7 +73,7 @@
             <label for="rang" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
             <div class="col-sm-1">
               <h:selectOneMenu id="rang" value="#{natuur.taxon.rang}" disabled="#{natuur.readonly}" >
-                <t:selectItems value="#{natuur.selectRangen}" />
+                <t:selectItems value="#{natuur.selectRangen(natuur.ouderNiveau)}" />
               </h:selectOneMenu>
             </div>
           </div>
@@ -108,11 +108,18 @@
 
           <h:commandLink action="#{natuur.saveTaxon}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
           <h:commandLink action="#{natuur.saveTaxon}" id="modify" styleClass="btn btn-default" rendered="#{natuur.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <a class="btn btn-default" href="/natuur/taxa/taxa.jsf">#{i18nTeksten.tekst('button.cancel')}</a>
+          <a class="btn btn-default" href="#{natuur.path}/taxa/taxa.xhtml">#{i18nTeksten.tekst('button.cancel')}</a>
 
+          <br />
+          <br />
           <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
         </div>
       </h:form>
+    </ui:define>
+    <ui:define name="modal">
+      <ui:include src="/WEB-INF/templates/confirmatie.xhtml">
+        <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
+      </ui:include>
     </ui:define>
   </ui:composition>
 </html>

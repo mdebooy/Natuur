@@ -25,6 +25,8 @@ import java.util.Collection;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -57,15 +59,17 @@ public class DetailService {
    * 
    * @return Collection<DetailDto>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<DetailDto> getSoortenMetKlasse() {
     return detailDao.getSoortenMetKlasse();
   }
 
   /**
-   * Geef alle waarnemingen.
+   * Geef alle waarnemingen voor de Rang.
    * 
-   * @return Collection<DetailDto>
+   * @return Collection<Rangtotaal>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Rangtotaal> getTotalenVoorRang(String rang) {
     return detailDao.getTotalenVoorRang(rang);
   }

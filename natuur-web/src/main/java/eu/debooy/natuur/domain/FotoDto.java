@@ -18,11 +18,11 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,22 +37,22 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="FOTOS", schema="NATUUR")
-@IdClass(FotoPK.class)
 public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 
-  @OneToOne(cascade=CascadeType.ALL)
+  @Id
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @Column(name="FOTO_ID", nullable=false)
+  private Long      fotoId;
+  @OneToOne
   @JoinColumn(name="GEBIED_ID", nullable=false)
   private GebiedDto gebied;
-  @Id
-  @OneToOne(cascade=CascadeType.ALL)
-  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false)
+  @OneToOne
+  @JoinColumn(name="TAXON_ID", nullable=false)
   private TaxonDto  taxon;
-  @Id
   @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq;
   
-  @Override
   public FotoDto clone() throws CloneNotSupportedException {
     FotoDto clone = (FotoDto) super.clone();
 
@@ -60,13 +60,9 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   }
 
   public int compareTo(FotoDto fotoDto) {
-    return new CompareToBuilder().append(taxon.getTaxonId(),
-                                         fotoDto.getTaxon().getTaxonId())
-                                 .append(taxonSeq, fotoDto.taxonSeq)
-                                 .toComparison();
+    return new CompareToBuilder().append(fotoId, fotoDto.fotoId).toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof FotoDto)) {
       return false;
@@ -76,10 +72,15 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     }
 
     FotoDto fotoDto = (FotoDto) object;
-    return new EqualsBuilder().append(taxon.getTaxonId(),
-                                      fotoDto.getTaxon().getTaxonId())
-                              .append(taxonSeq, fotoDto.taxonSeq)
-                              .isEquals();
+
+    return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
+  }
+
+  /**
+   * @return de fotoId
+   */
+  public Long getFotoId() {
+    return fotoId;
   }
 
   /**
@@ -103,11 +104,15 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     return taxonSeq;
   }
 
-  @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(taxonSeq)
-                                .append(taxonSeq)
-                                .toHashCode();
+    return new HashCodeBuilder().append(fotoId).toHashCode();
+  }
+
+  /**
+   * @param fotoId de waarde van fotoId
+   */
+  public void setFotoId(Long fotoId) {
+    this.fotoId = fotoId;
   }
 
   /**

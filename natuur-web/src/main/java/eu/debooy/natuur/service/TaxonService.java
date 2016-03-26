@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.access.TaxonDao;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
@@ -30,8 +30,11 @@ import java.util.Set;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,34 +62,12 @@ public class TaxonService {
     LOGGER.debug("init TaxonService");
   }
 
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long taxonId) {
     TaxonDto  taxon = taxonDao.getByPrimaryKey(taxonId);
     taxonDao.delete(taxon);
-  }
-
-  /**
-   * Geef de mogelijke 'ouders' van de gevraagde rang.
-   * 
-   * @param kind
-   * @return Collection<DetailDto>
-   */
-  public Collection<TaxonDto> getOuders(Long kind) {
-    return taxonDao.getOuders(kind);
-  }
-
-  /**
-   * Geef alle soorten/waarnemingen.
-   * 
-   * @return Collection<Taxon>
-   */
-  public Collection<Taxon> getSoorten() {
-    List<Taxon>     soorten = new ArrayList<Taxon>();
-    List<TaxonDto>  rows    = taxonDao.getSoorten();
-    for (TaxonDto taxonDto : rows) {
-      soorten.add(new Taxon(taxonDto));
-    }
-
-    return soorten;
+    taxa.remove(new Taxon(taxon));
   }
 
   /**
@@ -94,6 +75,7 @@ public class TaxonService {
    * 
    * @return Collection<Taxon>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Taxon> getKinderen(Long parentId) {
     List<Taxon>     kinderen  = new ArrayList<Taxon>();
     List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
@@ -105,10 +87,38 @@ public class TaxonService {
   }
 
   /**
+   * Geef de mogelijke 'ouders' van de gevraagde rang.
+   * 
+   * @param kind
+   * @return Collection<TaxonDto>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<TaxonDto> getOuders(Long kind) {
+    return taxonDao.getOuders(kind);
+  }
+
+  /**
+   * Geef alle soorten/waarnemingen.
+   * 
+   * @return Collection<Taxon>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Taxon> getSoorten() {
+    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<TaxonDto>  rows    = taxonDao.getSoorten();
+    for (TaxonDto taxonDto : rows) {
+      soorten.add(new Taxon(taxonDto));
+    }
+
+    return soorten;
+  }
+
+  /**
    * Geef alle Taxons.
    * 
    * @return Collection<Taxon>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Taxon> lijst() {
     if (null == taxa) {
       taxa  = new HashSet<Taxon>();
@@ -126,6 +136,8 @@ public class TaxonService {
    * 
    * @param taxon
    */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Taxon taxon) {
     TaxonDto  dto = new TaxonDto();
     taxon.persist(dto);
@@ -148,18 +160,10 @@ public class TaxonService {
    * 
    * @return Een Taxon.
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public TaxonDto taxon(Long taxonId) {
     TaxonDto  taxon = taxonDao.getByPrimaryKey(taxonId);
 
     return taxon;
-  }
-
-  /**
-   * Valideer de Taxon.
-   */
-  public List<Message> valideer(Taxon taxon) {
-    List<Message> fouten  = new ArrayList<Message>();
-
-    return fouten;
   }
 }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,28 +14,28 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.natuur.access;
+package eu.debooy.natuur.validator;
 
-import eu.debooy.doosutils.access.Dao;
-import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.form.Foto;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author Marco de Booij
  */
-public class FotoDao extends Dao<FotoDto> {
-  @PersistenceContext(unitName="natuur",
-                      type=PersistenceContextType.TRANSACTION)
-  private EntityManager em;
-
-  public FotoDao() {
-    super(FotoDto.class);
+public final class FotoValidator {
+  private FotoValidator() {
   }
 
-  protected EntityManager getEntityManager() {
-    return em;
+  /**
+   * Valideer de Foto.
+   */
+  public static List<Message> valideer(Foto foto) {
+    List<Message> fouten  = new ArrayList<Message>();
+
+    return fouten;
   }
 }

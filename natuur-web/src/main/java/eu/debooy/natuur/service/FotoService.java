@@ -16,23 +16,23 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.domain.FotoDto;
-import eu.debooy.natuur.domain.FotoPK;
 import eu.debooy.natuur.form.Foto;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
+import javax.ejb.TransactionAttribute;
+import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,16 +60,37 @@ public class FotoService {
     LOGGER.debug("init FotoService");
   }
 
+  /**
+   * Verwijder de Foto.
+   * 
+   * @param FotoPK fotoPK
+   */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long fotoId) {
     FotoDto foto  = fotoDao.getByPrimaryKey(fotoId);
     fotoDao.delete(foto);
+    fotos.remove(new Foto(foto));
+  }
+
+  /**
+   * Geef een Foto.
+   * 
+   * @return Een Foto.
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public FotoDto foto(Long sleutel) {
+    FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
+
+    return foto;
   }
 
   /**
    * Geef alle Fotos.
    * 
-   * @return Een List met Fotos.
+   * @return Collection<Foto>
    */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Foto> lijst() {
     if (null == fotos) {
       fotos = new HashSet<Foto>();
@@ -85,8 +106,10 @@ public class FotoService {
   /**
    * Maak of wijzig de Foto in de database.
    * 
-   * @param foto
+   * @param Foto
    */
+  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Foto foto) {
     FotoDto  dto = new FotoDto();
     foto.persist(dto);
@@ -97,29 +120,5 @@ public class FotoService {
       fotos.remove(foto);
       fotos.add(foto);
     }
-  }
-
-  /**
-   * Geef een Foto.
-   * 
-   * @return Een Foto.
-   */
-  public FotoDto foto(Long taxonId, Long taxonSeq) {
-    FotoPK  sleutel = new FotoPK(taxonId, taxonSeq);
-    FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
-    // TODO Waarom dit statement er moet staan om de Taxon gegevens te zien?
-    @SuppressWarnings("unused")
-    String  dummy   = foto.getTaxon().toString();
-
-    return foto;
-  }
-
-  /**
-   * Valideer de Foto.
-   */
-  public List<Message> valideer(Foto foto) {
-    List<Message> fouten  = new ArrayList<Message>();
-
-    return fouten;
   }
 }

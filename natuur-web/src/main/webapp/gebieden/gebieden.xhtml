@@ -60,7 +60,9 @@
       </h:form>
     </ui:define>
     <ui:define name="modal">
-      <ui:include src="/WEB-INF/templates/confirmatie.xhtml" />
+      <ui:include src="/WEB-INF/templates/confirmatie.xhtml">
+        <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('natuur.titel.gebied.delete')}" />
+      </ui:include>
     </ui:define>
   </ui:composition>
 </html>
