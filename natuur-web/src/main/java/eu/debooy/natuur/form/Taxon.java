@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 
@@ -30,10 +31,9 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
+public class Taxon
+    extends Formulier implements Cloneable, Comparable<Taxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private String  latijnsenaam;
   private String  naam;
@@ -53,11 +53,6 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
     taxonId       = taxonDto.getTaxonId();
   }
 
-  /**
-   * Gebruikt om de Taxon van een Detail te krijgen.
-   * 
-   * @param detailDto
-   */
   public Taxon(DetailDto detailDto) {
     latijnsenaam  = detailDto.getLatijnsenaam();
     naam          = detailDto.getNaam();
@@ -67,46 +62,35 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
     taxonId       = detailDto.getTaxonId();
   }
 
-  /**
-   * Sorteren op de naam van het taxon.
-   */
   public static class LatijnsenaamComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return taxon1.latijnsenaam.compareTo(taxon2.latijnsenaam);
     }
   }
 
-  /**
-   * Sorteren op de naam van het taxon.
-   */
   public static class NaamComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return taxon1.naam.compareTo(taxon2.naam);
     }
   }
   
-  @Override
   public Taxon clone() throws CloneNotSupportedException {
     Taxon clone = (Taxon) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(Taxon andere) {
     return new CompareToBuilder().append(taxonId, andere.taxonId)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Taxon)) {
       return false;
@@ -119,65 +103,34 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
     return new EqualsBuilder().append(taxonId, andere.taxonId).isEquals();
   }
 
-  /**
-   * @return de latijnsenaam
-   */
   public String getLatijnsenaam() {
     return latijnsenaam;
   }
 
-  /**
-   * @return de naam
-   */
   public String getNaam() {
     return naam;
   }
 
-  /**
-   * @return de opmerking
-   */
   public String getOpmerking() {
     return opmerking;
   }
 
-  /**
-   * @return de parentId
-   */
   public Long getParentId() {
     return parentId;
   }
 
-  /**
-   * @return de rang
-   */
   public String getRang() {
     return rang;
   }
 
-  /**
-   * @return de taxonId
-   */
   public Long getTaxonId() {
     return taxonId;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
 
-  /**
-   * @return de gewijzigd
-   */
-  public boolean isGewijzigd() {
-    return gewijzigd;
-  }
-
-  /**
-   * Zet de gegevens in een TaxonDto
-   *
-   * @param TaxonDto
-   */
   public void persist(TaxonDto parameter) {
     if (!new EqualsBuilder().append(this.latijnsenaam,
                                     parameter.getLatijnsenaam()).isEquals()) {
@@ -205,62 +158,46 @@ public class Taxon implements Cloneable, Comparable<Taxon>, Serializable {
     }
   }
 
-  /**
-   * @param latijnsenaam de waarde van latijnsenaam
-   */
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam;
+    if (!new EqualsBuilder().append(this.latijnsenaam, latijnsenaam)
+                            .isEquals()) {
+      gewijzigd         = true;
+      this.latijnsenaam = latijnsenaam;
+    }
   }
 
-  /**
-   * @param naam de waarde van naam
-   */
   public void setNaam(String naam) {
-    this.naam = naam;
+    if (!new EqualsBuilder().append(this.naam, naam).isEquals()) {
+      gewijzigd = true;
+      this.naam = naam;
+    }
   }
 
-  /**
-   * @param opmerking de waarde van opmerking
-   */
   public void setOpmerking(String opmerking) {
-    this.opmerking  = opmerking;
+    if (!new EqualsBuilder().append(this.opmerking, opmerking).isEquals()) {
+      gewijzigd       = true;
+      this.opmerking  = opmerking;
+    }
   }
 
-  /**
-   * @param parentId de waarde van parentId
-   */
   public void setParentId(Long parentId) {
-    this.parentId = parentId;
+    if (!new EqualsBuilder().append(this.parentId, parentId).isEquals()) {
+      gewijzigd     = true;
+      this.parentId = parentId;
+    }
   }
 
-  /**
-   * @param rang de waarde van rang
-   */
   public void setRang(String rang) {
-    this.rang = rang;
+    if (!new EqualsBuilder().append(this.rang, rang).isEquals()) {
+      gewijzigd = true;
+      this.rang = rang;
+    }
   }
 
-  /**
-   * @param taxonId de waarde van taxonId
-   */
   public void setTaxonId(Long taxonId) {
-    this.taxonId = taxonId;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder resultaat = new StringBuilder();
-    resultaat.append("Taxon (")
-             .append("taxonId=[").append(taxonId).append("], ")
-             .append("latijnsenaam=[").append(latijnsenaam).append("], ")
-             .append("naam=[").append(naam).append("], ")
-             .append("opmerking=[").append(opmerking.substring(1, 30))
-                                   .append("], ")
-             .append("parentId=[").append(parentId).append("], ")
-             .append("rang=[").append(rang).append("], ")
-             .append("class=[").append(this.getClass().getSimpleName())
-             .append("])");
-
-    return resultaat.toString();
+    if (!new EqualsBuilder().append(this.taxonId, taxonId).isEquals()) {
+      gewijzigd     = true;
+      this.taxonId  = taxonId;
+    }
   }
 }

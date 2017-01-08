@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
 
 import java.io.Serializable;
@@ -29,7 +30,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Gebied implements Cloneable, Comparable<Gebied>, Serializable {
+public class Gebied
+    extends Formulier implements Cloneable, Comparable<Gebied>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
@@ -46,33 +48,26 @@ public class Gebied implements Cloneable, Comparable<Gebied>, Serializable {
     naam      = gebiedDto.getNaam();
   }
 
-  /**
-   * Sorteren op de naam van het gebied.
-   */
   public static class NaamComparator
       implements Comparator<Gebied>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(Gebied gebied1, Gebied gebied2) {
       return gebied1.naam.compareTo(gebied2.naam);
     }
   }
   
-  @Override
   public Gebied clone() throws CloneNotSupportedException {
     Gebied clone = (Gebied) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(Gebied andere) {
     return new CompareToBuilder().append(gebiedId, andere.gebiedId)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Gebied)) {
       return false;
@@ -85,90 +80,59 @@ public class Gebied implements Cloneable, Comparable<Gebied>, Serializable {
     return new EqualsBuilder().append(gebiedId, andere.gebiedId).isEquals();
   }
 
-  /**
-   * @return de gebiedId
-   */
   public Long getGebiedId() {
     return gebiedId;
   }
 
-  /**
-   * @return de landId
-   */
   public Long getLandId() {
     return landId;
   }
 
-  /**
-   * @return de naam
-   */
   public String getNaam() {
     return naam;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
   }
 
-  /**
-   * @return de gewijzigd
-   */
   public boolean isGewijzigd() {
     return gewijzigd;
   }
 
-  /**
-   * Zet de gegevens in een GebiedDto
-   *
-   * @param GebiedDto
-   */
   public void persist(GebiedDto parameter) {
     if (!new EqualsBuilder().append(gebiedId,
                                     parameter.getGebiedId()).isEquals()) {
       parameter.setGebiedId(gebiedId);
     }
-    if (!new EqualsBuilder().append(this.landId,
+    if (!new EqualsBuilder().append(landId,
                                     parameter.getLandId()).isEquals()) {
-      parameter.setLandId(this.landId);
+      parameter.setLandId(landId);
     }
-    if (!new EqualsBuilder().append(this.naam,
+    if (!new EqualsBuilder().append(naam,
                                     parameter.getNaam()).isEquals()) {
-      parameter.setNaam(this.naam);
+      parameter.setNaam(naam);
     }
   }
 
-  /**
-   * @param gebiedId de waarde van gebiedId
-   */
   public void setGebiedId(Long gebiedId) {
-    this.gebiedId = gebiedId;
+    if (!new EqualsBuilder().append(this.gebiedId, gebiedId).isEquals()) {
+      gewijzigd     = true;
+      this.gebiedId = gebiedId;
+    }
   }
 
-  /**
-   * @param landId de waarde van landId
-   */
   public void setLandId(Long landId) {
-    this.landId = landId;
+    if (!new EqualsBuilder().append(this.landId, landId).isEquals()) {
+      gewijzigd   = true;
+      this.landId = landId;
+    }
   }
 
-  /**
-   * @param naam de waarde van naam
-   */
   public void setNaam(String naam) {
-    this.naam = naam;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder resultaat = new StringBuilder();
-    resultaat.append("Gebied (")
-             .append("gebiedId=[").append(gebiedId).append("], ")
-             .append("naam=[").append(naam).append("], ")
-             .append("landId=[").append(landId).append("], ")
-             .append("class=[").append(this.getClass().getSimpleName())
-             .append("])");
-
-    return resultaat.toString();
+    if (!new EqualsBuilder().append(this.naam, naam).isEquals()) {
+      gewijzigd = true;
+      this.naam = naam;
+    }
   }
 }

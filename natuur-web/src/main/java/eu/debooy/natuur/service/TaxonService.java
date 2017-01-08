@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.TaxonDao;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
@@ -25,7 +25,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -34,7 +33,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,8 +51,6 @@ public class TaxonService {
   @Inject
   private TaxonDao    taxonDao;
 
-  private Set<Taxon>  taxa;
-
   /**
    * Initialisatie.
    */
@@ -62,12 +58,10 @@ public class TaxonService {
     LOGGER.debug("init TaxonService");
   }
 
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long taxonId) {
     TaxonDto  taxon = taxonDao.getByPrimaryKey(taxonId);
     taxonDao.delete(taxon);
-    taxa.remove(new Taxon(taxon));
   }
 
   /**
@@ -77,10 +71,14 @@ public class TaxonService {
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Taxon> getKinderen(Long parentId) {
-    List<Taxon>     kinderen  = new ArrayList<Taxon>();
-    List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
-    for (TaxonDto taxonDto : rows) {
-      kinderen.add(new Taxon(taxonDto));
+    Collection<Taxon> kinderen  = new ArrayList<Taxon>();
+    try {
+      List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
+      for (TaxonDto taxonDto : rows) {
+        kinderen.add(new Taxon(taxonDto));
+      }
+    } catch (ObjectNotFoundException e) {
+      // No problem.
     }
 
     return kinderen;
@@ -94,7 +92,14 @@ public class TaxonService {
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<TaxonDto> getOuders(Long kind) {
-    return taxonDao.getOuders(kind);
+    Collection<TaxonDto>  ouders  = new ArrayList<TaxonDto>();
+    try {
+      ouders  = taxonDao.getOuders(kind);
+    } catch (ObjectNotFoundException e) {
+      // No problem.
+    }
+
+    return ouders;
   }
 
   /**
@@ -104,10 +109,14 @@ public class TaxonService {
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Taxon> getSoorten() {
-    List<Taxon>     soorten = new ArrayList<Taxon>();
-    List<TaxonDto>  rows    = taxonDao.getSoorten();
-    for (TaxonDto taxonDto : rows) {
-      soorten.add(new Taxon(taxonDto));
+    List<Taxon>       soorten = new ArrayList<Taxon>();
+    try {
+      List<TaxonDto>  rijen   = taxonDao.getSoorten();
+      for (TaxonDto rij : rijen) {
+        soorten.add(new Taxon(rij));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return soorten;
@@ -119,13 +128,15 @@ public class TaxonService {
    * @return Collection<Taxon>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> lijst() {
-    if (null == taxa) {
-      taxa  = new HashSet<Taxon>();
+  public Collection<Taxon> query() {
+    Collection<Taxon>       taxa  = new HashSet<Taxon>();
+    try {
       Collection<TaxonDto>  rijen = taxonDao.getAll();
       for (TaxonDto rij : rijen) {
         taxa.add(new Taxon(rij));
       }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return taxa;
@@ -136,7 +147,6 @@ public class TaxonService {
    * 
    * @param taxon
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Taxon taxon) {
     TaxonDto  dto = new TaxonDto();
@@ -147,11 +157,6 @@ public class TaxonService {
       taxon.setTaxonId(dto.getTaxonId());
     } else {
       taxonDao.update(dto);
-    }
-
-    if (null != taxa) {
-      taxa.remove(taxon);
-      taxa.add(taxon);
     }
   }
 

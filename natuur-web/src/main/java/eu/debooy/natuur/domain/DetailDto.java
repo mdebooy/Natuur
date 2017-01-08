@@ -34,6 +34,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.openjpa.persistence.ReadOnly;
 
+
 /**
  * Deze Entity is enkel read-only. Het voorziet in de mogelijkheid om enkel
  * bepaalde rangen te laten zien. Bijvoorbeeld een soort met zijn klasse.
@@ -44,8 +45,8 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQueries({
-  @NamedQuery(name="soortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang='so'"),
-  @NamedQuery(name="totalen", query="select d.parentNaam as naam, d.parentLatijnsenaam as latijnsenaam, count(d.naam) as totaal from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentNaam, d.parentLatijnsenaam order by d.parentNaam, d.parentLatijnsenaam")})
+  @NamedQuery(name="soortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')"),
+  @NamedQuery(name="totalen", query="select d.parentNaam as naam, d.parentLatijnsenaam as latijnsenaam, count(d.naam) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentNaam, d.parentLatijnsenaam order by d.parentNaam, d.parentLatijnsenaam")})
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -58,6 +59,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="NIVEAU", insertable= false, updatable=false)
   private Long      niveau;
+  @ReadOnly
+  @Column(name="OP_FOTO", insertable= false, updatable=false)
+  private Integer   opFoto;
   @ReadOnly
   @Column(name="OPMERKING", insertable= false, updatable=false)
   private String    opmerking;
@@ -89,7 +93,6 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(DetailDto detailDto1, DetailDto detailDto2) {
       return new CompareToBuilder().append(detailDto1.parentNaam,
                                            detailDto2.parentNaam)
@@ -99,27 +102,24 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   }
 
   /**
-   * Sorteren op de parentnaam en naam van het detail.
+   * Sorteren op de naam van het detail.
    */
   public static class NaamComparator
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(DetailDto detailDto1, DetailDto detailDto2) {
       return new CompareToBuilder().append(detailDto1.naam, detailDto2.naam)
                                    .toComparison();
     }
   }
 
-  @Override
   public int compareTo(DetailDto detailDto) {
     return new CompareToBuilder().append(parentId, detailDto.parentId)
                                  .append(taxonId, detailDto.taxonId)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof DetailDto)) {
       return false;
@@ -134,70 +134,46 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
                               .isEquals();
   }
 
-  /**
-   * @return de latijnsenaam
-   */
   public String getLatijnsenaam() {
     return latijnsenaam;
   }
 
-  /**
-   * @return de naam
-   */
   public String getNaam() {
     return naam;
   }
 
-  /**
-   * @return de opmerking
-   */
+  public Integer getOpFoto() {
+    return opFoto;
+  }
+
   public String getOpmerking() {
     return opmerking;
   }
 
-  /**
-   * @return de parentId
-   */
   public Long getParentId() {
     return parentId;
   }
 
-  /**
-   * @return de parentNaam
-   */
   public String getParentNaam() {
     return parentNaam;
   }
 
-  /**
-   * @return de parentLatijnsenaam
-   */
   public String getParentLatijnsenaam() {
     return parentLatijnsenaam;
   }
 
-  /**
-   * @return de parentRang
-   */
   public String getParentRang() {
     return parentRang;
   }
 
-  /**
-   * @return de rang
-   */
   public String getRang() {
     return rang;
   }
 
-  /**
-   * @return de taxonId
-   */
   public Long getTaxonId() {
     return taxonId;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(parentId).append(taxonId).toHashCode();
   }

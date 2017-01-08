@@ -6,11 +6,10 @@
     xmlns:t="http://myfaces.apache.org/tomahawk"
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
-    <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
     <ui:define name="head">
       <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-          $('#taxaTabel').dataTable( {
+          $('#waarnemingenTabel').dataTable( {
             "order": [[0, "asc"]],
             "columns": [
                       { "orderable": true },
@@ -38,20 +37,20 @@
       </script>
     </ui:define>
     <ui:define name="body">
-      <h:form id="formTaxa">
+      <h:form id="formWaarneming">
         <div class="col-md-10 col-md-offset-1">
           <div class="col-md-10">
             <h2>#{i18nTeksten.tekst('natuur.titel.waarnemingen')}</h2>
           </div>
           <div align="right" class="col-md-2" >
-            <h:commandLink action="#{natuur.waarnemingen}" actionFor="#{formTaxa}">
-              <f:setPropertyActionListener target="#{natuur.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
+            <h:commandLink action="#{natuurWaarneming.waarnemingenlijst}" actionFor="#{formWaarneming}">
+              <f:setPropertyActionListener target="#{natuurWaarneming.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
             </h:commandLink>
           </div>
 
-          <ui:include src="taxatabel.xhtml">
-            <ui:param name="form" value="formTaxa" />
-            <ui:param name="lijst" value="#{natuur.soorten}" />
+          <ui:include src="waarnemingtabel.xhtml">
+            <ui:param name="form" value="formWaarneming" />
+            <ui:param name="lijst" value="#{natuurWaarneming.waarnemingen}" />
           </ui:include>
         </div>
       </h:form>

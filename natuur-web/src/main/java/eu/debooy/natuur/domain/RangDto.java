@@ -55,26 +55,22 @@ public class RangDto extends Dto implements Comparable<RangDto>, Cloneable {
       implements Comparator<RangDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(RangDto rangDto1, RangDto rangDto2) {
       return rangDto1.niveau.compareTo(rangDto2.niveau);
     }
   }
   
-  @Override
   public RangDto clone() throws CloneNotSupportedException {
     RangDto clone = (RangDto) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(RangDto taxonDto) {
     return new CompareToBuilder().append(rang, taxonDto.rang)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof RangDto)) {
       return false;
@@ -102,7 +98,6 @@ public class RangDto extends Dto implements Comparable<RangDto>, Cloneable {
     return rang;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
   }

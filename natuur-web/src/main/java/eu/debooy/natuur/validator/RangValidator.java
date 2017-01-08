@@ -50,8 +50,7 @@ public final class RangValidator {
     if (null == getal) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.niveau"));
-    }
-    if (getal <= 0) {
+    } else if (getal <= 0) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.NIETGROTER,
                              "_I18N.label.niveau", 0));
     }

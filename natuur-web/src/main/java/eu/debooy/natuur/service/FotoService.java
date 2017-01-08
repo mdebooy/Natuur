@@ -16,14 +16,15 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.FotoDao;
+import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.form.Foto;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -32,7 +33,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,9 +49,9 @@ public class FotoService {
       LoggerFactory.getLogger(FotoService.class);
 
   @Inject
-  private FotoDao     fotoDao;
-
-  private Set<Foto>   fotos;
+  private FotoDao           fotoDao;
+  @Inject
+  private FotoOverzichtDao  fotoOverzichtDao;
 
   /**
    * Initialisatie.
@@ -65,12 +65,10 @@ public class FotoService {
    * 
    * @param FotoPK fotoPK
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long fotoId) {
     FotoDto foto  = fotoDao.getByPrimaryKey(fotoId);
     fotoDao.delete(foto);
-    fotos.remove(new Foto(foto));
   }
 
   /**
@@ -88,16 +86,38 @@ public class FotoService {
   /**
    * Geef alle Fotos.
    * 
+   * @return Collection<FotoOverzichtDto>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<FotoOverzichtDto> fotoOverzicht() {
+    Collection<FotoOverzichtDto>  fotos = new ArrayList<FotoOverzichtDto>();
+    try {
+      Collection<FotoOverzichtDto>  rijen = fotoOverzichtDao.getAll();
+      for (FotoOverzichtDto rij : rijen) {
+        fotos.add(rij);
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return fotoOverzichtDao.getAll();
+  }
+
+  /**
+   * Geef alle Fotos.
+   * 
    * @return Collection<Foto>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Foto> lijst() {
-    if (null == fotos) {
-      fotos = new HashSet<Foto>();
+  public Collection<Foto> query() {
+    Collection<Foto>  fotos = new ArrayList<Foto>();
+    try {
       Collection<FotoDto> rijen = fotoDao.getAll();
       for (FotoDto rij : rijen) {
         fotos.add(new Foto(rij));
       }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return fotos;
@@ -108,17 +128,11 @@ public class FotoService {
    * 
    * @param Foto
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Foto foto) {
     FotoDto  dto = new FotoDto();
     foto.persist(dto);
 
     fotoDao.update(dto);
-
-    if (null != fotos) {
-      fotos.remove(foto);
-      fotos.add(foto);
-    }
   }
 }

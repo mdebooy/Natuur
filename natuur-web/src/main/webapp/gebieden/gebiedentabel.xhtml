@@ -20,8 +20,8 @@
       <t:dataList var="gebied" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuur.wijzigGebied(gebied.gebiedId)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink action="#{natuur.verwijderGebied(gebied.gebiedId, gebied.naam)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink action="#{natuurGebied.update(gebied.gebiedId)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurGebied.delete(gebied.gebiedId, gebied.naam)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{gebied.naam}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td>#{gebied.naam}</td>

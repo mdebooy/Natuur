@@ -18,7 +18,7 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
-import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.FotoOverzichtDto;
 
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -29,15 +29,15 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 @Interceptors({PersistenceExceptionHandlerInterceptor.class})
-public class GebiedDao extends Dao<GebiedDto> {
-  @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
+public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
+  @PersistenceContext(unitName="natuur",
+                      type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
-  public GebiedDao() {
-    super(GebiedDto.class);
+  public FotoOverzichtDao() {
+    super(FotoOverzichtDto.class);
   }
 
-  @Override
   protected EntityManager getEntityManager() {
     return em;
   }

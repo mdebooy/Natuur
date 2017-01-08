@@ -12,7 +12,7 @@
       $(document).ready(function() {
         $('#parametersTabel').dataTable( {
           "order": [[1, "asc"]],
-          "columns": [{ "orderable": false },
+          "columns": [{ "orderable": false, "visible": false },
                       { "orderable": true },
                       { "orderable": false }],
           "pagingType": "full_numbers",
@@ -36,18 +36,16 @@
       </script>
     </ui:define>
     <ui:define name="body">
-      <h:form id="formLanden">
+      <h:form id="formParameters">
         <div class="col-md-8 col-md-offset-2">
           <div class="col-md-10">
             <h2>#{i18nTeksten.tekst('titel.applicatie.parameters')}</h2>
           </div>
 
-          <ui:include src="../admin/parameterstabel.xhtml">
+          <ui:include src="parameterstabel.xhtml">
             <ui:param name="form" value="formParameters" />
             <ui:param name="lijst" value="#{properties.properties('natuur')}" />
           </ui:include>
-
-          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
         </div>
       </h:form>
     </ui:define>

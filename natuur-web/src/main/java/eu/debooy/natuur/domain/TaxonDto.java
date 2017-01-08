@@ -64,7 +64,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private String    rang;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
-  @Column(name="TAXON_ID", nullable=false, updatable=false)
+  @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
   private Long      taxonId;
 
   /**
@@ -74,7 +74,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return taxonDto1.latijnsenaam.compareTo(taxonDto2.latijnsenaam);
     }
@@ -87,26 +86,22 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return taxonDto1.naam.compareTo(taxonDto2.naam);
     }
   }
   
-  @Override
   public TaxonDto clone() throws CloneNotSupportedException {
     TaxonDto  clone = (TaxonDto) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(TaxonDto taxonDto) {
     return new CompareToBuilder().append(naam, taxonDto.naam)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof TaxonDto)) {
       return false;
@@ -162,7 +157,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
     return taxonId;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }

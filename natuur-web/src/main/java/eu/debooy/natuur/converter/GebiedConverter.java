@@ -29,7 +29,6 @@ import javax.faces.convert.Converter;
  * @author Marco de Booij
  */
 public class GebiedConverter implements Converter {
-  @Override
   public Object getAsObject(FacesContext facesContext,
                             UIComponent uiComponent, String sleutel) {
     GebiedService gebiedService = (GebiedService)
@@ -38,7 +37,6 @@ public class GebiedConverter implements Converter {
     return new Gebied(gebiedService.gebied(Long.parseLong(sleutel)));
   }
 
-  @Override
   public String getAsString(FacesContext facesContext,
                             UIComponent uiComponent, Object object) {
     if (null == object) {

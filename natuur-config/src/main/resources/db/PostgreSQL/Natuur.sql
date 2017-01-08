@@ -112,13 +112,6 @@ CREATE TABLE NATUUR.TAXA (
 );
 
 -- Views
-CREATE OR REPLACE VIEW natuur.foto_overzicht AS 
- SELECT   tax.naam, tax.latijnsenaam, fot.taxon_seq, geb.naam AS gebied
- FROM     natuur.fotos fot
-            JOIN natuur.taxa tax ON fot.taxon_id = tax.taxon_id
-            JOIN natuur.gebieden geb ON fot.gebied_id = geb.gebied_id
- ORDER BY tax.naam, fot.taxon_seq;
-
 CREATE OR REPLACE VIEW natuur.taxonomie AS
 WITH RECURSIVE q AS (
   SELECT h.*::natuur.taxa AS h, 1 AS level, ARRAY[h.taxon_id] AS breadcrumb
@@ -138,13 +131,29 @@ ORDER BY q.breadcrumb;
 CREATE OR REPLACE VIEW natuur.details AS
 SELECT   t.parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
          p.latijnsenaam AS parent_latijnsenaam,
-         r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam, t.opmerking
+         r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam, t.opmerking,
+         CASE WHEN f.aantal IS NULL THEN 0 ELSE 1 END op_foto
 FROM     natuur.taxonomie t
            JOIN natuur.taxa p
              ON  p.taxon_id<>t.taxon_id
              AND (p.taxon_id =ANY(t.path))
            JOIN natuur.rangen r
-             ON  t.rang=r.rang;
+             ON  t.rang=r.rang
+           LEFT JOIN (SELECT   taxon_id, COUNT(*) aantal
+                      FROM     natuur.fotos
+                      GROUP BY taxon_id) f
+             ON t.taxon_id=f.taxon_id;
+
+CREATE OR REPLACE VIEW natuur.foto_overzicht AS 
+ SELECT   fot.foto_id, det.parent_naam AS klasse_naam,
+          det.parent_latijnsenaam AS klasse_latijnsenaam,
+          det.naam, det.latijnsenaam,
+          fot.taxon_seq, geb.land_id, geb.naam AS gebied
+ FROM     natuur.fotos fot
+            JOIN natuur.details det ON fot.taxon_id = det.taxon_id
+            JOIN natuur.gebieden geb ON fot.gebied_id = geb.gebied_id
+ WHERE    det.parent_rang='kl'
+ AND      det.rang in ('so', 'oso');
 
 -- Constraints
 ALTER TABLE NATUUR.FOTOS

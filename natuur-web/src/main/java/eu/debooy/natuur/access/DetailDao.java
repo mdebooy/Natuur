@@ -17,6 +17,7 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
 
@@ -25,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -33,6 +35,7 @@ import javax.persistence.Query;
 /**
  * @author Marco de Booij
  */
+@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class DetailDao extends Dao<DetailDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
@@ -41,12 +44,10 @@ public class DetailDao extends Dao<DetailDto> {
     super(DetailDto.class);
   }
 
-  @Override
   protected EntityManager getEntityManager() {
     return em;
   }
 
-  @Override
   public DetailDto create(DetailDto dto) {
     return null;
   }
@@ -72,10 +73,10 @@ public class DetailDao extends Dao<DetailDto> {
    * @return Collection<Rangtotaal>
    */
   @SuppressWarnings("unchecked")
-  public Collection<Rangtotaal> getTotalenVoorRang(String groep) {
+  public Collection<Rangtotaal> getSoortenMetRang(String rang) {
     Query   query         =
         getEntityManager().createNamedQuery("totalen")
-                          .setParameter("groep", groep);
+                          .setParameter("groep", rang);
     List<Object[]>  rijen = query.getResultList();
     Set<Rangtotaal> totalen = new HashSet<Rangtotaal>();
     for (Object[] rij : rijen) {

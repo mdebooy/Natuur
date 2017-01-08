@@ -22,8 +22,8 @@
           <ui:param name="rangcode" value="biologie.rang.#{rang.rang}" />
           <ui:param name="rangtekst" value="#{i18nTeksten.tekst(rangcode)}" />
           <td>
-            <h:commandLink action="#{natuur.bekijkRang(rang.rang)}" actionFor="#{form}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-            <h:commandLink action="#{natuur.verwijderRang(rang.rang)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink action="#{natuurRang.retrieve(rang.rang)}" actionFor="#{form}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+            <h:commandLink action="#{natuurRang.delete(rang.rang)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{rangtekst}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{rang.niveau}</td>

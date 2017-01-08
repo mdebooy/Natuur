@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RangDto;
 
 import java.io.Serializable;
@@ -29,7 +30,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Rang implements Cloneable, Comparable<Rang>, Serializable {
+public class Rang
+    extends Formulier implements Cloneable, Comparable<Rang>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
@@ -44,33 +46,26 @@ public class Rang implements Cloneable, Comparable<Rang>, Serializable {
     rang    = rangDto.getRang();
   }
 
-  /**
-   * Sorteren op het niveau van de Rang.
-   */
   public static class NiveauComparator
       implements Comparator<Rang>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(Rang rang1, Rang rang2) {
       return rang1.niveau.compareTo(rang2.niveau);
     }
   }
   
-  @Override
   public Rang clone() throws CloneNotSupportedException {
     Rang  clone = (Rang) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(Rang andere) {
     return new CompareToBuilder().append(rang, andere.rang)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Rang)) {
       return false;
@@ -83,37 +78,22 @@ public class Rang implements Cloneable, Comparable<Rang>, Serializable {
     return new EqualsBuilder().append(rang, andere.rang).isEquals();
   }
 
-  /**
-   * @return de niveau
-   */
   public Long getNiveau() {
     return niveau;
   }
 
-  /**
-   * @return de rang
-   */
   public String getRang() {
     return rang;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
   }
 
-  /**
-   * @return de gewijzigd
-   */
   public boolean isGewijzigd() {
     return gewijzigd;
   }
 
-  /**
-   * Zet de gegevens in een RangDto
-   *
-   * @param RangDto
-   */
   public void persist(RangDto parameter) {
     if (!new EqualsBuilder().append(niveau,
                                     parameter.getNiveau()).isEquals()) {
@@ -125,29 +105,17 @@ public class Rang implements Cloneable, Comparable<Rang>, Serializable {
     }
   }
 
-  /**
-   * @param niveau de waarde van niveau
-   */
   public void setNiveau(Long niveau) {
-    this.niveau = niveau;
+    if (!new EqualsBuilder().append(this.niveau, niveau).isEquals()) {
+      gewijzigd   = true;
+      this.niveau = niveau;
+    }
   }
 
-  /**
-   * @param rang de waarde van rang
-   */
   public void setRang(String rang) {
-    this.rang = rang;
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder resultaat = new StringBuilder();
-    resultaat.append("Rang (")
-             .append("niveau=[").append(niveau).append("], ")
-             .append("rang=[").append(rang).append("], ")
-             .append("class=[").append(this.getClass().getSimpleName())
-             .append("])");
-
-    return resultaat.toString();
+    if (!new EqualsBuilder().append(this.rang, rang).isEquals()) {
+      gewijzigd = true;
+      this.rang = rang;
+    }
   }
 }

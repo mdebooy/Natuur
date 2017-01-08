@@ -16,14 +16,13 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.GebiedDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -32,7 +31,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,8 +49,6 @@ public class GebiedService {
   @Inject
   private GebiedDao     gebiedDao;
 
-  private Set<Gebied>   gebieden;
-
   /**
    * Initialisatie.
    */
@@ -65,12 +61,10 @@ public class GebiedService {
    * 
    * @param LonggebiedId
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long gebiedId) {
     GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
     gebiedDao.delete(gebied);
-    gebieden.remove(new Gebied(gebied));
   }
 
   /**
@@ -91,13 +85,15 @@ public class GebiedService {
    * @return Collection<Gebied>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Gebied> lijst() {
-    if (null == gebieden) {
-      gebieden  = new HashSet<Gebied>();
-      Collection<GebiedDto> rijen = gebiedDao.getAll();
+  public Collection<Gebied> query() {
+    Collection<Gebied>      gebieden  = new HashSet<Gebied>();
+    try {
+      Collection<GebiedDto> rijen     = gebiedDao.getAll();
       for (GebiedDto rij : rijen) {
         gebieden.add(new Gebied(rij));
       }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return gebieden;
@@ -108,7 +104,6 @@ public class GebiedService {
    * 
    * @param Gebied gebied
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Gebied gebied) {
     GebiedDto  dto = new GebiedDto();
@@ -119,11 +114,6 @@ public class GebiedService {
       gebied.setGebiedId(dto.getGebiedId());
     } else {
       gebiedDao.update(dto);
-    }
-
-    if (null != gebieden) {
-      gebieden.remove(gebied);
-      gebieden.add(gebied);
     }
   }
 }

@@ -3,7 +3,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-  <table class="table table-striped table-condensed table-datatable display compact" id="taxaTabel">
+  <table class="table table-striped table-condensed table-datatable display compact" id="waarnemingenTabel">
     <colgroup>
       <col />
       <col />
@@ -17,11 +17,11 @@
       </tr>
     </thead>
     <tbody>
-      <t:dataList var="detail" value="#{lijst}" rowIndexVar="idx">
+      <t:dataList var="waarneming" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <td>#{detail.naam}</td>
-          <td><em>#{detail.latijnsenaam}</em></td>
-          <td>#{detail.parentNaam}</td>
+          <td>#{waarneming.naam}</td>
+          <td><em>#{waarneming.latijnsenaam}</em></td>
+          <td>#{waarneming.parentNaam}</td>
         </tr>
       </t:dataList>
     </tbody>

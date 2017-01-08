@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -31,7 +32,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Foto implements Cloneable, Comparable<Foto>, Serializable {
+public class Foto
+    extends Formulier implements Cloneable, Comparable<Foto>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gewijzigd = false;
@@ -50,9 +52,6 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     taxonSeq  = fotoDto.getTaxonSeq();
   }
 
-  /**
-   * Sorteren op de naam van de Taxon en de taxonSeq.
-   */
   public static class LijstComparator
       implements Comparator<Foto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
@@ -87,30 +86,18 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     return new EqualsBuilder().append(fotoId, andere.fotoId).isEquals();
   }
 
-  /**
-   * @return de fotoId
-   */
   public Long getFotoId() {
     return fotoId;
   }
 
-  /**
-   * @return het gebied
-   */
   public Gebied getGebied() {
     return gebied;
   }
 
-  /**
-   * @return de taxon
-   */
   public Taxon getTaxon() {
     return taxon;
   }
 
-  /**
-   * @return de taxonSeq
-   */
   public Long getTaxonSeq() {
     return taxonSeq;
   }
@@ -119,18 +106,10 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
-  /**
-   * @return de gewijzigd
-   */
   public boolean isGewijzigd() {
     return gewijzigd;
   }
 
-  /**
-   * Zet de gegevens in een FotoDto
-   *
-   * @param FotoDto
-   */
   public void persist(FotoDto parameter) {
     if (!new EqualsBuilder().append(this.gebied, parameter.getGebied())
                             .isEquals()) {
@@ -150,31 +129,24 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
     }
   }
 
-  /**
-   * @param fotoId de waarde van fotoId
-   */
   public void setFotoId(Long fotoId) {
-    this.fotoId = fotoId;
+    if (!new EqualsBuilder().append(this.fotoId, fotoId).isEquals()) {
+      gewijzigd   = true;
+      this.fotoId = fotoId;
+    }
   }
 
-  /**
-   * @param gebied de waarde van gebied
-   */
   public void setGebied(Gebied gebied) throws CloneNotSupportedException {
-    this.gebied = gebied.clone();
+    if (!new EqualsBuilder().append(this.gebied, gebied).isEquals()) {
+      gewijzigd   = true;
+      this.gebied = gebied;
+    }
   }
 
-  /**
-   * @param taxon de waarde van taxon
-   * @throws CloneNotSupportedException 
-   */
   public void setTaxon(Taxon taxon) throws CloneNotSupportedException {
     this.taxon = taxon.clone();
   }
 
-  /**
-   * @param Long de waarde van taxonSeq
-   */
   public void setTaxonSeq(Long taxonSeq) {
     if (!new EqualsBuilder().append(this.taxonSeq, taxonSeq)
                             .isEquals()) {
@@ -185,27 +157,5 @@ public class Foto implements Cloneable, Comparable<Foto>, Serializable {
         this.taxonSeq = taxonSeq;
       }
     }
-  }
-
-  public String toString() {
-    StringBuilder resultaat = new StringBuilder();
-    resultaat.append("Foto (").append("[");
-    if (null == gebied) {
-      resultaat.append("Gebied <null>");
-    } else {
-      resultaat.append(gebied.toString());
-    }
-    resultaat.append("], ").append("[");
-    if (null == taxon) {
-      resultaat.append("Taxon <null>");
-    } else {
-      resultaat.append(taxon.toString());
-    }
-    resultaat.append("], ")
-             .append("taxonSeq=[").append(taxonSeq).append("], ")
-             .append("class=[").append(this.getClass().getSimpleName())
-             .append("])");
-
-    return resultaat.toString();
   }
 }

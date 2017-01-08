@@ -42,20 +42,20 @@ public final class TaxonValidator {
     if (DoosUtils.isBlankOrNull(waarde)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.latijnsenaam"));
-    }
-    if (waarde.length() > 225) {
+    } else if (waarde.length() > 255) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.latijnsenaam", 255));
     }
+
     waarde  = taxon.getNaam();
     if (DoosUtils.isBlankOrNull(waarde)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.naam"));
-    }
-    if (waarde.length() > 225) {
+    } else if (waarde.length() > 255) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.naam", 255));
     }
+
     waarde  = taxon.getOpmerking();
     if (waarde.length() > 2000) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,

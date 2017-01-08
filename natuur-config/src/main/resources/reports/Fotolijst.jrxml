@@ -14,10 +14,32 @@
 	<style name="Titel" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fontSize="12" isBold="true"/>
 	<parameter name="ReportTitel" class="java.lang.String"/>
 	<parameter name="ReportType" class="java.lang.String"/>
+  <field name="klasseNaam" class="java.lang.String"/>
+  <field name="klasseLatijnsenaam" class="java.lang.String"/>
 	<field name="sequence" class="java.lang.String"/>
 	<field name="gebied" class="java.lang.String"/>
 	<field name="naam" class="java.lang.String"/>
 	<field name="land" class="java.lang.String"/>
+  <group name="klasseLatijnsenaam" keepTogether="true">
+    <groupExpression><![CDATA[$F{klasseLatijnsenaam}]]></groupExpression>
+    <groupHeader>
+      <band height="16">
+        <frame>
+          <reportElement mode="Transparent" x="-21" y="1" width="597" height="14"/>
+          <textField>
+            <reportElement style="Titel" x="21" y="0" width="555" height="14"/>
+            <textElement textAlignment="Left">
+              <font isBold="true"/>
+            </textElement>
+            <textFieldExpression><![CDATA[$F{klasseNaam} + " (" + $F{klasseLatijnsenaam} + ")"]]></textFieldExpression>
+          </textField>
+        </frame>
+      </band>
+    </groupHeader>
+    <groupFooter>
+      <band height="6"/>
+    </groupFooter>
+  </group>
 	<background>
 		<band/>
 	</background>

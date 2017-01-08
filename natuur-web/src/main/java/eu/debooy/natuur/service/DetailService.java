@@ -16,11 +16,14 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.DetailDao;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -61,7 +64,14 @@ public class DetailService {
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<DetailDto> getSoortenMetKlasse() {
-    return detailDao.getSoortenMetKlasse();
+    Collection<DetailDto>   details = new HashSet<DetailDto>();
+    try {
+      details = detailDao.getSoortenMetKlasse();
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return details;
   }
 
   /**
@@ -71,6 +81,13 @@ public class DetailService {
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Rangtotaal> getTotalenVoorRang(String rang) {
-    return detailDao.getTotalenVoorRang(rang);
+    Collection<Rangtotaal>  totalen = new ArrayList<Rangtotaal>();
+    try {
+      totalen = detailDao.getSoortenMetRang(rang);
+    } catch (ObjectNotFoundException e) {
+      // No problem.
+    }
+
+    return totalen;
   }
 }

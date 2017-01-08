@@ -76,30 +76,18 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
   }
 
-  /**
-   * @return de fotoId
-   */
   public Long getFotoId() {
     return fotoId;
   }
 
-  /**
-   * @return het gebied
-   */
   public GebiedDto getGebied() {
     return gebied;
   }
 
-  /**
-   * @return de taxon
-   */
   public TaxonDto getTaxon() {
     return taxon;
   }
 
-  /**
-   * @return de taxonSeq
-   */
   public Long getTaxonSeq() {
     return taxonSeq;
   }
@@ -108,30 +96,18 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
-  /**
-   * @param fotoId de waarde van fotoId
-   */
   public void setFotoId(Long fotoId) {
     this.fotoId = fotoId;
   }
 
-  /**
-   * @param gebiedId de waarde van gebiedId
-   */
   public void setGebied(GebiedDto gebied) {
     this.gebied = gebied;
   }
 
-  /**
-   * @param TaxonDto de Taxon
-   */
   public void setTaxon(TaxonDto taxon) {
     this.taxon  = taxon;
   }
 
-  /**
-   * @param taxonSeq de waarde van taxonSeq
-   */
   public void setTaxonSeq(Long taxonSeq) {
     this.taxonSeq = taxonSeq;
   }

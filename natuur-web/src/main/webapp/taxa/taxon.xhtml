@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html  lang="#{gebruiker.locale.language}"
       xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:d="http://java.debooy.eu/jsf/facelets"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
-    <ui:param name="titel" value="#{i18nTeksten.tekst('natuur.titel')}" />
     <ui:define name="head">
       <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
@@ -42,84 +42,72 @@
       <h:form class="form-horizontal" id="formTaxon">
         <div class="col-md-10 col-md-offset-1">
           <div class="col-md-10">
-            <t:div rendered="#{!natuur.readonly}">
-              <h2>#{i18nTeksten.tekst(natuur.subTitel)}</h2>
+            <t:div rendered="#{!natuurTaxon.aktie.readonly}">
+              <h2>#{i18nTeksten.tekst(natuurTaxon.subTitel)}</h2>
             </t:div>
-            <t:div rendered="#{natuur.readonly}">
-              <h2>#{natuur.subTitel}</h2>
+            <t:div rendered="#{natuurTaxon.aktie.readonly}">
+              <h2>#{natuurTaxon.subTitel}</h2>
             </t:div>
           </div>
           <div align="right" class="col-md-2" >
-            <h:commandLink action="#{natuur.nieuweTaxon(natuur.taxon.taxonId)}" actionFor="#{formTaxon}">
+            <h:commandLink action="#{natuurTaxon.create(natuurTaxon.taxon.taxonId)}" actionFor="#{formTaxon}">
               <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
             </h:commandLink>
           </div>
           <div class="row" />
-          <t:div rendered="#{!natuur.readonly}">
+          <t:div rendered="#{!natuurTaxon.aktie.readonly}">
             <div class="form-group form-group-sm">
               <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.naam')}</label>
-              <div class="col-sm-9">
-                <t:inputText id="naam" styleClass="form-control" value="#{natuur.taxon.naam}" maxlength="255" size="100" readonly="#{natuur.readonly}" />
+              <div class="col-sm-10">
+                <t:inputText id="naam" styleClass="form-control" value="#{natuurTaxon.taxon.naam}" maxlength="255" size="100" readonly="#{natuurTaxon.aktie.readonly}" />
               </div>
             </div>
           </t:div>
           <div class="form-group form-group-sm">
             <label for="latijnsenaam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.latijnsenaam')}</label>
-            <div class="col-sm-9">
-              <t:inputText id="latijnsenaam" styleClass="form-control" value="#{natuur.taxon.latijnsenaam}" maxlength="255" size="100" readonly="#{natuur.readonly}" />
+            <div class="col-sm-10">
+              <t:inputText id="latijnsenaam" styleClass="form-control" value="#{natuurTaxon.taxon.latijnsenaam}" maxlength="255" size="100" readonly="#{natuurTaxon.aktie.readonly}" />
             </div>
           </div>
           <div class="form-group form-group-sm">
             <label for="rang" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
-            <div class="col-sm-1">
-              <h:selectOneMenu id="rang" value="#{natuur.taxon.rang}" disabled="#{natuur.readonly}" >
-                <t:selectItems value="#{natuur.selectRangen(natuur.ouderNiveau)}" />
-              </h:selectOneMenu>
+            <div class="col-sm-3">
+              <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurTaxon.rangnaam}" />
             </div>
+            <t:div rendered="#{!empty natuurTaxon.taxon.parentId or natuurTaxon.aktie.nieuw}">
+              <label for="parentId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
+              <div class="col-sm-4">
+                <d:listbox id="parentId" value="#{natuurTaxon.taxon.parentId}" readonly="#{natuurTaxon.aktie.readonly}" items="#{natuurTaxon.selectOuders(natuurTaxon.taxon.rang)}" textvalue="#{natuurTaxon.ouder.naam}" />
+              </div>
+              <div class="col-sm-1">
+                <h:commandLink action="#{natuurTaxon.retrieve(natuurTaxon.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+                <h:commandLink action="#{natuurTaxon.update(natuurTaxon.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+              </div>
+            </t:div>
           </div>
           <div class="form-group form-group-sm">
             <label for="opmerking" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.opmerking')}</label>
-            <div class="col-sm-9">
-              <t:inputTextarea id="opmerking" styleClass="form-control" value="#{natuur.taxon.opmerking}" readonly="#{natuur.readonly}" />
+            <div class="col-sm-10">
+              <t:inputTextarea id="opmerking" styleClass="form-control" value="#{natuurTaxon.taxon.opmerking}" readonly="#{natuurTaxon.aktie.readonly}" />
             </div>
           </div>
-          <t:div rendered="#{!empty natuur.taxon.parentId or natuur.nieuw}">
-            <div class="form-group form-group-sm">
-              <label for="parentId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
-              <div class="col-sm-1">
-                <h:commandLink action="#{natuur.bekijkTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-                <h:commandLink action="#{natuur.wijzigTaxon(natuur.taxon.parentId)}" actionFor="formTaxon"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-              </div>
-              <div class="col-sm-8">
-                <h:selectOneMenu id="parentId" value="#{natuur.taxon.parentId}" disabled="#{natuur.readonly}" >
-                  <t:selectItems value="#{natuur.selectOuders(natuur.taxon.rang)}" />
-                </h:selectOneMenu>
-              </div>
-            </div>
-          </t:div>
 
-          <t:div rendered="#{!natuur.nieuw}">
+          <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
             <div class="row" />
             <ui:include src="taxatabel.xhtml">
               <ui:param name="form" value="formTaxon" />
-              <ui:param name="lijst" value="#{natuur.getKinderen(natuur.taxon.taxonId)}" />
+              <ui:param name="lijst" value="#{natuurTaxon.getKinderen(natuurTaxon.taxon.taxonId)}" />
             </ui:include>
           </t:div>
 
-          <h:commandLink action="#{natuur.saveTaxon}" id="create" styleClass="btn btn-default" rendered="#{natuur.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuur.saveTaxon}" id="modify" styleClass="btn btn-default" rendered="#{natuur.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <a class="btn btn-default" href="#{natuur.path}/taxa/taxa.xhtml">#{i18nTeksten.tekst('button.cancel')}</a>
-
-          <br />
-          <br />
-          <t:messages globalOnly="false" layout="table" fatalClass="msgFatal" errorClass="msgError" warnClass="msgWarn" infoClass="msgInfo" />
+          <h:commandLink action="#{natuurTaxon.save}" id="create" styleClass="btn btn-default" rendered="#{natuurTaxon.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuurTaxon.save}" id="modify" styleClass="btn btn-default" rendered="#{natuurTaxon.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <d:cancel href="#{natuur.path}/taxa/taxa.xhtml" aktie="#{natuurTaxon.aktie}"/>
         </div>
       </h:form>
     </ui:define>
     <ui:define name="modal">
-      <ui:include src="/WEB-INF/templates/confirmatie.xhtml">
-        <ui:param name="confirmatietitel" value="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
-      </ui:include>
+      <d:confirmatie confirmatietitel="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
     </ui:define>
   </ui:composition>
 </html>

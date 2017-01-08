@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
@@ -36,7 +36,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.interceptor.Interceptors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +54,6 @@ public class RangService {
   @Inject
   private RangDao     rangDao;
 
-  private Set<Rang>   rangen;
-
   /**
    * Initialisatie.
    */
@@ -69,12 +66,10 @@ public class RangService {
    * 
    * @param String sleutel
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(String sleutel) {
     RangDto rang  = rangDao.getByPrimaryKey(sleutel);
     rangDao.delete(rang);
-    rangen.remove(new Rang(rang));
   }
 
   /**
@@ -83,13 +78,15 @@ public class RangService {
    * @return Collection<Rang>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Rang> lijst() {
-    if (null == rangen) {
-      rangen  = new HashSet<Rang>();
-      Collection<RangDto> rijen = rangDao.getAll();
+  public Collection<Rang> query() {
+    Collection<Rang>      rangen  = new HashSet<Rang>();
+    try {
+      Collection<RangDto> rijen   = rangDao.getAll();
       for (RangDto rij : rijen) {
         rangen.add(new Rang(rij));
       }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return rangen;
@@ -101,16 +98,17 @@ public class RangService {
    * @return Collection<Rang>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Rang> lijst(Long niveau) {
-    if (null == rangen) {
-      lijst();
-    }
-
-    Set<Rang> groter  = new HashSet<Rang>();
-    for (Rang rang : rangen) {
-      if (rang.getNiveau().compareTo(niveau) > 0) {
-        groter.add(rang);
+  public Collection<Rang> query(Long niveau) {
+    Set<Rang>             groter  = new HashSet<Rang>();
+    try {
+      Collection<RangDto> rijen  = rangDao.getAll();
+      for (RangDto rij : rijen) {
+        if (rij.getNiveau().compareTo(niveau) > 0) {
+          groter.add(new Rang(rij));
+        }
       }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return groter;
@@ -134,17 +132,12 @@ public class RangService {
    * 
    * @param Rang
    */
-  @Interceptors({PersistenceExceptionHandlerInterceptor.class})
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
     RangDto dto = new RangDto();
     rang.persist(dto);
 
     rangDao.create(dto);
-
-    if (null != rangen) {
-      rangen.add(rang);
-    }
   }
 
   /**
@@ -157,9 +150,13 @@ public class RangService {
     List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<RangDto>      rijen =
         new TreeSet<RangDto>(new RangDto.NiveauComparator());
-    rijen.addAll(rangDao.getAll());
-    for (RangDto rij : rijen) {
-      items.add(new SelectItem(rij.getRang(), rij.getRang()));
+    try {
+      rijen.addAll(rangDao.getAll());
+      for (RangDto rij : rijen) {
+        items.add(new SelectItem(rij.getRang(), rij.getRang()));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return items;

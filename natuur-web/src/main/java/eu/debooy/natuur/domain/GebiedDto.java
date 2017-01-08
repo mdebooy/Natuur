@@ -57,26 +57,22 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
       implements Comparator<GebiedDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    @Override
     public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
       return gebiedDto1.naam.compareTo(gebiedDto2.naam);
     }
   }
 
-  @Override
   public GebiedDto clone() throws CloneNotSupportedException {
     GebiedDto  clone = (GebiedDto) super.clone();
 
     return clone;
   }
 
-  @Override
   public int compareTo(GebiedDto gebiedDto) {
     return new CompareToBuilder().append(gebiedId, gebiedDto.gebiedId)
                                  .toComparison();
   }
 
-  @Override
   public boolean equals(Object object) {
     if (!(object instanceof GebiedDto)) {
       return false;
@@ -110,7 +106,6 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
     return naam;
   }
 
-  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
   }
