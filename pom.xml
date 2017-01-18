@@ -14,8 +14,8 @@
   <description>Waarnemingen in de natuur.</description>
   <inceptionYear>2015</inceptionYear>
   <scm>
-    <developerConnection>scm:svn:http://svn.debooy.eu/svn/Natuur/trunk</developerConnection>
-    <connection>scm:svn:http://svn.debooy.eu/svn/Natuur/trunk</connection>
+    <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</developerConnection>
+    <connection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</connection>
   </scm>
 
   <developers>
