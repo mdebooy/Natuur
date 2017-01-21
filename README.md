@@ -3,7 +3,7 @@ Natuur
 
 Dit project is bedoeld voor het bijhouden van waarnemingen in de natuur. Via de taxonomie kan iedere soort worden opgenomen in een waarnemingslijst. Verder kan er worden bijgehouden waar de foto's van ieder soort zijn genomen. Het programma maakt gebruik van de projecten `DOOS` en `Sedes`.
 
-Het project bestaat uit 2 modules:
+Het project bestaat uit 2 modules.
 
 natuur-config
 -------------
@@ -23,7 +23,7 @@ Dit is de eigenlijke applicatie. Zet het war-bestand in de `webapps` directory v
 
 This project is meant to keep track of all species that were spotted. Through taxonomy every specie can be put in an observation list. The application uses the projects `DOOS` and `Sedes`.
 
-The project consists of 2 modules:
+The project consists of 2 modules.
 
 natuur-config
 -------------

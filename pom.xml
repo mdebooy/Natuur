@@ -11,7 +11,7 @@
   <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Natuur</name>
-  <description>Waarnemingen in de natuur.</description>
+  <description>Natuur - Waarnemingen in de natuur.</description>
   <inceptionYear>2015</inceptionYear>
   <scm>
     <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</developerConnection>
