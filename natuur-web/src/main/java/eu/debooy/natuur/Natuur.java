@@ -23,6 +23,7 @@ import eu.debooy.natuur.service.FotoService;
 import eu.debooy.natuur.service.GebiedService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
+import eu.debooy.natuur.service.TaxonnaamService;
 import eu.debooy.sedes.component.business.II18nLandnaam;
 
 import javax.ejb.EJB;
@@ -43,11 +44,12 @@ public class Natuur extends DoosBean {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(Natuur.class);
 
-  private transient DetailService detailService;
-  private transient FotoService   fotoService;
-  private transient GebiedService gebiedService;
-  private transient RangService   rangService;
-  private transient TaxonService  taxonService;
+  private transient DetailService     detailService;
+  private transient FotoService       fotoService;
+  private transient GebiedService     gebiedService;
+  private transient RangService       rangService;
+  private transient TaxonnaamService  taxonnaamService;
+  private transient TaxonService      taxonService;
 
   @EJB
   private transient II18nLandnaam i18nLandnaam;
@@ -63,6 +65,7 @@ public class Natuur extends DoosBean {
   public static final String  RANGEN_REDIRECT       = "/rangen/rangen.xhtml";
   public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.xhtml";
   public static final String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
+  public static final String  TAXONNAAM_REDIRECT    = "/taxa/taxonnaam.xhtml";
   public static final String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
   public static final String  USER_ROLE             = "natuur-user";
 
@@ -145,6 +148,20 @@ public class Natuur extends DoosBean {
     }
 
     return rangService;
+  }
+
+  /**
+   * Geef de TaxonnaamService. Als die nog niet gekend is haal het dan op.
+   * 
+   * @return TaxonnaamService
+   */
+  protected TaxonnaamService getTaxonnaamService() {
+    if (null == taxonnaamService) {
+      taxonnaamService  = (TaxonnaamService)
+          new JNDI.JNDINaam().metBean(TaxonnaamService.class).locate();
+    }
+
+    return taxonnaamService;
   }
 
   /**

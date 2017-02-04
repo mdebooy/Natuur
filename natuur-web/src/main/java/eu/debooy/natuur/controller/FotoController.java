@@ -26,6 +26,7 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.validator.FotoValidator;
 
@@ -102,18 +103,22 @@ public class FotoController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.fotolijst"));
 
-    Set<FotoOverzichtDto> rijen =
-        new TreeSet<FotoOverzichtDto>(new FotoOverzichtDto.LijstComparator());
+    String                taal            = getGebruikersTaal();
+    LijstComparator       lijstComparator =
+        new FotoOverzichtDto.LijstComparator();
+    lijstComparator.setTaal(taal);
+    Set<FotoOverzichtDto> rijen           =
+        new TreeSet<FotoOverzichtDto>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
-    String      taal  = getGebruikersTaal();
     for (FotoOverzichtDto rij : rijen) {
-      exportData.addData(new String[] {rij.getKlasseNaam(),
+      LOGGER.debug(rij.toString());
+      exportData.addData(new String[] {rij.getKlasseNaam(taal),
                                        rij.getKlasseLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
                                        getI18nLandnaam()
                                            .getI18nLandnaam(rij.getLandId(),
                                                             taal),
-                                       rij.getNaam(),
+                                       rij.getNaam(taal),
                                        rij.getGebied()});
     }
 
@@ -166,11 +171,11 @@ public class FotoController extends Natuur {
     try {
       getFotoService().save(foto);
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, foto.getTaxon().getNaam() + " "
+      addError(PersistenceConstants.DUPLICATE, foto.getTaxon().getLatijnsenaam() + " "
                                                + foto.getTaxonSeq());
       return;
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, foto.getTaxon().getNaam() + " "
+      addError(PersistenceConstants.NOTFOUND, foto.getTaxon().getLatijnsenaam() + " "
                                               + foto.getTaxonSeq());
       return;
     } catch (DoosRuntimeException e) {

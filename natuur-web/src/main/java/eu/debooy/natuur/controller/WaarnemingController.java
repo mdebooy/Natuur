@@ -20,7 +20,6 @@ import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.natuur.Natuur;
-import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Taxon;
 
 import java.util.Collection;
@@ -51,13 +50,12 @@ public class WaarnemingController extends Natuur {
    */
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<DetailDto>    rijen =
-        new TreeSet<DetailDto>(new DetailDto.NaamComparator());
-    rijen.addAll(getDetailService().getSoortenMetKlasse());
-    for (DetailDto rij : rijen) {
-      items.add(new SelectItem(new Taxon(rij),
-                               rij.getNaam() + " (" + rij.getLatijnsenaam()
-                                   + ")"));
+    Set<Taxon>        rijen =
+        new TreeSet<Taxon>(new Taxon.NaamComparator());
+    rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
+    for (Taxon rij : rijen) {
+      items.add(new SelectItem(rij, rij.getNaam() + " ("
+                                      + rij.getLatijnsenaam() + ")"));
     }
 
     return items;
@@ -68,8 +66,8 @@ public class WaarnemingController extends Natuur {
    * 
    * @return Collection<DetailDto> met DetailDto objecten.
    */
-  public Collection<DetailDto> getWaarnemingen() {
-    return getDetailService().getSoortenMetKlasse();
+  public Collection<Taxon> getWaarnemingen() {
+    return getDetailService().getSoortenMetKlasse(getGebruikersTaal());
   }
 
   /**
@@ -89,10 +87,10 @@ public class WaarnemingController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.waarnemingen"));
 
-    Set<DetailDto> rijen =
-        new TreeSet<DetailDto>(new DetailDto.LijstComparator());
-    rijen.addAll(getDetailService().getSoortenMetKlasse());
-    for (DetailDto rij : rijen) {
+    Set<Taxon> rijen =
+        new TreeSet<Taxon>(new Taxon.LijstComparator());
+    rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
+    for (Taxon rij : rijen) {
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),
                                        rij.getNaam(),

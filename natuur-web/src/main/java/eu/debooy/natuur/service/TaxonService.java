@@ -85,6 +85,26 @@ public class TaxonService {
   }
 
   /**
+   * Geef alle kinderen.
+   * 
+   * @return Collection<Taxon>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Taxon> getKinderen(Long parentId, String taal) {
+    Collection<Taxon> kinderen  = new ArrayList<Taxon>();
+    try {
+      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
+      for (TaxonDto rij : rijen) {
+        kinderen.add(new Taxon(rij, taal));
+      }
+    } catch (ObjectNotFoundException e) {
+      // No problem.
+    }
+
+    return kinderen;
+  }
+
+  /**
    * Geef de mogelijke 'ouders' van de gevraagde rang.
    * 
    * @param kind
@@ -123,6 +143,26 @@ public class TaxonService {
   }
 
   /**
+   * Geef alle soorten/waarnemingen.
+   * 
+   * @return Collection<Taxon>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Taxon> getSoorten(String taal) {
+    List<Taxon>       soorten = new ArrayList<Taxon>();
+    try {
+      List<TaxonDto>  rijen   = taxonDao.getSoorten();
+      for (TaxonDto rij : rijen) {
+        soorten.add(new Taxon(rij, taal));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
+  }
+
+  /**
    * Geef alle Taxons.
    * 
    * @return Collection<Taxon>
@@ -143,20 +183,37 @@ public class TaxonService {
   }
 
   /**
+   * Geef alle Taxons.
+   * 
+   * @return Collection<Taxon>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Taxon> query(String taal) {
+    Collection<Taxon>       taxa  = new HashSet<Taxon>();
+    try {
+      Collection<TaxonDto>  rijen = taxonDao.getAll();
+      for (TaxonDto rij : rijen) {
+        taxa.add(new Taxon(rij, taal));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return taxa;
+  }
+
+  /**
    * Maak of wijzig de Taxon in de database.
    * 
    * @param taxon
    */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(Taxon taxon) {
-    TaxonDto  dto = new TaxonDto();
-    taxon.persist(dto);
-
+  public void save(TaxonDto taxon) {
     if (null == taxon.getTaxonId()) {
-      taxonDao.create(dto);
-      taxon.setTaxonId(dto.getTaxonId());
+      taxonDao.create(taxon);
+      taxon.setTaxonId(taxon.getTaxonId());
     } else {
-      taxonDao.update(dto);
+      taxonDao.update(taxon);
     }
   }
 

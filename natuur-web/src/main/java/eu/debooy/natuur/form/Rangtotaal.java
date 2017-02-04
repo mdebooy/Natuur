@@ -34,10 +34,11 @@ public class Rangtotaal
   private String  latijnsenaam;
   private String  naam;
   private Long    opFoto;
+  private Long    taxonId;
   private Long    totaal;
 
   public Rangtotaal(Object[] rij) {
-    naam          = (String) rij[0];
+    taxonId       = (Long)   rij[0];
     latijnsenaam  = (String) rij[1];
     totaal        = (Long)   rij[2];
     opFoto        = (Long)   rij[3];
@@ -50,7 +51,7 @@ public class Rangtotaal
   }
 
   public int compareTo(Rangtotaal andere) {
-    return new CompareToBuilder().append(naam, andere.naam)
+    return new CompareToBuilder().append(taxonId, andere.taxonId)
                                  .toComparison();
   }
 
@@ -63,7 +64,7 @@ public class Rangtotaal
     }
 
     Rangtotaal  andere  = (Rangtotaal) object;
-    return new EqualsBuilder().append(naam, andere.naam).isEquals();
+    return new EqualsBuilder().append(taxonId, andere.taxonId).isEquals();
   }
 
   public String getLatijnsenaam() {
@@ -72,6 +73,10 @@ public class Rangtotaal
 
   public String getNaam() {
     return naam;
+  }
+
+  public Long getTaxonId() {
+    return taxonId;
   }
 
   public Long getOpFoto() {
@@ -83,19 +88,22 @@ public class Rangtotaal
   }
 
   public int hashCode() {
-    return new HashCodeBuilder().append(naam).toHashCode();
+    return new HashCodeBuilder().append(taxonId).toHashCode();
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
     this.latijnsenaam = latijnsenaam;
   }
 
+  public void setNaam(String naam) {
+    this.naam = naam;
+  }
   public void setOpFoto(Long opFoto) {
     this.opFoto = opFoto;
   }
 
-  public void setNaam(String naam) {
-    this.naam = naam;
+  public void setTaxonId(Long taxonId) {
+    this.taxonId  = taxonId;
   }
 
   public void setTotaal(Long totaal) {

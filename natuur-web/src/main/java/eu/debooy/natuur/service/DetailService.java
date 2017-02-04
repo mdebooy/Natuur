@@ -20,6 +20,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.DetailDao;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
+import eu.debooy.natuur.form.Taxon;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -60,13 +61,16 @@ public class DetailService {
   /**
    * Geef alle waarnemingen.
    * 
-   * @return Collection<DetailDto>
+   * @return Collection<Taxon>
    */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<DetailDto> getSoortenMetKlasse() {
-    Collection<DetailDto>   details = new HashSet<DetailDto>();
+  public Collection<Taxon> getSoortenMetKlasse(String taal) {
+    Collection<Taxon> details = new HashSet<Taxon>();
     try {
-      details = detailDao.getSoortenMetKlasse();
+      Collection<DetailDto> rijen = detailDao.getSoortenMetKlasse();
+      for (DetailDto rij : rijen) {
+        details.add(new Taxon(rij, taal));
+      }
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
@@ -85,7 +89,24 @@ public class DetailService {
     try {
       totalen = detailDao.getSoortenMetRang(rang);
     } catch (ObjectNotFoundException e) {
-      // No problem.
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return totalen;
+  }
+
+  /**
+   * Geef alle waarnemingen voor de Rang.
+   * 
+   * @return Collection<Rangtotaal>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Rangtotaal> getTotalenVoorRang(String rang, String taal) {
+    Collection<Rangtotaal>  totalen = new ArrayList<Rangtotaal>();
+    try {
+      totalen = detailDao.getSoortenMetRang(rang);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return totalen;

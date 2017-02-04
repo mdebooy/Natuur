@@ -92,15 +92,12 @@ public class FotoService {
   public Collection<FotoOverzichtDto> fotoOverzicht() {
     Collection<FotoOverzichtDto>  fotos = new ArrayList<FotoOverzichtDto>();
     try {
-      Collection<FotoOverzichtDto>  rijen = fotoOverzichtDao.getAll();
-      for (FotoOverzichtDto rij : rijen) {
-        fotos.add(rij);
-      }
+      fotos = fotoOverzichtDao.getAll();
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return fotoOverzichtDao.getAll();
+    return fotos;
   }
 
   /**

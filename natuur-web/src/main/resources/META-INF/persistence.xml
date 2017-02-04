@@ -11,5 +11,6 @@
     <class>eu.debooy.natuur.domain.GebiedDto</class>
     <class>eu.debooy.natuur.domain.RangDto</class>
     <class>eu.debooy.natuur.domain.TaxonDto</class>
+    <class>eu.debooy.natuur.domain.TaxonnaamDto</class>
   </persistence-unit>
 </persistence>

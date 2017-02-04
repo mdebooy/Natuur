@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -35,31 +36,60 @@ public class Taxon
     extends Formulier implements Cloneable, Comparable<Taxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  private String  latijnsenaam;
-  private String  naam;
-  private String  opmerking;
-  private Long    parentId;
-  private String  rang;
-  private Long    taxonId;
+  private String              latijnsenaam;
+  private String              naam;
+  private String              opmerking;
+  private Long                parentId;
+  private String              parentLatijnsenaam;
+  private String              parentNaam;
+  private String              rang;
+  private Long                taxonId;
 
   public Taxon() {}
 
   public Taxon(TaxonDto taxonDto) {
     latijnsenaam  = taxonDto.getLatijnsenaam();
-    naam          = taxonDto.getNaam();
     opmerking     = taxonDto.getOpmerking();
     parentId      = taxonDto.getParentId();
     rang          = taxonDto.getRang();
     taxonId       = taxonDto.getTaxonId();
   }
 
+  public Taxon(TaxonDto taxonDto, String taal) {
+    latijnsenaam        = taxonDto.getLatijnsenaam();
+    naam                = taxonDto.getNaam(taal);
+    opmerking           = taxonDto.getOpmerking();
+    parentId            = taxonDto.getParentId();
+    rang                = taxonDto.getRang();
+    taxonId             = taxonDto.getTaxonId();
+  }
+
   public Taxon(DetailDto detailDto) {
     latijnsenaam  = detailDto.getLatijnsenaam();
-    naam          = detailDto.getNaam();
     opmerking     = detailDto.getOpmerking();
     parentId      = detailDto.getParentId();
     rang          = detailDto.getRang();
     taxonId       = detailDto.getTaxonId();
+  }
+
+  public Taxon(DetailDto detailDto, String taal) {
+    latijnsenaam        = detailDto.getLatijnsenaam();
+    naam                = detailDto.getNaam(taal);
+    opmerking           = detailDto.getOpmerking();
+    parentId            = detailDto.getParentId();
+    parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
+    parentNaam          = detailDto.getParentNaam(taal);
+    rang                = detailDto.getRang();
+    taxonId             = detailDto.getTaxonId();
+  }
+
+  public static class NaamComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    public int compare(Taxon taxon1, Taxon taxon2) {
+      return taxon1.getNaam().compareTo(taxon2.getNaam());
+    }
   }
 
   public static class LatijnsenaamComparator
@@ -71,15 +101,22 @@ public class Taxon
     }
   }
 
-  public static class NaamComparator
+  /**
+   * Sorteren op de parentnaam en naam van het taxon.
+   */
+  public static class LijstComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    public int compare(Taxon taxon1, Taxon taxon2) {
-      return taxon1.naam.compareTo(taxon2.naam);
+    public int compare(Taxon taxonDto1, Taxon taxonDto2) {
+      return new CompareToBuilder().append(taxonDto1.getParentNaam(),
+          taxonDto2.getParentNaam())
+                                   .append(taxonDto1.getNaam(),
+                                       taxonDto2.getNaam())
+                                   .toComparison();
     }
   }
-  
+
   public Taxon clone() throws CloneNotSupportedException {
     Taxon clone = (Taxon) super.clone();
 
@@ -108,7 +145,7 @@ public class Taxon
   }
 
   public String getNaam() {
-    return naam;
+    return (DoosUtils.isBlankOrNull(naam) ? latijnsenaam : naam);
   }
 
   public String getOpmerking() {
@@ -117,6 +154,15 @@ public class Taxon
 
   public Long getParentId() {
     return parentId;
+  }
+
+  public String getParentLatijnsenaam() {
+    return parentLatijnsenaam;
+  }
+
+  public String getParentNaam() {
+    return (DoosUtils.isBlankOrNull(parentNaam) ? parentLatijnsenaam
+                                                : parentNaam);
   }
 
   public String getRang() {
@@ -135,10 +181,6 @@ public class Taxon
     if (!new EqualsBuilder().append(this.latijnsenaam,
                                     parameter.getLatijnsenaam()).isEquals()) {
       parameter.setLatijnsenaam(this.latijnsenaam);
-    }
-    if (!new EqualsBuilder().append(this.naam,
-                                    parameter.getNaam()).isEquals()) {
-      parameter.setNaam(this.naam);
     }
     if (!new EqualsBuilder().append(this.opmerking,
                                     parameter.getOpmerking()).isEquals()) {
@@ -165,12 +207,8 @@ public class Taxon
       this.latijnsenaam = latijnsenaam;
     }
   }
-
   public void setNaam(String naam) {
-    if (!new EqualsBuilder().append(this.naam, naam).isEquals()) {
-      gewijzigd = true;
-      this.naam = naam;
-    }
+    this.naam = naam;
   }
 
   public void setOpmerking(String opmerking) {
@@ -178,6 +216,14 @@ public class Taxon
       gewijzigd       = true;
       this.opmerking  = opmerking;
     }
+  }
+
+  public void setParentLatijnsenaam(String parentLatijnsenaam) {
+    this.parentLatijnsenaam = parentLatijnsenaam;
+  }
+
+  public void setParentNaam(String parentNaam) {
+    this.parentNaam = parentNaam;
   }
 
   public void setParentId(Long parentId) {

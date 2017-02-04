@@ -35,6 +35,31 @@
               "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
             }
           } );
+          $('#taxonnamenTabel').dataTable( {
+              "order": [[1, "asc"]],
+              "columns": [
+                        { "orderable": false },
+                        { "orderable": true },
+                        { "orderable": true }
+                    ],
+              "pagingType": "full_numbers",
+              "lengthMenu": #{i18nTeksten.tekst('pager.rijen.per.pagina')},
+              "language": {
+                "paginate": {
+                  "first": "#{i18nTeksten.tekst('pager.paginate.first')}",
+                  "last": "#{i18nTeksten.tekst('pager.paginate.last')}",
+                  "next": "#{i18nTeksten.tekst('pager.paginate.next')}",
+                  "previous": "#{i18nTeksten.tekst('pager.paginate.previous')}"
+                },
+                "lengthMenu": "#{i18nTeksten.tekst('pager.length.menu')}",
+                "search": "#{i18nTeksten.tekst('pager.search')}",
+                "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+                "info": "#{i18nTeksten.tekst('pager.info')}",
+                "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+                "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+              }
+            } );
+          $('.nav-tabs a[href="##{natuurTaxon.aktieveTab}"]').tab('show');
         } );
       </script>
     </ui:define>
@@ -46,7 +71,7 @@
               <h2>#{i18nTeksten.tekst(natuurTaxon.subTitel)}</h2>
             </t:div>
             <t:div rendered="#{natuurTaxon.aktie.readonly}">
-              <h2>#{natuurTaxon.subTitel}</h2>
+              <h2>#{natuurTaxon.taxon.naam}</h2>
             </t:div>
           </div>
           <div align="right" class="col-md-2" >
@@ -59,7 +84,7 @@
             <div class="form-group form-group-sm">
               <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.naam')}</label>
               <div class="col-sm-10">
-                <t:inputText id="naam" styleClass="form-control" value="#{natuurTaxon.taxon.naam}" maxlength="255" size="100" readonly="#{natuurTaxon.aktie.readonly}" />
+                <t:inputText id="naam" styleClass="form-control" value="#{natuurTaxon.taxon.naam}" maxlength="255" size="100" readonly="true" />
               </div>
             </div>
           </t:div>
@@ -94,10 +119,33 @@
 
           <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
             <div class="row" />
-            <ui:include src="taxatabel.xhtml">
-              <ui:param name="form" value="formTaxon" />
-              <ui:param name="lijst" value="#{natuurTaxon.getKinderen(natuurTaxon.taxon.taxonId)}" />
-            </ui:include>
+            <div>
+              <ul class="nav nav-tabs" data-tabs="tabs">
+                <li class="active"><a href="#kinderenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.kinderen')}</a></li>
+                <li><a href="#namenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.namen')}</a></li>
+              </ul>
+              <div class="tab-content">
+                <div id="kinderenTab" class="tab-pane fade in active">
+                  <d:spacer />
+                  <ui:include src="taxatabel.xhtml">
+                    <ui:param name="form" value="formTaxon" />
+                    <ui:param name="lijst" value="#{natuurTaxon.getKinderen(natuurTaxon.taxon.taxonId)}" />
+                  </ui:include>
+                </div>
+                <div id="namenTab" class="tab-pane fade">
+                  <d:spacer />
+                  <div align="right" class="col-md-3 col-md-offset-9">
+                    <h:commandLink action="#{natuurTaxon.createTaxonnaam}" actionFor="#{formTaxon}" rendered="#{natuurTaxon.aktie.wijzig}">
+                      <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+                    </h:commandLink>
+                  </div>
+                  <ui:include src="taxonnamentabel.xhtml">
+                    <ui:param name="form" value="formTaxon" />
+                    <ui:param name="lijst" value="#{natuurTaxon.taxonnamen}" />
+                  </ui:include>
+                </div>
+              </div>
+            </div>
           </t:div>
 
           <h:commandLink action="#{natuurTaxon.save}" id="create" styleClass="btn btn-default" rendered="#{natuurTaxon.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>

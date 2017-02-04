@@ -22,7 +22,6 @@ import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -50,18 +49,6 @@ public class Foto
     gebied    = new Gebied(fotoDto.getGebied());
     taxon     = new Taxon(fotoDto.getTaxon());
     taxonSeq  = fotoDto.getTaxonSeq();
-  }
-
-  public static class LijstComparator
-      implements Comparator<Foto>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    public int compare(Foto foto1, Foto foto2) {
-      return new CompareToBuilder().append(foto1.taxon.getNaam(),
-                                           foto2.taxon.getNaam())
-                                   .append(foto1.taxonSeq, foto2.taxonSeq)
-                                   .toComparison();
-    }
   }
   
   public Foto clone() throws CloneNotSupportedException {

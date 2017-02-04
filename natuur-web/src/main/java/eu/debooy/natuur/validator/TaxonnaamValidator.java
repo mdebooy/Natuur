@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.form.Taxon;
+import eu.debooy.natuur.form.Taxonnaam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +28,23 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class TaxonValidator {
-  private TaxonValidator() {
+public final class TaxonnaamValidator {
+  private TaxonnaamValidator() {
   }
 
   /**
-   * Valideer de Taxon.
+   * Valideer de Taxonnaam.
    */
-  public static List<Message> valideer(Taxon taxon) {
+  public static List<Message> valideer(Taxonnaam taxonnaam) {
     List<Message> fouten  = new ArrayList<Message>();
-
-    String  waarde  = taxon.getLatijnsenaam();
+    String        waarde  = taxonnaam.getNaam();
     if (DoosUtils.isBlankOrNull(waarde)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.latijnsenaam"));
-    } else if (waarde.length() > 255) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.latijnsenaam", 255));
+                             "_I18N.label.naam"));
     }
-
-    waarde  = DoosUtils.nullToEmpty(taxon.getOpmerking());
-    if (waarde.length() > 2000) {
+    if (waarde.length() > 255) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.opmerking", 2000));
+                             new Object[] {"_I18N.label.naam", 255}));
     }
 
     return fouten;

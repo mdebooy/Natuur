@@ -18,16 +18,23 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 
-import java.io.Serializable;
-import java.util.Comparator;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -46,16 +53,13 @@ import org.apache.openjpa.persistence.ReadOnly;
 @IdClass(DetailPK.class)
 @NamedQueries({
   @NamedQuery(name="soortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')"),
-  @NamedQuery(name="totalen", query="select d.parentNaam as naam, d.parentLatijnsenaam as latijnsenaam, count(d.naam) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentNaam, d.parentLatijnsenaam order by d.parentNaam, d.parentLatijnsenaam")})
+  @NamedQuery(name="totalen", query="select d.parentId as naam, d.parentLatijnsenaam as latijnsenaam, count(d.parentId) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentId, d.parentLatijnsenaam")})
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
   @ReadOnly
   @Column(name="LATIJNSENAAM", insertable= false, updatable=false)
   private String    latijnsenaam;
-  @ReadOnly
-  @Column(name="NAAM", insertable= false, updatable=false)
-  private String    naam;
   @ReadOnly
   @Column(name="NIVEAU", insertable= false, updatable=false)
   private Long      niveau;
@@ -70,9 +74,6 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Column(name="PARENT_ID", insertable= false, updatable=false)
   private Long      parentId;
   @ReadOnly
-  @Column(name="PARENT_NAAM", insertable= false, updatable=false)
-  private String    parentNaam;
-  @ReadOnly
   @Column(name="PARENT_LATIJNSENAAM", insertable= false, updatable=false)
   private String    parentLatijnsenaam;
   @ReadOnly
@@ -86,33 +87,19 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Column(name="TAXON_ID", insertable= false, updatable=false)
   private Long      taxonId;
 
-  /**
-   * Sorteren op de parentnaam en naam van het detail.
-   */
-  public static class LijstComparator
-      implements Comparator<DetailDto>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
+  @ReadOnly
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> parentnamen =
+      new HashMap<String, TaxonnaamDto>();
 
-    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
-      return new CompareToBuilder().append(detailDto1.parentNaam,
-                                           detailDto2.parentNaam)
-                                   .append(detailDto1.naam, detailDto2.naam)
-                                   .toComparison();
-    }
-  }
-
-  /**
-   * Sorteren op de naam van het detail.
-   */
-  public static class NaamComparator
-      implements Comparator<DetailDto>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
-      return new CompareToBuilder().append(detailDto1.naam, detailDto2.naam)
-                                   .toComparison();
-    }
-  }
+  @ReadOnly
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> taxonnamen  =
+      new HashMap<String, TaxonnaamDto>();
 
   public int compareTo(DetailDto detailDto) {
     return new CompareToBuilder().append(parentId, detailDto.parentId)
@@ -138,8 +125,13 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return latijnsenaam;
   }
 
-  public String getNaam() {
-    return naam;
+  @Transient
+  public String getNaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal).getNaam();
+    } else {
+      return latijnsenaam;
+    }
   }
 
   public Integer getOpFoto() {
@@ -154,12 +146,17 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return parentId;
   }
 
-  public String getParentNaam() {
-    return parentNaam;
-  }
-
   public String getParentLatijnsenaam() {
     return parentLatijnsenaam;
+  }
+
+  @Transient
+  public String getParentNaam(String taal) {
+    if (parentnamen.containsKey(taal)) {
+      return parentnamen.get(taal).getNaam();
+    } else {
+      return parentLatijnsenaam;
+    }
   }
 
   public String getParentRang() {
@@ -172,6 +169,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   public Long getTaxonId() {
     return taxonId;
+  }
+
+  public Collection<TaxonnaamDto> getTaxonnamen() {
+    return taxonnamen.values();
   }
 
   public int hashCode() {

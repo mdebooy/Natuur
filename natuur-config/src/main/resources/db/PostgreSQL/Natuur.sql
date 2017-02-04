@@ -103,12 +103,18 @@ CREATE TABLE NATUUR.RANGEN (
 
 CREATE TABLE NATUUR.TAXA (
   LATIJNSENAAM                    VARCHAR(255)    NOT NULL,
-  NAAM                            VARCHAR(255)    NOT NULL,
   OPMERKING                       VARCHAR(2000),
   PARENT_ID                       INTEGER,
   RANG                            VARCHAR(3)      NOT NULL,
   TAXON_ID                        INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_TAXA'::REGCLASS),
   CONSTRAINT PK_TAXA PRIMARY KEY (TAXON_ID)
+);
+
+CREATE TABLE NATUUR.TAXONNAMEN (
+  NAAM                            VARCHAR(255)    NOT NULL,
+  TAAL                            CHARACTER(2)    NOT NULL,
+  TAXON_ID                        INTEGER         NOT NULL,
+  CONSTRAINT PK_TAXONNAMEN PRIMARY KEY (TAXON_ID, TAAL)
 );
 
 -- Views
@@ -129,7 +135,7 @@ FROM     q
 ORDER BY q.breadcrumb;
 
 CREATE OR REPLACE VIEW natuur.details AS
-SELECT   t.parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
+SELECT   p.taxon_id AS parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
          p.latijnsenaam AS parent_latijnsenaam,
          r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam, t.opmerking,
          CASE WHEN f.aantal IS NULL THEN 0 ELSE 1 END op_foto
@@ -145,9 +151,9 @@ FROM     natuur.taxonomie t
              ON t.taxon_id=f.taxon_id;
 
 CREATE OR REPLACE VIEW natuur.foto_overzicht AS 
- SELECT   fot.foto_id, det.parent_naam AS klasse_naam,
+ SELECT   fot.foto_id, det.parent_id AS klasse_id,
           det.parent_latijnsenaam AS klasse_latijnsenaam,
-          det.naam, det.latijnsenaam,
+          det.taxon_id, det.latijnsenaam,
           fot.taxon_seq, geb.land_id, geb.naam AS gebied
  FROM     natuur.fotos fot
             JOIN natuur.details det ON fot.taxon_id = det.taxon_id
@@ -189,6 +195,12 @@ ALTER TABLE NATUUR.TAXA
   ON DELETE RESTRICT
   ON UPDATE RESTRICT;
 
+ALTER TABLE NATUUR.TAXONNAMEN
+  ADD CONSTRAINT FK_TNM_TAXON_ID FOREIGN KEY (TAXON_ID)
+  REFERENCES NATUUR.TAXA (TAXON_ID)
+  ON DELETE CASCADE
+  ON UPDATE RESTRICT;
+
 -- Grant rechten
 GRANT SELECT                         ON TABLE NATUUR.DETAILS        TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT TO NATUUR_SEL;
@@ -196,6 +208,7 @@ GRANT SELECT                         ON TABLE NATUUR.FOTOS          TO NATUUR_SE
 GRANT SELECT                         ON TABLE NATUUR.GEBIEDEN       TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.RANGEN         TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXA           TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.TAXONNAMEN     TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE      TO NATUUR_SEL;
 
 GRANT SELECT                         ON TABLE    NATUUR.DETAILS         TO NATUUR_UPD;
@@ -207,6 +220,7 @@ GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_FOTOS       TO NATUU
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_GEBIEDEN    TO NATUUR_UPD;
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_TAXA        TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXA            TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXONNAMEN      TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE    NATUUR.TAXONOMIE       TO NATUUR_UPD;
 
 -- Commentaren
@@ -229,3 +243,7 @@ COMMENT ON COLUMN NATUUR.TAXA.OPMERKING           IS 'Een opmerking voor deze ta
 COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID           IS 'De parent van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.RANG                IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID            IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.TAXONNAMEN               IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM          IS 'De naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL          IS 'De taal.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID      IS 'De sleutel van de taxon.';

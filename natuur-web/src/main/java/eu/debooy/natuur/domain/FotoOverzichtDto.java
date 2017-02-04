@@ -20,11 +20,19 @@ import eu.debooy.doosutils.domain.Dto;
 
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -51,11 +59,11 @@ public class FotoOverzichtDto
   @Column(name="GEBIED")
   private String  gebied;
   @ReadOnly
+  @Column(name="KLASSE_ID")
+  private Long    klasseId;
+  @ReadOnly
   @Column(name="KLASSE_LATIJNSENAAM")
   private String  klasseLatijnsenaam;
-  @ReadOnly
-  @Column(name="KLASSE_NAAM")
-  private String  klasseNaam;
   @ReadOnly
   @Column(name="LAND_ID")
   private Long    landId;
@@ -63,11 +71,25 @@ public class FotoOverzichtDto
   @Column(name="LATIJNSENAAM")
   private String  latijnsenaam;
   @ReadOnly
-  @Column(name="NAAM")
-  private String  naam;
+  @Column(name="TAXON_ID")
+  private Long    taxonId;
   @ReadOnly
   @Column(name="TAXON_SEQ")
   private Long    taxonSeq;
+
+  @ReadOnly
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="KLASSE_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> klassenamen =
+      new HashMap<String, TaxonnaamDto>();
+
+  @ReadOnly
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> taxonnamen  =
+      new HashMap<String, TaxonnaamDto>();
 
   /**
    * Sorteren op de parentnaam en naam van het detail.
@@ -76,15 +98,22 @@ public class FotoOverzichtDto
       implements Comparator<FotoOverzichtDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    private String  taal  = "";
+
+    public void setTaal(String taal) {
+      this.taal = taal;
+    }
+
     public int compare(FotoOverzichtDto fotoOverzichtDto1,
                        FotoOverzichtDto fotoOverzichtDto2) {
-      return new CompareToBuilder().append(fotoOverzichtDto1.klasseNaam,
-                                           fotoOverzichtDto2.klasseNaam)
-                                   .append(fotoOverzichtDto1.naam,
-                                           fotoOverzichtDto2.naam)
-                                   .append(fotoOverzichtDto1.taxonSeq,
-                                           fotoOverzichtDto2.taxonSeq)
-                                   .toComparison();
+      return
+          new CompareToBuilder().append(fotoOverzichtDto1.getKlasseNaam(taal),
+                                        fotoOverzichtDto2.getKlasseNaam(taal))
+                                .append(fotoOverzichtDto1.getNaam(taal),
+                                        fotoOverzichtDto2.getNaam(taal))
+                                .append(fotoOverzichtDto1.taxonSeq,
+                                        fotoOverzichtDto2.taxonSeq)
+                                .toComparison();
     }
   }
   
@@ -121,12 +150,21 @@ public class FotoOverzichtDto
     return gebied;
   }
 
+  public Long getKlasseId() {
+    return klasseId;
+  }
+
   public String getKlasseLatijnsenaam() {
     return klasseLatijnsenaam;
   }
 
-  public String getKlasseNaam() {
-    return klasseNaam;
+  @Transient
+  public String getKlasseNaam(String taal) {
+    if (klassenamen.containsKey(taal)) {
+      return klassenamen.get(taal).getNaam();
+    } else {
+      return klasseLatijnsenaam;
+    }
   }
 
   public Long getLandId() {
@@ -137,8 +175,17 @@ public class FotoOverzichtDto
     return latijnsenaam;
   }
 
-  public String getNaam() {
-    return naam;
+  @Transient
+  public String getNaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal).getNaam();
+    } else {
+      return latijnsenaam;
+    }
+  }
+
+  public Long getTaxonId() {
+    return taxonId;
   }
 
   public Long getTaxonSeq() {

@@ -17,18 +17,29 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
 import org.apache.commons.lang.builder.EqualsBuilder;
@@ -54,8 +65,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
 
   @Column(name="LATIJNSENAAM", length=255, nullable=false)
   private String    latijnsenaam;
-  @Column(name="NAAM", length=255, nullable=false)
-  private String    naam;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
   @Column(name="PARENT_ID", nullable=false)
@@ -67,8 +76,14 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
   private Long      taxonId;
 
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> taxonnamen  =
+      new HashMap<String, TaxonnaamDto>();
+
   /**
-   * Sorteren op de naam van het taxon.
+   * Sorteren op de latijnsenaam van het taxon.
    */
   public static class LatijnsenaamComparator
       implements Comparator<TaxonDto>, Serializable {
@@ -86,11 +101,25 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    private String  taal  = "nl";
+
+    public void setTaal(String taal) {
+      this.taal = taal;
+    }
+
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return taxonDto1.naam.compareTo(taxonDto2.naam);
+      return taxonDto1.getNaam(taal).compareTo(taxonDto2.getNaam(taal));
     }
   }
-  
+
+  public void addNaam(TaxonnaamDto taxonnaamDto) {
+    //TODO Kijken voor 'de' JPA manier.
+    if (null == taxonnaamDto.getTaxonId()) {
+      taxonnaamDto.setTaxonId(taxonId);
+    }
+    taxonnamen.put(taxonnaamDto.getTaal(), taxonnaamDto);
+  }
+
   public TaxonDto clone() throws CloneNotSupportedException {
     TaxonDto  clone = (TaxonDto) super.clone();
 
@@ -98,7 +127,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   public int compareTo(TaxonDto taxonDto) {
-    return new CompareToBuilder().append(naam, taxonDto.naam)
+    return new CompareToBuilder().append(taxonId, taxonDto.taxonId)
                                  .toComparison();
   }
 
@@ -115,44 +144,43 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
                               .isEquals();
   }
 
-  /**
-   * @return de latijnsenaam
-   */
   public String getLatijnsenaam() {
     return latijnsenaam;
   }
 
-  /**
-   * @return de naam
-   */
-  public String getNaam() {
-    return naam;
+  public TaxonnaamDto getTaxonnaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal);
+    } else {
+      return new TaxonnaamDto();
+    }
   }
 
-  /**
-   * @return de opmerking
-   */
+  public Collection<TaxonnaamDto> getTaxonnamen() {
+    return taxonnamen.values();
+  }
+
+  @Transient
+  public String getNaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal).getNaam();
+    } else {
+      return latijnsenaam;
+    }
+  }
+
   public String getOpmerking() {
     return opmerking;
   }
 
-  /**
-   * @return de parentId
-   */
   public Long getParentId() {
     return parentId;
   }
 
-  /**
-   * @return de rang
-   */
   public String getRang() {
     return rang;
   }
 
-  /**
-   * @return de taxonId
-   */
   public Long getTaxonId() {
     return taxonId;
   }
@@ -161,44 +189,42 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
 
-  /**
-   * @param latijnsenaam de waarde van latijnsenaam
-   */
+  public void removeNaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      taxonnamen.remove(taal);
+    } else {
+      throw new ObjectNotFoundException(DoosLayer.PERSISTENCE, taal);
+    }
+  }
+
   public void setLatijnsenaam(String latijnsenaam) {
     this.latijnsenaam = latijnsenaam;
   }
 
-  /**
-   * @param naam de waarde van naam
-   */
-  public void setNaam(String naam) {
-    this.naam = naam;
+  public void setNamen(Collection<TaxonnaamDto> taxonnamen) {
+    this.taxonnamen.clear();
+    for (TaxonnaamDto taxonnaam : taxonnamen) {
+      this.taxonnamen.put(taxonnaam.getTaal(), taxonnaam);
+    }
   }
 
-  /**
-   * @param opmerking de waarde van opmerking
-   */
+  public void setNamen(Map<String, TaxonnaamDto> taxonnamen) {
+    this.taxonnamen.clear();
+    this.taxonnamen.putAll(taxonnamen);
+  }
+
   public void setOpmerking(String opmerking) {
     this.opmerking  = opmerking;
   }
 
-  /**
-   * @param parentId de waarde van parentId
-   */
   public void setParentId(Long parentId) {
     this.parentId = parentId;
   }
 
-  /**
-   * @param rang de waarde van rang
-   */
   public void setRang(String rang) {
     this.rang = rang;
   }
 
-  /**
-   * @param taxonId de waarde van taxonId
-   */
   public void setTaxonId(Long taxonId) {
     this.taxonId = taxonId;
   }

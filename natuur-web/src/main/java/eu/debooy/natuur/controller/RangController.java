@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -106,7 +107,20 @@ public class RangController extends Natuur {
    * @return Collection<Rangtotaal>
    */
   public Collection<Rangtotaal> getRangtotalen() {
-    return getDetailService().getTotalenVoorRang(rang.getRang());
+    String                  taal  = getGebruikersTaal();
+    Collection<Rangtotaal>  rijen =
+        getDetailService().getTotalenVoorRang(rang.getRang());
+    for (Rangtotaal rij : rijen) {
+      String  naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
+                                           .getNaam();
+      if (DoosUtils.isBlankOrNull(naam)) {
+        rij.setNaam(rij.getLatijnsenaam());
+      } else {
+        rij.setNaam(naam);
+      }
+    }
+
+    return rijen;
   }
 
   /**
