@@ -143,7 +143,7 @@ public class TaxonService {
   }
 
   /**
-   * Geef alle soorten/waarnemingen.
+   * Geef alle soorten.
    * 
    * @return Collection<Taxon>
    */

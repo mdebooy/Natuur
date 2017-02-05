@@ -43,7 +43,7 @@ public final class GebiedValidator {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.gebied"));
     }
-    if (waarde.length() > 225) {
+    if (waarde.length() > 255) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.gebied", 255));
     }

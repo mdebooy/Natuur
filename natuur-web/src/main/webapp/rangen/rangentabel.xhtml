@@ -19,8 +19,7 @@
     <tbody>
       <t:dataList var="rang" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <ui:param name="rangcode" value="biologie.rang.#{rang.rang}" />
-          <ui:param name="rangtekst" value="#{i18nTeksten.tekst(rangcode)}" />
+          <ui:param name="rangtekst" value="#{natuurRang.getRangtekst(rang.rang)}" />
           <td>
             <h:commandLink action="#{natuurRang.retrieve(rang.rang)}" actionFor="#{form}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
             <h:commandLink action="#{natuurRang.delete(rang.rang)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />

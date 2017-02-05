@@ -12,5 +12,6 @@
     <class>eu.debooy.natuur.domain.RangDto</class>
     <class>eu.debooy.natuur.domain.TaxonDto</class>
     <class>eu.debooy.natuur.domain.TaxonnaamDto</class>
+    <class>eu.debooy.natuur.domain.WaarnemingDto</class>
   </persistence-unit>
 </persistence>

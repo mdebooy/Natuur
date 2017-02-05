@@ -53,29 +53,16 @@ public class FotoService {
   @Inject
   private FotoOverzichtDao  fotoOverzichtDao;
 
-  /**
-   * Initialisatie.
-   */
   public FotoService() {
     LOGGER.debug("init FotoService");
   }
 
-  /**
-   * Verwijder de Foto.
-   * 
-   * @param FotoPK fotoPK
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long fotoId) {
     FotoDto foto  = fotoDao.getByPrimaryKey(fotoId);
     fotoDao.delete(foto);
   }
 
-  /**
-   * Geef een Foto.
-   * 
-   * @return Een Foto.
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public FotoDto foto(Long sleutel) {
     FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
@@ -83,11 +70,6 @@ public class FotoService {
     return foto;
   }
 
-  /**
-   * Geef alle Fotos.
-   * 
-   * @return Collection<FotoOverzichtDto>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<FotoOverzichtDto> fotoOverzicht() {
     Collection<FotoOverzichtDto>  fotos = new ArrayList<FotoOverzichtDto>();
@@ -100,11 +82,6 @@ public class FotoService {
     return fotos;
   }
 
-  /**
-   * Geef alle Fotos.
-   * 
-   * @return Collection<Foto>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Collection<Foto> query() {
     Collection<Foto>  fotos = new ArrayList<Foto>();
@@ -120,16 +97,35 @@ public class FotoService {
     return fotos;
   }
 
-  /**
-   * Maak of wijzig de Foto in de database.
-   * 
-   * @param Foto
-   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Foto> query(String taal) {
+    Collection<Foto>  fotos = new ArrayList<Foto>();
+    try {
+      Collection<FotoDto> rijen = fotoDao.getAll();
+      for (FotoDto rij : rijen) {
+        fotos.add(new Foto(rij, taal));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return fotos;
+  }
+
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Foto foto) {
     FotoDto  dto = new FotoDto();
     foto.persist(dto);
 
-    fotoDao.update(dto);
+    save(dto);
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void save(FotoDto fotoDto) {
+    if (null == fotoDto.getFotoId()) {
+      fotoDao.create(fotoDto);
+    } else {
+      fotoDao.update(fotoDto);
+    }
   }
 }

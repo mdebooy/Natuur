@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html  lang="#{gebruiker.locale.language}"
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:d="http://java.debooy.eu/jsf/facelets"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets">
+  <ui:composition template="/WEB-INF/templates/template.xhtml">
+    <ui:define name="body">
+      <h:form class="form-horizontal" id="formWaarneming">
+        <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-10">
+            <h2>#{i18nTeksten.tekst(natuurWaarneming.subTitel)}</h2>
+          </div>
+          <div class="row" />
+          <div class="form-group form-group-sm">
+            <label for="datum" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.aanmaak')}</label>
+            <div class="col-sm-2">
+              <div class="input-group date" data-provide="datepicker" data-date-autoclose="true" data-date-format="dd/mm/yyyy">
+                <t:inputText id="datum" styleClass="form-control mask" value="#{natuurWaarneming.waarneming.datum}" disabled="#{natuurWaarneming.aktie.readonly}" readonly="#{natuurWaarneming.aktie.readonly}">
+                  <f:convertDateTime type="date" pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
+                </t:inputText>
+                <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="aantal" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.aantal')}</label>
+            <div class="col-sm-5">
+              <t:inputText id="aantal" styleClass="form-control"
+                value="#{natuurWaarneming.waarneming.aantal}" maxlength="3" size="3" readonly="#{natuurWaarneming.aktie.readonly}" />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="taxon" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
+            <div class="col-sm-5">
+              <d:listbox id="taxon" value="#{natuurWaarneming.waarneming.taxon}" converter="TaxonConverter" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurWaarneming.selectWaarnemingen}" textvalue="#{natuurWaarneming.waarneming.taxon.naam}" />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="gebied" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
+            <div class="col-sm-5">
+              <d:listbox id="gebied" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
+            </div>
+          </div>
+          <div class="form-group form-group-sm">
+            <label for="opmerking" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.opmerking')}</label>
+            <div class="col-sm-10">
+              <t:inputTextarea id="opmerking" styleClass="form-control" value="#{natuurWaarneming.waarneming.opmerking}" readonly="#{natuurWaarneming.aktie.readonly}" />
+            </div>
+          </div>
+
+          <h:commandLink action="#{natuurWaarneming.save}" id="create" styleClass="btn btn-default" rendered="#{natuurWaarneming.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuurWaarneming.save}" id="modify" styleClass="btn btn-default" rendered="#{natuurWaarneming.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <d:cancel href="#{natuur.path}/waarnemingen/waarnemingen.xhtml" aktie="#{natuurWaarneming.aktie}"/>
+        </div>
+      </h:form>
+    </ui:define>
+  </ui:composition>
+</html>

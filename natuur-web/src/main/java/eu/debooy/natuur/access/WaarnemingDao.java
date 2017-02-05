@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -18,7 +18,7 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
-import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.WaarnemingDto;
 
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -30,12 +30,12 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 @Interceptors({PersistenceExceptionHandlerInterceptor.class})
-public class FotoDao extends Dao<FotoDto> {
+public class WaarnemingDao extends Dao<WaarnemingDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
-  public FotoDao() {
-    super(FotoDto.class);
+  public WaarnemingDao() {
+    super(WaarnemingDto.class);
   }
 
   protected EntityManager getEntityManager() {

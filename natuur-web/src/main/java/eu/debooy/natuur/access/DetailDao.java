@@ -85,4 +85,17 @@ public class DetailDao extends Dao<DetailDto> {
 
     return totalen;
   }
+
+  /**
+   * Haal de waargenomen (onder)soorten op.
+   * 
+   * @return Collection<DetailDto>
+   */
+  @SuppressWarnings("unchecked")
+  public List<DetailDto> getWaargenomen() {
+    Query   query         =
+        getEntityManager().createNamedQuery("waargenomen");
+
+    return query.getResultList();
+  }
 }

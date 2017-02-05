@@ -18,11 +18,22 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.PersistenceConstants;
+import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Taxon;
+import eu.debooy.natuur.form.Waarneming;
+import eu.debooy.natuur.validator.WaarnemingValidator;
 
+import java.text.ParseException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +45,9 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 /**
  * @author Marco de Booij
@@ -42,11 +56,66 @@ import javax.servlet.http.HttpServletResponse;
 @SessionScoped
 public class WaarnemingController extends Natuur {
   private static final  long    serialVersionUID  = 1L;
+  private static final  Logger  LOGGER            =
+      LoggerFactory.getLogger(GebiedController.class);
+
+  private Waarneming    waarneming;
+  private WaarnemingDto waarnemingDto;
 
   /**
-   * Geef alle waarnemingen als SelectItems.
+   * Prepareer een nieuwe Waarneming.
+   */
+  public void create() {
+    waarnemingDto = new WaarnemingDto();
+    waarnemingDto.setDatum(new Date());
+    waarneming    = new Waarneming();
+    waarneming.setDatum(waarnemingDto.getDatum());
+    setAktie(PersistenceConstants.CREATE);
+    setSubTitel("natuur.titel.waarneming.create");
+    redirect(WAARNEMING_REDIRECT);
+  }
+
+  /**
+   * Verwijder de Waarneming
    * 
-   * @return
+   * @param Long waarnemingId
+   */
+  public void delete(Long waarnemingId) {
+    try {
+      waarneming =
+          new Waarneming(getWaarnemingService().waarneming(waarnemingId));
+      getWaarnemingService().delete(waarnemingId);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, waarnemingId);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    try {
+      addInfo(PersistenceConstants.DELETED,
+              Datum.fromDate(waarneming.getDatum()));
+    } catch (ParseException e) {
+      addInfo(PersistenceConstants.DELETED,
+              waarneming.getDatum() + " " + waarneming.getTaxon().getNaam());
+    }
+  }
+
+  public String formateerDatum(Date datum) {
+    try {
+      return Datum.fromDate(datum);
+    } catch (ParseException e) {
+      LOGGER.error("PE: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return datum.toString();
+    }
+  }
+
+  /**
+   * Geef alle soorten en ondersoorten als SelectItems.
+   * 
+   * @return List<SelectItem>
    */
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
@@ -62,12 +131,78 @@ public class WaarnemingController extends Natuur {
   }
 
   /**
+   * Geef het geselecteerde waarneming.
+   * 
+   * @return Waarneming
+   */
+  public Waarneming getWaarneming() {
+    return waarneming;
+  }
+
+  /**
    * Geef de lijst met waarnemingen.
    * 
-   * @return Collection<DetailDto> met DetailDto objecten.
+   * @return Collection<Waarneming> met Waarneming objecten.
    */
-  public Collection<Taxon> getWaarnemingen() {
-    return getDetailService().getSoortenMetKlasse(getGebruikersTaal());
+  public Collection<Waarneming> getWaarnemingen() {
+    return getWaarnemingService().query(getGebruikersTaal());
+  }
+
+  /**
+   * Persist de Waarneming
+   * 
+   * @param Waarneming
+   */
+  public void save() {
+    List<Message> messages  = WaarnemingValidator.valideer(waarneming);
+    if (!messages.isEmpty()) {
+      addMessage(messages);
+      return;
+    }
+
+    String  melding = formateerDatum(waarneming.getDatum()) + " "
+                      + waarneming.getTaxon().getNaam();
+    try {
+      waarneming.persist(waarnemingDto);
+      getWaarnemingService().save(waarnemingDto);
+      switch (getAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        waarneming.setWaarnemingId(waarnemingDto.getWaarnemingId());
+        addInfo(PersistenceConstants.CREATED, melding);
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, melding);
+        break;
+      default:
+        addError("error.aktie.wrong", getAktie().getAktie()) ;
+        break;
+      }
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, melding);
+      return;
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, melding);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      generateExceptionMessage(e);
+      return;
+    }
+
+    redirect(WAARNEMINGEN_REDIRECT);
+  }
+
+  /**
+   * Zet de Waarneming die gewijzigd gaat worden klaar.
+   * 
+   * @param Long waarnemingId
+   */
+  public void update(Long waarnemingId) {
+    waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
+    waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+    setAktie(PersistenceConstants.UPDATE);
+    setSubTitel("natuur.titel.waarneming.update");
+    redirect(WAARNEMING_REDIRECT);
   }
 
   /**
@@ -89,7 +224,7 @@ public class WaarnemingController extends Natuur {
 
     Set<Taxon> rijen =
         new TreeSet<Taxon>(new Taxon.LijstComparator());
-    rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
+    rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
     for (Taxon rij : rijen) {
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),

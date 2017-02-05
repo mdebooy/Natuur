@@ -25,6 +25,7 @@ import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -110,5 +111,25 @@ public class DetailService {
     }
 
     return totalen;
+  }
+
+  /**
+   * Geef alle waargenomen taxa.
+   * 
+   * @return Collection<Taxon>
+   */
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Collection<Taxon> getWaargenomen(String taal) {
+    List<Taxon>       soorten = new ArrayList<Taxon>();
+    try {
+      List<DetailDto> rijen   = detailDao.getWaargenomen();
+      for (DetailDto rij : rijen) {
+        soorten.add(new Taxon(rij, taal));
+      }
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
   }
 }

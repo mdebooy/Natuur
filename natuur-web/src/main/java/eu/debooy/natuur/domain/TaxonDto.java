@@ -59,7 +59,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @NamedQueries({
   @NamedQuery(name="kinderen", query="select t from TaxonDto t where t.parentId=:ouder"),
   @NamedQuery(name="ouders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind"),
-  @NamedQuery(name="soort", query="select t from TaxonDto t where t.rang='so'")})
+  @NamedQuery(name="soort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")})
 public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
 

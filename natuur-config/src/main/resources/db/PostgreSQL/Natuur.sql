@@ -79,6 +79,13 @@ CREATE SEQUENCE NATUUR.SEQ_TAXA
   START 1
   CACHE 1;
 
+CREATE SEQUENCE NATUUR.SEQ_WAARNEMINGEN
+  INCREMENT 1
+  MINVALUE 1
+  MAXVALUE 9223372036854775807
+  START 1
+  CACHE 1;
+
 -- Tabellen
 CREATE TABLE NATUUR.FOTOS (
   FOTO_ID                         INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_FOTOS'::REGCLASS),
@@ -115,6 +122,16 @@ CREATE TABLE NATUUR.TAXONNAMEN (
   TAAL                            CHARACTER(2)    NOT NULL,
   TAXON_ID                        INTEGER         NOT NULL,
   CONSTRAINT PK_TAXONNAMEN PRIMARY KEY (TAXON_ID, TAAL)
+);
+
+CREATE TABLE NATUUR.WAARNEMINGEN (
+  AANTAL                          SMALLINT,
+  DATUM                           DATE            NOT NULL,
+  GEBIED_ID                       INTEGER         NOT NULL,
+  OPMERKING                       VARCHAR(2000),
+  TAXON_ID                        INTEGER         NOT NULL,
+  WAARNEMING_ID                   INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_WAARNEMINGEN'::REGCLASS),
+  CONSTRAINT PK_WAARNEMINGEN PRIMARY KEY (WAARNEMING_ID)
 );
 
 -- Views
@@ -201,6 +218,18 @@ ALTER TABLE NATUUR.TAXONNAMEN
   ON DELETE CASCADE
   ON UPDATE RESTRICT;
 
+ALTER TABLE NATUUR.WAARNEMINGEN
+  ADD CONSTRAINT FK_WNM_GEBIED_ID FOREIGN KEY (GEBIED_ID)
+  REFERENCES NATUUR.GEBIEDEN (GEBIED_ID)
+  ON DELETE RESTRICT
+  ON UPDATE RESTRICT;
+
+ALTER TABLE NATUUR.WAARNEMINGEN
+  ADD CONSTRAINT FK_WNM_TAXON_ID FOREIGN KEY (TAXON_ID)
+  REFERENCES NATUUR.TAXA (TAXON_ID)
+  ON DELETE CASCADE
+  ON UPDATE RESTRICT;
+
 -- Grant rechten
 GRANT SELECT                         ON TABLE NATUUR.DETAILS        TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT TO NATUUR_SEL;
@@ -210,40 +239,53 @@ GRANT SELECT                         ON TABLE NATUUR.RANGEN         TO NATUUR_SE
 GRANT SELECT                         ON TABLE NATUUR.TAXA           TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONNAMEN     TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE      TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.WAARNEMINGEN   TO NATUUR_SEL;
 
-GRANT SELECT                         ON TABLE    NATUUR.DETAILS         TO NATUUR_UPD;
-GRANT SELECT                         ON TABLE    NATUUR.FOTO_OVERZICHT  TO NATUUR_UPD;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.FOTOS           TO NATUUR_UPD;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.GEBIEDEN        TO NATUUR_UPD;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGEN          TO NATUUR_UPD;
-GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_FOTOS       TO NATUUR_UPD;
-GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_GEBIEDEN    TO NATUUR_UPD;
-GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_TAXA        TO NATUUR_UPD;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXA            TO NATUUR_UPD;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXONNAMEN      TO NATUUR_UPD;
-GRANT SELECT                         ON TABLE    NATUUR.TAXONOMIE       TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE    NATUUR.DETAILS           TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE    NATUUR.FOTO_OVERZICHT    TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.FOTOS             TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.GEBIEDEN          TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGEN            TO NATUUR_UPD;
+GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_FOTOS         TO NATUUR_UPD;
+GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_GEBIEDEN      TO NATUUR_UPD;
+GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_TAXA          TO NATUUR_UPD;
+GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_WAARNEMINGEN  TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXA              TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.TAXONNAMEN        TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE    NATUUR.TAXONOMIE         TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.WAARNEMINGEN      TO NATUUR_UPD;
 
 -- Commentaren
-COMMENT ON TABLE  NATUUR.FOTOS                    IS 'Deze tabel bevat alle foto''s.';
-COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID            IS 'De sleutel van de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID          IS 'De sleutel van het gebied waarin de foto gemaakt is.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID           IS 'De sleutel van de taxon op de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ          IS 'Een volgnummer voor de foto voor de betreffende taxon.';
-COMMENT ON TABLE  NATUUR.GEBIEDEN                 IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID       IS 'De sleutel van het gebied.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID         IS 'De sleutel van het land waarin dit gebied ligt.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.NAAM            IS 'De naam van het gebied.';
-COMMENT ON TABLE  NATUUR.RANGEN                   IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
-COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU            IS 'Het niveau rang binnen de taxa.';
-COMMENT ON COLUMN NATUUR.RANGEN.RANG              IS 'De rang van een taxon.';
-COMMENT ON TABLE  NATUUR.TAXA                     IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
-COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM        IS 'De latijnse naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.NAAM                IS 'De nederlandse naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.OPMERKING           IS 'Een opmerking voor deze taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID           IS 'De parent van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.RANG                IS 'De rang van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID            IS 'De sleutel van de taxon.';
-COMMENT ON TABLE  NATUUR.TAXONNAMEN               IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM          IS 'De naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL          IS 'De taal.';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID      IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.FOTOS                      IS 'Deze tabel bevat alle foto''s.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID              IS 'De sleutel van de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID            IS 'De sleutel van het gebied waarin de foto gemaakt is.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID             IS 'De sleutel van de taxon op de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ            IS 'Een volgnummer voor de foto voor de betreffende taxon.';
+COMMENT ON TABLE  NATUUR.GEBIEDEN                   IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID         IS 'De sleutel van het gebied.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID           IS 'De sleutel van het land waarin dit gebied ligt.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.NAAM              IS 'De naam van het gebied.';
+COMMENT ON TABLE  NATUUR.RANGEN                     IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
+COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU              IS 'Het niveau rang binnen de taxa.';
+COMMENT ON COLUMN NATUUR.RANGEN.RANG                IS 'De rang van een taxon.';
+COMMENT ON TABLE  NATUUR.TAXA                       IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
+COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM          IS 'De latijnse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.NAAM                  IS 'De nederlandse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.OPMERKING             IS 'Een opmerking voor deze taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID             IS 'De parent van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.RANG                  IS 'De rang van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID              IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.TAXONNAMEN                 IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM            IS 'De naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL            IS 'De taal.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID        IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.WAARNEMINGEN               IS 'Deze tabel bevat alle waarnemingen.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.AANTAL        IS 'Het aantal wat waargenomen is.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.DATUM         IS 'De datum van de waarneming.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.GEBIED_ID     IS 'Het gebied waar de waarneming is gedaan.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.OPMERKING     IS 'Een opmerking voor deze waarneming.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.TAXON_ID      IS 'De taxon die is waargenomen.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.WAARNEMING_ID IS 'De sleutel van de waarneming.';
+
+-- Default waardes
+INSERT INTO NATUUR.GEBIEDEN VALUES (0,0,'Onbekend');

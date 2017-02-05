@@ -24,6 +24,7 @@ import eu.debooy.natuur.service.GebiedService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
 import eu.debooy.natuur.service.TaxonnaamService;
+import eu.debooy.natuur.service.WaarnemingService;
 import eu.debooy.sedes.component.business.II18nLandnaam;
 
 import javax.ejb.EJB;
@@ -50,6 +51,7 @@ public class Natuur extends DoosBean {
   private transient RangService       rangService;
   private transient TaxonnaamService  taxonnaamService;
   private transient TaxonService      taxonService;
+  private transient WaarnemingService waarnemingService;
 
   @EJB
   private transient II18nLandnaam i18nLandnaam;
@@ -68,6 +70,10 @@ public class Natuur extends DoosBean {
   public static final String  TAXONNAAM_REDIRECT    = "/taxa/taxonnaam.xhtml";
   public static final String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
   public static final String  USER_ROLE             = "natuur-user";
+  public static final String  WAARNEMING_REDIRECT   =
+      "/waarnemingen/waarneming.xhtml";
+  public static final String  WAARNEMINGEN_REDIRECT =
+      "/waarnemingen/waarnemingen.xhtml";
 
   public Natuur() {
     LOGGER.debug("Nieuwe Natuur Sessie geopend.");
@@ -78,11 +84,11 @@ public class Natuur extends DoosBean {
     if (isAdministrator()) {
       addMenuitem("/admin/parameters.xhtml",  "menu.parameters");
     }
-    addMenuitem(RANGEN_REDIRECT,                    "menu.rangen");
-    addMenuitem(GEBIEDEN_REDIRECT,                  "menu.gebieden");
-    addMenuitem(TAXA_REDIRECT,                      "menu.taxa");
-    addMenuitem("/waarnemingen/waarnemingen.xhtml", "menu.waarnemingen");
-    addMenuitem(FOTOS_REDIRECT,                     "menu.fotos");
+    addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
+    addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
+    addMenuitem(TAXA_REDIRECT,          "menu.taxa");
+    addMenuitem(WAARNEMINGEN_REDIRECT,  "menu.waarnemingen");
+    addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
   }
 
   /**
@@ -176,5 +182,19 @@ public class Natuur extends DoosBean {
     }
 
     return taxonService;
+  }
+
+  /**
+   * Geef de WaarnemingService. Als die nog niet gekend is haal het dan op.
+   * 
+   * @return WaarnemingService
+   */
+  protected WaarnemingService getWaarnemingService() {
+    if (null == waarnemingService) {
+      waarnemingService = (WaarnemingService)
+          new JNDI.JNDINaam().metBean(WaarnemingService.class).locate();
+    }
+
+    return waarnemingService;
   }
 }

@@ -80,7 +80,7 @@ public class RangController extends Natuur {
       generateExceptionMessage(e);
       return;
     }
-    addInfo(PersistenceConstants.DELETED, getTekst("biologie.rang." + rang));
+    addInfo(PersistenceConstants.DELETED, getRangtekst(rang));
   }
 
   /**
@@ -99,6 +99,10 @@ public class RangController extends Natuur {
    */
   public Collection<Rang> getRangen() {
     return getRangService().query();
+  }
+
+  public String getRangtekst(String rang) {
+    return getTekst("biologie.rang." + rang);
   }
 
   /**
@@ -133,8 +137,7 @@ public class RangController extends Natuur {
     Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query());
     for (Rang rij : rijen) {
-      items.add(new SelectItem(rij.getRang(),
-                               getTekst("biologie.rang." + rij.getRang())));
+      items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
     }
 
     return items;
@@ -149,8 +152,7 @@ public class RangController extends Natuur {
     this.rang = new Rang(getRangService().rang(rang));
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel(MessageFormat.format(getTekst("natuur.titel.rang.totalen"),
-                                     getTekst("biologie.rang."
-                                         + this.rang.getRang())));
+                                     getRangtekst(rang)));
     redirect(RANG_TOTALEN_REDIRECT);
   }
 
@@ -168,6 +170,17 @@ public class RangController extends Natuur {
 
     try {
       getRangService().save(rang);
+      switch (getAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        addInfo(PersistenceConstants.CREATED, "'" + rang.getRang() + "'");
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
+        break;
+      default:
+        addError("error.aktie.wrong", getAktie().getAktie()) ;
+        break;
+      }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, rang.getRang());
       return;
@@ -195,8 +208,7 @@ public class RangController extends Natuur {
     rijen.addAll(getRangService().query(niveau));
     LOGGER.debug("#rangen > niveau " + niveau + ": " + rijen.size());
     for (Rang rij : rijen) {
-      items.add(new SelectItem(rij.getRang(),
-                               getTekst("biologie.rang." + rij.getRang())));
+      items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
     }
 
     return items;

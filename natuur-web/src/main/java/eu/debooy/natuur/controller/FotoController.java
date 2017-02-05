@@ -25,6 +25,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.form.Foto;
@@ -54,13 +55,15 @@ public class FotoController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(FotoController.class);
 
-  private Foto  foto;
+  private Foto    foto;
+  private FotoDto fotoDto;
 
   /**
    * Prepareer een nieuwe Foto.
    */
   public void create() {
-    foto  = new Foto();
+    foto    = new Foto();
+    fotoDto = new FotoDto();
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.foto.create");
     redirect(FOTO_REDIRECT);
@@ -71,18 +74,20 @@ public class FotoController extends Natuur {
    * 
    * @param Foto
    */
-  public void delete(Long fotoId, String naam) {
+  public void delete(Long fotoId) {
     try {
+      fotoDto = getFotoService().foto(fotoId);
       getFotoService().delete(fotoId);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, naam);
+      addError(PersistenceConstants.NOTFOUND, fotoId);
       return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
       return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + naam + "'");
+    addInfo(PersistenceConstants.DELETED, "'" + fotoDto.getTaxonSeq() + " - " 
+            + fotoDto.getTaxon().getNaam(getGebruikersTaal()) + "'");
   }
 
   /**
@@ -153,7 +158,7 @@ public class FotoController extends Natuur {
    * @return Collection<Foto> met Foto objecten.
    */
   public Collection<Foto> getFotos() {
-    return getFotoService().query();
+    return getFotoService().query(getGebruikersTaal());
   }
 
   /**
@@ -168,15 +173,27 @@ public class FotoController extends Natuur {
       return;
     }
 
+    String  melding = foto.getTaxonSeq() + " - " + foto.getTaxon().getNaam();
     try {
-      getFotoService().save(foto);
+      foto.persist(fotoDto);
+      getFotoService().save(fotoDto);
+      switch (getAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        foto.setFotoId(fotoDto.getFotoId());
+        addInfo(PersistenceConstants.CREATED, melding);
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, melding);
+        break;
+      default:
+        addError("error.aktie.wrong", getAktie().getAktie()) ;
+        break;
+      }
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, foto.getTaxon().getLatijnsenaam() + " "
-                                               + foto.getTaxonSeq());
+      addError(PersistenceConstants.DUPLICATE, melding);
       return;
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, foto.getTaxon().getLatijnsenaam() + " "
-                                              + foto.getTaxonSeq());
+      addError(PersistenceConstants.NOTFOUND, melding);
       return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
@@ -190,10 +207,11 @@ public class FotoController extends Natuur {
   /**
    * Zet de Foto die gewijzigd gaat worden klaar.
    * 
-   * @param Long gebiedId
+   * @param Long fotoId
    */
   public void update(Long fotoId) {
-    foto  = new Foto(getFotoService().foto(fotoId));
+    fotoDto = getFotoService().foto(fotoId);
+    foto    = new Foto(fotoDto, getGebruikersTaal());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
     redirect(FOTO_REDIRECT);

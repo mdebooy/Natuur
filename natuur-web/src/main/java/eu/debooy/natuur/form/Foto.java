@@ -50,6 +50,13 @@ public class Foto
     taxon     = new Taxon(fotoDto.getTaxon());
     taxonSeq  = fotoDto.getTaxonSeq();
   }
+
+  public Foto(FotoDto fotoDto, String taal) {
+    fotoId    = fotoDto.getFotoId();
+    gebied    = new Gebied(fotoDto.getGebied());
+    taxon     = new Taxon(fotoDto.getTaxon(), taal);
+    taxonSeq  = fotoDto.getTaxonSeq();
+  }
   
   public Foto clone() throws CloneNotSupportedException {
     Foto  clone = (Foto) super.clone();
@@ -97,22 +104,26 @@ public class Foto
     return gewijzigd;
   }
 
-  public void persist(FotoDto parameter) {
-    if (!new EqualsBuilder().append(this.gebied, parameter.getGebied())
+  public void persist(FotoDto fotoDto) {
+    if (!new EqualsBuilder().append(gebied, fotoDto.getGebied())
                             .isEquals()) {
       GebiedDto gebiedDto = new GebiedDto();
       gebied.persist(gebiedDto);
-      parameter.setGebied(gebiedDto);
+      fotoDto.setGebied(gebiedDto);
     }
-    if (!new EqualsBuilder().append(this.taxon, parameter.getTaxon())
+    if (!new EqualsBuilder().append(taxon, fotoDto.getTaxon())
                             .isEquals()) {
       TaxonDto  taxonDto  = new TaxonDto();
       taxon.persist(taxonDto);
-      parameter.setTaxon(taxonDto);
+      fotoDto.setTaxon(taxonDto);
     }
-    if (!new EqualsBuilder().append(this.taxonSeq,
-                                    parameter.getTaxonSeq()).isEquals()) {
-      parameter.setTaxonSeq(this.taxonSeq);
+    if (!new EqualsBuilder().append(fotoId,
+                                    fotoDto.getFotoId()).isEquals()) {
+      fotoDto.setFotoId(fotoId);
+    }
+    if (!new EqualsBuilder().append(taxonSeq,
+                                    fotoDto.getTaxonSeq()).isEquals()) {
+      fotoDto.setTaxonSeq(taxonSeq);
     }
   }
 

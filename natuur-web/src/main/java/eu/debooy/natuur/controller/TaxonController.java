@@ -67,6 +67,26 @@ public class TaxonController extends Natuur {
   private TaxonnaamDto  taxonnaamDto;
 
   /**
+   * Vul 'ouder' en 'ouderNiveau' voor de gevraagde parentId.
+   * 
+   * @param parentId
+   */
+  public void bepaalOuder(Long parentId) {
+    if (null == parentId) {
+      ouder       = new Taxon();
+      ouderNiveau = Long.valueOf(0);
+    } else {
+      if (null == ouder
+          || parentId != ouder.getTaxonId()) {
+        TaxonDto  ouderDto  = getTaxonService().taxon(parentId);
+        ouder               = new Taxon(ouderDto, getGebruikersTaal());
+        ouderNiveau         = getRangService().rang(ouder.getRang())
+                                              .getNiveau();
+      }
+    }
+  }
+
+  /**
    * Prepareer een nieuw taxon.
    */
   public void create() {
@@ -241,18 +261,10 @@ public class TaxonController extends Natuur {
    * @param Long taxonId
    */
   public void retrieve(Long taxonId) {
-    aktieveTab      = KINDEREN_TAB;
-    taxonDto        = getTaxonService().taxon(taxonId);
-    taxon           = new Taxon(taxonDto, getGebruikersTaal());
-    Long  parentId  = taxon.getParentId();
-    if (null == parentId) {
-      ouder       = new Taxon();
-      ouderNiveau = Long.valueOf(0);
-    } else {
-      TaxonDto  ouderDto  = getTaxonService().taxon(parentId);
-      ouder               = new Taxon(ouderDto, getGebruikersTaal());
-      ouderNiveau         = getRangService().rang(ouder.getRang()).getNiveau();
-    }
+    aktieveTab  = KINDEREN_TAB;
+    taxonDto    = getTaxonService().taxon(taxonId);
+    taxon       = new Taxon(taxonDto, getGebruikersTaal());
+    bepaalOuder(taxon.getParentId());
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel(taxon.getNaam());
     redirect(TAXON_REDIRECT);
@@ -271,20 +283,8 @@ public class TaxonController extends Natuur {
     try {
       taxon.persist(taxonDto);
       getTaxonService().save(taxonDto);
-      aktieveTab      = KINDEREN_TAB;
-      Long  parentId  = taxon.getParentId();
-      if (null == parentId) {
-        ouder       = new Taxon();
-        ouderNiveau = Long.valueOf(0);
-      } else {
-        if (null == ouder
-            || parentId != ouder.getTaxonId()) {
-          TaxonDto  ouderDto  = getTaxonService().taxon(parentId);
-          ouder               = new Taxon(ouderDto, getGebruikersTaal());
-          ouderNiveau         = getRangService().rang(ouder.getRang())
-                                                .getNiveau();
-        }
-      }
+      aktieveTab    = KINDEREN_TAB;
+      bepaalOuder(taxon.getParentId());
       String  naam  = taxon.getNaam();
       switch (getAktie().getAktie()) {
       case PersistenceConstants.CREATE:
@@ -331,6 +331,17 @@ public class TaxonController extends Natuur {
         taxon.setNaam(taxonnaam.getNaam());
       }
       getTaxonService().save(taxonDto);
+      switch (getDetailAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        addInfo(PersistenceConstants.CREATED, "'" + taxonnaam.getTaal() + "'");
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, "'" + taxonnaam.getTaal() + "'");
+        break;
+      default:
+        addError("error.aktie.wrong", getDetailAktie().getAktie()) ;
+        break;
+      }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxonnaam.getTaal());
       return;
