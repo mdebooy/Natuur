@@ -8,7 +8,7 @@
   </parent>
   <groupId>eu.debooy.natuur</groupId>
   <artifactId>natuur</artifactId>
-  <version>1.1.0</version>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <name>Natuur</name>
   <description>Waarnemingen in de natuur.</description>
@@ -16,7 +16,7 @@
   <scm>
     <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</developerConnection>
     <connection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</connection>
-    <tag>natuur-1.1.0</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <developers>
