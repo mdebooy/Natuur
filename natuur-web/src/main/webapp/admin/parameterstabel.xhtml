@@ -21,12 +21,15 @@
       <t:dataList var="parameter" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" />
+            <h:commandLink action="#{natuurAppParam.update(parameter.sleutel)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
           </td>
           <td>#{i18nTeksten.tekst(parameter.parameter)}</td>
           <td>
-            <t:div rendered="#{parameter.sleutel!='natuur.default.landid'}">
+            <t:div rendered="#{parameter.sleutel!='natuur.default.gebiedid' and parameter.sleutel!='natuur.default.landid'}">
               #{parameter.waarde}
+            </t:div>
+            <t:div rendered="#{parameter.sleutel=='natuur.default.gebiedid'}">
+              #{natuurGebied.gebied(parameter.waarde)}
             </t:div>
             <t:div rendered="#{parameter.sleutel=='natuur.default.landid'}">
               #{i18nLandnaam.landnaam(parameter.waarde)}
