@@ -25,17 +25,13 @@
           <div class="form-group form-group-sm">
             <label for="taxon" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
             <div class="col-sm-5">
-              <h:selectOneMenu id="taxon" styleClass="form-control" value="#{natuurFoto.foto.taxon}" converter="TaxonConverter" >
-                <t:selectItems value="#{natuurWaarneming.selectWaarnemingen}" />
-              </h:selectOneMenu>
+              <d:listbox id="taxon" value="#{natuurFoto.foto.taxon}" readonly="#{natuurFoto.aktie.readonly}" converter="TaxonConverter" items="#{natuurWaarneming.selectWaarnemingen}" />
             </div>
           </div>
           <div class="form-group form-group-sm">
             <label for="gebied" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
             <div class="col-sm-5">
-              <h:selectOneMenu id="gebied" styleClass="form-control" value="#{natuurFoto.foto.gebied}" converter="GebiedConverter" >
-                <t:selectItems value="#{natuurGebied.selectGebieden}" />
-              </h:selectOneMenu>
+              <d:listbox id="gebied" value="#{natuurFoto.foto.gebied}" readonly="#{natuurFoto.aktie.readonly}" converter="GebiedConverter" items="#{natuurGebied.selectGebieden}" />
             </div>
           </div>
 

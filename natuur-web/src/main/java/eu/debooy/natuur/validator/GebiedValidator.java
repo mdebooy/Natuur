@@ -38,14 +38,15 @@ public final class GebiedValidator {
   public static List<Message> valideer(Gebied gebied) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    String  waarde  = gebied.getNaam();
-    if (DoosUtils.isBlankOrNull(waarde)) {
+    String  waarde  = DoosUtils.nullToEmpty(gebied.getNaam());
+    if (waarde.length() < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.gebied"));
-    }
-    if (waarde.length() > 255) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.gebied", 255));
+    } else {
+      if (waarde.length() > 255) {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                               "_I18N.label.gebied", 255));
+      }
     }
 
     return fouten;

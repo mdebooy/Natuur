@@ -34,9 +34,9 @@
             <h:commandLink onclick="confirmatie(this, '#{natuurWaarneming.formateerDatum(waarneming.datum)} - #{waarneming.taxon.naam}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
             <h:commandLink action="#" actionFor="#{form}" disabled="true" rendered="#{!empty waarneming.opmerking}"><img src="/common/images/16x16/status/dialog-information.svg" alt="#{img.info}" title="#{waarneming.opmerking}" /></h:commandLink>
           </td>
-          <td class="text-center">
+          <td class="text-center" data-order="#{waarneming.sorteerdatum}">
             <t:outputText value="#{waarneming.datum}">
-              <f:convertDateTime pattern="dd/MM/yy" timeZone="#{gebruiker.timeZone}" />
+              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
             </t:outputText></td>
           <td class="text-right">#{waarneming.aantal}</td>
           <td>#{waarneming.taxon.naam}</td>

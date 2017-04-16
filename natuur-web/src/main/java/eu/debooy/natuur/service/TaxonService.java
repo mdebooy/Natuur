@@ -78,7 +78,7 @@ public class TaxonService {
         kinderen.add(new Taxon(taxonDto));
       }
     } catch (ObjectNotFoundException e) {
-      // No problem.
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return kinderen;
@@ -98,7 +98,7 @@ public class TaxonService {
         kinderen.add(new Taxon(rij, taal));
       }
     } catch (ObjectNotFoundException e) {
-      // No problem.
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return kinderen;
@@ -116,7 +116,7 @@ public class TaxonService {
     try {
       ouders  = taxonDao.getOuders(kind);
     } catch (ObjectNotFoundException e) {
-      // No problem.
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return ouders;

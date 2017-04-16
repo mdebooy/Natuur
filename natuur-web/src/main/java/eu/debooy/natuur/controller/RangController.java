@@ -206,7 +206,6 @@ public class RangController extends Natuur {
     List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query(niveau));
-    LOGGER.debug("#rangen > niveau " + niveau + ": " + rijen.size());
     for (Rang rij : rijen) {
       items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
     }

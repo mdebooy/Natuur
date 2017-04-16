@@ -26,7 +26,9 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
+import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.WaarnemingValidator;
@@ -66,10 +68,14 @@ public class WaarnemingController extends Natuur {
    * Prepareer een nieuwe Waarneming.
    */
   public void create() {
+    GebiedDto gebied  = getGebiedService().gebied(
+        Long.valueOf(getParameter("natuur.default.gebiedid")));
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setDatum(new Date());
+    waarnemingDto.setGebied(gebied);
     waarneming    = new Waarneming();
     waarneming.setDatum(waarnemingDto.getDatum());
+    waarneming.setGebied(new Gebied(gebied));
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.waarneming.create");
     redirect(WAARNEMING_REDIRECT);
@@ -214,7 +220,7 @@ public class WaarnemingController extends Natuur {
     exportData.addMetadata("application", getApplicatieNaam());
     exportData.addMetadata("auteur",      getGebruikerNaam());
     exportData.addMetadata("lijstnaam",   "waarnemingen");
-    exportData.setKleuren(getLijstKleuren());
+    exportData.setParameters(getLijstParameters());
 
     exportData.setKolommen(new String[] { "parentNaam", "parentLatijnsenaam",
                                           "naam", "latijnsenaam" });

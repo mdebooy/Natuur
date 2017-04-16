@@ -86,7 +86,7 @@ public class FotoOverzichtDto
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
-  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> taxonnamen  =
       new HashMap<String, TaxonnaamDto>();

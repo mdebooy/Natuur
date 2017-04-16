@@ -95,7 +95,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   }
 
   /**
-   * Sorteren op de naam van het taxon.
+   * Sorteren op de naam van het taxon. De Latijnsenaam is toegevoegd om
+   * dubbele namen niet te laten verdwijnen in een Map.
    */
   public static class NaamComparator
       implements Comparator<TaxonDto>, Serializable {
@@ -108,7 +109,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
     }
 
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return taxonDto1.getNaam(taal).compareTo(taxonDto2.getNaam(taal));
+      return new CompareToBuilder().append(taxonDto1.getNaam(taal),
+                                           taxonDto2.getNaam(taal))
+                                   .append(taxonDto1.getLatijnsenaam(),
+                                           taxonDto2.getLatijnsenaam())
+                                   .toComparison();
     }
   }
 

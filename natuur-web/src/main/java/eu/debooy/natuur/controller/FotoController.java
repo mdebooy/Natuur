@@ -27,8 +27,10 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.form.Foto;
+import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.FotoValidator;
 
 import java.util.Collection;
@@ -62,8 +64,12 @@ public class FotoController extends Natuur {
    * Prepareer een nieuwe Foto.
    */
   public void create() {
+    GebiedDto gebied  = getGebiedService().gebied(
+        Long.valueOf(getParameter("natuur.default.gebiedid")));
     foto    = new Foto();
+    foto.setGebied(new Gebied(gebied));
     fotoDto = new FotoDto();
+    fotoDto.setGebied(gebied);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.foto.create");
     redirect(FOTO_REDIRECT);
@@ -99,7 +105,7 @@ public class FotoController extends Natuur {
     exportData.addMetadata("application", getApplicatieNaam());
     exportData.addMetadata("auteur",      getGebruikerNaam());
     exportData.addMetadata("lijstnaam",   "fotolijst");
-    exportData.setKleuren(getLijstKleuren());
+    exportData.setParameters(getLijstParameters());
 
     exportData.setKolommen(new String[] { "klasseNaam", "klasseLatijnsenaam",
                                           "sequence", "land",

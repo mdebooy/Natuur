@@ -134,15 +134,26 @@ public class Foto
     }
   }
 
-  public void setGebied(Gebied gebied) throws CloneNotSupportedException {
+  public void setGebied(Gebied gebied) {
     if (!new EqualsBuilder().append(this.gebied, gebied).isEquals()) {
       gewijzigd   = true;
-      this.gebied = gebied;
+      try {
+        this.gebied = gebied.clone();
+      } catch (CloneNotSupportedException e) {
+        this.gebied = gebied;
+      }
     }
   }
 
-  public void setTaxon(Taxon taxon) throws CloneNotSupportedException {
-    this.taxon = taxon.clone();
+  public void setTaxon(Taxon taxon) {
+    if (!new EqualsBuilder().append(this.taxon, taxon).isEquals()) {
+      gewijzigd   = true;
+      try {
+        this.taxon = taxon.clone();
+      } catch (CloneNotSupportedException e) {
+        this.taxon = taxon;
+      }
+    }
   }
 
   public void setTaxonSeq(Long taxonSeq) {

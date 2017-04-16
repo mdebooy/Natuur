@@ -289,3 +289,27 @@ COMMENT ON COLUMN NATUUR.WAARNEMINGEN.WAARNEMING_ID IS 'De sleutel van de waarne
 
 -- Default waardes
 INSERT INTO NATUUR.GEBIEDEN VALUES (0,0,'Onbekend');
+
+INSERT INTO rangen
+  VALUES (1 , 'le'),
+         (2 , 'do'),
+         (3 , 'ri'),
+         (4 , 'ori'),
+         (5 , 'st'),
+         (6 , 'ost'),
+         (7 , 'ist'),
+         (8 , 'kl'),
+         (9 , 'okl'),
+         (10, 'sor'),
+         (11, 'or'),
+         (12, 'oor'),
+         (13, 'ior'),
+         (14, 'sfa'),
+         (15, 'fa'),
+         (16, 'ofa'),
+         (17, 'ta'),
+         (18, 'ota'),
+         (19, 'ge'),
+         (20, 'oge'),
+         (21, 'so'),
+         (22, 'oso');

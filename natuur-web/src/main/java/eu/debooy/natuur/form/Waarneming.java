@@ -16,12 +16,15 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -138,6 +141,18 @@ public class Waarneming extends Formulier
 
   public String getOpmerking() {
     return opmerking;
+  }
+
+  public String getSorteerdatum() {
+    if (null == datum) {
+      return "";
+    }
+
+    try {
+      return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
+    } catch (ParseException e) {
+      return "????????";
+    }
   }
 
   public Taxon getTaxon() {

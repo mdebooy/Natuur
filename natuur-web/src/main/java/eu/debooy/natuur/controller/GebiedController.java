@@ -83,6 +83,15 @@ public class GebiedController extends Natuur {
   }
 
   /**
+   * Geef de naam van het gevraagde gebied.
+   * 
+   * @return String
+   */
+  public String gebied(Long gebiedId) {
+    return getGebiedService().gebied(gebiedId).getNaam();
+  }
+
+  /**
    * Geef het geselecteerde gebied.
    * 
    * @return Gebied
@@ -117,6 +126,22 @@ public class GebiedController extends Natuur {
   }
 
   /**
+   * Geef alle gebieden als SelectItems.
+   * 
+   * @return
+   */
+  public Collection<SelectItem> getSelectGebiedenId() {
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    Set<Gebied>       rijen = new TreeSet<Gebied>(new Gebied.NaamComparator());
+    rijen.addAll(getGebiedService().query());
+    for (Gebied rij : rijen) {
+      items.add(new SelectItem(rij.getGebiedId(), rij.getNaam()));
+    }
+
+    return items;
+  }
+
+  /**
    * Persist het Gebied
    * 
    * @param Gebied
@@ -130,6 +155,17 @@ public class GebiedController extends Natuur {
 
     try {
       getGebiedService().save(gebied);
+      switch (getAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        addInfo(PersistenceConstants.CREATED, gebied.getNaam());
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
+        break;
+      default:
+        addError("error.aktie.wrong", getAktie().getAktie());
+        break;
+      }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, gebied.getNaam());
       return;

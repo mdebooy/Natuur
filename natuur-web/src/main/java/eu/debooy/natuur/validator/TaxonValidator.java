@@ -38,8 +38,8 @@ public final class TaxonValidator {
   public static List<Message> valideer(Taxon taxon) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    String  waarde  = taxon.getLatijnsenaam();
-    if (DoosUtils.isBlankOrNull(waarde)) {
+    String  waarde  = DoosUtils.nullToEmpty(taxon.getLatijnsenaam());
+    if (waarde.length() < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.latijnsenaam"));
     } else if (waarde.length() > 255) {

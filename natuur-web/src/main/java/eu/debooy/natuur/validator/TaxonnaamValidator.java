@@ -37,14 +37,15 @@ public final class TaxonnaamValidator {
    */
   public static List<Message> valideer(Taxonnaam taxonnaam) {
     List<Message> fouten  = new ArrayList<Message>();
-    String        waarde  = taxonnaam.getNaam();
-    if (DoosUtils.isBlankOrNull(waarde)) {
+    String        waarde  = DoosUtils.nullToEmpty(taxonnaam.getNaam());
+    if (waarde.length() < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.naam"));
-    }
-    if (waarde.length() > 255) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             new Object[] {"_I18N.label.naam", 255}));
+    } else {
+      if (waarde.length() > 255) {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                               new Object[] {"_I18N.label.naam", 255}));
+      }
     }
 
     return fouten;

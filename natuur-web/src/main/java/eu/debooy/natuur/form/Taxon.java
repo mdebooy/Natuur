@@ -83,15 +83,6 @@ public class Taxon
     taxonId             = detailDto.getTaxonId();
   }
 
-  public static class NaamComparator
-      implements Comparator<Taxon>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    public int compare(Taxon taxon1, Taxon taxon2) {
-      return taxon1.getNaam().compareTo(taxon2.getNaam());
-    }
-  }
-
   public static class LatijnsenaamComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
@@ -113,6 +104,19 @@ public class Taxon
           taxonDto2.getParentNaam())
                                    .append(taxonDto1.getNaam(),
                                        taxonDto2.getNaam())
+                                   .toComparison();
+    }
+  }
+
+  public static class NaamComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    public int compare(Taxon taxon1, Taxon taxon2) {
+      return new CompareToBuilder().append(taxon1.getNaam(),
+                                           taxon2.getNaam())
+                                   .append(taxon1.getLatijnsenaam(),
+                                           taxon2.getLatijnsenaam())
                                    .toComparison();
     }
   }

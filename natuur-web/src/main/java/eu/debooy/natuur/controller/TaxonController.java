@@ -76,13 +76,9 @@ public class TaxonController extends Natuur {
       ouder       = new Taxon();
       ouderNiveau = Long.valueOf(0);
     } else {
-      if (null == ouder
-          || parentId != ouder.getTaxonId()) {
-        TaxonDto  ouderDto  = getTaxonService().taxon(parentId);
-        ouder               = new Taxon(ouderDto, getGebruikersTaal());
-        ouderNiveau         = getRangService().rang(ouder.getRang())
-                                              .getNiveau();
-      }
+      ouder       = new Taxon(getTaxonService().taxon(parentId),
+                              getGebruikersTaal());
+      ouderNiveau = getRangService().rang(ouder.getRang()).getNiveau();
     }
   }
 
@@ -120,7 +116,9 @@ public class TaxonController extends Natuur {
   public void createTaxonnaam() {
     aktieveTab    = NAMEN_TAB;
     taxonnaam     = new Taxonnaam();
+    taxonnaam.setTaal(getGebruikersTaal());
     taxonnaamDto  = new TaxonnaamDto();
+    taxonnaamDto.setTaal(getGebruikersTaal());
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel("natuur.titel.taxonnaam.create");
     redirect(TAXONNAAM_REDIRECT);
@@ -290,7 +288,7 @@ public class TaxonController extends Natuur {
       case PersistenceConstants.CREATE:
         taxon.setTaxonId(taxonDto.getTaxonId());
         addInfo(PersistenceConstants.CREATED, naam);
-        setAktie(PersistenceConstants.RETRIEVE);
+        setAktie(PersistenceConstants.UPDATE);
         setSubTitel(naam);
         break;
       case PersistenceConstants.UPDATE:
@@ -369,8 +367,8 @@ public class TaxonController extends Natuur {
     } else {
       niveau  = getRangService().rang(rang).getNiveau();
     }
-    List<SelectItem>  items           = new LinkedList<SelectItem>();
-    Set<TaxonDto>     rijen           =
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    Set<TaxonDto>     rijen =
         new TreeSet<TaxonDto>(new TaxonDto.NaamComparator());
     rijen.addAll(getTaxonService().getOuders(niveau));
     for (TaxonDto rij : rijen) {
@@ -388,11 +386,10 @@ public class TaxonController extends Natuur {
    * @param Long taxonId
    */
   public void update(Long taxonId) {
-    aktieveTab        = KINDEREN_TAB;
-    taxonDto          = getTaxonService().taxon(taxonId);
-    taxon             = new Taxon(taxonDto, getGebruikersTaal());
-    String  ouderRang = getTaxonService().taxon(taxon.getParentId()).getRang();
-    ouderNiveau       = getRangService().rang(ouderRang).getNiveau();
+    aktieveTab  = KINDEREN_TAB;
+    taxonDto    = getTaxonService().taxon(taxonId);
+    taxon       = new Taxon(taxonDto, getGebruikersTaal());
+    bepaalOuder(taxon.getParentId());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.taxon.update");
     redirect(TAXON_REDIRECT);
