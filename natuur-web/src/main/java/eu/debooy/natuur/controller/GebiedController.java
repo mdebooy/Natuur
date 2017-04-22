@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -163,22 +164,18 @@ public class GebiedController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
         break;
       default:
-        addError("error.aktie.wrong", getAktie().getAktie());
+        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
         break;
       }
+      redirect(GEBIEDEN_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, gebied.getNaam());
-      return;
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
-      return;
     }
-
-    redirect(GEBIEDEN_REDIRECT);
   }
 
   /**

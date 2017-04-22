@@ -18,6 +18,7 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
+import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -27,8 +28,8 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
-import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
+import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.FotoValidator;
@@ -192,22 +193,18 @@ public class FotoController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, melding);
         break;
       default:
-        addError("error.aktie.wrong", getAktie().getAktie()) ;
+        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
         break;
       }
+      redirect(FOTOS_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, melding);
-      return;
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, melding);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
-      return;
     }
-
-    redirect(FOTOS_REDIRECT);
   }
 
   /**

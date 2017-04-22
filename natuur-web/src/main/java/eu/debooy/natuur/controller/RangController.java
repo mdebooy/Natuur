@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -178,22 +179,18 @@ public class RangController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
         break;
       default:
-        addError("error.aktie.wrong", getAktie().getAktie()) ;
+        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
         break;
       }
+      redirect(RANGEN_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, rang.getRang());
-      return;
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, rang.getRang());
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
-      return;
     }
-
-    redirect(RANGEN_REDIRECT);
   }
 
   /**

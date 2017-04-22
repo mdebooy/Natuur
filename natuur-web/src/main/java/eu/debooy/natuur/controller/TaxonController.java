@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -295,7 +296,7 @@ public class TaxonController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, naam);
         break;
       default:
-        addError("error.aktie.wrong", getAktie().getAktie());
+        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
         break;
       }
     } catch (DuplicateObjectException e) {
@@ -337,22 +338,19 @@ public class TaxonController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, "'" + taxonnaam.getTaal() + "'");
         break;
       default:
-        addError("error.aktie.wrong", getDetailAktie().getAktie()) ;
+        addError(ComponentsConstants.WRONGREDIRECT,
+                 getDetailAktie().getAktie()) ;
         break;
       }
+      redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxonnaam.getTaal());
-      return;
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
-      return;
     }
-
-    redirect(TAXON_REDIRECT);
   }
 
   /**
