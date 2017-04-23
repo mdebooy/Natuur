@@ -301,14 +301,11 @@ public class TaxonController extends Natuur {
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxon.getLatijnsenaam());
-      return;
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxon.getNaam());
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error("RT: " + e.getLocalizedMessage(), e);
       generateExceptionMessage(e);
-      return;
     }
   }
 
