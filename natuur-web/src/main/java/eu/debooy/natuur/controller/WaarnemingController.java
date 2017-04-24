@@ -241,14 +241,11 @@ public class WaarnemingController extends Natuur {
                                           .getExternalContext().getResponse();
     try {
       Export.export(response, exportData);
+      FacesContext.getCurrentInstance().responseComplete();
     } catch (IllegalArgumentException e) {
       generateExceptionMessage(e);
-      return;
     } catch (TechnicalException e) {
       generateExceptionMessage(e);
-      return;
     }
-
-    FacesContext.getCurrentInstance().responseComplete();
   }
 }
