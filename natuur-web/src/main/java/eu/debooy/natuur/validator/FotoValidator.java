@@ -16,6 +16,8 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.DoosUtils;
+import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.form.Foto;
 
@@ -32,9 +34,30 @@ public final class FotoValidator {
 
   /**
    * Valideer de Foto.
+   * 
+   * @param Foto foto 
+   * @return List<Message>
    */
   public static List<Message> valideer(Foto foto) {
     List<Message> fouten  = new ArrayList<Message>();
+
+    Long  seq = foto.getGebied().getGebiedId();
+    if (DoosUtils.isBlankOrNull(seq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.gebied"));
+    }
+
+    seq = foto.getTaxon().getTaxonId();
+    if (DoosUtils.isBlankOrNull(seq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.soort"));
+    }
+
+    seq = foto.getTaxonSeq();
+    if (DoosUtils.isBlankOrNull(seq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.seq"));
+    }
 
     return fouten;
   }
