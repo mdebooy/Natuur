@@ -144,17 +144,17 @@ WITH RECURSIVE q AS (
   SELECT hi.*::natuur.taxa AS hi, q_1.level + 1 AS level, q_1.breadcrumb || hi.taxon_id
   FROM   q q_1
            JOIN natuur.taxa hi ON hi.parent_id = (q_1.h).taxon_id)
-SELECT   (q.h).taxon_id AS taxon_id, (q.h).parent_id AS parent_id, (q.h).rang AS rang,
-         (q.h).naam AS naam, (q.h).latijnsenaam AS latijnsenaam,
+SELECT   (q.h).taxon_id AS taxon_id, (q.h).parent_id AS parent_id,
+         (q.h).rang AS rang, (q.h).latijnsenaam AS latijnsenaam,
          (q.h).opmerking AS opmerking, q.level,
          q.breadcrumb AS path
 FROM     q
 ORDER BY q.breadcrumb;
 
 CREATE OR REPLACE VIEW natuur.details AS
-SELECT   p.taxon_id AS parent_id, p.rang AS parent_rang, p.naam AS parent_naam,
+SELECT   p.taxon_id AS parent_id, p.rang AS parent_rang,
          p.latijnsenaam AS parent_latijnsenaam,
-         r.niveau, t.taxon_id, t.rang, t.naam, t.latijnsenaam, t.opmerking,
+         r.niveau, t.taxon_id, t.rang, t.latijnsenaam, t.opmerking,
          CASE WHEN f.aantal IS NULL THEN 0 ELSE 1 END op_foto
 FROM     natuur.taxonomie t
            JOIN natuur.taxa p
@@ -270,12 +270,11 @@ COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU              IS 'Het niveau rang binnen d
 COMMENT ON COLUMN NATUUR.RANGEN.RANG                IS 'De rang van een taxon.';
 COMMENT ON TABLE  NATUUR.TAXA                       IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
 COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM          IS 'De latijnse naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.NAAM                  IS 'De nederlandse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.OPMERKING             IS 'Een opmerking voor deze taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID             IS 'De parent van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.RANG                  IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID              IS 'De sleutel van de taxon.';
-COMMENT ON TABLE  NATUUR.TAXONNAMEN                 IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
+COMMENT ON TABLE  NATUUR.TAXONNAMEN                 IS 'Deze tabel bevat de namen van de TAXA in verschillende talen.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM            IS 'De naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL            IS 'De taal.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID        IS 'De sleutel van de taxon.';
