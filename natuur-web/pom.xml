@@ -34,14 +34,6 @@
       <artifactId>doosutils-persistence</artifactId>
     </dependency>
     <dependency>
-      <groupId>eu.debooy.doosutils</groupId>
-      <artifactId>doosutils-util</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>eu.debooy.doosutils</groupId>
-      <artifactId>doosutils-web</artifactId>
-    </dependency>
-    <dependency>
       <groupId>eu.debooy.sedes</groupId>
       <artifactId>sedes-components</artifactId>
     </dependency>
