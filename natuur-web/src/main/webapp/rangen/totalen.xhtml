@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html  lang="#{gebruiker.locale.language}"
       xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
    xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -11,14 +10,14 @@
         $(document).ready(function() {
           $('#totalenTabel').dataTable( {
             "order": [[0, "asc"]],
-            "columns": [
-                      { "orderable": true },
-                      { "orderable": true },
-                      { "orderable": true },
-                      { "orderable": true }
-                  ],
+            "columns": [{ "orderable": true },
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": true }],
             "pagingType": "full_numbers",
-            "lengthMenu": #{i18nTeksten.tekst('pager.rijen.per.pagina')},
+            "pageLength": #{properties.appValue('natuur.pagelength')},
+            "lengthChange": false,
+            "stateSave": true,
             "language": {
               "paginate": {
                 "first": "#{i18nTeksten.tekst('pager.paginate.first')}",
@@ -26,7 +25,6 @@
                 "next": "#{i18nTeksten.tekst('pager.paginate.next')}",
                 "previous": "#{i18nTeksten.tekst('pager.paginate.previous')}"
               },
-              "lengthMenu": "#{i18nTeksten.tekst('pager.length.menu')}",
               "search": "#{i18nTeksten.tekst('pager.search')}",
               "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
               "info": "#{i18nTeksten.tekst('pager.info')}",

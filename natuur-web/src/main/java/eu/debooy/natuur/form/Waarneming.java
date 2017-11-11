@@ -36,10 +36,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Waarneming extends Formulier
-    implements Cloneable, Comparable<Waarneming>, Serializable {
+    implements Comparable<Waarneming>, Serializable {
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private Integer aantal;
   private Date    datum;
@@ -49,6 +47,15 @@ public class Waarneming extends Formulier
   private Long    waarnemingId;
 
   public Waarneming() {}
+
+  public Waarneming(Waarneming waarneming) {
+    aantal        = waarneming.getAantal();
+    datum         = waarneming.getDatum();
+    gebied        = new Gebied(waarneming.getGebied());
+    opmerking     = waarneming.getOpmerking();
+    taxon         = new Taxon(waarneming.getTaxon());
+    waarnemingId  = waarneming.getWaarnemingId();
+  }
 
   public Waarneming(WaarnemingDto waarnemingDto) {
     aantal        = waarnemingDto.getAantal();
@@ -66,12 +73,6 @@ public class Waarneming extends Formulier
     opmerking     = waarnemingDto.getOpmerking();
     taxon         = new Taxon(waarnemingDto.getTaxon(), taal);
     waarnemingId  = waarnemingDto.getWaarnemingId();
-  }
-
-  public Waarneming clone() throws CloneNotSupportedException {
-    Waarneming  clone = (Waarneming) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Waarneming andere) {
@@ -94,10 +95,6 @@ public class Waarneming extends Formulier
 
   public int hashCode() {
     return new HashCodeBuilder().append(waarnemingId).toHashCode();
-  }
-
-  public boolean isGewijzigd() {
-    return gewijzigd;
   }
 
   public void persist(WaarnemingDto waarnemingDto) {
@@ -132,7 +129,11 @@ public class Waarneming extends Formulier
   }
 
   public Date getDatum() {
-    return datum;
+    if (null == datum) {
+      return null;
+    }
+
+    return new Date(datum.getTime());
   }
 
   public Gebied getGebied() {
@@ -168,7 +169,11 @@ public class Waarneming extends Formulier
   }
 
   public void setDatum(Date datum) {
-    this.datum = datum;
+    if (null == datum) {
+      this.datum  = null;
+    } else {
+      this.datum  = new Date(datum.getTime());
+    }
   }
 
   public void setGebied(Gebied gebied) {
@@ -176,11 +181,11 @@ public class Waarneming extends Formulier
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking = opmerking;
+    this.opmerking  = opmerking;
   }
 
   public void setTaxon(Taxon taxon) {
-    this.taxon = taxon;
+    this.taxon  = taxon;
   }
 
   public void setWaarnemingId(Long waarnemingId) {

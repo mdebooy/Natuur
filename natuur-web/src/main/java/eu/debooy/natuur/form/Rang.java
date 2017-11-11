@@ -31,15 +31,18 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Rang
-    extends Formulier implements Cloneable, Comparable<Rang>, Serializable {
+    extends Formulier implements Comparable<Rang>, Serializable {
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private Long    niveau;
   private String  rang;
 
   public Rang() {}
+
+  public Rang(Rang rang) {
+    niveau    = rang.getNiveau();
+    this.rang = rang.getRang();
+  }
 
   public Rang(RangDto rangDto) {
     niveau  = rangDto.getNiveau();
@@ -53,12 +56,6 @@ public class Rang
     public int compare(Rang rang1, Rang rang2) {
       return rang1.niveau.compareTo(rang2.niveau);
     }
-  }
-  
-  public Rang clone() throws CloneNotSupportedException {
-    Rang  clone = (Rang) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Rang andere) {
@@ -88,10 +85,6 @@ public class Rang
 
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
-  }
-
-  public boolean isGewijzigd() {
-    return gewijzigd;
   }
 
   public void persist(RangDto parameter) {

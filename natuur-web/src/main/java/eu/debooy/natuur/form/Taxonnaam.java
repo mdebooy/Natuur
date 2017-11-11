@@ -31,10 +31,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Taxonnaam
-    extends Formulier implements Cloneable, Comparable<Taxonnaam>, Serializable{
+    extends Formulier implements Comparable<Taxonnaam>, Serializable{
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private String  taal;
   private Long    taxonId;
@@ -42,10 +40,16 @@ public class Taxonnaam
 
   public Taxonnaam() {}
 
-  public Taxonnaam(TaxonnaamDto naamDto) {
-    taal    = naamDto.getTaal();
-    taxonId = naamDto.getTaxonId();
-    naam    = naamDto.getNaam();
+  public Taxonnaam(Taxonnaam taxonnaam) {
+    taal    = taxonnaam.getTaal();
+    taxonId = taxonnaam.getTaxonId();
+    naam    = taxonnaam.getNaam();
+  }
+
+  public Taxonnaam(TaxonnaamDto taxonnaamDto) {
+    taal    = taxonnaamDto.getTaal();
+    taxonId = taxonnaamDto.getTaxonId();
+    naam    = taxonnaamDto.getNaam();
   }
 
   public static class NaamComparator
@@ -56,12 +60,6 @@ public class Taxonnaam
                        Taxonnaam naam2) {
       return naam1.naam.compareTo(naam2.naam);
     }
-  }
-
-  public Taxonnaam clone() throws CloneNotSupportedException {
-    Taxonnaam  clone = (Taxonnaam) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Taxonnaam andere) {
@@ -97,10 +95,6 @@ public class Taxonnaam
 
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).append(taal).toHashCode();
-  }
-
-  public boolean isGewijzigd() {
-    return gewijzigd;
   }
 
   public void persist(TaxonnaamDto parameter) {

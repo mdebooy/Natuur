@@ -31,16 +31,20 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Gebied
-    extends Formulier implements Cloneable, Comparable<Gebied>, Serializable {
+    extends Formulier implements Comparable<Gebied>, Serializable {
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private Long    gebiedId;
   private Long    landId;
   private String  naam;
 
   public Gebied() {}
+
+  public Gebied(Gebied gebied) {
+    gebiedId  = gebied.getGebiedId();
+    landId    = gebied.getLandId();
+    naam      = gebied.getNaam();
+  }
 
   public Gebied(GebiedDto gebiedDto) {
     gebiedId  = gebiedDto.getGebiedId();
@@ -55,12 +59,6 @@ public class Gebied
     public int compare(Gebied gebied1, Gebied gebied2) {
       return gebied1.naam.compareTo(gebied2.naam);
     }
-  }
-  
-  public Gebied clone() throws CloneNotSupportedException {
-    Gebied clone = (Gebied) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Gebied andere) {
@@ -94,10 +92,6 @@ public class Gebied
 
   public int hashCode() {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
-  }
-
-  public boolean isGewijzigd() {
-    return gewijzigd;
   }
 
   public void persist(GebiedDto parameter) {

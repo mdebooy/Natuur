@@ -28,7 +28,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Rangtotaal
-    extends Formulier implements Cloneable, Comparable<Rangtotaal>, Serializable {
+    extends Formulier implements Comparable<Rangtotaal>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private String  latijnsenaam;
@@ -42,12 +42,6 @@ public class Rangtotaal
     latijnsenaam  = (String) rij[1];
     totaal        = (Long)   rij[2];
     opFoto        = (Long)   rij[3];
-  }
-
-  public Rang clone() throws CloneNotSupportedException {
-    Rang  clone = (Rang) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Rangtotaal andere) {

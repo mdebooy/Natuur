@@ -32,10 +32,8 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Foto
-    extends Formulier implements Cloneable, Comparable<Foto>, Serializable {
+    extends Formulier implements Comparable<Foto>, Serializable {
   private static final  long  serialVersionUID  = 1L;
-
-  private boolean gewijzigd = false;
 
   private Long    fotoId;
   private Gebied  gebied;
@@ -43,6 +41,13 @@ public class Foto
   private Long    taxonSeq;
 
   public Foto() {}
+
+  public Foto(Foto foto) {
+    fotoId    = foto.getFotoId();
+    gebied    = new Gebied(foto.getGebied());
+    taxon     = new Taxon(foto.getTaxon());
+    taxonSeq  = foto.getTaxonSeq();
+  }
 
   public Foto(FotoDto fotoDto) {
     fotoId    = fotoDto.getFotoId();
@@ -56,12 +61,6 @@ public class Foto
     gebied    = new Gebied(fotoDto.getGebied());
     taxon     = new Taxon(fotoDto.getTaxon(), taal);
     taxonSeq  = fotoDto.getTaxonSeq();
-  }
-  
-  public Foto clone() throws CloneNotSupportedException {
-    Foto  clone = (Foto) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Foto andere) {
@@ -100,10 +99,6 @@ public class Foto
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
-  public boolean isGewijzigd() {
-    return gewijzigd;
-  }
-
   public void persist(FotoDto fotoDto) {
     if (!new EqualsBuilder().append(gebied, fotoDto.getGebied())
                             .isEquals()) {
@@ -137,34 +132,22 @@ public class Foto
   public void setGebied(Gebied gebied) {
     if (!new EqualsBuilder().append(this.gebied, gebied).isEquals()) {
       gewijzigd   = true;
-      try {
-        this.gebied = gebied.clone();
-      } catch (CloneNotSupportedException e) {
-        this.gebied = gebied;
-      }
+      this.gebied = new Gebied(gebied);
     }
   }
 
   public void setTaxon(Taxon taxon) {
     if (!new EqualsBuilder().append(this.taxon, taxon).isEquals()) {
-      gewijzigd   = true;
-      try {
-        this.taxon = taxon.clone();
-      } catch (CloneNotSupportedException e) {
-        this.taxon = taxon;
-      }
+      gewijzigd  = true;
+      this.taxon = new Taxon(taxon);
     }
   }
 
   public void setTaxonSeq(Long taxonSeq) {
     if (!new EqualsBuilder().append(this.taxonSeq, taxonSeq)
                             .isEquals()) {
-      gewijzigd = true;
-      if (null == taxonSeq) {
-        this.taxonSeq = null;
-      } else {
-        this.taxonSeq = taxonSeq;
-      }
+      gewijzigd     = true;
+      this.taxonSeq = taxonSeq;
     }
   }
 }

@@ -33,7 +33,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  * @author Marco de Booij
  */
 public class Taxon
-    extends Formulier implements Cloneable, Comparable<Taxon>, Serializable {
+    extends Formulier implements Comparable<Taxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private String              latijnsenaam;
@@ -46,6 +46,17 @@ public class Taxon
   private Long                taxonId;
 
   public Taxon() {}
+
+  public Taxon(Taxon taxon) {
+    latijnsenaam        = taxon.getLatijnsenaam();
+    naam                = taxon.getNaam();
+    opmerking           = taxon.getOpmerking();
+    parentId            = taxon.getParentId();
+    parentLatijnsenaam  = taxon.getParentLatijnsenaam();
+    parentNaam          = taxon.getParentNaam();
+    rang                = taxon.getRang();
+    taxonId             = taxon.getTaxonId();
+  }
 
   public Taxon(TaxonDto taxonDto) {
     latijnsenaam  = taxonDto.getLatijnsenaam();
@@ -119,12 +130,6 @@ public class Taxon
                                            taxon2.getLatijnsenaam())
                                    .toComparison();
     }
-  }
-
-  public Taxon clone() throws CloneNotSupportedException {
-    Taxon clone = (Taxon) super.clone();
-
-    return clone;
   }
 
   public int compareTo(Taxon andere) {
