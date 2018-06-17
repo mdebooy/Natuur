@@ -41,22 +41,30 @@ public final class FotoValidator {
   public static List<Message> valideer(Foto foto) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    Long  seq = foto.getGebied().getGebiedId();
+    Long  seq = foto.getTaxonSeq();
     if (DoosUtils.isBlankOrNull(seq)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.gebied"));
+                             "_I18N.label.seq"));
     }
 
-    seq = foto.getTaxon().getTaxonId();
+    if (null == foto.getTaxon()) {
+      seq = null;
+    } else {
+      seq = foto.getTaxon().getTaxonId();
+    }
     if (DoosUtils.isBlankOrNull(seq)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.soort"));
     }
 
-    seq = foto.getTaxonSeq();
+    if (null == foto.getGebied()) {
+      seq = null;
+    } else {
+      seq = foto.getGebied().getGebiedId();
+    }
     if (DoosUtils.isBlankOrNull(seq)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.seq"));
+                             "_I18N.label.gebied"));
     }
 
     return fouten;

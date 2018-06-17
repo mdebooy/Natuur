@@ -35,6 +35,10 @@ public class TaxonConverter implements Converter {
     TaxonService  taxonService  = (TaxonService)
         new JNDI.JNDINaam().metBean(TaxonService.class).locate();
 
+    if (null == sleutel) {
+      return null;
+    }
+
     return new Taxon(taxonService.taxon(Long.parseLong(sleutel)));
   }
 

@@ -41,13 +41,6 @@ public final class WaarnemingValidator {
   public static List<Message> valideer(Waarneming waarneming) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    Integer aantal  = waarneming.getAantal();
-    if (null != aantal
-        && aantal.compareTo(0) < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
-                             "_I18N.label.aantal", 1));
-    }
-
     if (waarneming.getDatum().after(new Date())) {
       try {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
@@ -56,6 +49,32 @@ public final class WaarnemingValidator {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.WRONGDATE,
                                waarneming.getDatum()));
       }
+    }
+
+    Integer aantal  = waarneming.getAantal();
+    if (null != aantal
+        && aantal.compareTo(0) < 1) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
+                             "_I18N.label.aantal", 1));
+    }
+
+    Long  seq = null;
+    if (null != waarneming.getTaxon()) {
+      seq = waarneming.getTaxon().getTaxonId();
+    }
+    if (DoosUtils.isBlankOrNull(seq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.soort"));
+    }
+
+    if (null == waarneming.getGebied()) {
+      seq = null;
+    } else {
+      seq = waarneming.getGebied().getGebiedId();
+    }
+    if (DoosUtils.isBlankOrNull(seq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.gebied"));
     }
 
     String  waarde  = DoosUtils.nullToEmpty(waarneming.getOpmerking());

@@ -34,6 +34,10 @@ public class GebiedConverter implements Converter {
     GebiedService gebiedService = (GebiedService)
         new JNDI.JNDINaam().metBean(GebiedService.class).locate();
 
+    if (null == sleutel) {
+      return null;
+    }
+
     return new Gebied(gebiedService.gebied(Long.parseLong(sleutel)));
   }
 
