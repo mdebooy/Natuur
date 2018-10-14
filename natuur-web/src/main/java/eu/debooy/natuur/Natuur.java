@@ -82,7 +82,11 @@ public class Natuur extends DoosBean {
     setUserRole(getExternalContext().isUserInRole(USER_ROLE));
     setPath(getExternalContext().getRequestContextPath());
     if (isAdministrator()) {
-      addMenuitem(APP_PARAMS_REDIRECT,  "menu.applicatieparameters");
+      addMenuitem("Dropdown.admin", "menu.administratie");
+      addDropdownmenuitem(DD_ADMIN, APP_LOGS_REDIRECT,
+          "menu.applicatielogs");
+      addDropdownmenuitem(DD_ADMIN, APP_PARAMS_REDIRECT,
+          "menu.applicatieparameters");
     }
     addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
     addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
