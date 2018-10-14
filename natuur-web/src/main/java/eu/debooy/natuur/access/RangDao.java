@@ -17,21 +17,20 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.RangDto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
+
 
 /**
  * @author Marco de Booij
  */
-@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class RangDao extends Dao<RangDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
@@ -50,12 +49,10 @@ public class RangDao extends Dao<RangDto> {
    * 
    * @return Collection<TaxonDto>
    */
-  @SuppressWarnings("unchecked")
   public List<RangDto>  getVanaf(Long niveau) {
-    Query   query         =
-        getEntityManager().createNamedQuery("vanaf")
-                          .setParameter("niveau", niveau);
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("niveau", niveau);
 
-    return query.getResultList();
+    return namedQuery("vanaf", params);
   }
 }

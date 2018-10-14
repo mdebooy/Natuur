@@ -23,7 +23,6 @@ import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
@@ -35,7 +34,7 @@ import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.WaarnemingValidator;
 
 import java.text.ParseException;
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -48,6 +47,7 @@ import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.openjpa.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -151,8 +151,15 @@ public class WaarnemingController extends Natuur {
    * 
    * @return Collection<Waarneming> met Waarneming objecten.
    */
-  public Collection<Waarneming> getWaarnemingen() {
-    return getWaarnemingService().query(getGebruikersTaal());
+  public List<Waarneming> getWaarnemingen() {
+    List<Waarneming>  resultaat;
+    try {
+      resultaat = getWaarnemingService().query(getGebruikersTaal());
+    } catch (Exception e) {
+      addError("errors.geen.i18n", e.getClass());
+      resultaat = new ArrayList<Waarneming>();
+    }
+    return resultaat;
   }
 
   /**

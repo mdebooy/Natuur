@@ -16,7 +16,6 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
@@ -24,7 +23,7 @@ import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.form.Foto;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -65,48 +64,37 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public FotoDto foto(Long sleutel) {
-    FotoDto foto    = fotoDao.getByPrimaryKey(sleutel);
+    FotoDto resultaat = fotoDao.getByPrimaryKey(sleutel);
 
-    return foto;
+    if (null == resultaat) {
+      return new FotoDto();
+    }
+
+    return resultaat;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<FotoOverzichtDto> fotoOverzicht() {
-    Collection<FotoOverzichtDto>  fotos = new ArrayList<FotoOverzichtDto>();
-    try {
-      fotos = fotoOverzichtDao.getAll();
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<FotoOverzichtDto> fotoOverzicht() {
+    return fotoOverzichtDao.getAll();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Foto> query() {
+    List<Foto>    fotos = new ArrayList<Foto>();
+    List<FotoDto> rijen = fotoDao.getAll();
+    for (FotoDto rij : rijen) {
+      fotos.add(new Foto(rij));
     }
 
     return fotos;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Foto> query() {
-    Collection<Foto>  fotos = new ArrayList<Foto>();
-    try {
-      Collection<FotoDto> rijen = fotoDao.getAll();
-      for (FotoDto rij : rijen) {
-        fotos.add(new Foto(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return fotos;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Foto> query(String taal) {
-    Collection<Foto>  fotos = new ArrayList<Foto>();
-    try {
-      Collection<FotoDto> rijen = fotoDao.getAll();
-      for (FotoDto rij : rijen) {
-        fotos.add(new Foto(rij, taal));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Foto> query(String taal) {
+    List<Foto>    fotos = new ArrayList<Foto>();
+    List<FotoDto> rijen = fotoDao.getAll();
+    for (FotoDto rij : rijen) {
+      fotos.add(new Foto(rij, taal));
     }
 
     return fotos;

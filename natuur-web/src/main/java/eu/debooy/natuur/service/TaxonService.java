@@ -16,14 +16,11 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.TaxonDao;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.ejb.Lock;
@@ -49,11 +46,8 @@ public class TaxonService {
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
-  private TaxonDao    taxonDao;
+  private TaxonDao  taxonDao;
 
-  /**
-   * Initialisatie.
-   */
   public TaxonService() {
     LOGGER.debug("init TaxonService");
   }
@@ -64,149 +58,77 @@ public class TaxonService {
     taxonDao.delete(taxon);
   }
 
-  /**
-   * Geef alle kinderen.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> getKinderen(Long parentId) {
-    Collection<Taxon> kinderen  = new ArrayList<Taxon>();
-    try {
-      List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
-      for (TaxonDto taxonDto : rows) {
-        kinderen.add(new Taxon(taxonDto));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> getKinderen(Long parentId) {
+    List<Taxon>     kinderen  = new ArrayList<Taxon>();
+    List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
+    for (TaxonDto taxonDto : rows) {
+      kinderen.add(new Taxon(taxonDto));
     }
 
     return kinderen;
   }
 
-  /**
-   * Geef alle kinderen.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> getKinderen(Long parentId, String taal) {
-    Collection<Taxon> kinderen  = new ArrayList<Taxon>();
-    try {
-      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-      for (TaxonDto rij : rijen) {
-        kinderen.add(new Taxon(rij, taal));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> getKinderen(Long parentId, String taal) {
+    List<Taxon>     kinderen  = new ArrayList<Taxon>();
+    List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
+    for (TaxonDto rij : rijen) {
+      kinderen.add(new Taxon(rij, taal));
     }
 
     return kinderen;
   }
 
-  /**
-   * Geef de mogelijke 'ouders' van de gevraagde rang.
-   * 
-   * @param kind
-   * @return Collection<TaxonDto>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<TaxonDto> getOuders(Long kind) {
-    Collection<TaxonDto>  ouders  = new ArrayList<TaxonDto>();
-    try {
-      ouders  = taxonDao.getOuders(kind);
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return ouders;
+  public List<TaxonDto> getOuders(Long kind) {
+    return taxonDao.getOuders(kind);
   }
 
-  /**
-   * Geef alle soorten/waarnemingen.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> getSoorten() {
-    List<Taxon>       soorten = new ArrayList<Taxon>();
-    try {
-      List<TaxonDto>  rijen   = taxonDao.getSoorten();
-      for (TaxonDto rij : rijen) {
-        soorten.add(new Taxon(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> getSoorten() {
+    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<TaxonDto>  rijen   = taxonDao.getSoorten();
+    for (TaxonDto rij : rijen) {
+      soorten.add(new Taxon(rij));
     }
 
     return soorten;
   }
 
-  /**
-   * Geef alle soorten.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> getSoorten(String taal) {
-    List<Taxon>       soorten = new ArrayList<Taxon>();
-    try {
-      List<TaxonDto>  rijen   = taxonDao.getSoorten();
-      for (TaxonDto rij : rijen) {
-        soorten.add(new Taxon(rij, taal));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> getSoorten(String taal) {
+    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<TaxonDto>  rijen   = taxonDao.getSoorten();
+    for (TaxonDto rij : rijen) {
+      soorten.add(new Taxon(rij, taal));
     }
 
     return soorten;
   }
 
-  /**
-   * Geef alle Taxons.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> query() {
-    Collection<Taxon>       taxa  = new HashSet<Taxon>();
-    try {
-      Collection<TaxonDto>  rijen = taxonDao.getAll();
-      for (TaxonDto rij : rijen) {
-        taxa.add(new Taxon(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> query() {
+    List<Taxon>     taxa  = new ArrayList<Taxon>();
+    List<TaxonDto>  rijen = taxonDao.getAll();
+    for (TaxonDto rij : rijen) {
+      taxa.add(new Taxon(rij));
     }
 
     return taxa;
   }
 
-  /**
-   * Geef alle Taxons.
-   * 
-   * @return Collection<Taxon>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxon> query(String taal) {
-    Collection<Taxon>       taxa  = new HashSet<Taxon>();
-    try {
-      Collection<TaxonDto>  rijen = taxonDao.getAll();
-      for (TaxonDto rij : rijen) {
-        taxa.add(new Taxon(rij, taal));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxon> query(String taal) {
+    List<Taxon>     taxa  = new ArrayList<Taxon>();
+    List<TaxonDto>  rijen = taxonDao.getAll();
+    for (TaxonDto rij : rijen) {
+      taxa.add(new Taxon(rij, taal));
     }
 
     return taxa;
   }
 
-  /**
-   * Maak of wijzig de Taxon in de database.
-   * 
-   * @param taxon
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(TaxonDto taxon) {
     if (null == taxon.getTaxonId()) {
@@ -217,15 +139,14 @@ public class TaxonService {
     }
   }
 
-  /**
-   * Geef een Taxon.
-   * 
-   * @return Een Taxon.
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public TaxonDto taxon(Long taxonId) {
-    TaxonDto  taxon = taxonDao.getByPrimaryKey(taxonId);
+    TaxonDto  resultaat = taxonDao.getByPrimaryKey(taxonId);
 
-    return taxon;
+    if (null == resultaat) {
+      return new TaxonDto();
+    }
+
+    return resultaat;
   }
 }

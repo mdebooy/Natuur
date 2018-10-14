@@ -21,7 +21,6 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.form.Rang;
@@ -39,6 +38,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import org.apache.openjpa.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,12 +112,12 @@ public class RangController extends Natuur {
    * @return Collection<Rangtotaal>
    */
   public Collection<Rangtotaal> getRangtotalen() {
-    String                  taal  = getGebruikersTaal();
-    Collection<Rangtotaal>  rijen =
+    String            taal  = getGebruikersTaal();
+    List<Rangtotaal>  rijen =
         getDetailService().getTotalenVoorRang(rang.getRang());
     for (Rangtotaal rij : rijen) {
-      String  naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
-                                           .getNaam();
+      String  naam = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
+                                          .getNaam();
       if (DoosUtils.isBlankOrNull(naam)) {
         rij.setNaam(rij.getLatijnsenaam());
       } else {

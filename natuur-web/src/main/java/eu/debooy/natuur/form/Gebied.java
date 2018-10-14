@@ -36,20 +36,44 @@ public class Gebied
 
   private Long    gebiedId;
   private Long    landId;
+  private String  latitude;
+  private Integer latitudeGraden;
+  private Integer latitudeMinuten;
+  private Double  latitudeSeconden;
+  private String  longitude;
+  private Integer longitudeGraden;
+  private Integer longitudeMinuten;
+  private Double  longitudeSeconden;
   private String  naam;
 
   public Gebied() {}
 
   public Gebied(Gebied gebied) {
-    gebiedId  = gebied.getGebiedId();
-    landId    = gebied.getLandId();
-    naam      = gebied.getNaam();
+    gebiedId          = gebied.getGebiedId();
+    landId            = gebied.getLandId();
+    latitude          = gebied.getLatitude();
+    latitudeGraden    = gebied.getLatitudeGraden();
+    latitudeMinuten   = gebied.getLatitudeMinuten();
+    latitudeSeconden  = gebied.getLatitudeSeconden();
+    longitude         = gebied.getLongitude();
+    longitudeGraden   = gebied.getLongitudeGraden();
+    longitudeMinuten  = gebied.getLongitudeMinuten();
+    longitudeSeconden = gebied.getLongitudeSeconden();
+    naam              = gebied.getNaam();
   }
 
   public Gebied(GebiedDto gebiedDto) {
-    gebiedId  = gebiedDto.getGebiedId();
-    landId    = gebiedDto.getLandId();
-    naam      = gebiedDto.getNaam();
+    gebiedId          = gebiedDto.getGebiedId();
+    landId            = gebiedDto.getLandId();
+    latitude          = gebiedDto.getLatitude();
+    latitudeGraden    = gebiedDto.getLatitudeGraden();
+    latitudeMinuten   = gebiedDto.getLatitudeMinuten();
+    latitudeSeconden  = gebiedDto.getLatitudeSeconden();
+    longitude         = gebiedDto.getLongitude();
+    longitudeGraden   = gebiedDto.getLongitudeGraden();
+    longitudeMinuten  = gebiedDto.getLongitudeMinuten();
+    longitudeSeconden = gebiedDto.getLongitudeSeconden();
+    naam              = gebiedDto.getNaam();
   }
 
   public static class NaamComparator
@@ -86,6 +110,38 @@ public class Gebied
     return landId;
   }
 
+  public String getLatitude() {
+    return latitude;
+  }
+
+  public Integer getLatitudeGraden() {
+    return latitudeGraden;
+  }
+
+  public Integer getLatitudeMinuten() {
+    return latitudeMinuten;
+  }
+
+  public Double getLatitudeSeconden() {
+    return latitudeSeconden;
+  }
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public Integer getLongitudeGraden() {
+    return longitudeGraden;
+  }
+
+  public Integer getLongitudeMinuten() {
+    return longitudeMinuten;
+  }
+
+  public Double getLongitudeSeconden() {
+    return longitudeSeconden;
+  }
+
   public String getNaam() {
     return naam;
   }
@@ -120,6 +176,68 @@ public class Gebied
     if (!new EqualsBuilder().append(this.landId, landId).isEquals()) {
       gewijzigd   = true;
       this.landId = landId;
+    }
+  }
+
+  public void setLatitude(String latitude) {
+    if (!new EqualsBuilder().append(this.latitude, latitude).isEquals()) {
+      gewijzigd     = true;
+      this.latitude = latitude;
+    }
+  }
+
+  public void setLatitudeGraden(Integer latitudeGraden) {
+    if (!new EqualsBuilder().append(this.latitudeGraden, latitudeGraden)
+                            .isEquals()) {
+      gewijzigd           = true;
+      this.latitudeGraden = latitudeGraden;
+    }
+  }
+
+  public void setLatitudeMinuten(Integer latitudeMinuten) {
+    if (!new EqualsBuilder().append(this.latitudeMinuten, latitudeMinuten)
+                            .isEquals()) {
+      gewijzigd             = true;
+      this.latitudeMinuten  = latitudeMinuten;
+    }
+  }
+
+  public void setLatitudeSeconden(Double latitudeSeconden) {
+    if (!new EqualsBuilder().append(this.latitudeSeconden, latitudeSeconden)
+                            .isEquals()) {
+      gewijzigd             = true;
+      this.latitudeSeconden = latitudeSeconden;
+    }
+  }
+
+  public void setLongitude(String longitude) {
+    if (!new EqualsBuilder().append(this.longitude, longitude).isEquals()) {
+      gewijzigd       = true;
+      this.longitude  = longitude;
+    }
+  }
+
+  public void setLongitudeGraden(Integer longitudeGraden) {
+    if (!new EqualsBuilder().append(this.longitudeGraden, longitudeGraden)
+                            .isEquals()) {
+      gewijzigd             = true;
+      this.longitudeGraden  = longitudeGraden;
+    }
+  }
+
+  public void setLongitudeMinuten(Integer longitudeMinuten) {
+    if (!new EqualsBuilder().append(this.longitudeMinuten, longitudeMinuten)
+                            .isEquals()) {
+      gewijzigd             = true;
+      this.longitudeMinuten = longitudeMinuten;
+    }
+  }
+
+  public void setLongitudeSeconden(Double longitudeSeconden) {
+    if (!new EqualsBuilder().append(this.longitudeSeconden, longitudeSeconden)
+                            .isEquals()) {
+      gewijzigd               = true;
+      this.longitudeSeconden  = longitudeSeconden;
     }
   }
 

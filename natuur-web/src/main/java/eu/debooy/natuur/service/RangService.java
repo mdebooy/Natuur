@@ -21,8 +21,8 @@ import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -52,86 +52,53 @@ public class RangService {
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
-  private RangDao     rangDao;
+  private RangDao rangDao;
 
-  /**
-   * Initialisatie.
-   */
   public RangService() {
     LOGGER.debug("init RangService");
   }
 
-  /**
-   * Verwijder de Rang
-   * 
-   * @param String sleutel
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(String sleutel) {
     RangDto rang  = rangDao.getByPrimaryKey(sleutel);
     rangDao.delete(rang);
   }
 
-  /**
-   * Geef alle Rangen.
-   * 
-   * @return Collection<Rang>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Rang> query() {
-    Collection<Rang>      rangen  = new HashSet<Rang>();
-    try {
-      Collection<RangDto> rijen   = rangDao.getAll();
-      for (RangDto rij : rijen) {
-        rangen.add(new Rang(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Rang> query() {
+    List<Rang>    rangen  = new ArrayList<Rang>();
+    List<RangDto> rijen   = rangDao.getAll();
+    for (RangDto rij : rijen) {
+      rangen.add(new Rang(rij));
     }
 
     return rangen;
   }
 
-  /**
-   * Geef alle Rangen.
-   * 
-   * @return Collection<Rang>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Rang> query(Long niveau) {
-    Set<Rang>             groter  = new HashSet<Rang>();
-    try {
-      Collection<RangDto> rijen  = rangDao.getAll();
-      for (RangDto rij : rijen) {
-        if (rij.getNiveau().compareTo(niveau) > 0) {
-          groter.add(new Rang(rij));
-        }
+  public List<Rang> query(Long niveau) {
+    List<Rang>          groter  = new ArrayList<Rang>();
+    Collection<RangDto> rijen   = rangDao.getAll();
+    for (RangDto rij : rijen) {
+      if (rij.getNiveau().compareTo(niveau) > 0) {
+        groter.add(new Rang(rij));
       }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return groter;
   }
 
-  /**
-   * Geef een Rang.
-   * 
-   * @param String rang
-   * @return RangDto
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public RangDto rang(String rang) {
-    RangDto rangDto = rangDao.getByPrimaryKey(rang);
+    RangDto resultaat = rangDao.getByPrimaryKey(rang);
 
-    return rangDto;
+    if (null == resultaat) {
+      return new RangDto();
+    }
+
+    return resultaat;
   }
 
-  /**
-   * Maak de Rang in de database.
-   * 
-   * @param Rang
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
     RangDto dto = new RangDto();
@@ -140,11 +107,6 @@ public class RangService {
     rangDao.create(dto);
   }
 
-  /**
-   * Geef alle rangen als SelectItem.
-   *  
-   * @return List<SelectItem>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<SelectItem> selectRangen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
@@ -155,7 +117,7 @@ public class RangService {
       for (RangDto rij : rijen) {
         items.add(new SelectItem(rij.getRang(), rij.getRang()));
       }
-    } catch (ObjectNotFoundException e) {
+    } catch (NullPointerException | ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 

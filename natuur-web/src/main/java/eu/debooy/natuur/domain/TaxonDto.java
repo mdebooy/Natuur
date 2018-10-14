@@ -67,7 +67,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private String    latijnsenaam;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
-  @Column(name="PARENT_ID", nullable=false)
+  @Column(name="PARENT_ID")
   private Long      parentId;
   @Column(name="RANG", length=3, nullable=false)
   private String    rang;

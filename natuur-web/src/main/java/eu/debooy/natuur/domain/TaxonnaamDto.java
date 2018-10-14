@@ -56,9 +56,6 @@ public class TaxonnaamDto extends Dto
   @Column(name="TAXON_ID", nullable=false)
   private Long    taxonId;
 
-  /**
-   * Sorteren op de naam van het werelddeel.
-   */
   public static class NaamComparator
       implements Comparator<TaxonnaamDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;

@@ -16,13 +16,12 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -47,7 +46,7 @@ public class WaarnemingService {
       LoggerFactory.getLogger(WaarnemingService.class);
 
   @Inject
-  private WaarnemingDao           waarnemingDao;
+  private WaarnemingDao waarnemingDao;
 
   public WaarnemingService() {
     LOGGER.debug("init WaarnemingService");
@@ -60,30 +59,22 @@ public class WaarnemingService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Waarneming> query() {
-    Collection<Waarneming>  waarnemingen = new ArrayList<Waarneming>();
-    try {
-      Collection<WaarnemingDto> rijen = waarnemingDao.getAll();
-      for (WaarnemingDto rij : rijen) {
-        waarnemingen.add(new Waarneming(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Waarneming> query() {
+    List<Waarneming>    waarnemingen  = new ArrayList<Waarneming>();
+    List<WaarnemingDto> rijen         = waarnemingDao.getAll();
+    for (WaarnemingDto rij : rijen) {
+      waarnemingen.add(new Waarneming(rij));
     }
 
     return waarnemingen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Waarneming> query(String taal) {
-    Collection<Waarneming>  waarnemingen = new ArrayList<Waarneming>();
-    try {
-      Collection<WaarnemingDto> rijen = waarnemingDao.getAll();
-      for (WaarnemingDto rij : rijen) {
-        waarnemingen.add(new Waarneming(rij, taal));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Waarneming> query(String taal) {
+    List<Waarneming>    waarnemingen  = new ArrayList<Waarneming>();
+    List<WaarnemingDto> rijen         = waarnemingDao.getAll();
+    for (WaarnemingDto rij : rijen) {
+      waarnemingen.add(new Waarneming(rij, taal));
     }
 
     return waarnemingen;
@@ -107,21 +98,19 @@ public class WaarnemingService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public WaarnemingDto waarneming(Long sleutel) {
-    WaarnemingDto waarneming    = waarnemingDao.getByPrimaryKey(sleutel);
+  public WaarnemingDto waarneming(Long waarnemingId) {
+    WaarnemingDto resultaat =
+        waarnemingDao.getByPrimaryKey(waarnemingId);
 
-    return waarneming;
+    if (null == resultaat) {
+      return new WaarnemingDto();
+    }
+
+    return resultaat;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<WaarnemingDto> waarnemingOverzicht() {
-    Collection<WaarnemingDto>  waarnemingen = new ArrayList<WaarnemingDto>();
-    try {
-      waarnemingen = waarnemingDao.getAll();
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return waarnemingen;
+  public List<WaarnemingDto> waarnemingOverzicht() {
+    return waarnemingDao.getAll();
   }
 }

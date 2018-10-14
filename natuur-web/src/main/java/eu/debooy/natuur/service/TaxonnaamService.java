@@ -16,15 +16,14 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.TaxonnaamDao;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.domain.TaxonnaamPK;
 import eu.debooy.natuur.form.Taxonnaam;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -54,98 +53,52 @@ public class TaxonnaamService {
   @Inject
   private TaxonnaamDao taxonnaamDao;
 
-  /**
-   * Initialisatie.
-   */
   public TaxonnaamService() {
     LOGGER.debug("init TaxonnaamService");
   }
 
-  /**
-   * Geef een TaxonnaamDto.
-   * 
-   * @param taxonId
-   * @param taal
-   * @return TaxonnaamDto
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public TaxonnaamDto taxonnaam(Long taxonId, String taal) {
-    TaxonnaamPK   sleutel   = new TaxonnaamPK(taxonId, taal);
-    TaxonnaamDto  taxonnaam;
-    try {
-      taxonnaam = taxonnaamDao.getByPrimaryKey(sleutel);
-    } catch (ObjectNotFoundException e) {
+    TaxonnaamDto  resultaat =
+        taxonnaamDao.getByPrimaryKey(new TaxonnaamPK(taxonId, taal));
+
+    if (null == resultaat) {
       return new TaxonnaamDto();
     }
 
-    return taxonnaam;
+    return resultaat;
   }
 
-  /**
-   * Geef de landnamen in een taal.
-   * 
-   * @param String taal
-   * @return Collection<Taxonnaam>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxonnaam> taxonnamen(String taal) {
-    Set<Taxonnaam>              taxonnamen  =
-        new HashSet<Taxonnaam>();
-    try {
-      Collection<TaxonnaamDto>  rijen       =
-          taxonnaamDao.getPerTaal(taal);
-      for (TaxonnaamDto rij : rijen) {
-        taxonnamen.add(new Taxonnaam(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxonnaam> taxonnamen(String taal) {
+    List<Taxonnaam>     taxonnamen  = new ArrayList<Taxonnaam>();
+    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaal(taal);
+    for (TaxonnaamDto rij : rijen) {
+      taxonnamen.add(new Taxonnaam(rij));
     }
 
     return taxonnamen;
   }
 
-  /**
-   * Geef de taxonnamen van een taxon.
-   * 
-   * @param Long taxonId
-   * @return Collection<Taxonnaam>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Taxonnaam> query(Long taxonId) {
-    Set<Taxonnaam>              taxonnamen  =
-        new HashSet<Taxonnaam>();
-    try {
-      Collection<TaxonnaamDto>  rijen       =
-          taxonnaamDao.getPerTaxon(taxonId);
-      for (TaxonnaamDto rij : rijen) {
-        taxonnamen.add(new Taxonnaam(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Taxonnaam> query(Long taxonId) {
+    List<Taxonnaam>     taxonnamen  = new ArrayList<Taxonnaam>();
+    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaxon(taxonId);
+    for (TaxonnaamDto rij : rijen) {
+      taxonnamen.add(new Taxonnaam(rij));
     }
 
     return taxonnamen;
   }
 
-  /**
-   * Geef alle taxonnamen (en taxonId) in de gevraagde taal als
-   * SelectItems.
-   *  
-   * @param taal
-   * @return Collection<SelectItem>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<SelectItem> selectTaxonnamen(String taal) {
-    Collection<SelectItem> items = new LinkedList<SelectItem>();
+  public List<SelectItem> selectTaxonnamen(String taal) {
+    List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<TaxonnaamDto> rijen =
         new TreeSet<TaxonnaamDto>(new TaxonnaamDto.NaamComparator());
-    try {
-      rijen.addAll(taxonnaamDao.getPerTaal(taal));
-      for (TaxonnaamDto rij : rijen) {
-        items.add(new SelectItem(rij.getTaxonId(), rij.getNaam()));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+    rijen.addAll(taxonnaamDao.getPerTaal(taal));
+    for (TaxonnaamDto rij : rijen) {
+      items.add(new SelectItem(rij.getTaxonId(), rij.getNaam()));
     }
 
     return items;

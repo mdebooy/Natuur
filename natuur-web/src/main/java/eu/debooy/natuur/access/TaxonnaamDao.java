@@ -17,22 +17,20 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 
-import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
 
 
 /**
  * @author Marco de Booij
  */
-@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class TaxonnaamDao extends Dao<TaxonnaamDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
@@ -46,21 +44,17 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
     return em;
   }
 
-  @SuppressWarnings("unchecked")
-  public Collection<TaxonnaamDto> getPerTaxon(Long taxonId) {
-    Query   query         =
-        getEntityManager().createNamedQuery("perTaxon")
-                          .setParameter("taxonId", taxonId);
+  public List<TaxonnaamDto> getPerTaxon(Long taxonId) {
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("taxonId", taxonId);
 
-    return query.getResultList();
+    return namedQuery("perTaxon", params);
   }
 
-  @SuppressWarnings("unchecked")
-  public Collection<TaxonnaamDto> getPerTaal(String taal) {
-    Query   query         =
-        getEntityManager().createNamedQuery("taxonnamenPerTaal")
-                          .setParameter("taal", taal);
+  public List<TaxonnaamDto> getPerTaal(String taal) {
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("taal", taal);
 
-    return query.getResultList();
+    return namedQuery("taxonnamenPerTaal", params);
   }
 }

@@ -21,7 +21,6 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -42,6 +41,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
+import org.apache.openjpa.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -290,7 +290,7 @@ public class TaxonController extends Natuur {
         taxon.setTaxonId(taxonDto.getTaxonId());
         addInfo(PersistenceConstants.CREATED, naam);
         setAktie(PersistenceConstants.UPDATE);
-        setSubTitel(naam);
+        setSubTitel("natuur.titel.taxon.update");
         break;
       case PersistenceConstants.UPDATE:
         addInfo(PersistenceConstants.UPDATED, naam);

@@ -17,22 +17,20 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.TaxonDto;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
-import javax.persistence.Query;
 
 
 /**
  * @author Marco de Booij
  */
-@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class TaxonDao extends Dao<TaxonDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
@@ -50,12 +48,11 @@ public class TaxonDao extends Dao<TaxonDto> {
    * 
    * @return Collection<TaxonDto>
    */
-  @SuppressWarnings("unchecked")
   public List<TaxonDto> getKinderen(Long parentId) {
-    Query           query = getEntityManager().createNamedQuery("kinderen")
-                                              .setParameter("ouder", parentId);
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("ouder", parentId);
 
-    return query.getResultList();
+    return namedQuery("kinderen", params);
   }
 
   /**
@@ -64,13 +61,11 @@ public class TaxonDao extends Dao<TaxonDto> {
    * @param kind
    * @return List<DetailDto>
    */
-  @SuppressWarnings("unchecked")
   public List<TaxonDto> getOuders(Long kind) {
-    Query   query         =
-        getEntityManager().createNamedQuery("ouders")
-                          .setParameter("kind", kind);
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("kind", kind);
 
-    return query.getResultList();
+    return namedQuery("ouders", params);
   }
 
   /**
@@ -78,11 +73,7 @@ public class TaxonDao extends Dao<TaxonDto> {
    * 
    * @return Collection<TaxonDto>
    */
-  @SuppressWarnings("unchecked")
   public List<TaxonDto> getSoorten() {
-    Query   query         =
-        getEntityManager().createNamedQuery("soort");
-
-    return query.getResultList();
+    return namedQuery("soort");
   }
 }

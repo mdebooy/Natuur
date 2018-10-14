@@ -17,25 +17,21 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
-import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 
+
 /**
  * @author Marco de Booij
  */
-@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class DetailDao extends Dao<DetailDto> {
   @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
@@ -57,12 +53,8 @@ public class DetailDao extends Dao<DetailDto> {
    * 
    * @return Collection<DetailDto>
    */
-  @SuppressWarnings("unchecked")
-  public Collection<DetailDto> getSoortenMetKlasse() {
-    Query   query         =
-        getEntityManager().createNamedQuery("soortMetKlasse");
-
-    return query.getResultList();
+  public List<DetailDto> getSoortenMetKlasse() {
+    return namedQuery("detailSoortMetKlasse");
   }
 
 
@@ -73,14 +65,16 @@ public class DetailDao extends Dao<DetailDto> {
    * @return Collection<Rangtotaal>
    */
   @SuppressWarnings("unchecked")
-  public Collection<Rangtotaal> getSoortenMetRang(String rang) {
-    Query   query         =
-        getEntityManager().createNamedQuery("totalen")
+  public List<Rangtotaal> getSoortenMetRang(String rang) {
+    Query             query   =
+        getEntityManager().createNamedQuery("detailTotalen")
                           .setParameter("groep", rang);
-    List<Object[]>  rijen = query.getResultList();
-    Set<Rangtotaal> totalen = new HashSet<Rangtotaal>();
-    for (Object[] rij : rijen) {
-      totalen.add(new Rangtotaal(rij));
+    List<Object[]>    rijen   = query.getResultList();
+    List<Rangtotaal>  totalen = new ArrayList<Rangtotaal>();
+    if (null != rijen) {
+      for (Object[] rij : rijen) {
+        totalen.add(new Rangtotaal(rij));
+      }
     }
 
     return totalen;
@@ -91,11 +85,7 @@ public class DetailDao extends Dao<DetailDto> {
    * 
    * @return Collection<DetailDto>
    */
-  @SuppressWarnings("unchecked")
   public List<DetailDto> getWaargenomen() {
-    Query   query         =
-        getEntityManager().createNamedQuery("waargenomen");
-
-    return query.getResultList();
+    return namedQuery("detailWaargenomen");
   }
 }
