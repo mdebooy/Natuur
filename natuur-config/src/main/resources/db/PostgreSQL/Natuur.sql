@@ -98,6 +98,14 @@ CREATE TABLE NATUUR.FOTOS (
 CREATE TABLE NATUUR.GEBIEDEN (
   GEBIED_ID                       INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_GEBIEDEN'::REGCLASS),
   LAND_ID                         INTEGER         NOT NULL,
+  LATITUDE                        CHAR(1),
+  LATITUDE_GRADEN                 NUMERIC(2),
+  LATITUDE_MINUTEN                NUMERIC(2),
+  LATITUDE_SECONDEN               NUMERIC(5,3),
+  LONGITUDE                       CHAR(1),
+  LONGITUDE_GRADEN                NUMERIC(3),
+  LONGITUDE_MINUTEN               NUMERIC(2),
+  LONGITUDE_SECONDEN              NUMERIC(5,3),
   NAAM                            VARCHAR(255)    NOT NULL,
   CONSTRAINT PK_GEBIEDEN PRIMARY KEY (GEBIED_ID)
 );
@@ -194,6 +202,29 @@ ALTER TABLE NATUUR.FOTOS
   ON DELETE RESTRICT
   ON UPDATE RESTRICT;
 
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LATITUDE CHECK(LATITUDE = ANY (ARRAY['N'::bpchar, 'S'::bpchar]));
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LATITUDE_GRADEN CHECK(LATITUDE_GRADEN >= 0 AND LATITUDE_GRADEN < 90);
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LATITUDE_MINUTEN CHECK(LATITUDE_MINUTEN >= 0 AND LATITUDE_MINUTEN < 60);
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LATITUDE_SECONDEN CHECK(LATITUDE_SECONDEN >= 0 AND LATITUDE_SECONDEN < 60);
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LONGITUDE CHECK(LONGITUDE = ANY (ARRAY['E'::bpchar, 'W'::bpchar]));
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LONGITUDE_GRADEN CHECK(LONGITUDE_GRADEN >= 0 AND LONGITUDE_GRADEN < 180);
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LONGITUDE_MINUTEN CHECK(LONGITUDE_MINUTEN >= 0 AND LONGITUDE_MINUTEN < 60);
+
+ALTER TABLE NATUUR.GEBIEDEN
+  ADD CONSTRAINT CHK_GEB_LONGITUDE_SECONDEN CHECK(LONGITUDE_SECONDEN >= 0 AND LONGITUDE_SECONDEN < 60);
 ALTER TABLE NATUUR.RANGEN
   ADD CONSTRAINT UK_RAN_NIVEAU UNIQUE(NIVEAU);
 
@@ -260,35 +291,43 @@ GRANT SELECT                         ON TABLE    NATUUR.TAXONOMIE         TO NAT
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.WAARNEMINGEN      TO NATUUR_UPD;
 
 -- Commentaren
-COMMENT ON TABLE  NATUUR.FOTOS                      IS 'Deze tabel bevat alle foto''s.';
-COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID              IS 'De sleutel van de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID            IS 'De sleutel van het gebied waarin de foto gemaakt is.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID             IS 'De sleutel van de taxon op de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ            IS 'Een volgnummer voor de foto voor de betreffende taxon.';
-COMMENT ON TABLE  NATUUR.GEBIEDEN                   IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID         IS 'De sleutel van het gebied.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID           IS 'De sleutel van het land waarin dit gebied ligt.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.NAAM              IS 'De naam van het gebied.';
-COMMENT ON TABLE  NATUUR.RANGEN                     IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
-COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU              IS 'Het niveau rang binnen de taxa.';
-COMMENT ON COLUMN NATUUR.RANGEN.RANG                IS 'De rang van een taxon.';
-COMMENT ON TABLE  NATUUR.TAXA                       IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
-COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM          IS 'De latijnse naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.OPMERKING             IS 'Een opmerking voor deze taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID             IS 'De parent van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.RANG                  IS 'De rang van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID              IS 'De sleutel van de taxon.';
-COMMENT ON TABLE  NATUUR.TAXONNAMEN                 IS 'Deze tabel bevat de namen van de TAXA in verschillende talen.';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM            IS 'De naam van de taxon.';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL            IS 'De taal.';
-COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID        IS 'De sleutel van de taxon.';
-COMMENT ON TABLE  NATUUR.WAARNEMINGEN               IS 'Deze tabel bevat alle waarnemingen.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.AANTAL        IS 'Het aantal wat waargenomen is.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.DATUM         IS 'De datum van de waarneming.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.GEBIED_ID     IS 'Het gebied waar de waarneming is gedaan.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.OPMERKING     IS 'Een opmerking voor deze waarneming.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.TAXON_ID      IS 'De taxon die is waargenomen.';
-COMMENT ON COLUMN NATUUR.WAARNEMINGEN.WAARNEMING_ID IS 'De sleutel van de waarneming.';
+COMMENT ON TABLE  NATUUR.FOTOS                        IS 'Deze tabel bevat alle foto''s.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID                IS 'De sleutel van de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID              IS 'De sleutel van het gebied waarin de foto gemaakt is.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID               IS 'De sleutel van de taxon op de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ              IS 'Een volgnummer voor de foto voor de betreffende taxon.';
+COMMENT ON TABLE  NATUUR.GEBIEDEN                     IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID           IS 'De sleutel van het gebied.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID             IS 'De sleutel van het land waarin dit gebied ligt.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE            IS 'De latitude (N of S).';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_GRADEN     IS 'De latitude. Graden deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_MINUTEN    IS 'De latitude. Minuten deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_SECONDEN   IS 'De latitude. Seconden deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE           IS 'De longitude (E of W)';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_GRADEN    IS 'De longitude. Graden deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_MINUTEN   IS 'De longitude. Minuten deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_SECONDEN  IS 'De longitude. Seconden deel.';
+COMMENT ON COLUMN NATUUR.GEBIEDEN.NAAM                IS 'De naam van het gebied.';
+COMMENT ON TABLE  NATUUR.RANGEN                       IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
+COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU                IS 'Het niveau rang binnen de taxa.';
+COMMENT ON COLUMN NATUUR.RANGEN.RANG                  IS 'De rang van een taxon.';
+COMMENT ON TABLE  NATUUR.TAXA                         IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
+COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM            IS 'De latijnse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.OPMERKING               IS 'Een opmerking voor deze taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID               IS 'De parent van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.RANG                    IS 'De rang van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID                IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.TAXONNAMEN                   IS 'Deze tabel bevat de namen van de TAXA in verschillende talen.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM              IS 'De naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL              IS 'De taal.';
+COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAXON_ID          IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.WAARNEMINGEN                 IS 'Deze tabel bevat alle waarnemingen.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.AANTAL          IS 'Het aantal wat waargenomen is.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.DATUM           IS 'De datum van de waarneming.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.GEBIED_ID       IS 'Het gebied waar de waarneming is gedaan.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.OPMERKING       IS 'Een opmerking voor deze waarneming.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.TAXON_ID        IS 'De taxon die is waargenomen.';
+COMMENT ON COLUMN NATUUR.WAARNEMINGEN.WAARNEMING_ID   IS 'De sleutel van de waarneming.';
 
 -- Default waardes
 INSERT INTO NATUUR.GEBIEDEN VALUES (0,0,'Onbekend');
