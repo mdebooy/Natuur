@@ -8,38 +8,39 @@
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
     <ui:define name="body">
-      <h:form class="form-horizontal" id="formFoto">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="col-md-10">
-            <h2>#{i18nTeksten.tekst(natuurFoto.subTitel)}</h2>
-          </div>
-          <div class="row" />
-          <t:div rendered="#{!natuurFoto.aktie.readonly}">
-            <div class="form-group form-group-sm">
-              <label for="taxonSeq" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.seq')}</label>
-              <div class="col-sm-9">
-                <t:inputText id="taxonSeq" styleClass="form-control" value="#{natuurFoto.foto.taxonSeq}" maxlength="3" size="3" />
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <h:form class="form-horizontal" id="formFoto">
+            <div class="col-md-10">
+              <h2 class="titel">#{i18nTeksten.tekst(natuurFoto.subTitel)}</h2>
+            </div>
+            <t:div rendered="#{!natuurFoto.aktie.readonly}">
+              <div class="form-group form-group-sm row">
+                <label for="taxonSeq" class="col-2 control-label">#{i18nTeksten.tekst('label.seq')}</label>
+                <div class="col-9">
+                  <t:inputText id="taxonSeq" styleClass="form-control form-control-sm" value="#{natuurFoto.foto.taxonSeq}" maxlength="3" size="3" />
+                </div>
+              </div>
+            </t:div>
+            <div class="form-group form-group-sm row">
+              <label for="taxon" class="col-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
+              <div class="col-5">
+                <d:listbox id="taxon" value="#{natuurFoto.foto.taxon}" readonly="#{natuurFoto.aktie.readonly}" converter="TaxonConverter" items="#{natuurWaarneming.selectWaarnemingen}" />
               </div>
             </div>
-          </t:div>
-          <div class="form-group form-group-sm">
-            <label for="taxon" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
-            <div class="col-sm-5">
-              <d:listbox id="taxon" value="#{natuurFoto.foto.taxon}" readonly="#{natuurFoto.aktie.readonly}" converter="TaxonConverter" items="#{natuurWaarneming.selectWaarnemingen}" />
+            <div class="form-group form-group-sm row">
+              <label for="gebied" class="col-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
+              <div class="col-5">
+                <d:listbox id="gebied" value="#{natuurFoto.foto.gebied}" readonly="#{natuurFoto.aktie.readonly}" converter="GebiedConverter" items="#{natuurGebied.selectGebieden}" />
+              </div>
             </div>
-          </div>
-          <div class="form-group form-group-sm">
-            <label for="gebied" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
-            <div class="col-sm-5">
-              <d:listbox id="gebied" value="#{natuurFoto.foto.gebied}" readonly="#{natuurFoto.aktie.readonly}" converter="GebiedConverter" items="#{natuurGebied.selectGebieden}" />
-            </div>
-          </div>
-
-          <h:commandLink action="#{natuurFoto.save}" id="create" styleClass="btn btn-default" rendered="#{natuurFoto.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurFoto.save}" id="modify" styleClass="btn btn-default" rendered="#{natuurFoto.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/fotos/fotos.xhtml" aktie="#{natuurFoto.aktie}"/>
+  
+            <h:commandLink action="#{natuurFoto.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurFoto.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+            <h:commandLink action="#{natuurFoto.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurFoto.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+            <d:cancel href="#{natuur.path}/fotos/fotos.xhtml" aktie="#{natuurFoto.aktie}"/>
+          </h:form>
         </div>
-      </h:form>
+      </div>
     </ui:define>
   </ui:composition>
 </html>

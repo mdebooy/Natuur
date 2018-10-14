@@ -25,10 +25,10 @@
             "stateSave": true,
             "language": {
               "paginate": {
-                "first": '<span class="glyphicon glyphicon-fast-backward"></span>',
-                "last": '<span class="glyphicon glyphicon-fast-forward"></span>',
-                "next": '<span class="glyphicon glyphicon-triangle-right"></span>',
-                "previous": '<span class="glyphicon glyphicon-triangle-left"></span>'
+                "first": #{properties.appValue('natuur.pager.first')},
+                "last": #{properties.appValue('natuur.pager.last')},
+                "next": #{properties.appValue('natuur.pager.next')},
+                "previous": #{properties.appValue('natuur.pager.previous')}
               },
               "search": "#{i18nTeksten.tekst('pager.search')}",
               "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
@@ -41,26 +41,30 @@
       </script>
     </ui:define>
     <ui:define name="body">
-      <h:form id="formWaarneming">
-        <div class="col-md-12">
-          <div class="col-md-10">
-            <h2>#{i18nTeksten.tekst('natuur.titel.waarnemingen')}</h2>
-          </div>
-          <div align="right" class="col-md-2" >
-            <h:commandLink action="#{natuurWaarneming.create}" actionFor="#{formFotos}">
-              <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-            </h:commandLink>
-            <h:commandLink action="#{natuurWaarneming.waarnemingenlijst}" actionFor="#{formWaarneming}">
-              <f:setPropertyActionListener target="#{natuurWaarneming.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
-            </h:commandLink>
-          </div>
+      <div class="row justify-content-center">
+        <div class="col-12">
+          <h:form id="formWaarneming">
+            <div class="row titel">
+              <div class="col-10">
+                <h2 class="titel">#{i18nTeksten.tekst('natuur.titel.waarnemingen')}</h2>
+              </div>
+              <div align="right" class="col-2" >
+                <h:commandLink action="#{natuurWaarneming.create}" actionFor="#{formFotos}">
+                  <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+                </h:commandLink>
+                <h:commandLink action="#{natuurWaarneming.waarnemingenlijst}" actionFor="#{formWaarneming}">
+                  <f:setPropertyActionListener target="#{natuurWaarneming.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
+                </h:commandLink>
+              </div>
+            </div>
 
-          <ui:include src="waarnemingtabel.xhtml">
-            <ui:param name="form" value="formWaarneming" />
-            <ui:param name="lijst" value="#{natuurWaarneming.waarnemingen}" />
-          </ui:include>
+            <ui:include src="waarnemingtabel.xhtml">
+              <ui:param name="form" value="formWaarneming" />
+              <ui:param name="lijst" value="#{natuurWaarneming.waarnemingen}" />
+            </ui:include>
+          </h:form>
         </div>
-      </h:form>
+      </div>
     </ui:define>
     <ui:define name="modal">
       <d:confirmatie confirmatietitel="#{i18nTeksten.tekst('natuur.titel.waarneming.delete')}" />

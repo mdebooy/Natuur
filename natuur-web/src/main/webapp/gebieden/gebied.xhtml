@@ -8,30 +8,31 @@
    xmlns:ui="http://java.sun.com/jsf/facelets">
   <ui:composition template="/WEB-INF/templates/template.xhtml">
     <ui:define name="body">
-      <h:form class="form-horizontal" id="formGebied">
-        <div class="col-md-10 col-md-offset-1">
-          <div class="col-md-10">
-            <h2>#{i18nTeksten.tekst(natuurGebied.subTitel)}</h2>
-          </div>
-          <div class="row" />
-          <div class="form-group form-group-sm">
-            <label for="naam" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
-            <div class="col-sm-9">
-              <t:inputText id="naam" styleClass="form-control" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" />
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <h:form class="form-horizontal" id="formGebied">
+            <div class="col-10">
+              <h2 class="titel">#{i18nTeksten.tekst(natuurGebied.subTitel)}</h2>
             </div>
-          </div>
-          <div class="form-group form-group-sm">
-            <label for="landId" class="col-sm-2 control-label">#{i18nTeksten.tekst('label.land')}</label>
-            <div class="col-sm-5">
-              <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
+            <div class="form-group form-group-sm row">
+              <label for="naam" class="col-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
+              <div class="col-9">
+                <t:inputText id="naam" styleClass="form-control form-control-sm" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" />
+              </div>
             </div>
-          </div>
-
-          <h:commandLink action="#{natuurGebied.save}" id="create" styleClass="btn btn-default" rendered="#{natuurGebied.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurGebied.save}" id="modify" styleClass="btn btn-default" rendered="#{natuurGebied.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/gebieden/gebieden.xhtml" aktie="#{natuurGebied.aktie}"/>
+            <div class="form-group form-group-sm row">
+              <label for="landId" class="col-2 control-label">#{i18nTeksten.tekst('label.land')}</label>
+              <div class="col-5">
+                <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
+              </div>
+            </div>
+  
+            <h:commandLink action="#{natuurGebied.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+            <h:commandLink action="#{natuurGebied.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+            <d:cancel href="#{natuur.path}/gebieden/gebieden.xhtml" aktie="#{natuurGebied.aktie}"/>
+          </h:form>
         </div>
-      </h:form>
+      </div>
     </ui:define>
   </ui:composition>
 </html>
