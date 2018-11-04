@@ -22,6 +22,7 @@ import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
@@ -43,7 +44,6 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.openjpa.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
