@@ -17,7 +17,7 @@
               <label for="waarde" class="col-4 control-label text-right">#{i18nTeksten.tekst(natuurAppParam.parameter)}</label>
               <div class="col-6">
                 <t:div rendered="#{natuurAppParam.sleutel!='natuur.default.landid' and natuurAppParam.sleutel!='natuur.default.gebiedid'}">
-                  <t:inputText id="waarde" styleClass="form-control form-control-sm" value="#{natuurAppParam.waarde}" maxlength="100" size="255" />
+                  <t:inputText id="waarde" styleClass="form-control form-control-sm" value="#{natuurAppParam.waarde}" maxlength="255" size="100" />
                 </t:div>
                 <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
                   <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" readonly="false" />
