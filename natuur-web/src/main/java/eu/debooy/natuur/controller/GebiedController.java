@@ -20,6 +20,7 @@ import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.form.Gebied;
@@ -35,7 +36,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 
-import org.apache.openjpa.util.ObjectNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,6 +138,22 @@ public class GebiedController extends Natuur {
     for (Gebied rij : rijen) {
       items.add(new SelectItem(rij.getGebiedId(), rij.getNaam()));
     }
+
+    return items;
+  }
+
+  public Collection<SelectItem> getLatitudes() {
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    items.add(new SelectItem("N", getTekst("windstreek.N")));
+    items.add(new SelectItem("S", getTekst("windstreek.S")));
+
+    return items;
+  }
+
+  public Collection<SelectItem> getLongitudes() {
+    List<SelectItem>  items = new LinkedList<SelectItem>();
+    items.add(new SelectItem("E", getTekst("windstreek.E")));
+    items.add(new SelectItem("W", getTekst("windstreek.W")));
 
     return items;
   }

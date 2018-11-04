@@ -47,6 +47,22 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
   private Long    gebiedId;
   @Column(name="LAND_ID", nullable=false)
   private Long    landId    = Long.valueOf(0);
+  @Column(name="LATITUDE", length=1)
+  private String  latitude;
+  @Column(name="LATITUDE_GRADEN", length=2)
+  private Integer latitudeGraden;
+  @Column(name="LATITUDE_MINUTEN", length=2)
+  private Integer latitudeMinuten;
+  @Column(name="LATITUDE_SECONDEN", precision=5, scale=3)
+  private Double  latitudeSeconden;
+  @Column(name="LONGITUDE", length=1) 
+  private String  longitude;
+  @Column(name="LONGITUDE_GRADEN", length=3)
+  private Integer longitudeGraden;
+  @Column(name="LONGITUDE_MINUTEN", length=2)
+  private Integer longitudeMinuten;
+  @Column(name="LONGITUDE_SECONDEN", precision=5, scale=3)
+  private Double  longitudeSeconden;
   @Column(name="NAAM", length=225, nullable=false)
   private String  naam;
 
@@ -85,23 +101,46 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
     return new EqualsBuilder().append(gebiedId, gebiedDto.gebiedId).isEquals();
   }
 
-  /**
-   * @return de gebiedId
-   */
   public Long getGebiedId() {
     return gebiedId;
   }
 
-  /**
-   * @return de landId
-   */
   public Long getLandId() {
     return landId;
   }
 
-  /**
-   * @return de naam
-   */
+  public String getLatitude() {
+    return latitude;
+  }
+
+  public Integer getLatitudeGraden() {
+    return latitudeGraden;
+  }
+
+  public Integer getLatitudeMinuten() {
+    return latitudeMinuten;
+  }
+
+  public Double getLatitudeSeconden() {
+    return latitudeSeconden;
+  }
+
+  public String getLongitude() {
+    return longitude;
+  }
+
+  public Integer getLongitudeGraden() {
+    return longitudeGraden;
+  }
+
+  public Integer getLongitudeMinuten() {
+    return longitudeMinuten;
+  }
+
+  public Double getLongitudeSeconden() {
+    return longitudeSeconden;
+  }
+
   public String getNaam() {
     return naam;
   }
@@ -110,23 +149,46 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto>, Cloneable {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
   }
 
-  /**
-   * @param gebiedId de waarde van gebiedId
-   */
   public void setGebiedId(Long gebiedId) {
     this.gebiedId = gebiedId;
   }
 
-  /**
-   * @param landId de waarde van landId
-   */
   public void setLandId(Long landId) {
     this.landId = landId;
   }
 
-  /**
-   * @param naam de waarde van naam
-   */
+  public void setLatitude(String latitude) {
+    this.latitude = latitude;
+  }
+
+  public void setLatitudeGraden(Integer latitudeGraden) {
+    this.latitudeGraden = latitudeGraden;
+  }
+
+  public void setLatitudeMinuten(Integer latitudeMinuten) {
+    this.latitudeMinuten = latitudeMinuten;
+  }
+
+  public void setLatitudeSeconden(Double latitudeSeconden) {
+    this.latitudeSeconden = latitudeSeconden;
+  }
+
+  public void setLongitude(String longitude) {
+    this.longitude = longitude;
+  }
+
+  public void setLongitudeGraden(Integer longitudeGraden) {
+    this.longitudeGraden = longitudeGraden;
+  }
+
+  public void setLongitudeMinuten(Integer longitudeMinuten) {
+    this.longitudeMinuten = longitudeMinuten;
+  }
+
+  public void setLongitudeSeconden(Double longitudeSeconden) {
+    this.longitudeSeconden = longitudeSeconden;
+  }
+
   public void setNaam(String naam) {
     this.naam = naam;
   }

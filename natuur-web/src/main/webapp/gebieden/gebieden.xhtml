@@ -12,7 +12,8 @@
             "order": [[1, "asc"]],
             "columns": [{ "orderable": false },
                         { "orderable": true },
-                        { "orderable": true }],
+                        { "orderable": true },
+                        { "orderable": false }],
             "pagingType": "full_numbers",
             "pageLength": #{properties.appValue('natuur.pagelength')},
             "lengthChange": false,
@@ -36,7 +37,7 @@
     </ui:define>
     <ui:define name="body">
       <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-10">
           <h:form id="formGebieden">
             <div class="row titel">
               <div class="col-10">

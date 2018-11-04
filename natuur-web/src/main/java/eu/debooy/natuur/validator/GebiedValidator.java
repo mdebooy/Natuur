@@ -49,6 +49,83 @@ public final class GebiedValidator {
       }
     }
 
+    int leeg  = 0;
+    String karakter = gebied.getLatitude();
+    if (DoosUtils.isBlankOrNull(karakter)) {
+      leeg++;
+    } else {
+      if (!("N".equals(karakter) || "S".equals(karakter))) {
+        fouten.add(new Message(Message.ERROR, "error.latitude"));
+      }
+    }
+
+    Integer iwaarde = gebied.getLatitudeGraden();
+    if (null == iwaarde) {
+      leeg++;
+    } else {
+      if (iwaarde < 0 || iwaarde > 90) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.graden"));
+      }
+    }
+
+    iwaarde = gebied.getLatitudeMinuten();
+    if (null == iwaarde) {
+      leeg++;
+    } else {
+      if (iwaarde < 0 || iwaarde > 59) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.minuten"));
+      }
+    }
+
+    Double  dwaarde = gebied.getLatitudeSeconden();
+    if (null == dwaarde) {
+      leeg++;
+    } else {
+      if (!(dwaarde >= 0 && dwaarde < 60)) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.seconden"));
+      }
+    }
+
+    karakter = gebied.getLongitude();
+    if (DoosUtils.isBlankOrNull(karakter)) {
+      leeg++;
+    } else {
+      if (!("E".equals(karakter) || "W".equals(karakter))) {
+        fouten.add(new Message(Message.ERROR, "error.longitude"));
+      }
+    }
+
+    iwaarde = gebied.getLongitudeGraden();
+    if (null == iwaarde) {
+      leeg++;
+    } else {
+      if (iwaarde < 0 || iwaarde > 180) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.graden"));
+      }
+    }
+
+    iwaarde = gebied.getLongitudeMinuten();
+    if (null == iwaarde) {
+      leeg++;
+    } else {
+      if (iwaarde < 0 || iwaarde > 59) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.minuten"));
+      }
+    }
+
+    dwaarde = gebied.getLongitudeSeconden();
+    if (null == dwaarde) {
+      leeg++;
+    } else {
+      if (!(dwaarde >= 0 && dwaarde < 60)) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.seconden"));
+      }
+    }
+
+    if (leeg != 0 && leeg != 6) {
+      fouten.add(new Message(Message.ERROR, "error.coordinaten.onvolledig"));
+    }
+
     return fouten;
   }
 }

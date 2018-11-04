@@ -14,6 +14,7 @@
         <th></th>
         <th>#{i18nTeksten.tekst('label.gebied')}</th>
         <th>#{i18nTeksten.tekst('label.land')}</th>
+        <th>#{i18nTeksten.tekst('label.coordinaten')}</th>
       </tr>
     </thead>
     <tbody>
@@ -26,6 +27,7 @@
           </td>
           <td>#{gebied.naam}</td>
           <td>#{i18nLandnaam.landnaam(gebied.landId)}</td>
+          <td><samp>#{gebied.coordinaten}</samp></td>
         </tr>
       </t:dataList>
     </tbody>

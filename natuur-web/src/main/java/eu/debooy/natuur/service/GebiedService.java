@@ -16,13 +16,12 @@
  */
 package eu.debooy.natuur.service;
 
-import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.GebiedDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -47,63 +46,40 @@ public class GebiedService {
       LoggerFactory.getLogger(GebiedService.class);
 
   @Inject
-  private GebiedDao     gebiedDao;
+  private GebiedDao gebiedDao;
 
-  /**
-   * Initialisatie.
-   */
   public GebiedService() {
     LOGGER.debug("init GebiedService");
   }
 
-  /**
-   * Verwijder het Gebied.
-   * 
-   * @param LonggebiedId
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long gebiedId) {
     GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
     gebiedDao.delete(gebied);
   }
 
-  /**
-   * Geef een Gebied.
-   * 
-   * @return GebiedDto
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public GebiedDto gebied(Long gebiedId) {
-    GebiedDto gebied  = gebiedDao.getByPrimaryKey(gebiedId);
+    GebiedDto resultaat = gebiedDao.getByPrimaryKey(gebiedId);
 
-    return gebied;
+    if (null == resultaat) {
+      return new GebiedDto();
+    }
+
+    return resultaat;
   }
 
-  /**
-   * Geef alle Gebieden.
-   * 
-   * @return Collection<Gebied>
-   */
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Collection<Gebied> query() {
-    Collection<Gebied>      gebieden  = new HashSet<Gebied>();
-    try {
-      Collection<GebiedDto> rijen     = gebiedDao.getAll();
-      for (GebiedDto rij : rijen) {
-        gebieden.add(new Gebied(rij));
-      }
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+  public List<Gebied> query() {
+    List<Gebied>    gebieden  = new ArrayList<Gebied>();
+    List<GebiedDto> rijen     = gebiedDao.getAll();
+    for (GebiedDto rij : rijen) {
+      gebieden.add(new Gebied(rij));
     }
 
     return gebieden;
   }
 
-  /**
-   * Maak of wijzig de Gebied in de database.
-   * 
-   * @param Gebied gebied
-   */
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Gebied gebied) {
     GebiedDto  dto = new GebiedDto();

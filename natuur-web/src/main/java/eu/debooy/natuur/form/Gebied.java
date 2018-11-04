@@ -16,10 +16,12 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Comparator;
 
 import org.apache.commons.lang.builder.CompareToBuilder;
@@ -100,6 +102,24 @@ public class Gebied
 
     Gebied  andere  = (Gebied) object;
     return new EqualsBuilder().append(gebiedId, andere.gebiedId).isEquals();
+  }
+
+  public String getCoordinaten() {
+    StringBuilder coordinaten = new StringBuilder();
+
+    if (DoosUtils.isNotBlankOrNull(latitude)) {
+      DecimalFormat seconden    = new DecimalFormat("#0.000");
+
+      coordinaten.append(latitude).append(" ").append(latitudeGraden)
+                 .append(" ").append(latitudeMinuten).append(" ")
+                 .append(seconden.format(latitudeSeconden))
+                 .append(" - ")
+                 .append(longitude).append(" ").append(longitudeGraden)
+                 .append(" ").append(longitudeMinuten).append(" ")
+                 .append(seconden.format(longitudeSeconden));
+    }
+
+    return coordinaten.toString();
   }
 
   public Long getGebiedId() {
