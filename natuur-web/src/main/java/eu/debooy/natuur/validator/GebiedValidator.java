@@ -38,94 +38,135 @@ public final class GebiedValidator {
   public static List<Message> valideer(Gebied gebied) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    String  waarde  = DoosUtils.nullToEmpty(gebied.getNaam());
-    if (waarde.length() < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.gebied"));
-    } else {
-      if (waarde.length() > 255) {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                               "_I18N.label.gebied", 255));
-      }
-    }
+    valideerGebied(DoosUtils.nullToEmpty(gebied.getNaam()), fouten);
+    int leeg  = valideerLatitude(gebied.getLatitude(), fouten);
+    leeg  += valideerLatitudeGraden(gebied.getLatitudeGraden(), fouten);
+    leeg  += valideerLatitudeMinuten(gebied.getLatitudeMinuten(), fouten);
+    leeg  += valideerLatitudeSeconden(gebied.getLatitudeSeconden(), fouten);
+    leeg  += valideerLongitude(gebied.getLongitude(), fouten);
+    leeg  += valideerLongitudeGraden(gebied.getLongitudeGraden(), fouten);
+    leeg  += valideerLongitudeMinuten(gebied.getLongitudeMinuten(), fouten);
+    leeg  += valideerLongitudeSeconden(gebied.getLongitudeSeconden(), fouten);
 
-    int leeg  = 0;
-    String karakter = gebied.getLatitude();
-    if (DoosUtils.isBlankOrNull(karakter)) {
-      leeg++;
-    } else {
-      if (!("N".equals(karakter) || "S".equals(karakter))) {
-        fouten.add(new Message(Message.ERROR, "error.latitude"));
-      }
-    }
-
-    Integer iwaarde = gebied.getLatitudeGraden();
-    if (null == iwaarde) {
-      leeg++;
-    } else {
-      if (iwaarde < 0 || iwaarde > 90) {
-        fouten.add(new Message(Message.ERROR, "error.latitude.graden"));
-      }
-    }
-
-    iwaarde = gebied.getLatitudeMinuten();
-    if (null == iwaarde) {
-      leeg++;
-    } else {
-      if (iwaarde < 0 || iwaarde > 59) {
-        fouten.add(new Message(Message.ERROR, "error.latitude.minuten"));
-      }
-    }
-
-    Double  dwaarde = gebied.getLatitudeSeconden();
-    if (null == dwaarde) {
-      leeg++;
-    } else {
-      if (!(dwaarde >= 0 && dwaarde < 60)) {
-        fouten.add(new Message(Message.ERROR, "error.latitude.seconden"));
-      }
-    }
-
-    karakter = gebied.getLongitude();
-    if (DoosUtils.isBlankOrNull(karakter)) {
-      leeg++;
-    } else {
-      if (!("E".equals(karakter) || "W".equals(karakter))) {
-        fouten.add(new Message(Message.ERROR, "error.longitude"));
-      }
-    }
-
-    iwaarde = gebied.getLongitudeGraden();
-    if (null == iwaarde) {
-      leeg++;
-    } else {
-      if (iwaarde < 0 || iwaarde > 180) {
-        fouten.add(new Message(Message.ERROR, "error.longitude.graden"));
-      }
-    }
-
-    iwaarde = gebied.getLongitudeMinuten();
-    if (null == iwaarde) {
-      leeg++;
-    } else {
-      if (iwaarde < 0 || iwaarde > 59) {
-        fouten.add(new Message(Message.ERROR, "error.longitude.minuten"));
-      }
-    }
-
-    dwaarde = gebied.getLongitudeSeconden();
-    if (null == dwaarde) {
-      leeg++;
-    } else {
-      if (!(dwaarde >= 0 && dwaarde < 60)) {
-        fouten.add(new Message(Message.ERROR, "error.longitude.seconden"));
-      }
-    }
-
-    if (leeg != 0 && leeg != 6) {
+    if (leeg != 0 && leeg != 8) {
       fouten.add(new Message(Message.ERROR, "error.coordinaten.onvolledig"));
     }
 
     return fouten;
+  }
+
+  private static void valideerGebied(String gebied, List<Message> fouten) {
+    if (gebied.length() < 1) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.gebied"));
+    } else {
+      if (gebied.length() > 255) {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                               "_I18N.label.gebied", 255));
+      }
+    }
+  }
+
+  private static int valideerLatitude(String latitude, List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(latitude)) {
+      return 1;
+    } else {
+      if (!("N".equals(latitude) || "S".equals(latitude))) {
+        fouten.add(new Message(Message.ERROR, "error.latitude"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLatitudeGraden(Integer latitudeGraden,
+                                            List<Message> fouten) {
+    if (null == latitudeGraden) {
+      return 1;
+    } else {
+      if (latitudeGraden < 0 || latitudeGraden > 90) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.graden"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLatitudeMinuten(Integer latitudeMinuten,
+                                             List<Message> fouten) {
+    if (null == latitudeMinuten) {
+      return 1;
+    } else {
+      if (latitudeMinuten < 0 || latitudeMinuten > 59) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.minuten"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLatitudeSeconden(Double latitudeSeconden,
+                                              List<Message> fouten) {
+    if (null == latitudeSeconden) {
+      return 1;
+    } else {
+      if (!(latitudeSeconden >= 0 && latitudeSeconden < 60)) {
+        fouten.add(new Message(Message.ERROR, "error.latitude.seconden"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLongitude(String longitude,
+                                       List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(longitude)) {
+      return 1;
+    } else {
+      if (!("E".equals(longitude) || "W".equals(longitude))) {
+        fouten.add(new Message(Message.ERROR, "error.longitude"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLongitudeGraden(Integer longitudeGraden,
+                                             List<Message> fouten) {
+    if (null == longitudeGraden) {
+      return 1;
+    } else {
+      if (longitudeGraden < 0 || longitudeGraden > 180) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.graden"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLongitudeMinuten(Integer longitudeMinuten,
+                                             List<Message> fouten) {
+    if (null == longitudeMinuten) {
+      return 1;
+    } else {
+      if (longitudeMinuten < 0 || longitudeMinuten > 59) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.minuten"));
+      }
+    }
+
+    return 0;
+  }
+
+  private static int valideerLongitudeSeconden(Double longitudeSeconden,
+                                              List<Message> fouten) {
+    if (null == longitudeSeconden) {
+      return 1;
+    } else {
+      if (!(longitudeSeconden >= 0 && longitudeSeconden < 60)) {
+        fouten.add(new Message(Message.ERROR, "error.longitude.seconden"));
+      }
+    }
+
+    return 0;
   }
 }
