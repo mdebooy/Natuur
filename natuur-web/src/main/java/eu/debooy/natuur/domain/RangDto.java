@@ -38,9 +38,12 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Entity
 @Table(name="RANGEN", schema="NATUUR")
 @NamedQueries({
-  @NamedQuery(name="vanaf", query="select r from RangDto r where r.niveau>:niveau")})
+  @NamedQuery(name="rangenVanaf", query="select r from RangDto r where r.niveau>:niveau")
+})
 public class RangDto extends Dto implements Comparable<RangDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
+
+  public static final String  QRY_VANAF = "rangVanaf";
 
   @Column(name="NIVEAU", nullable=false, updatable=false)
   private Long    niveau;

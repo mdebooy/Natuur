@@ -43,37 +43,21 @@ public class TaxonDao extends Dao<TaxonDto> {
     return em;
   }
 
-  /**
-   * Haal de soorten op.
-   * 
-   * @return Collection<TaxonDto>
-   */
   public List<TaxonDto> getKinderen(Long parentId) {
     Map<String, Object> params  = new HashMap<String, Object>();
     params.put("ouder", parentId);
 
-    return namedQuery("kinderen", params);
+    return namedQuery(TaxonDto.QRY_KINDEREN, params);
   }
 
-  /**
-   * Geef de mogelijke 'ouders' van de gevraagde rang.
-   * 
-   * @param kind
-   * @return List<DetailDto>
-   */
   public List<TaxonDto> getOuders(Long kind) {
     Map<String, Object> params  = new HashMap<String, Object>();
     params.put("kind", kind);
 
-    return namedQuery("ouders", params);
+    return namedQuery(TaxonDto.QRY_OUDERS, params);
   }
 
-  /**
-   * Haal de soorten op.
-   * 
-   * @return Collection<TaxonDto>
-   */
   public List<TaxonDto> getSoorten() {
-    return namedQuery("soort");
+    return namedQuery(TaxonDto.QRY_SOORT);
   }
 }

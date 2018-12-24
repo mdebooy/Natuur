@@ -41,11 +41,15 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Table(name="TAXONNAMEN", schema="NATUUR")
 @IdClass(TaxonnaamPK.class)
 @NamedQueries({
-  @NamedQuery(name="perTaxon", query="select t from TaxonnaamDto t where t.taxonId=:werelddeelId"),
-  @NamedQuery(name="taxonnamenPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")})
+  @NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:werelddeelId"),
+  @NamedQuery(name="taxonnaamPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")
+})
 public class TaxonnaamDto extends Dto
     implements Comparable<TaxonnaamDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
+
+  public static final String  QRY_TAXON = "taxonnaamPerTaxon";
+  public static final String  QRY_TAAL  = "taxonnaamPerTaal";
 
   @Column(name="NAAM", length=155, nullable=false)
   private String  naam;

@@ -48,26 +48,15 @@ public class DetailDao extends Dao<DetailDto> {
     return null;
   }
 
-  /**
-   * Haal de soorten op.
-   * 
-   * @return Collection<DetailDto>
-   */
   public List<DetailDto> getSoortenMetKlasse() {
-    return namedQuery("detailSoortMetKlasse");
+    return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
   }
 
 
-  /**
-   * Haal het aantal soorten per groep op.
-   * 
-   * @param String
-   * @return Collection<Rangtotaal>
-   */
   @SuppressWarnings("unchecked")
   public List<Rangtotaal> getSoortenMetRang(String rang) {
     Query             query   =
-        getEntityManager().createNamedQuery("detailTotalen")
+        getEntityManager().createNamedQuery(DetailDto.QRY_TOTALEN)
                           .setParameter("groep", rang);
     List<Object[]>    rijen   = query.getResultList();
     List<Rangtotaal>  totalen = new ArrayList<Rangtotaal>();
@@ -80,12 +69,7 @@ public class DetailDao extends Dao<DetailDto> {
     return totalen;
   }
 
-  /**
-   * Haal de waargenomen (onder)soorten op.
-   * 
-   * @return Collection<DetailDto>
-   */
   public List<DetailDto> getWaargenomen() {
-    return namedQuery("detailWaargenomen");
+    return namedQuery(DetailDto.QRY_WAARGENOMEN);
   }
 }

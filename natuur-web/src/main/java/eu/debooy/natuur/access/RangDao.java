@@ -39,20 +39,14 @@ public class RangDao extends Dao<RangDto> {
     super(RangDto.class);
   }
 
-  @Override
   protected EntityManager getEntityManager() {
     return em;
   }
 
-  /**
-   * Haal de soorten op.
-   * 
-   * @return Collection<TaxonDto>
-   */
   public List<RangDto>  getVanaf(Long niveau) {
     Map<String, Object> params  = new HashMap<String, Object>();
     params.put("niveau", niveau);
 
-    return namedQuery("vanaf", params);
+    return namedQuery(RangDto.QRY_VANAF, params);
   }
 }

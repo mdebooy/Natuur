@@ -57,11 +57,16 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Entity
 @Table(name="TAXA", schema="NATUUR")
 @NamedQueries({
-  @NamedQuery(name="kinderen", query="select t from TaxonDto t where t.parentId=:ouder"),
-  @NamedQuery(name="ouders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind"),
-  @NamedQuery(name="soort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")})
+  @NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder"),
+  @NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind"),
+  @NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
+})
 public class TaxonDto extends Dto implements Comparable<TaxonDto>, Cloneable {
   private static final  long  serialVersionUID  = 1L;
+
+  public static final String  QRY_KINDEREN  = "taxonKinderen";
+  public static final String  QRY_OUDERS    = "taxonOuders";
+  public static final String  QRY_SOORT     = "taxonSoort";
 
   @Column(name="LATIJNSENAAM", length=255, nullable=false)
   private String    latijnsenaam;

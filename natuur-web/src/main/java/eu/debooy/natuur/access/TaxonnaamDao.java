@@ -39,22 +39,21 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
     super(TaxonnaamDto.class);
   }
 
-  @Override
   protected EntityManager getEntityManager() {
     return em;
-  }
-
-  public List<TaxonnaamDto> getPerTaxon(Long taxonId) {
-    Map<String, Object> params  = new HashMap<String, Object>();
-    params.put("taxonId", taxonId);
-
-    return namedQuery("perTaxon", params);
   }
 
   public List<TaxonnaamDto> getPerTaal(String taal) {
     Map<String, Object> params  = new HashMap<String, Object>();
     params.put("taal", taal);
 
-    return namedQuery("taxonnamenPerTaal", params);
+    return namedQuery(TaxonnaamDto.QRY_TAAL, params);
+  }
+
+  public List<TaxonnaamDto> getPerTaxon(Long taxonId) {
+    Map<String, Object> params  = new HashMap<String, Object>();
+    params.put("taxonId", taxonId);
+
+    return namedQuery(TaxonnaamDto.QRY_TAXON, params);
   }
 }
