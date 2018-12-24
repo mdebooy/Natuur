@@ -41,7 +41,7 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
 @Table(name="TAXONNAMEN", schema="NATUUR")
 @IdClass(TaxonnaamPK.class)
 @NamedQueries({
-  @NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:werelddeelId"),
+  @NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:taxonId"),
   @NamedQuery(name="taxonnaamPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")
 })
 public class TaxonnaamDto extends Dto
