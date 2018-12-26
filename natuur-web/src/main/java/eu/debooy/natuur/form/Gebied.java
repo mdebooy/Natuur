@@ -179,6 +179,44 @@ public class Gebied
                                     parameter.getLandId()).isEquals()) {
       parameter.setLandId(landId);
     }
+    if (!new EqualsBuilder().append(latitude,
+                                    parameter.getLatitude()).isEquals()) {
+      parameter.setLatitude(latitude);
+    }
+    if (!new EqualsBuilder().append(latitudeGraden,
+                                    parameter.getLatitudeGraden())
+                            .isEquals()) {
+      parameter.setLatitudeGraden(latitudeGraden);
+    }
+    if (!new EqualsBuilder().append(latitudeMinuten,
+                                    parameter.getLatitudeMinuten())
+                            .isEquals()) {
+      parameter.setLatitudeMinuten(latitudeMinuten);
+    }
+    if (!new EqualsBuilder().append(latitudeSeconden,
+                                    parameter.getLatitudeSeconden())
+                            .isEquals()) {
+      parameter.setLatitudeSeconden(latitudeSeconden);
+    }
+    if (!new EqualsBuilder().append(longitude,
+                                    parameter.getLongitude()).isEquals()) {
+      parameter.setLongitude(longitude);
+    }
+    if (!new EqualsBuilder().append(longitudeGraden,
+                                    parameter.getLongitudeGraden())
+                            .isEquals()) {
+      parameter.setLongitudeGraden(longitudeGraden);
+    }
+    if (!new EqualsBuilder().append(longitudeMinuten,
+                                    parameter.getLongitudeMinuten())
+                            .isEquals()) {
+      parameter.setLongitudeMinuten(longitudeMinuten);
+    }
+    if (!new EqualsBuilder().append(longitudeSeconden,
+                                    parameter.getLongitudeSeconden())
+                            .isEquals()) {
+      parameter.setLongitudeSeconden(longitudeSeconden);
+    }
     if (!new EqualsBuilder().append(naam,
                                     parameter.getNaam()).isEquals()) {
       parameter.setNaam(naam);
