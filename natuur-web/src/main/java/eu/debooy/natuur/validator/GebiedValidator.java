@@ -48,6 +48,13 @@ public final class GebiedValidator {
     leeg  += valideerLongitudeMinuten(gebied.getLongitudeMinuten(), fouten);
     leeg  += valideerLongitudeSeconden(gebied.getLongitudeSeconden(), fouten);
 
+    // Latitude en Longitude kunnen default waardes bevatten. 
+    if (DoosUtils.isNotBlankOrNull(gebied.getLatitude())
+        && DoosUtils.isNotBlankOrNull(gebied.getLongitude())
+        && leeg == 6) {
+      leeg = 8;
+    }
+
     if (leeg != 0 && leeg != 8) {
       fouten.add(new Message(Message.ERROR, "error.coordinaten.onvolledig"));
     }
