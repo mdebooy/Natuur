@@ -55,9 +55,6 @@ public class RangController extends Natuur {
 
   private Rang  rang;
 
-  /**
-   * Prepareer een nieuw gebied.
-   */
   public void create() {
     rang  = new Rang();
     setAktie(PersistenceConstants.CREATE);
@@ -65,11 +62,6 @@ public class RangController extends Natuur {
     redirect(RANG_REDIRECT);
   }
 
-  /**
-   * Verwijder de rang
-   * 
-   * @param String
-   */
   public void delete(String rang) {
     try {
       getRangService().delete(rang);
@@ -84,20 +76,10 @@ public class RangController extends Natuur {
     addInfo(PersistenceConstants.DELETED, getRangtekst(rang));
   }
 
-  /**
-   * Geef de geselecteerde rang.
-   * 
-   * @return Rang
-   */
   public Rang getRang() {
     return rang;
   }
 
-  /**
-   * Geef de lijst met rangen.
-   * 
-   * @return Collection<Rang> met Gebied objecten.
-   */
   public Collection<Rang> getRangen() {
     return getRangService().query();
   }
@@ -106,18 +88,18 @@ public class RangController extends Natuur {
     return getTekst("biologie.rang." + rang);
   }
 
-  /**
-   * Geef de lijst met totalen voor de rang.
-   * 
-   * @return Collection<Rangtotaal>
-   */
   public Collection<Rangtotaal> getRangtotalen() {
     String            taal  = getGebruikersTaal();
     List<Rangtotaal>  rijen =
         getDetailService().getTotalenVoorRang(rang.getRang());
     for (Rangtotaal rij : rijen) {
-      String  naam = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
-                                          .getNaam();
+      String  naam = null;
+      try {
+        naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
+                                     .getNaam();
+      } catch (ObjectNotFoundException e) {
+        naam  = rij.getLatijnsenaam();
+      }
       if (DoosUtils.isBlankOrNull(naam)) {
         rij.setNaam(rij.getLatijnsenaam());
       } else {
@@ -128,11 +110,6 @@ public class RangController extends Natuur {
     return rijen;
   }
 
-  /**
-   * Geef alle rangen als SelectItems.
-   * 
-   * @return
-   */
   public List<SelectItem> getSelectRangen() {
     List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
@@ -144,11 +121,6 @@ public class RangController extends Natuur {
     return items;
   }
 
-  /**
-   * Zet de Rang die gevraagd is klaar.
-   * 
-   * @param String rang
-   */
   public void retrieve(String rang) {
     this.rang = new Rang(getRangService().rang(rang));
     setAktie(PersistenceConstants.RETRIEVE);
@@ -157,11 +129,6 @@ public class RangController extends Natuur {
     redirect(RANG_TOTALEN_REDIRECT);
   }
 
-  /**
-   * Persist de Rang
-   * 
-   * @param Rang
-   */
   public void save() {
     List<Message> messages  = RangValidator.valideer(rang);
     if (!messages.isEmpty()) {
@@ -193,12 +160,6 @@ public class RangController extends Natuur {
     }
   }
 
-  /**
-   * Geef rangen 'groter' dan de rang van de ouder als SelectItems.
-   * 
-   * @param Long niveau
-   * @return List<SelectItem>
-   */
   public List<SelectItem> selectRangen(Long niveau) {
     List<SelectItem>  items = new LinkedList<SelectItem>();
     Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
@@ -210,11 +171,6 @@ public class RangController extends Natuur {
     return items;
   }
 
-  /**
-   * Zet de Rang die gewijzigd gaat worden klaar.
-   * 
-   * @param String rang
-   */
   public void update(String rang) {
     this.rang = new Rang(getRangService().rang(rang));
     setAktie(PersistenceConstants.UPDATE);

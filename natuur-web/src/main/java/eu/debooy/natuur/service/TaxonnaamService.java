@@ -57,14 +57,12 @@ public class TaxonnaamService {
     LOGGER.debug("init TaxonnaamService");
   }
 
+  //TODO Hoe wordt een onbestaande naam elders opgevangen?
+  //TODO method geeft ObjectNotFoundException gewoon door.
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public TaxonnaamDto taxonnaam(Long taxonId, String taal) {
     TaxonnaamDto  resultaat =
         taxonnaamDao.getByPrimaryKey(new TaxonnaamPK(taxonId, taal));
-
-    if (null == resultaat) {
-      return new TaxonnaamDto();
-    }
 
     return resultaat;
   }
