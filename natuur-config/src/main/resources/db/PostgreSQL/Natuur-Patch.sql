@@ -1,43 +1,69 @@
-ALTER TABLE NATUUR.GEBIEDEN
-	ADD COLUMN LATITUDE                        CHAR(1),
-	ADD COLUMN LATITUDE_GRADEN                 NUMERIC(2),
-	ADD COLUMN LATITUDE_MINUTEN                NUMERIC(2),
-	ADD COLUMN LATITUDE_SECONDEN               NUMERIC(5,3),
-	ADD COLUMN LONGITUDE                       CHAR(1),
-	ADD COLUMN LONGITUDE_GRADEN                NUMERIC(3),
-	ADD COLUMN LONGITUDE_MINUTEN               NUMERIC(2),
-	ADD COLUMN LONGITUDE_SECONDEN              NUMERIC(5,3);
+﻿-- Kreatie van alle objecten voor het Natuur schema.
+-- 
+-- Copyright 2020 Marco de Booij
+--
+-- Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
+-- the European Commission - subsequent versions of the EUPL (the "Licence");
+-- you may not use this work except in compliance with the Licence. You may
+-- obtain a copy of the Licence at:
+--
+-- http://www.osor.eu/eupl
+--
+-- Unless required by applicable law or agreed to in writing, software
+-- distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
+-- WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-- See the Licence for the specific language governing permissions and
+-- limitations under the Licence.
+--
+-- Project: Natuur
+-- Author: Marco de Booij
 
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LATITUDE CHECK(LATITUDE = ANY (ARRAY['N'::bpchar, 'S'::bpchar]));
+REASSIGN OWNED BY NATUUR TO POSTGRES;
+REVOKE ALL ON DATABASE :DBNAME FROM NATUUR;
+DROP ROLE NATUUR;
 
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LATITUDE_GRADEN CHECK(LATITUDE_GRADEN >= 0 AND LATITUDE_GRADEN < 90);
+CREATE OR REPLACE VIEW NATUUR.GEEN_FOTO AS 
+WITH ZONDERFOTO AS (
+  SELECT   W.TAXON_ID
+  FROM     NATUUR.WAARNEMINGEN W
+  EXCEPT
+  SELECT   F.TAXON_ID
+  FROM     NATUUR.FOTOS F)
+SELECT   D.PARENT_ID, D.PARENT_RANG, D.TAXON_ID
+FROM     NATUUR.DETAILS D JOIN ZONDERFOTO Z ON D.TAXON_ID=Z.TAXON_ID;
 
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LATITUDE_MINUTEN CHECK(LATITUDE_MINUTEN >= 0 AND LATITUDE_MINUTEN < 60);
+GRANT SELECT  ON TABLE NATUUR.GEEN_FOTO TO NATUUR_SEL;
+GRANT SELECT  ON TABLE NATUUR.GEEN_FOTO TO NATUUR_UPD;
 
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LATITUDE_SECONDEN CHECK(LATITUDE_SECONDEN >= 0 AND LATITUDE_SECONDEN < 60);
-
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LONGITUDE CHECK(LONGITUDE = ANY (ARRAY['E'::bpchar, 'W'::bpchar]));
-
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LONGITUDE_GRADEN CHECK(LONGITUDE_GRADEN >= 0 AND LONGITUDE_GRADEN < 180);
-
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LONGITUDE_MINUTEN CHECK(LONGITUDE_MINUTEN >= 0 AND LONGITUDE_MINUTEN < 60);
-
-ALTER TABLE NATUUR.GEBIEDEN
-  ADD CONSTRAINT CHK_GEB_LONGITUDE_SECONDEN CHECK(LONGITUDE_SECONDEN >= 0 AND LONGITUDE_SECONDEN < 60);
-
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE            IS 'De latitude (N of S).';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_GRADEN     IS 'De latitude. Graden deel.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_MINUTEN    IS 'De latitude. Minuten deel.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE_SECONDEN   IS 'De latitude. Seconden deel.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE           IS 'De longitude (E of W)';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_GRADEN    IS 'De longitude. Graden deel.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_MINUTEN   IS 'De longitude. Minuten deel.';
-COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_SECONDEN  IS 'De longitude. Seconden deel.';
+COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                IS 'De rang van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_LATIJNSENAAM        IS 'De latijnse naam van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.NIVEAU                     IS 'Het niveau van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.TAXON_ID                   IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.RANG                       IS 'De rang van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM               IS 'De latijnse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                  IS 'Een opmerking voor deze taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet(0).';
+COMMENT ON VIEW   NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.FOTO_ID             IS 'De sleutel van de foto.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_LATIJNSENAAM IS 'De latijnse naam van de klasse van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_ID            IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.'
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
+COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat alle waarnemingen waar nog geen foto van is.';
+COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG              IS 'De rang van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                 IS 'De sleutel van de taxon.';
+COMMENT ON VIEW   NATUUR.TAXONOMIE                          IS 'Deze view bevat gegevens van de taxon en zijn parent.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.LATIJNSENAAM             IS 'De latijnse naam van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.LEVEL                    IS 'Het niveau rang binnen de taxa.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.OPMERKING                IS 'Een opmerking voor deze taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.PATH                     IS 'Een array met alle hogere niveaus''s van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.RANG                     IS 'De sleutel van rang van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.TAXON_ID                 IS 'De sleutel van de taxon.';
 
