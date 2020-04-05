@@ -35,32 +35,44 @@ public class Foto
     extends Formulier implements Comparable<Foto>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
+  private String  fotoBestand;
+  private String  fotoDetail;
   private Long    fotoId;
   private Gebied  gebied;
+  private String  opmerking;
   private Taxon   taxon;
   private Long    taxonSeq;
 
   public Foto() {}
 
   public Foto(Foto foto) {
-    fotoId    = foto.getFotoId();
-    gebied    = new Gebied(foto.getGebied());
-    taxon     = new Taxon(foto.getTaxon());
-    taxonSeq  = foto.getTaxonSeq();
+    fotoBestand = foto.getFotoBestand();
+    fotoDetail  = foto.getFotoDetail();
+    fotoId      = foto.getFotoId();
+    gebied      = new Gebied(foto.getGebied());
+    opmerking   = foto.getOpmerking();
+    taxon       = new Taxon(foto.getTaxon());
+    taxonSeq    = foto.getTaxonSeq();
   }
 
   public Foto(FotoDto fotoDto) {
-    fotoId    = fotoDto.getFotoId();
-    gebied    = new Gebied(fotoDto.getGebied());
-    taxon     = new Taxon(fotoDto.getTaxon());
-    taxonSeq  = fotoDto.getTaxonSeq();
+    fotoBestand = fotoDto.getFotoBestand();
+    fotoDetail  = fotoDto.getFotoDetail();
+    fotoId      = fotoDto.getFotoId();
+    gebied      = new Gebied(fotoDto.getGebied());
+    opmerking   = fotoDto.getOpmerking();
+    taxon       = new Taxon(fotoDto.getTaxon());
+    taxonSeq    = fotoDto.getTaxonSeq();
   }
 
   public Foto(FotoDto fotoDto, String taal) {
-    fotoId    = fotoDto.getFotoId();
-    gebied    = new Gebied(fotoDto.getGebied());
-    taxon     = new Taxon(fotoDto.getTaxon(), taal);
-    taxonSeq  = fotoDto.getTaxonSeq();
+    fotoBestand = fotoDto.getFotoBestand();
+    fotoDetail  = fotoDto.getFotoDetail();
+    fotoId      = fotoDto.getFotoId();
+    gebied      = new Gebied(fotoDto.getGebied());
+    opmerking   = fotoDto.getOpmerking();
+    taxon       = new Taxon(fotoDto.getTaxon(), taal);
+    taxonSeq    = fotoDto.getTaxonSeq();
   }
 
   public int compareTo(Foto andere) {
@@ -79,12 +91,24 @@ public class Foto
     return new EqualsBuilder().append(fotoId, andere.fotoId).isEquals();
   }
 
+  public String getFotoBestand() {
+    return fotoBestand;
+  }
+
+  public String getFotoDetail() {
+    return fotoDetail;
+  }
+
   public Long getFotoId() {
     return fotoId;
   }
 
   public Gebied getGebied() {
     return gebied;
+  }
+
+  public String getOpmerking() {
+    return opmerking;
   }
 
   public Taxon getTaxon() {
@@ -100,11 +124,23 @@ public class Foto
   }
 
   public void persist(FotoDto fotoDto) {
+    if (!new EqualsBuilder().append(fotoBestand,
+                                    fotoDto.getFotoBestand()).isEquals()) {
+      fotoDto.setFotoBestand(fotoBestand);
+    }
+    if (!new EqualsBuilder().append(fotoDetail,
+                                    fotoDto.getFotoDetail()).isEquals()) {
+      fotoDto.setFotoDetail(fotoDetail);
+    }
     if (!new EqualsBuilder().append(gebied, fotoDto.getGebied())
                             .isEquals()) {
       GebiedDto gebiedDto = new GebiedDto();
       gebied.persist(gebiedDto);
       fotoDto.setGebied(gebiedDto);
+    }
+    if (!new EqualsBuilder().append(opmerking,
+                                    fotoDto.getOpmerking()).isEquals()) {
+      fotoDto.setOpmerking(opmerking);
     }
     if (!new EqualsBuilder().append(taxon, fotoDto.getTaxon())
                             .isEquals()) {
@@ -122,6 +158,20 @@ public class Foto
     }
   }
 
+  public void setFotoBestand(String fotoBestand) {
+    if (!new EqualsBuilder().append(this.fotoBestand, fotoBestand).isEquals()) {
+      gewijzigd         = true;
+      this.fotoBestand  = fotoBestand;
+    }
+  }
+
+  public void setFotoDetail(String fotoDetail) {
+    if (!new EqualsBuilder().append(this.fotoDetail, fotoDetail).isEquals()) {
+      gewijzigd       = true;
+      this.fotoDetail = fotoDetail;
+    }
+  }
+
   public void setFotoId(Long fotoId) {
     if (!new EqualsBuilder().append(this.fotoId, fotoId).isEquals()) {
       gewijzigd   = true;
@@ -133,6 +183,13 @@ public class Foto
     if (!new EqualsBuilder().append(this.gebied, gebied).isEquals()) {
       gewijzigd   = true;
       this.gebied = new Gebied(gebied);
+    }
+  }
+
+  public void setOpmerking(String opmerking) {
+    if (!new EqualsBuilder().append(this.opmerking, opmerking).isEquals()) {
+      gewijzigd       = true;
+      this.opmerking  = opmerking;
     }
   }
 

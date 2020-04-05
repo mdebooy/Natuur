@@ -22,6 +22,11 @@ REASSIGN OWNED BY NATUUR TO POSTGRES;
 REVOKE ALL ON DATABASE :DBNAME FROM NATUUR;
 DROP ROLE NATUUR;
 
+ALTER TABLE NATUUR.FOTOS
+  ADD COLUMN FOTO_BESTAND                    VARCHAR(255),
+  ADD COLUMN FOTO_DETAIL                     VARCHAR(20),
+  ADD COLUMN OPMERKING                       VARCHAR(2000);
+
 CREATE OR REPLACE VIEW NATUUR.GEEN_FOTO AS 
 WITH ZONDERFOTO AS (
   SELECT   W.TAXON_ID
@@ -54,6 +59,9 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.'
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
 COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat alle waarnemingen waar nog geen foto van is.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG              IS 'De rang van de parent van de taxon.';

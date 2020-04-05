@@ -76,8 +76,11 @@ CREATE SEQUENCE NATUUR.SEQ_WAARNEMINGEN
 
 -- Tabellen
 CREATE TABLE NATUUR.FOTOS (
+  FOTO_BESTAND                    VARCHAR(255),
+  FOTO_DETAIL                     VARCHAR(20),
   FOTO_ID                         INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_FOTOS'::REGCLASS),
   GEBIED_ID                       INTEGER         NOT NULL,
+  OPMERKING                       VARCHAR(2000),
   TAXON_ID                        INTEGER         NOT NULL,
   TAXON_SEQ                       NUMERIC(3)      NOT NULL  DEFAULT 0,
   CONSTRAINT PK_FOTOS PRIMARY KEY (FOTO_ID)
@@ -311,8 +314,11 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgn
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
 COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID                      IS 'De sleutel van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID                    IS 'De sleutel van het gebied waarin de foto gemaakt is.';
+COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID                     IS 'De sleutel van de taxon op de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ                    IS 'Een volgnummer voor de foto voor de betreffende taxon.';
 COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';

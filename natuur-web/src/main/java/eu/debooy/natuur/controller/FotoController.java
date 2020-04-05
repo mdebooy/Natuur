@@ -61,9 +61,6 @@ public class FotoController extends Natuur {
   private Foto    foto;
   private FotoDto fotoDto;
 
-  /**
-   * Prepareer een nieuwe Foto.
-   */
   public void create() {
     GebiedDto gebied  = getGebiedService().gebied(
         Long.valueOf(getParameter("natuur.default.gebiedid")));
@@ -76,11 +73,6 @@ public class FotoController extends Natuur {
     redirect(FOTO_REDIRECT);
   }
 
-  /**
-   * Verwijder de Foto
-   * 
-   * @param Foto
-   */
   public void delete(Long fotoId) {
     try {
       fotoDto = getFotoService().foto(fotoId);
@@ -97,9 +89,6 @@ public class FotoController extends Natuur {
             + fotoDto.getTaxon().getNaam(getGebruikersTaal()) + "'");
   }
 
-  /**
-   * Rapport met Waarnemingen.
-   */
   public void fotolijst() {
     ExportData  exportData  = new ExportData();
 
@@ -147,29 +136,22 @@ public class FotoController extends Natuur {
     }
   }
 
-  /**
-   * Geef de geselecteerde foto.
-   * 
-   * @return Foto
-   */
   public Foto getFoto() {
     return foto;
   }
 
-  /**
-   * Geef de lijst met fotos.
-   * 
-   * @return Collection<Foto> met Foto objecten.
-   */
   public Collection<Foto> getFotos() {
     return getFotoService().query(getGebruikersTaal());
   }
 
-  /**
-   * Persist de Foto
-   * 
-   * @param Foto
-   */
+  public void retrieve(Long fotoId) {
+    fotoDto = getFotoService().foto(fotoId);
+    foto    = new Foto(fotoDto, getGebruikersTaal());
+    setAktie(PersistenceConstants.RETRIEVE);
+    setSubTitel(foto.getTaxonSeq() + " - " + foto.getTaxon().getNaam());
+    redirect(FOTO_REDIRECT);
+  }
+
   public void save() {
     List<Message> messages  = FotoValidator.valideer(foto);
     if (!messages.isEmpty()) {
@@ -204,11 +186,6 @@ public class FotoController extends Natuur {
     }
   }
 
-  /**
-   * Zet de Foto die gewijzigd gaat worden klaar.
-   * 
-   * @param Long fotoId
-   */
   public void update(Long fotoId) {
     fotoDto = getFotoService().foto(fotoId);
     foto    = new Foto(fotoDto, getGebruikersTaal());

@@ -37,9 +37,13 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="FOTOS", schema="NATUUR")
-public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
+public class FotoDto extends Dto implements Comparable<FotoDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  @Column(name="FOTO_BESTAND", length=255)
+  private String    fotoBestand;
+  @Column(name="FOTO_DETAIL", length=20)
+  private String    fotoDetail;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="FOTO_ID", nullable=false)
@@ -47,17 +51,13 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
   @OneToOne
   @JoinColumn(name="GEBIED_ID", nullable=false)
   private GebiedDto gebied;
+  @Column(name="OPMERKING", length=2000)
+  private String    opmerking;
   @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
   private TaxonDto  taxon;
   @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq;
-  
-  public FotoDto clone() throws CloneNotSupportedException {
-    FotoDto clone = (FotoDto) super.clone();
-
-    return clone;
-  }
 
   public int compareTo(FotoDto fotoDto) {
     return new CompareToBuilder().append(fotoId, fotoDto.fotoId).toComparison();
@@ -76,12 +76,24 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
   }
 
+  public String getFotoBestand() {
+    return fotoBestand;
+  }
+
+  public String getFotoDetail() {
+    return fotoDetail;
+  }
+
   public Long getFotoId() {
     return fotoId;
   }
 
   public GebiedDto getGebied() {
     return gebied;
+  }
+
+  public String getOpmerking() {
+    return opmerking;
   }
 
   public TaxonDto getTaxon() {
@@ -96,19 +108,31 @@ public class FotoDto extends Dto implements Comparable<FotoDto>, Cloneable {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
+  public void setFotoBestand(String fotoBestand) {
+    this.fotoBestand  = fotoBestand;
+  }
+
+  public void setFotoDetail(String fotoDetail) {
+    this.fotoDetail   = fotoDetail;
+  }
+
   public void setFotoId(Long fotoId) {
-    this.fotoId = fotoId;
+    this.fotoId       = fotoId;
   }
 
   public void setGebied(GebiedDto gebied) {
-    this.gebied = gebied;
+    this.gebied       = gebied;
+  }
+
+  public void setOpmerking(String opmerking) {
+    this.opmerking    = opmerking;
   }
 
   public void setTaxon(TaxonDto taxon) {
-    this.taxon  = taxon;
+    this.taxon        = taxon;
   }
 
   public void setTaxonSeq(Long taxonSeq) {
-    this.taxonSeq = taxonSeq;
+    this.taxonSeq     = taxonSeq;
   }
 }

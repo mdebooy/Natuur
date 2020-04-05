@@ -32,41 +32,69 @@ public final class FotoValidator {
   private FotoValidator() {
   }
 
-  /**
-   * Valideer de Foto.
-   * 
-   * @param Foto foto 
-   * @return List<Message>
-   */
   public static List<Message> valideer(Foto foto) {
     List<Message> fouten  = new ArrayList<Message>();
 
-    Long  seq = foto.getTaxonSeq();
-    if (DoosUtils.isBlankOrNull(seq)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.seq"));
-    }
-
-    if (null == foto.getTaxon()) {
-      seq = null;
+    valideerFotoBestand(DoosUtils.nullToEmpty(foto.getFotoBestand()), fouten);
+    valideerFotoDetail(DoosUtils.nullToEmpty(foto.getFotoDetail()), fouten);
+    if (null == foto.getGebied()) {
+      valideerGebiedId(null, fouten);
     } else {
-      seq = foto.getTaxon().getTaxonId();
+      valideerGebiedId(foto.getGebied().getGebiedId(), fouten);
     }
-    if (DoosUtils.isBlankOrNull(seq)) {
+    valideerOpmerking(DoosUtils.nullToEmpty(foto.getOpmerking()), fouten);
+    if (null == foto.getTaxon()) {
+      valideerTaxonId(null, fouten);
+    } else {
+      valideerTaxonId(foto.getTaxon().getTaxonId(), fouten);
+    }
+    valideerTaxonSeq(foto.getTaxonSeq(), fouten);
+
+    return fouten;
+  }
+
+  private static void valideerFotoBestand(String fotoBestand,
+                                          List<Message> fouten) {
+    if (fotoBestand.length() > 255) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                             "_I18N.label.fotobestand", 255));
+    }
+  }
+
+  private static void valideerFotoDetail(String fotoDetail,
+                                         List<Message> fouten) {
+    if (fotoDetail.length() > 20) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                             "_I18N.label.fotodetail", 20));
+    }
+  }
+
+  private static void valideerTaxonId(Long taxonId, List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(taxonId)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.soort"));
     }
+  }
 
-    if (null == foto.getGebied()) {
-      seq = null;
-    } else {
-      seq = foto.getGebied().getGebiedId();
-    }
-    if (DoosUtils.isBlankOrNull(seq)) {
+  private static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(gebiedId)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.gebied"));
     }
+  }
 
-    return fouten;
+  private static void valideerOpmerking(String opmerking,
+                                        List<Message> fouten) {
+    if (opmerking.length() > 2000) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                             "_I18N.label.fotodetail", 2000));
+    }
+  }
+
+  private static void valideerTaxonSeq(Long taxonSeq, List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(taxonSeq)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.seq"));
+    }
   }
 }
