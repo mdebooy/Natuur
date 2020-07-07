@@ -113,6 +113,7 @@ CREATE TABLE NATUUR.TAXA (
   PARENT_ID                       INTEGER,
   RANG                            VARCHAR(3)      NOT NULL,
   TAXON_ID                        INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_TAXA'::REGCLASS),
+  VOLGNUMMER                      SMALLINT        NOT NULL  DEFAULT 0,
   CONSTRAINT PK_TAXA PRIMARY KEY (TAXON_ID)
 );
 
@@ -143,17 +144,17 @@ WITH RECURSIVE Q AS (
   SELECT HI.*::NATUUR.TAXA AS HI, Q_1.LEVEL + 1 AS LEVEL, Q_1.BREADCRUMB || HI.TAXON_ID
   FROM   Q Q_1
            JOIN NATUUR.TAXA HI ON HI.PARENT_ID = (Q_1.H).TAXON_ID)
-SELECT   (Q.H).TAXON_ID AS TAXON_ID, (Q.H).PARENT_ID AS PARENT_ID,
-         (Q.H).RANG AS RANG, (Q.H).LATIJNSENAAM AS LATIJNSENAAM,
-         (Q.H).OPMERKING AS OPMERKING, Q.LEVEL,
-         Q.BREADCRUMB AS PATH
+SELECT   (Q.H).TAXON_ID AS TAXON_ID, (Q.H).VOLGNUMMER AS VOLGNUMMER,
+         (Q.H).PARENT_ID AS PARENT_ID, (Q.H).RANG AS RANG,
+         (Q.H).LATIJNSENAAM AS LATIJNSENAAM, (Q.H).OPMERKING AS OPMERKING,
+         Q.LEVEL, Q.BREADCRUMB AS PATH
 FROM     Q
 ORDER BY Q.BREADCRUMB;
 
 CREATE OR REPLACE VIEW NATUUR.DETAILS AS
 SELECT   P.TAXON_ID AS PARENT_ID, P.RANG AS PARENT_RANG,
-         P.LATIJNSENAAM AS PARENT_LATIJNSENAAM,
-         R.NIVEAU, T.TAXON_ID, T.RANG, T.LATIJNSENAAM, T.OPMERKING,
+         P.LATIJNSENAAM AS PARENT_LATIJNSENAAM, R.NIVEAU, T.TAXON_ID,
+         T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM, T.OPMERKING,
          CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
 FROM     NATUUR.TAXONOMIE T
            JOIN NATUUR.TAXA P
@@ -302,7 +303,7 @@ COMMENT ON COLUMN NATUUR.DETAILS.TAXON_ID                   IS 'De sleutel van d
 COMMENT ON COLUMN NATUUR.DETAILS.RANG                       IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM               IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                  IS 'Een opmerking voor deze taxon.';
-COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet(0).';
+COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
 COMMENT ON TABLE  NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.FOTO_ID             IS 'De sleutel van de foto.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse (taxon).';
@@ -345,6 +346,7 @@ COMMENT ON COLUMN NATUUR.TAXA.OPMERKING                     IS 'Een opmerking vo
 COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID                     IS 'De parent van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.RANG                          IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID                      IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.VOLGNUMMER                    IS 'Het volgnummer dat gebruikt wordt in publicaties. Is 0 als er op (latijnse)naam gesorteerd wordt.';
 COMMENT ON TABLE  NATUUR.TAXONNAMEN                         IS 'Deze tabel bevat de namen van de TAXA in verschillende talen.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM                    IS 'De naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.TAAL                    IS 'De taal.';
