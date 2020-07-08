@@ -208,18 +208,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return latijnsenaam;
   }
 
-  public TaxonnaamDto getTaxonnaam(String taal) {
-    if (taxonnamen.containsKey(taal)) {
-      return taxonnamen.get(taal);
-    } else {
-      return new TaxonnaamDto();
-    }
-  }
-
-  public Collection<TaxonnaamDto> getTaxonnamen() {
-    return taxonnamen.values();
-  }
-
   @Transient
   public String getNaam(String taal) {
     if (taxonnamen.containsKey(taal)) {
@@ -245,6 +233,18 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return taxonId;
   }
 
+  public TaxonnaamDto getTaxonnaam(String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal);
+    } else {
+      return new TaxonnaamDto();
+    }
+  }
+
+  public Collection<TaxonnaamDto> getTaxonnamen() {
+    return taxonnamen.values();
+  }
+
   public Integer getVolgnummer() {
     return volgnummer;
   }
@@ -253,7 +253,12 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
 
-  public void removeNaam(String taal) {
+  @Transient
+  public boolean hasTaxonnaam(String taal) {
+    return taxonnamen.containsKey(taal);
+  }
+
+  public void removeTaxonnaam(String taal) {
     if (taxonnamen.containsKey(taal)) {
       taxonnamen.remove(taal);
     } else {
@@ -263,18 +268,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public void setLatijnsenaam(String latijnsenaam) {
     this.latijnsenaam = latijnsenaam;
-  }
-
-  public void setNamen(Collection<TaxonnaamDto> taxonnamen) {
-    this.taxonnamen.clear();
-    for (TaxonnaamDto taxonnaam : taxonnamen) {
-      this.taxonnamen.put(taxonnaam.getTaal(), taxonnaam);
-    }
-  }
-
-  public void setNamen(Map<String, TaxonnaamDto> taxonnamen) {
-    this.taxonnamen.clear();
-    this.taxonnamen.putAll(taxonnamen);
   }
 
   public void setOpmerking(String opmerking) {
@@ -291,6 +284,18 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public void setTaxonId(Long taxonId) {
     this.taxonId = taxonId;
+  }
+
+  public void setTaxonnamen(Collection<TaxonnaamDto> taxonnamen) {
+    this.taxonnamen.clear();
+    for (TaxonnaamDto taxonnaam : taxonnamen) {
+      this.taxonnamen.put(taxonnaam.getTaal(), taxonnaam);
+    }
+  }
+
+  public void setTaxonnamen(Map<String, TaxonnaamDto> taxonnamen) {
+    this.taxonnamen.clear();
+    this.taxonnamen.putAll(taxonnamen);
   }
 
   public void setVolgnummer(Integer volgnummer) {
