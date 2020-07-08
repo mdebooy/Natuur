@@ -30,18 +30,15 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.natuur.validator.TaxonnaamValidator;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,7 +66,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Vul 'ouder' en 'ouderNiveau' voor de gevraagde parentId.
-   * 
+   *
    * @param parentId
    */
   public void bepaalOuder(Long parentId) {
@@ -127,7 +124,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Verwijder het Taxon
-   * 
+   *
    * @param Taxon
    */
   public void delete(Long taxonId) {
@@ -149,12 +146,12 @@ public class TaxonController extends Natuur {
 
   /**
    * Verwijder de Taxonnaam.
-   * 
+   *
    * @param String taal
    */
   public void deleteTaxonnaam(String taal) {
     try {
-      taxonDto.removeNaam(taal);
+      taxonDto.removeTaxonnaam(taal);
       getTaxonService().save(taxonDto);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taal);
@@ -169,7 +166,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de aktieve tab.
-   * 
+   *
    * @return
    */
   public String getAktieveTab() {
@@ -178,7 +175,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de lijst met kinderen van de taxon.
-   * 
+   *
    * @return Collection<Taxon> met Taxon objecten.
    */
   public Collection<Taxon> getKinderen(Long parentId) {
@@ -187,7 +184,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geeft de ouder van de taxon.
-   * 
+   *
    * @return Taxon
    */
   public Taxon getOuder() {
@@ -196,7 +193,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geeft het rang niveau van de ouder.
-   * 
+   *
    * @return Long
    */
   public Long getOuderNiveau() {
@@ -205,7 +202,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de naam van de gevraagde rang.
-   * 
+   *
    * @return String
    */
   public String getRangnaam() {
@@ -214,7 +211,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de lijst met taxa.
-   * 
+   *
    * @return Collection<Taxon> met Taxon objecten.
    */
   public Collection<Taxon> getTaxa() {
@@ -223,7 +220,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef het geselecteerde taxon.
-   * 
+   *
    * @return Taxon
    */
   public Taxon getTaxon() {
@@ -232,7 +229,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de geselecteerde werelddeelnaam.
-   * 
+   *
    * @return Taxonnaam
    */
   public Taxonnaam getTaxonnaam() {
@@ -241,7 +238,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef de lijst met werelddeelnamen.
-   * 
+   *
    * @return Collection<Taxonnaam>
    */
   public Collection<Taxonnaam> getTaxonnamen() {
@@ -256,7 +253,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Zet het Taxon dat gevraagd is klaar.
-   * 
+   *
    * @param Long taxonId
    */
   public void retrieve(Long taxonId) {
@@ -352,7 +349,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Geef alle taxa als SelectItems.
-   * 
+   *
    * @return List<SelectItem>
    */
   public List<SelectItem> selectOuders(String rang) {
@@ -377,7 +374,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Zet de Taxon die gewijzigd gaat worden klaar.
-   * 
+   *
    * @param Long taxonId
    */
   public void update(Long taxonId) {
@@ -392,7 +389,7 @@ public class TaxonController extends Natuur {
 
   /**
    * Zet de Taxonnaam die gewijzigd gaat worden klaar.
-   * 
+   *
    * @param Long taxonId
    */
   public void updateTaxonnaam(String taal) {
