@@ -73,7 +73,7 @@
                   <h2>#{natuurTaxon.taxon.naam}</h2>
                 </t:div>
               </div>
-              <div align="right" class="col-2" >
+              <div class="col-2 text-right" >
                 <h:commandLink action="#{natuurTaxon.create(natuurTaxon.taxon.taxonId)}" actionFor="#{formTaxon}">
                   <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
                 </h:commandLink>
@@ -116,7 +116,7 @@
                 <t:inputTextarea id="opmerking" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxon.opmerking}" readonly="#{natuurTaxon.aktie.readonly}" />
               </div>
             </div>
-  
+
             <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
               <div class="row" />
               <div>
@@ -134,7 +134,7 @@
                   </div>
                   <div id="namenTab" class="tab-pane fade" role="tabpanel">
                     <d:spacer />
-                    <div align="right" class="col-12">
+                    <div class="col-12 text-right">
                       <h:commandLink action="#{natuurTaxon.createTaxonnaam}" actionFor="#{formTaxon}" rendered="#{natuurTaxon.aktie.wijzig}">
                         <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
                       </h:commandLink>
@@ -147,7 +147,7 @@
                 </div>
               </div>
             </t:div>
-  
+
             <h:commandLink action="#{natuurTaxon.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
             <h:commandLink action="#{natuurTaxon.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
             <d:cancel href="#{natuur.path}/taxa/taxa.xhtml" aktie="#{natuurTaxon.aktie}"/>
