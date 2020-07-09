@@ -63,6 +63,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_LATIJNSENAAM  = "latijnsenaam";
+  public static final String  COL_OPMERKING     = "opmerking";
+  public static final String  COL_PARENTID      = "parentId";
+  public static final String  COL_RANG          = "rang";
+  public static final String  COL_TAXONID       = "taxonId";
+  public static final String  COL_VOLGNUMMER    = "volgnummer";
+
   public static final String  PAR_KIND          = "kind";
   public static final String  PAR_LATIJNSENAAM  = "latijnsenaam";
   public static final String  PAR_OUDER         = "ouder";
@@ -166,16 +173,18 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public TaxonDto() {}
 
   public TaxonDto(JsonObject json) {
-    latijnsenaam  = json.getString("latijnsenaam");
-    opmerking     = json.getString("opmerking");
-    parentId      = Long.valueOf(json.getJsonNumber("parentId").longValue());
+    latijnsenaam  = json.getString(COL_LATIJNSENAAM);
+    opmerking     = json.getString(COL_OPMERKING);
+    parentId      = Long.valueOf(json.getJsonNumber(COL_PARENTID).longValue());
     if (parentId.equals(Long.valueOf(0L))) {
       parentId    = null;
     }
-    rang          = json.getString("rang");
-    if (json.containsKey("taxonId")) {
-      taxonId     = Long.valueOf(json.getJsonNumber("taxonId").longValue());
+    rang          = json.getString(COL_RANG);
+    if (json.containsKey(COL_TAXONID)) {
+      taxonId     = Long.valueOf(json.getJsonNumber(COL_TAXONID).longValue());
     }
+    volgnummer    =
+        Integer.valueOf(json.getJsonNumber(COL_VOLGNUMMER).intValue());
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {
