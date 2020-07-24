@@ -25,3 +25,12 @@ from     natuur.taxa tax join natuur.rangen rng on tax.rang     =rng.rang
          natuur.rangen rn1                                                  
 where    par.rang   =rn1.rang
 and      rng.niveau<=rn1.niveau;
+
+select   t.latijnsenaam, n.naam, count(n1.taal)
+from     natuur.taxa t join natuur.taxonnamen n on t.taxon_id=n.taxon_id
+                       join natuur.taxonnamen n1 on t.taxon_id=n1.taxon_id
+where    n.taal='nl'
+group by t.latijnsenaam, n.naam
+--having   count(n.taal)=30
+order by t.latijnsenaam, n.naam;
+

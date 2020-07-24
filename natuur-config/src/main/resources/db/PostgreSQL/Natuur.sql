@@ -1,5 +1,5 @@
 ﻿-- Kreatie van alle objecten voor het Natuur schema.
--- 
+--
 -- Copyright 2015 Marco de Booij
 --
 -- Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
@@ -167,7 +167,7 @@ FROM     NATUUR.TAXONOMIE T
                       GROUP BY TAXON_ID) F
              ON T.TAXON_ID=F.TAXON_ID;
 
-CREATE OR REPLACE VIEW NATUUR.FOTO_OVERZICHT AS 
+CREATE OR REPLACE VIEW NATUUR.FOTO_OVERZICHT AS
 SELECT   FOT.FOTO_ID, DET.PARENT_ID AS KLASSE_ID,
          DET.PARENT_LATIJNSENAAM AS KLASSE_LATIJNSENAAM,
          DET.TAXON_ID, DET.LATIJNSENAAM,
@@ -177,7 +177,7 @@ FROM     NATUUR.FOTOS FOT
            JOIN NATUUR.GEBIEDEN GEB ON FOT.GEBIED_ID = GEB.GEBIED_ID
 WHERE    DET.PARENT_RANG='kl';
 
-CREATE OR REPLACE VIEW NATUUR.GEEN_FOTO AS 
+CREATE OR REPLACE VIEW NATUUR.GEEN_FOTO AS
 WITH ZONDERFOTO AS (
   SELECT   W.TAXON_ID
   FROM     NATUUR.WAARNEMINGEN W
@@ -226,6 +226,7 @@ ALTER TABLE NATUUR.GEBIEDEN
 
 ALTER TABLE NATUUR.GEBIEDEN
   ADD CONSTRAINT CHK_GEB_LONGITUDE_SECONDEN CHECK(LONGITUDE_SECONDEN >= 0 AND LONGITUDE_SECONDEN < 60);
+
 ALTER TABLE NATUUR.RANGEN
   ADD CONSTRAINT UK_RAN_NIVEAU UNIQUE(NIVEAU);
 
@@ -294,7 +295,7 @@ GRANT SELECT                         ON TABLE    NATUUR.TAXONOMIE         TO NAT
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.WAARNEMINGEN      TO NATUUR_UPD;
 
 -- Commentaren
-COMMENT ON TABLE  NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
+COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_LATIJNSENAAM        IS 'De latijnse naam van de parent van de taxon.';
@@ -304,13 +305,13 @@ COMMENT ON COLUMN NATUUR.DETAILS.RANG                       IS 'De rang van de t
 COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM               IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                  IS 'Een opmerking voor deze taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
-COMMENT ON TABLE  NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
+COMMENT ON VIEW   NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.FOTO_ID             IS 'De sleutel van de foto.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse (taxon).';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_LATIJNSENAAM IS 'De latijnse naam van de klasse.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_ID            IS 'De sleutel van de taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam van de taxon.';
-COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.'
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
 COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s.';
