@@ -89,6 +89,12 @@
               </div>
             </t:div>
             <div class="form-group form-group-sm row">
+              <label for="volgnummer" class="col-2 control-label">#{i18nTeksten.tekst('label.volgnummer')}</label>
+              <div class="col-10">
+                <t:inputText id="volgnummer" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxon.volgnummer}" maxlength="10" size="10" readonly="#{natuurTaxon.aktie.readonly}" />
+              </div>
+            </div>
+            <div class="form-group form-group-sm row">
               <label for="latijnsenaam" class="col-2 control-label">#{i18nTeksten.tekst('label.latijnsenaam')}</label>
               <div class="col-10">
                 <t:inputText id="latijnsenaam" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxon.latijnsenaam}" maxlength="255" size="100" readonly="#{natuurTaxon.aktie.readonly}" />
