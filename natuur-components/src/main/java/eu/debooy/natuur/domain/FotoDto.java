@@ -66,7 +66,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
   @JoinColumn(name="TAXON_ID", nullable=false)
   private TaxonDto  taxon;
   @Column(name="TAXON_SEQ", nullable=false)
-  private Long      taxonSeq;
+  private Long      taxonSeq    = Long.valueOf("0");
 
   public int compareTo(FotoDto fotoDto) {
     return new CompareToBuilder().append(fotoId, fotoDto.fotoId).toComparison();

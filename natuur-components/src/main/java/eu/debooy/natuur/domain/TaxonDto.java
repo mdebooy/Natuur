@@ -91,8 +91,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
   private Long      taxonId;
-  @Column(name="VOLGNUMMER")
-  private Integer   volgnummer;
+  @Column(name="VOLGNUMMER", nullable=false)
+  private Integer   volgnummer    = 0;
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
