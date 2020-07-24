@@ -141,6 +141,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     }
   }
 
+  public Long getNiveau() {
+    return niveau;
+  }
+
   public Integer getOpFoto() {
     return opFoto;
   }
