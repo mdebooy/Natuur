@@ -141,7 +141,8 @@ WITH RECURSIVE Q AS (
   FROM   NATUUR.TAXA H
   WHERE  H.PARENT_ID IS NULL
   UNION ALL
-  SELECT HI.*::NATUUR.TAXA AS HI, Q_1.LEVEL + 1 AS LEVEL, Q_1.BREADCRUMB || HI.TAXON_ID
+  SELECT HI.*::NATUUR.TAXA AS HI, Q_1.LEVEL + 1 AS LEVEL,
+         Q_1.BREADCRUMB || HI.TAXON_ID
   FROM   Q Q_1
            JOIN NATUUR.TAXA HI ON HI.PARENT_ID = (Q_1.H).TAXON_ID)
 SELECT   (Q.H).TAXON_ID AS TAXON_ID, (Q.H).VOLGNUMMER AS VOLGNUMMER,
@@ -152,10 +153,10 @@ FROM     Q
 ORDER BY Q.BREADCRUMB;
 
 CREATE OR REPLACE VIEW NATUUR.DETAILS AS
-SELECT   P.TAXON_ID AS PARENT_ID, P.RANG AS PARENT_RANG,
-         P.LATIJNSENAAM AS PARENT_LATIJNSENAAM, R.NIVEAU, T.TAXON_ID,
-         T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM, T.OPMERKING,
-         CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
+SELECT   P.TAXON_ID AS PARENT_ID, P.VOLGNUMMER AS PARENT_VOLGNUMMER,
+         P.RANG AS PARENT_RANG, P.LATIJNSENAAM AS PARENT_LATIJNSENAAM,
+         R.NIVEAU, T.TAXON_ID, T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM,
+         T.OPMERKING, CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
 FROM     NATUUR.TAXONOMIE T
            JOIN NATUUR.TAXA P
              ON  P.TAXON_ID<>T.TAXON_ID
@@ -169,8 +170,9 @@ FROM     NATUUR.TAXONOMIE T
 
 CREATE OR REPLACE VIEW NATUUR.FOTO_OVERZICHT AS
 SELECT   FOT.FOTO_ID, DET.PARENT_ID AS KLASSE_ID,
+         DET.PARENT_VOLGNUMMER AS KLASSE_VOLGNUMMER,
          DET.PARENT_LATIJNSENAAM AS KLASSE_LATIJNSENAAM,
-         DET.TAXON_ID, DET.LATIJNSENAAM,
+         DET.TAXON_ID, DET.VOLGNUMMER, DET.LATIJNSENAAM,
          FOT.TAXON_SEQ, GEB.LAND_ID, GEB.NAAM AS GEBIED
 FROM     NATUUR.FOTOS FOT
            JOIN NATUUR.DETAILS DET  ON FOT.TAXON_ID  = DET.TAXON_ID
@@ -297,19 +299,23 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.WAARNEMINGEN      TO NAT
 -- Commentaren
 COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_VOLGNUMMER          IS 'Het volgnummer van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_LATIJNSENAAM        IS 'De latijnse naam van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.NIVEAU                     IS 'Het niveau van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.TAXON_ID                   IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.VOLGNUMMER                 IS 'Het volgnummer van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.RANG                       IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM               IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                  IS 'Een opmerking voor deze taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
 COMMENT ON VIEW   NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.FOTO_ID             IS 'De sleutel van de foto.';
-COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse (taxon).';
-COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_LATIJNSENAAM IS 'De latijnse naam van de klasse.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_VOLGNUMMER   IS 'Het volgnummer van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_LATIJNSENAAM IS 'De latijnse naam van de klasse van de taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_ID            IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.VOLGNUMMER          IS 'Het volgnummer van de taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
@@ -360,6 +366,7 @@ COMMENT ON COLUMN NATUUR.TAXONOMIE.PARENT_ID                IS 'De sleutel van d
 COMMENT ON COLUMN NATUUR.TAXONOMIE.PATH                     IS 'Een array met alle hogere niveaus''s van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.RANG                     IS 'De sleutel van rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.TAXON_ID                 IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.VOLGNUMMER               IS 'Het volgnummer van de taxon.';
 COMMENT ON TABLE  NATUUR.WAARNEMINGEN                       IS 'Deze tabel bevat alle waarnemingen.';
 COMMENT ON COLUMN NATUUR.WAARNEMINGEN.AANTAL                IS 'Het aantal wat waargenomen is.';
 COMMENT ON COLUMN NATUUR.WAARNEMINGEN.DATUM                 IS 'De datum van de waarneming.';

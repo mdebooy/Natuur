@@ -17,7 +17,9 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
+import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.CascadeType;
@@ -85,6 +87,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Column(name="PARENT_RANG", insertable= false, updatable=false)
   private String    parentRang;
   @ReadOnly
+  @Column(name="PARENT_VOLGNUMMER", insertable= false, updatable=false)
+  private Integer   parentVolgnummer;
+  @ReadOnly
   @Column(name="RANG", insertable= false, updatable=false)
   private String    rang;
   @Id
@@ -98,15 +103,65 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> parentnamen =
-      new HashMap<String, TaxonnaamDto>();
+  private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> taxonnamen  =
-      new HashMap<String, TaxonnaamDto>();
+  private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
+
+  /**
+   * De Latijnsenaam is toegevoegd om dubbele volgnummers niet te laten
+   * verdwijnen in een Map.
+   */
+  public static class VolgnummerComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
+      return new CompareToBuilder().append(detailDto1.parentVolgnummer,
+                                           detailDto2.parentVolgnummer)
+                                   .append(detailDto1.getParentLatijnsenaam(),
+                                           detailDto2.getParentLatijnsenaam())
+                                   .append(detailDto1.volgnummer,
+                                           detailDto2.volgnummer)
+                                   .append(detailDto1.getLatijnsenaam(),
+                                           detailDto2.getLatijnsenaam())
+                                   .toComparison();
+    }
+  }
+
+  /**
+   * De Latijnsenaam is toegevoegd om dubbele volgnummer+namen niet te laten
+   * verdwijnen in een Map.
+   */
+  public static class VolgnummerNaamComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    private String  taal  = "nl";
+
+    public void setTaal(String taal) {
+      this.taal = taal;
+    }
+
+    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
+      return new CompareToBuilder().append(detailDto1.parentVolgnummer,
+                                           detailDto2.parentVolgnummer)
+                                   .append(detailDto1.getParentNaam(taal),
+                                           detailDto2.getParentNaam(taal))
+                                   .append(detailDto1.getParentLatijnsenaam(),
+                                           detailDto2.getParentLatijnsenaam())
+                                   .append(detailDto1.volgnummer,
+                                           detailDto2.volgnummer)
+                                   .append(detailDto1.getNaam(taal),
+                                           detailDto2.getNaam(taal))
+                                   .append(detailDto1.getLatijnsenaam(),
+                                           detailDto2.getLatijnsenaam())
+                                   .toComparison();
+    }
+  }
 
   public int compareTo(DetailDto detailDto) {
     return new CompareToBuilder().append(parentId, detailDto.parentId)
@@ -170,8 +225,16 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     }
   }
 
+  public Collection<TaxonnaamDto> getParentnamen() {
+    return parentnamen.values();
+  }
+
   public String getParentRang() {
     return parentRang;
+  }
+
+  public Integer getParentVolgnummer() {
+    return parentVolgnummer;
   }
 
   public String getRang() {
