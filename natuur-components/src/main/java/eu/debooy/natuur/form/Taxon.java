@@ -20,10 +20,8 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
-
 import java.io.Serializable;
 import java.util.Comparator;
-
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -137,7 +135,7 @@ public class Taxon
                                    .toComparison();
     }
   }
-         
+
   /**
    * Sorteren op het volgnummer en de Latijnsenaam van het taxon.
    */
@@ -257,6 +255,10 @@ public class Taxon
     if (!new EqualsBuilder().append(this.taxonId,
                                     parameter.getTaxonId()).isEquals()) {
       parameter.setTaxonId(this.taxonId);
+    }
+    if (!new EqualsBuilder().append(this.volgnummer,
+                                    parameter.getVolgnummer()).isEquals()) {
+      parameter.setVolgnummer(this.volgnummer);
     }
   }
 
