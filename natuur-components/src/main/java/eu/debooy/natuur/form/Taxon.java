@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -40,6 +40,7 @@ public class Taxon
   private Long                parentId;
   private String              parentLatijnsenaam;
   private String              parentNaam;
+  private Integer             parentVolgnummer;
   private String              rang;
   private Long                taxonId;
   private Integer             volgnummer;
@@ -53,6 +54,7 @@ public class Taxon
     parentId            = taxon.getParentId();
     parentLatijnsenaam  = taxon.getParentLatijnsenaam();
     parentNaam          = taxon.getParentNaam();
+    parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
     taxonId             = taxon.getTaxonId();
     volgnummer          = taxon.getVolgnummer();
@@ -93,6 +95,7 @@ public class Taxon
     parentId            = detailDto.getParentId();
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
     parentNaam          = detailDto.getParentNaam(taal);
+    parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
     taxonId             = detailDto.getTaxonId();
     volgnummer          = detailDto.getVolgnummer();
@@ -102,18 +105,17 @@ public class Taxon
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return taxon1.latijnsenaam.compareTo(taxon2.latijnsenaam);
     }
   }
 
-  /**
-   * Sorteren op de parentnaam en naam van het taxon.
-   */
-  public static class LijstComparator
+  public static class AlfabetischeComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Taxon taxonDto1, Taxon taxonDto2) {
       return new CompareToBuilder().append(taxonDto1.getParentNaam(),
                                            taxonDto2.getParentNaam())
@@ -123,10 +125,29 @@ public class Taxon
     }
   }
 
+  public static class LijstComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(Taxon taxon1, Taxon taxon2) {
+      return new CompareToBuilder().append(taxon1.getParentVolgnummer(),
+                                           taxon2.getParentVolgnummer())
+                                   .append(taxon1.getParentNaam(),
+                                           taxon2.getParentNaam())
+                                   .append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
+                                   .append(taxon1.getNaam(),
+                                           taxon2.getNaam())
+                                   .toComparison();
+    }
+  }
+
   public static class NaamComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return new CompareToBuilder().append(taxon1.getNaam(),
                                            taxon2.getNaam())
@@ -143,6 +164,7 @@ public class Taxon
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return new CompareToBuilder().append(taxon1.volgnummer,
                                            taxon2.volgnummer)
@@ -166,6 +188,7 @@ public class Taxon
       this.taal = taal;
     }
 
+    @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
       return new CompareToBuilder().append(taxon1.volgnummer,
                                            taxon2.volgnummer)
@@ -177,11 +200,13 @@ public class Taxon
     }
   }
 
+  @Override
   public int compareTo(Taxon andere) {
     return new CompareToBuilder().append(taxonId, andere.taxonId)
-                        .toComparison();
+                                 .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Taxon)) {
       return false;
@@ -219,6 +244,10 @@ public class Taxon
                                                 : parentNaam);
   }
 
+  public Integer getParentVolgnummer() {
+    return parentVolgnummer;
+  }
+
   public String getRang() {
     return rang;
   }
@@ -231,6 +260,7 @@ public class Taxon
     return volgnummer;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
@@ -263,21 +293,15 @@ public class Taxon
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    if (!new EqualsBuilder().append(this.latijnsenaam, latijnsenaam)
-                            .isEquals()) {
-      gewijzigd         = true;
-      this.latijnsenaam = latijnsenaam;
-    }
+    this.latijnsenaam = latijnsenaam;
   }
+
   public void setNaam(String naam) {
     this.naam = naam;
   }
 
   public void setOpmerking(String opmerking) {
-    if (!new EqualsBuilder().append(this.opmerking, opmerking).isEquals()) {
-      gewijzigd       = true;
-      this.opmerking  = opmerking;
-    }
+    this.opmerking  = opmerking;
   }
 
   public void setParentLatijnsenaam(String parentLatijnsenaam) {
@@ -289,24 +313,19 @@ public class Taxon
   }
 
   public void setParentId(Long parentId) {
-    if (!new EqualsBuilder().append(this.parentId, parentId).isEquals()) {
-      gewijzigd     = true;
-      this.parentId = parentId;
-    }
+    this.parentId = parentId;
+  }
+
+  public void setParentVolgnummer(Integer parentVolgnummer) {
+    this.parentVolgnummer = parentVolgnummer;
   }
 
   public void setRang(String rang) {
-    if (!new EqualsBuilder().append(this.rang, rang).isEquals()) {
-      gewijzigd = true;
-      this.rang = rang;
-    }
+    this.rang = rang;
   }
 
   public void setTaxonId(Long taxonId) {
-    if (!new EqualsBuilder().append(this.taxonId, taxonId).isEquals()) {
-      gewijzigd     = true;
-      this.taxonId  = taxonId;
-    }
+    this.taxonId  = taxonId;
   }
 
   public void setVolgnummer(Integer volgnummer) {
