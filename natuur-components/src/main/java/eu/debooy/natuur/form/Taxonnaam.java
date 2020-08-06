@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -32,9 +32,9 @@ public class Taxonnaam
     extends Formulier implements Comparable<Taxonnaam>, Serializable{
   private static final  long  serialVersionUID  = 1L;
 
+  private String  naam;
   private String  taal;
   private Long    taxonId;
-  private String  naam;
 
   public Taxonnaam() {}
 
@@ -54,18 +54,21 @@ public class Taxonnaam
       implements Comparator<Taxonnaam>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Taxonnaam naam1,
                        Taxonnaam naam2) {
       return naam1.naam.compareTo(naam2.naam);
     }
   }
 
+  @Override
   public int compareTo(Taxonnaam andere) {
     return new CompareToBuilder().append(taxonId, andere.taxonId)
                                  .append(taal, andere.taal)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Taxonnaam)) {
       return false;
@@ -79,6 +82,10 @@ public class Taxonnaam
                               .append(taal, andere.taal).isEquals();
   }
 
+  public String getNaam() {
+    return naam;
+  }
+
   public String getTaal() {
     return taal;
   }
@@ -87,10 +94,7 @@ public class Taxonnaam
     return taxonId;
   }
 
-  public String getNaam() {
-    return naam;
-  }
-
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).append(taal).toHashCode();
   }
@@ -110,26 +114,15 @@ public class Taxonnaam
     }
   }
 
+  public void setNaam(String naam) {
+    this.naam = naam;
+  }
+
   public void setTaal(String taal) {
-    if (!new EqualsBuilder().append(this.taal, taal).isEquals()) {
-      gewijzigd = true;
-      this.taal = taal;
-    }
+    this.taal = taal;
   }
 
   public void setTaxonId(Long taxonId) {
-    if (!new EqualsBuilder().append(this.taxonId, taxonId)
-                            .isEquals()) {
-      gewijzigd     = true;
-      this.taxonId  = taxonId;
-    }
-  }
-
-  public void setNaam(String naam) {
-    if (!new EqualsBuilder().append(this.naam, naam)
-                            .isEquals()) {
-      gewijzigd = true;
-      this.naam = naam;
-    }
+    this.taxonId  = taxonId;
   }
 }

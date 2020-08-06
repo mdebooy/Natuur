@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -24,6 +24,7 @@ import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.io.Serializable;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.Date;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -73,13 +74,26 @@ public class Waarneming extends Formulier
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
 
+  public static class DatumComparator
+      implements Comparator<Waarneming>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(Waarneming waarneming1,
+                       Waarneming waarneming2) {
+      return waarneming1.datum.compareTo(waarneming2.datum);
+    }
+  }
+
+  @Override
   public int compareTo(Waarneming andere) {
     return new CompareToBuilder().append(waarnemingId,
                                          andere.waarnemingId).toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Foto)) {
+    if (!(object instanceof Waarneming)) {
       return false;
     }
     if (object == this) {
@@ -89,37 +103,6 @@ public class Waarneming extends Formulier
     Waarneming  andere  = (Waarneming) object;
     return new EqualsBuilder().append(waarnemingId,
                                       andere.waarnemingId).isEquals();
-  }
-
-  public int hashCode() {
-    return new HashCodeBuilder().append(waarnemingId).toHashCode();
-  }
-
-  public void persist(WaarnemingDto waarnemingDto) {
-    if (!new EqualsBuilder().append(aantal, waarnemingDto.getAantal())
-                            .isEquals()) {
-      waarnemingDto.setAantal(aantal);
-    }
-    if (!new EqualsBuilder().append(datum, waarnemingDto.getDatum())
-                            .isEquals()) {
-      waarnemingDto.setDatum(datum);
-    }
-    if (!new EqualsBuilder().append(gebied, waarnemingDto.getGebied())
-                            .isEquals()) {
-      GebiedDto gebiedDto = new GebiedDto();
-      gebied.persist(gebiedDto);
-      waarnemingDto.setGebied(gebiedDto);
-    }
-    if (!new EqualsBuilder().append(opmerking, waarnemingDto.getOpmerking())
-                            .isEquals()) {
-      waarnemingDto.setOpmerking(opmerking);
-    }
-    if (!new EqualsBuilder().append(taxon, waarnemingDto.getTaxon())
-                            .isEquals()) {
-      TaxonDto  taxonDto  = new TaxonDto();
-      taxon.persist(taxonDto);
-      waarnemingDto.setTaxon(taxonDto);
-    }
   }
 
   public Integer getAantal() {
@@ -160,6 +143,38 @@ public class Waarneming extends Formulier
 
   public Long getWaarnemingId() {
     return waarnemingId;
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(waarnemingId).toHashCode();
+  }
+
+  public void persist(WaarnemingDto waarnemingDto) {
+    if (!new EqualsBuilder().append(aantal, waarnemingDto.getAantal())
+                            .isEquals()) {
+      waarnemingDto.setAantal(aantal);
+    }
+    if (!new EqualsBuilder().append(datum, waarnemingDto.getDatum())
+                            .isEquals()) {
+      waarnemingDto.setDatum(datum);
+    }
+    if (!new EqualsBuilder().append(gebied, waarnemingDto.getGebied())
+                            .isEquals()) {
+      GebiedDto gebiedDto = new GebiedDto();
+      gebied.persist(gebiedDto);
+      waarnemingDto.setGebied(gebiedDto);
+    }
+    if (!new EqualsBuilder().append(opmerking, waarnemingDto.getOpmerking())
+                            .isEquals()) {
+      waarnemingDto.setOpmerking(opmerking);
+    }
+    if (!new EqualsBuilder().append(taxon, waarnemingDto.getTaxon())
+                            .isEquals()) {
+      TaxonDto  taxonDto  = new TaxonDto();
+      taxon.persist(taxonDto);
+      waarnemingDto.setTaxon(taxonDto);
+    }
   }
 
   public void setAantal(Integer aantal) {
