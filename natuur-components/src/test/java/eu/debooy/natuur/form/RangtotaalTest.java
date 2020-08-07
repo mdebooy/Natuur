@@ -1,0 +1,169 @@
+/*
+ * Copyright (c) 2020 Marco de Booij
+ *
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
+ * the European Commission - subsequent versions of the EUPL (the "Licence");
+ * you may not use this work except in compliance with the Licence. You may
+ * obtain a copy of the Licence at:
+ *
+ * https://joinup.ec.europa.eu/software/page/eupl
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the Licence is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the Licence for the specific language governing permissions and
+ * limitations under the Licence.
+ */
+package eu.debooy.natuur.form;
+
+import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
+import static eu.debooy.natuur.TestConstants.NAAM;
+import static eu.debooy.natuur.TestConstants.OPFOTO;
+import static eu.debooy.natuur.TestConstants.TAXONID;
+import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
+import static eu.debooy.natuur.TestConstants.TOTAAL;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+
+/**
+ * @author Marco de Booij
+ */
+public class RangtotaalTest {
+  private static final  Object[]  LEEG  = new Object[] {0L, "", 0L, 0L};
+
+  private static  Rangtotaal  rangtotaal;
+
+  public RangtotaalTest() {
+  }
+
+  @BeforeClass
+  public static void setUpClass() {
+    rangtotaal  = new Rangtotaal(new Object[] {TAXONID, LATIJNSENAAM,
+                                               TOTAAL, OPFOTO});
+  }
+
+  @AfterClass
+  public static void tearDownClass() {
+  }
+
+  @Before
+  public void setUp() {
+  }
+
+  @After
+  public void tearDown() {
+  }
+
+  @Test
+  public void testCompareTo() {
+    Rangtotaal  gelijk  = new Rangtotaal(LEEG);
+    gelijk.setTaxonId(TAXONID);
+    Rangtotaal  groter  = new Rangtotaal(LEEG);
+    groter.setTaxonId(rangtotaal.getTaxonId() + 1);
+    Rangtotaal  kleiner = new Rangtotaal(LEEG);
+    kleiner.setTaxonId(rangtotaal.getTaxonId() - 1);
+
+    assertTrue(rangtotaal.compareTo(groter) < 0);
+    assertTrue(rangtotaal.compareTo(gelijk) == 0);
+    assertTrue(rangtotaal.compareTo(kleiner) > 0);
+  }
+
+  @Test
+  public void testEquals() {
+    Rangtotaal  object    = null;
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+
+    assertFalse(rangtotaal.equals(object));
+    assertFalse(rangtotaal.equals(instance));
+    assertFalse(rangtotaal.equals(this));
+
+    assertTrue(rangtotaal.equals(rangtotaal));
+
+    instance.setTaxonId(rangtotaal.getTaxonId());
+    assertTrue(rangtotaal.equals(instance));
+  }
+
+  @Test
+  public void testGetLatijnsenaam() {
+    assertEquals(LATIJNSENAAM, rangtotaal.getLatijnsenaam());
+  }
+
+  @Test
+  public void testGetNaam() {
+    assertNull(rangtotaal.getNaam());
+  }
+
+  @Test
+  public void testGetTaxonId() {
+    assertEquals(TAXONID, rangtotaal.getTaxonId());
+  }
+
+  @Test
+  public void testGetOpFoto() {
+    assertEquals(OPFOTO, rangtotaal.getOpFoto());
+  }
+
+  @Test
+  public void testGetTotaal() {
+    assertEquals(TOTAAL, rangtotaal.getTotaal());
+  }
+
+  @Test
+  public void testHashCode() {
+    assertEquals(TAXONID_HASH, rangtotaal.hashCode());
+  }
+
+  @Test
+  public void testSetLatijnsenaam() {
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Assert.assertNotEquals(LATIJNSENAAM, instance.getLatijnsenaam());
+    instance.setLatijnsenaam(LATIJNSENAAM);
+
+    assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
+  }
+
+  @Test
+  public void testSetNaam() {
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Assert.assertNotEquals(NAAM, instance.getNaam());
+    instance.setNaam(NAAM);
+
+    assertEquals(NAAM, instance.getNaam());
+  }
+
+  @Test
+  public void testSetOpFoto() {
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Assert.assertNotEquals(OPFOTO, instance.getOpFoto());
+    instance.setOpFoto(OPFOTO);
+
+    assertEquals(OPFOTO, instance.getOpFoto());
+  }
+
+  @Test
+  public void testSetTaxonId() {
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Assert.assertNotEquals(TAXONID, instance.getTaxonId());
+    instance.setTaxonId(TAXONID);
+
+    assertEquals(TAXONID, instance.getTaxonId());
+  }
+
+  @Test
+  public void testSetTotaal() {
+    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Assert.assertNotEquals(TOTAAL, instance.getTotaal());
+    instance.setTotaal(TOTAAL);
+
+    assertEquals(TOTAAL, instance.getTotaal());
+  }
+}
