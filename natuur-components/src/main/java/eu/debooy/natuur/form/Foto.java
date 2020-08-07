@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -73,10 +73,12 @@ public class Foto
     taxonSeq    = fotoDto.getTaxonSeq();
   }
 
+  @Override
   public int compareTo(Foto andere) {
     return new CompareToBuilder().append(fotoId, andere.fotoId).toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Foto)) {
       return false;
@@ -117,6 +119,7 @@ public class Foto
     return taxonSeq;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
@@ -157,52 +160,30 @@ public class Foto
   }
 
   public void setFotoBestand(String fotoBestand) {
-    if (!new EqualsBuilder().append(this.fotoBestand, fotoBestand).isEquals()) {
-      gewijzigd         = true;
-      this.fotoBestand  = fotoBestand;
-    }
+    this.fotoBestand  = fotoBestand;
   }
 
   public void setFotoDetail(String fotoDetail) {
-    if (!new EqualsBuilder().append(this.fotoDetail, fotoDetail).isEquals()) {
-      gewijzigd       = true;
-      this.fotoDetail = fotoDetail;
-    }
+    this.fotoDetail = fotoDetail;
   }
 
   public void setFotoId(Long fotoId) {
-    if (!new EqualsBuilder().append(this.fotoId, fotoId).isEquals()) {
-      gewijzigd   = true;
-      this.fotoId = fotoId;
-    }
+    this.fotoId = fotoId;
   }
 
   public void setGebied(Gebied gebied) {
-    if (!new EqualsBuilder().append(this.gebied, gebied).isEquals()) {
-      gewijzigd   = true;
-      this.gebied = new Gebied(gebied);
-    }
+    this.gebied = new Gebied(gebied);
   }
 
   public void setOpmerking(String opmerking) {
-    if (!new EqualsBuilder().append(this.opmerking, opmerking).isEquals()) {
-      gewijzigd       = true;
-      this.opmerking  = opmerking;
-    }
+    this.opmerking  = opmerking;
   }
 
   public void setTaxon(Taxon taxon) {
-    if (!new EqualsBuilder().append(this.taxon, taxon).isEquals()) {
-      gewijzigd  = true;
-      this.taxon = new Taxon(taxon);
-    }
+    this.taxon = new Taxon(taxon);
   }
 
   public void setTaxonSeq(Long taxonSeq) {
-    if (!new EqualsBuilder().append(this.taxonSeq, taxonSeq)
-                            .isEquals()) {
-      gewijzigd     = true;
-      this.taxonSeq = taxonSeq;
-    }
+    this.taxonSeq = taxonSeq;
   }
 }

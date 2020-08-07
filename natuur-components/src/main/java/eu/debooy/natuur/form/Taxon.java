@@ -304,16 +304,16 @@ public class Taxon
     this.opmerking  = opmerking;
   }
 
+  public void setParentId(Long parentId) {
+    this.parentId = parentId;
+  }
+
   public void setParentLatijnsenaam(String parentLatijnsenaam) {
     this.parentLatijnsenaam = parentLatijnsenaam;
   }
 
   public void setParentNaam(String parentNaam) {
     this.parentNaam = parentNaam;
-  }
-
-  public void setParentId(Long parentId) {
-    this.parentId = parentId;
   }
 
   public void setParentVolgnummer(Integer parentVolgnummer) {

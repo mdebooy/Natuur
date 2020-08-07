@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -51,16 +51,19 @@ public class Rang
       implements Comparator<Rang>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(Rang rang1, Rang rang2) {
       return rang1.niveau.compareTo(rang2.niveau);
     }
   }
 
+  @Override
   public int compareTo(Rang andere) {
     return new CompareToBuilder().append(rang, andere.rang)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Rang)) {
       return false;
@@ -81,6 +84,7 @@ public class Rang
     return rang;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
   }
@@ -97,16 +101,10 @@ public class Rang
   }
 
   public void setNiveau(Long niveau) {
-    if (!new EqualsBuilder().append(this.niveau, niveau).isEquals()) {
-      gewijzigd   = true;
-      this.niveau = niveau;
-    }
+    this.niveau = niveau;
   }
 
   public void setRang(String rang) {
-    if (!new EqualsBuilder().append(this.rang, rang).isEquals()) {
-      gewijzigd = true;
-      this.rang = rang;
-    }
+    this.rang = rang;
   }
 }

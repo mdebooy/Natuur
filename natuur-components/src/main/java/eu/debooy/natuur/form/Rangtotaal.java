@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -22,6 +22,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+
 /**
  * @author Marco de Booij
  */
@@ -42,11 +43,13 @@ public class Rangtotaal
     opFoto        = (Long)   rij[3];
   }
 
+  @Override
   public int compareTo(Rangtotaal andere) {
     return new CompareToBuilder().append(taxonId, andere.taxonId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof Rangtotaal)) {
       return false;
@@ -67,18 +70,19 @@ public class Rangtotaal
     return naam;
   }
 
-  public Long getTaxonId() {
-    return taxonId;
-  }
-
   public Long getOpFoto() {
     return opFoto;
+  }
+
+  public Long getTaxonId() {
+    return taxonId;
   }
 
   public Long getTotaal() {
     return totaal;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
@@ -90,6 +94,7 @@ public class Rangtotaal
   public void setNaam(String naam) {
     this.naam = naam;
   }
+
   public void setOpFoto(Long opFoto) {
     this.opFoto = opFoto;
   }
