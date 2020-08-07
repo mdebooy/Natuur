@@ -33,7 +33,6 @@ import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.WaarnemingValidator;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,13 +40,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,9 +62,6 @@ public class WaarnemingController extends Natuur {
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
 
-  /**
-   * Prepareer een nieuwe Waarneming.
-   */
   public void create() {
     GebiedDto gebied  = getGebiedService().gebied(
         Long.valueOf(getParameter("natuur.default.gebiedid")));
@@ -82,11 +76,6 @@ public class WaarnemingController extends Natuur {
     redirect(WAARNEMING_REDIRECT);
   }
 
-  /**
-   * Verwijder de Waarneming
-   * 
-   * @param Long waarnemingId
-   */
   public void delete(Long waarnemingId) {
     try {
       waarneming =
@@ -119,54 +108,33 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  /**
-   * Geef alle soorten en ondersoorten als SelectItems.
-   * 
-   * @return List<SelectItem>
-   */
   public List<SelectItem> getSelectWaarnemingen() {
-    List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<Taxon>        rijen =
-        new TreeSet<Taxon>(new Taxon.NaamComparator());
+    List<SelectItem>  items = new LinkedList<>();
+    Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
     rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
-    for (Taxon rij : rijen) {
-      items.add(new SelectItem(rij, rij.getNaam() + " ("
-                                      + rij.getLatijnsenaam() + ")"));
-    }
+    rijen.forEach(rij -> {
+      items.add(new SelectItem(rij, rij.getNaam()
+                                    + " (" + rij.getLatijnsenaam() + ")"));
+    });
 
     return items;
   }
 
-  /**
-   * Geef het geselecteerde waarneming.
-   * 
-   * @return Waarneming
-   */
   public Waarneming getWaarneming() {
     return waarneming;
   }
 
-  /**
-   * Geef de lijst met waarnemingen.
-   * 
-   * @return Collection<Waarneming> met Waarneming objecten.
-   */
   public List<Waarneming> getWaarnemingen() {
     List<Waarneming>  resultaat;
     try {
       resultaat = getWaarnemingService().query(getGebruikersTaal());
     } catch (Exception e) {
       addError("errors.geen.i18n", e.getClass());
-      resultaat = new ArrayList<Waarneming>();
+      resultaat = new ArrayList<>();
     }
     return resultaat;
   }
 
-  /**
-   * Persist de Waarneming
-   * 
-   * @param Waarneming
-   */
   public void save() {
     List<Message> messages  = WaarnemingValidator.valideer(waarneming);
     if (!messages.isEmpty()) {
@@ -188,7 +156,7 @@ public class WaarnemingController extends Natuur {
         addInfo(PersistenceConstants.UPDATED, melding);
         break;
       default:
-        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
+        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
         break;
       }
       redirect(WAARNEMINGEN_REDIRECT);
@@ -202,11 +170,6 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  /**
-   * Zet de Waarneming die gewijzigd gaat worden klaar.
-   * 
-   * @param Long waarnemingId
-   */
   public void update(Long waarnemingId) {
     waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
     waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
@@ -215,9 +178,6 @@ public class WaarnemingController extends Natuur {
     redirect(WAARNEMING_REDIRECT);
   }
 
-  /**
-   * Rapport met Waarnemingen.
-   */
   public void waarnemingenlijst() {
     ExportData  exportData  = new ExportData();
 
@@ -232,16 +192,14 @@ public class WaarnemingController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.waarnemingen"));
 
-    Set<Taxon> rijen =
-        new TreeSet<Taxon>(new Taxon.LijstComparator());
+    Set<Taxon> rijen = new TreeSet<>(new Taxon.LijstComparator());
     rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
-    for (Taxon rij : rijen) {
+    rijen.forEach(rij -> {
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),
                                        rij.getNaam(),
                                        rij.getLatijnsenaam()});
-
-    }
+    });
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
@@ -249,9 +207,7 @@ public class WaarnemingController extends Natuur {
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();
-    } catch (IllegalArgumentException e) {
-      generateExceptionMessage(e);
-    } catch (TechnicalException e) {
+    } catch (IllegalArgumentException | TechnicalException e) {
       generateExceptionMessage(e);
     }
   }
