@@ -30,6 +30,7 @@ import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
 import static eu.debooy.natuur.TestConstants.LONGITUDE_SECONDEN;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import eu.debooy.natuur.domain.GebiedDto;
+import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -47,6 +48,9 @@ public class GebiedTest {
 
   @BeforeClass
   public static void setUpClass() {
+    // Voor de juiste decimal point.
+    Locale.setDefault(new Locale("nl"));
+
     gebied    = new Gebied();
     gebied.setGebiedId(GEBIEDID);
     gebied.setLandId(LANDID);
