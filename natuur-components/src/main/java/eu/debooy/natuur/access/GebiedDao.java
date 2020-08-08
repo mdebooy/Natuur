@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -27,13 +27,15 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 public class GebiedDao extends Dao<GebiedDto> {
-  @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
+  @PersistenceContext(unitName="natuur",
+                      type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
   public GebiedDao() {
     super(GebiedDto.class);
   }
 
+  @Override
   protected EntityManager getEntityManager() {
     return em;
   }

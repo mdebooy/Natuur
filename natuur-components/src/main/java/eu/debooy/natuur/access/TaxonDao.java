@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -30,13 +30,15 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 public class TaxonDao extends Dao<TaxonDto> {
-  @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
+  @PersistenceContext(unitName="natuur",
+                      type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
   public TaxonDao() {
     super(TaxonDto.class);
   }
 
+  @Override
   protected EntityManager getEntityManager() {
     return em;
   }
@@ -46,14 +48,14 @@ public class TaxonDao extends Dao<TaxonDto> {
   }
 
   public List<TaxonDto> getKinderen(Long parentId) {
-    Map<String, Object> params  = new HashMap<String, Object>();
+    Map<String, Object> params  = new HashMap<>();
     params.put(TaxonDto.PAR_OUDER, parentId);
 
     return namedQuery(TaxonDto.QRY_KINDEREN, params);
   }
 
   public TaxonDto getTaxon(String latijnsenaam) {
-    Map<String, Object> params  = new HashMap<String, Object>();
+    Map<String, Object> params  = new HashMap<>();
     params.put(TaxonDto.PAR_LATIJNSENAAM, latijnsenaam);
     List<TaxonDto> taxon  = namedQuery(TaxonDto.QRY_LATIJNSENAAM, params);
     if (taxon.isEmpty()) {
@@ -64,7 +66,7 @@ public class TaxonDao extends Dao<TaxonDto> {
   }
 
   public List<TaxonDto> getOuders(Long kind) {
-    Map<String, Object> params  = new HashMap<String, Object>();
+    Map<String, Object> params  = new HashMap<>();
     params.put(TaxonDto.PAR_KIND, kind);
 
     return namedQuery(TaxonDto.QRY_OUDERS, params);

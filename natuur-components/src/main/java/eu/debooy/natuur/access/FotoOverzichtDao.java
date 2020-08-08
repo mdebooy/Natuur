@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -35,6 +35,7 @@ public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
     super(FotoOverzichtDto.class);
   }
 
+  @Override
   protected EntityManager getEntityManager() {
     return em;
   }

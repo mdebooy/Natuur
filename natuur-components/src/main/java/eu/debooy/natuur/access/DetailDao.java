@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -31,37 +31,38 @@ import javax.persistence.Query;
  * @author Marco de Booij
  */
 public class DetailDao extends Dao<DetailDto> {
-  @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
+  @PersistenceContext(unitName="natuur",
+                      type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
   public DetailDao() {
     super(DetailDto.class);
   }
 
+  @Override
   protected EntityManager getEntityManager() {
     return em;
   }
 
+  @Override
   public DetailDto create(DetailDto dto) {
-    return null;
+    throw new UnsupportedOperationException();
   }
 
   public List<DetailDto> getSoortenMetKlasse() {
     return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
   }
 
-
-  @SuppressWarnings("unchecked")
   public List<Rangtotaal> getSoortenMetRang(String rang) {
     Query             query   =
         getEntityManager().createNamedQuery(DetailDto.QRY_TOTALEN)
                           .setParameter(DetailDto.PAR_GROUP, rang);
     List<Object[]>    rijen   = query.getResultList();
-    List<Rangtotaal>  totalen = new ArrayList<Rangtotaal>();
+    List<Rangtotaal>  totalen = new ArrayList<>();
     if (null != rijen) {
-      for (Object[] rij : rijen) {
+      rijen.forEach(rij -> {
         totalen.add(new Rangtotaal(rij));
-      }
+      });
     }
 
     return totalen;

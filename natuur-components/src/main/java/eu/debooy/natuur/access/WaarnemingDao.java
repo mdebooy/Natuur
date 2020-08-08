@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -30,26 +30,28 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 public class WaarnemingDao extends Dao<WaarnemingDto> {
-  @PersistenceContext(unitName="natuur", type=PersistenceContextType.TRANSACTION)
+  @PersistenceContext(unitName="natuur",
+                      type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
   public WaarnemingDao() {
     super(WaarnemingDto.class);
   }
 
+  @Override
   protected EntityManager getEntityManager() {
     return em;
   }
 
   public List<WaarnemingDto> getPerGebied(Long gebiedId) {
-    Map<String, Object> params  = new HashMap<String, Object>();
+    Map<String, Object> params  = new HashMap<>();
     params.put(WaarnemingDto.PAR_GEBIEDID, gebiedId);
 
     return namedQuery(WaarnemingDto.QRY_PERGEBIED, params);
   }
 
   public List<WaarnemingDto> getPerTaxon(Long taxonId) {
-    Map<String, Object> params  = new HashMap<String, Object>();
+    Map<String, Object> params  = new HashMap<>();
     params.put(WaarnemingDto.PAR_TAXONID, taxonId);
 
     return namedQuery(WaarnemingDto.QRY_PERTAXON, params);
