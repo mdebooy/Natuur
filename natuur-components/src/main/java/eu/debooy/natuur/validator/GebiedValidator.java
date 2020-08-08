@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class GebiedValidator {
+public final class GebiedValidator extends NatuurValidator {
   private GebiedValidator() {}
 
   public static List<Message> valideer(GebiedDto gebied) {
@@ -36,7 +36,7 @@ public final class GebiedValidator {
   }
 
   public static List<Message> valideer(Gebied gebied) {
-    List<Message> fouten  = new ArrayList<Message>();
+    List<Message> fouten  = new ArrayList<>();
 
     valideerGebied(DoosUtils.nullToEmpty(gebied.getNaam()), fouten);
     int leeg  = valideerLatitude(gebied.getLatitude(), fouten);

@@ -30,13 +30,10 @@ import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
 import static eu.debooy.natuur.TestConstants.LONGITUDE_SECONDEN;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import eu.debooy.natuur.domain.GebiedDto;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -47,9 +44,6 @@ import org.junit.Test;
 public class GebiedTest {
   private static  Gebied    gebied;
   private static  GebiedDto gebiedDto;
-
-  public GebiedTest() {
-  }
 
   @BeforeClass
   public static void setUpClass() {
@@ -80,18 +74,6 @@ public class GebiedTest {
     gebiedDto.setNaam(NAAM);
   }
 
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testCompareTo() {
     Gebied  gelijk  = new Gebied(gebied);
@@ -112,9 +94,6 @@ public class GebiedTest {
 
     assertFalse(gebied.equals(object));
     assertFalse(gebied.equals(instance));
-    assertFalse(gebied.equals(this));
-
-    assertTrue(gebied.equals(gebied));
 
     instance.setGebiedId(gebied.getGebiedId());
     assertTrue(gebied.equals(instance));

@@ -66,4 +66,8 @@ public final class TestConstants {
   public static final Integer VOLGNUMMER          = Integer.MIN_VALUE;
   public static final Long    WAARNEMINGID        = Long.MAX_VALUE - 11;
   public static final int     WAARNEMINGID_HASH   = -2147483008;
+
+  private TestConstants() {
+    throw new IllegalStateException("Utility class");
+  }
 }

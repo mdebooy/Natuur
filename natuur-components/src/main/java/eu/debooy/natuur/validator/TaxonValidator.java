@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class TaxonValidator {
+public final class TaxonValidator extends NatuurValidator {
   private TaxonValidator() {}
 
   public static List<Message> valideer(TaxonDto taxon) {
@@ -36,23 +36,33 @@ public final class TaxonValidator {
   }
 
   public static List<Message> valideer(Taxon taxon) {
-    List<Message> fouten  = new ArrayList<Message>();
+    List<Message> fouten  = new ArrayList<>();
 
-    String  waarde  = DoosUtils.nullToEmpty(taxon.getLatijnsenaam());
-    if (waarde.length() < 1) {
+    valideerLatijnsenaam(DoosUtils.nullToEmpty(taxon.getLatijnsenaam()),
+                         fouten);
+    valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
+    valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
+    valideerVolgnummer(taxon.getVolgnummer(), fouten);
+
+    return fouten;
+  }
+
+  private static void valideerLatijnsenaam(String latijnsenaam,
+                                           List<Message> fouten) {
+    if (latijnsenaam.length() < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.latijnsenaam"));
-    } else if (waarde.length() > 255) {
+    } else if (latijnsenaam.length() > 255) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.latijnsenaam", 255));
     }
+  }
 
-    waarde  = DoosUtils.nullToEmpty(taxon.getOpmerking());
-    if (waarde.length() > 2000) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.opmerking", 2000));
+  private static void valideerVolgnummer(Integer volgnummer,
+                                         List<Message> fouten) {
+    if (null == volgnummer) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.volgnummer"));
     }
-
-    return fouten;
   }
 }

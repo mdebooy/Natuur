@@ -23,13 +23,10 @@ import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM_HASH;
 import eu.debooy.natuur.domain.TaxonnaamDto;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,9 +37,6 @@ import org.junit.Test;
 public class TaxonnaamTest {
   private static  Taxonnaam     taxonnaam;
   private static  TaxonnaamDto  taxonnaamDto;
-
-  public TaxonnaamTest() {
-  }
 
   @BeforeClass
   public static void setUpClass() {
@@ -55,18 +49,6 @@ public class TaxonnaamTest {
     taxonnaamDto.setNaam(NAAM);
     taxonnaamDto.setTaal(TAAL);
     taxonnaamDto.setTaxonId(TAXONID);
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test
@@ -98,9 +80,6 @@ public class TaxonnaamTest {
 
     assertFalse(taxonnaam.equals(object));
     assertFalse(taxonnaam.equals(instance));
-    assertFalse(taxonnaam.equals(this));
-
-    assertTrue(taxonnaam.equals(taxonnaam));
 
     instance.setTaal(taxonnaam.getTaal());
     instance.setTaxonId(taxonnaam.getTaxonId());

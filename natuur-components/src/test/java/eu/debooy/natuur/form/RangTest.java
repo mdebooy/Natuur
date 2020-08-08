@@ -22,13 +22,10 @@ import static eu.debooy.natuur.TestConstants.RANG_GR;
 import static eu.debooy.natuur.TestConstants.RANG_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_KL;
 import eu.debooy.natuur.domain.RangDto;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -40,9 +37,6 @@ public class RangTest {
   private static  Rang    rang;
   private static  RangDto rangDto;
 
-  public RangTest() {
-  }
-
   @BeforeClass
   public static void setUpClass() {
     rang    = new Rang();
@@ -52,18 +46,6 @@ public class RangTest {
     rangDto = new RangDto();
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test
@@ -86,9 +68,6 @@ public class RangTest {
 
     assertFalse(rang.equals(object));
     assertFalse(rang.equals(instance));
-    assertFalse(rang.equals(this));
-
-    assertTrue(rang.equals(rang));
 
     instance.setRang(rang.getRang());
     assertTrue(rang.equals(instance));

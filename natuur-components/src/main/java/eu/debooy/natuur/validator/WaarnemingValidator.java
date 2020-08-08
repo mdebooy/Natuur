@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class WaarnemingValidator {
+public final class WaarnemingValidator extends NatuurValidator {
   private WaarnemingValidator() {}
 
   public static List<Message> valideer(WaarnemingDto waarneming) {
@@ -39,50 +39,43 @@ public final class WaarnemingValidator {
   }
 
   public static List<Message> valideer(Waarneming waarneming) {
-    List<Message> fouten  = new ArrayList<Message>();
+    List<Message> fouten  = new ArrayList<>();
 
-    if (waarneming.getDatum().after(new Date())) {
-      try {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                               Datum.fromDate(waarneming.getDatum())));
-      } catch (ParseException e) {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.WRONGDATE,
-                               waarneming.getDatum()));
-      }
+    valideerAantal(waarneming.getAantal(), fouten);
+    valideerDatum(waarneming.getDatum(), fouten);
+    if (null == waarneming.getTaxon()) {
+      valideerGebiedId(null, fouten);
+    } else {
+      valideerGebiedId(waarneming.getTaxon().getTaxonId(), fouten);
     }
+    if (null == waarneming.getGebied()) {
+      valideerGebiedId(null, fouten);
+    } else {
+      valideerGebiedId(waarneming.getGebied().getGebiedId(), fouten);
+    }
+    valideerOpmerking(DoosUtils.nullToEmpty(waarneming.getOpmerking()),
+                      fouten);
 
-    Integer aantal  = waarneming.getAantal();
+    return fouten;
+  }
+
+  private static void valideerAantal(Integer aantal, List<Message> fouten) {
     if (null != aantal
         && aantal.compareTo(0) < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
                              "_I18N.label.aantal", 1));
     }
+  }
 
-    Long  seq = null;
-    if (null != waarneming.getTaxon()) {
-      seq = waarneming.getTaxon().getTaxonId();
+  private static void valideerDatum(Date datum, List<Message> fouten) {
+    if (datum.after(new Date())) {
+      try {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
+                               Datum.fromDate(datum)));
+      } catch (ParseException e) {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.WRONGDATE,
+                               datum));
+      }
     }
-    if (DoosUtils.isBlankOrNull(seq)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.soort"));
-    }
-
-    if (null == waarneming.getGebied()) {
-      seq = null;
-    } else {
-      seq = waarneming.getGebied().getGebiedId();
-    }
-    if (DoosUtils.isBlankOrNull(seq)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.gebied"));
-    }
-
-    String  waarde  = DoosUtils.nullToEmpty(waarneming.getOpmerking());
-    if (waarde.length() > 2000) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.opmerking", 2000));
-    }
-
-    return fouten;
   }
 }

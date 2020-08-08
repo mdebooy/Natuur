@@ -22,14 +22,11 @@ import static eu.debooy.natuur.TestConstants.OPFOTO;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
 import static eu.debooy.natuur.TestConstants.TOTAAL;
-import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -42,25 +39,10 @@ public class RangtotaalTest {
 
   private static  Rangtotaal  rangtotaal;
 
-  public RangtotaalTest() {
-  }
-
   @BeforeClass
   public static void setUpClass() {
     rangtotaal  = new Rangtotaal(new Object[] {TAXONID, LATIJNSENAAM,
                                                TOTAAL, OPFOTO});
-  }
-
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
   }
 
   @Test

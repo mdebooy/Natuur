@@ -30,15 +30,12 @@ import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.text.ParseException;
 import java.util.Date;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -51,9 +48,6 @@ public class WaarnemingTest {
   private static Taxon          taxon;
   private static Waarneming     waarneming;
   private static WaarnemingDto  waarnemingDto;
-
-  public WaarnemingTest() {
-  }
 
   @BeforeClass
   public static void setUpClass() {
@@ -85,18 +79,6 @@ public class WaarnemingTest {
     waarnemingDto.setWaarnemingId(WAARNEMINGID);
   }
 
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testCompareTo() {
     Waarneming  gelijk  = new Waarneming(waarneming);
@@ -117,9 +99,6 @@ public class WaarnemingTest {
 
     assertFalse(waarneming.equals(object));
     assertFalse(waarneming.equals(instance));
-    assertFalse(waarneming.equals(this));
-
-    assertTrue(waarneming.equals(waarneming));
 
     instance.setWaarnemingId(waarneming.getWaarnemingId());
     assertTrue(waarneming.equals(instance));
@@ -210,9 +189,11 @@ public class WaarnemingTest {
 
     Date  datum1  = instance.getDatum();
     datum   = new Date(0);
+    assertEquals(datum1, instance.getDatum());
     assertEquals(DATUM, instance.getDatum());
     datum1  = new Date(0);
     assertEquals(DATUM, instance.getDatum());
+    assertEquals(datum, datum1);
   }
 
   @Test

@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class TaxonnaamValidator {
+public final class TaxonnaamValidator extends NatuurValidator {
   private TaxonnaamValidator() {}
 
   public static List<Message> valideer(TaxonnaamDto taxonnaam) {
@@ -36,18 +36,35 @@ public final class TaxonnaamValidator {
   }
 
   public static List<Message> valideer(Taxonnaam taxonnaam) {
-    List<Message> fouten  = new ArrayList<Message>();
-    String        waarde  = DoosUtils.nullToEmpty(taxonnaam.getNaam());
-    if (waarde.length() < 1) {
+    List<Message> fouten  = new ArrayList<>();
+
+    valideerNaam(DoosUtils.nullToEmpty(taxonnaam.getNaam()), fouten);
+    valideerTaal(DoosUtils.nullToEmpty(taxonnaam.getTaal()), fouten);
+
+    return fouten;
+  }
+
+  private static void valideerNaam(String naam, List<Message> fouten) {
+    if (naam.length() < 1) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.naam"));
     } else {
-      if (waarde.length() > 255) {
+      if (naam.length() > 255) {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                                new Object[] {"_I18N.label.naam", 255}));
       }
     }
+  }
 
-    return fouten;
+  private static void valideerTaal(String taal, List<Message> fouten) {
+    if (taal.length() < 1) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.taal"));
+    } else {
+      if (taal.length() != 2) {
+        fouten.add(new Message(Message.ERROR, PersistenceConstants.FIXLENGTH,
+                               new Object[] {"_I18N.label.taal", 2}));
+      }
+    }
   }
 }

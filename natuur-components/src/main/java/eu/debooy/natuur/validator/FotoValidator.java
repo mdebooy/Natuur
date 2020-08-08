@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class FotoValidator {
+public final class FotoValidator extends NatuurValidator {
   private FotoValidator() {}
 
   public static List<Message> valideer(FotoDto foto) {
@@ -36,7 +36,7 @@ public final class FotoValidator {
   }
 
   public static List<Message> valideer(Foto foto) {
-    List<Message> fouten  = new ArrayList<Message>();
+    List<Message> fouten  = new ArrayList<>();
 
     valideerFotoBestand(DoosUtils.nullToEmpty(foto.getFotoBestand()), fouten);
     valideerFotoDetail(DoosUtils.nullToEmpty(foto.getFotoDetail()), fouten);
@@ -69,28 +69,6 @@ public final class FotoValidator {
     if (fotoDetail.length() > 20) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.fotodetail", 20));
-    }
-  }
-
-  private static void valideerTaxonId(Long taxonId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taxonId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.soort"));
-    }
-  }
-
-  private static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(gebiedId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.gebied"));
-    }
-  }
-
-  private static void valideerOpmerking(String opmerking,
-                                        List<Message> fouten) {
-    if (opmerking.length() > 2000) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotodetail", 2000));
     }
   }
 

@@ -27,14 +27,11 @@ import static eu.debooy.natuur.TestConstants.TAXONSEQ;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -47,9 +44,6 @@ public class FotoTest {
   private static Taxon    taxon;
   private static Foto     foto;
   private static FotoDto  fotoDto;
-
-  public FotoTest() {
-  }
 
   @BeforeClass
   public static void setUpClass() {
@@ -83,18 +77,6 @@ public class FotoTest {
     fotoDto.setTaxonSeq(TAXONSEQ);
   }
 
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testCompareTo() {
     Foto  gelijk  = new Foto(foto);
@@ -115,9 +97,6 @@ public class FotoTest {
 
     assertFalse(foto.equals(object));
     assertFalse(foto.equals(instance));
-    assertFalse(foto.equals(this));
-
-    assertTrue(foto.equals(foto));
 
     instance.setFotoId(foto.getFotoId());
     assertTrue(foto.equals(instance));

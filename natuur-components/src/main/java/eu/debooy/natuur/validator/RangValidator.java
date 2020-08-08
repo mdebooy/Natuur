@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -28,7 +28,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public final class RangValidator {
+public final class RangValidator extends NatuurValidator {
   private RangValidator() {}
 
   public static List<Message> valideer(RangDto rang) {
@@ -36,22 +36,21 @@ public final class RangValidator {
   }
 
   public static List<Message> valideer(Rang rang) {
-    List<Message> fouten  = new ArrayList<Message>();
+    List<Message> fouten  = new ArrayList<>();
 
-    String  waarde  = rang.getRang();
-    if (DoosUtils.isBlankOrNull(waarde)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.rang"));
-    }
-    Long    getal   = rang.getNiveau();
-    if (null == getal) {
+    valideerRang(DoosUtils.nullToEmpty(rang.getRang()), fouten);
+    valideerNiveau(rang.getNiveau(), fouten);
+
+    return fouten;
+  }
+
+  private static void valideerNiveau(Long niveau, List<Message> fouten) {
+    if (null == niveau) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.niveau"));
-    } else if (getal <= 0) {
+    } else if (niveau <= 0) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.NIETGROTER,
                              "_I18N.label.niveau", 0));
     }
-
-    return fouten;
   }
 }

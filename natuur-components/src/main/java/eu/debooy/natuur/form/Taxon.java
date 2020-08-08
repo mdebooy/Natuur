@@ -166,8 +166,8 @@ public class Taxon
 
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.volgnummer,
-                                           taxon2.volgnummer)
+      return new CompareToBuilder().append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
                                    .append(taxon1.getLatijnsenaam(),
                                            taxon2.getLatijnsenaam())
                                    .toComparison();
@@ -182,16 +182,10 @@ public class Taxon
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "nl";
-
-    public void setTaal(String taal) {
-      this.taal = taal;
-    }
-
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.volgnummer,
-                                           taxon2.volgnummer)
+      return new CompareToBuilder().append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
                                    .append(taxon1.getNaam(),
                                            taxon2.getNaam())
                                    .append(taxon1.getLatijnsenaam(),

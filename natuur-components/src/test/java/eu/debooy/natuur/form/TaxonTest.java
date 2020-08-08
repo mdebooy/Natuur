@@ -28,13 +28,10 @@ import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.domain.TaxonDto;
-import org.junit.After;
-import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -45,9 +42,6 @@ import org.junit.Test;
 public class TaxonTest {
   private static  Taxon     taxon;
   private static  TaxonDto  taxonDto;
-
-  public TaxonTest() {
-  }
 
   @BeforeClass
   public static void setUpClass() {
@@ -72,18 +66,6 @@ public class TaxonTest {
     taxonDto.setVolgnummer(VOLGNUMMER);
   }
 
-  @AfterClass
-  public static void tearDownClass() {
-  }
-
-  @Before
-  public void setUp() {
-  }
-
-  @After
-  public void tearDown() {
-  }
-
   @Test
   public void testCompareTo() {
     Taxon gelijk  = new Taxon(taxon);
@@ -104,9 +86,6 @@ public class TaxonTest {
 
     assertFalse(taxon.equals(object));
     assertFalse(taxon.equals(instance));
-    assertFalse(taxon.equals(this));
-
-    assertTrue(taxon.equals(taxon));
 
     instance.setTaxonId(taxon.getTaxonId());
     assertTrue(taxon.equals(instance));
