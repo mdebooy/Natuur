@@ -16,6 +16,8 @@
  */
 package eu.debooy.natuur;
 
+import eu.debooy.doosutils.PersistenceConstants;
+import eu.debooy.doosutils.components.Message;
 import java.util.Date;
 
 
@@ -66,6 +68,19 @@ public final class TestConstants {
   public static final Integer VOLGNUMMER          = Integer.MIN_VALUE;
   public static final Long    WAARNEMINGID        = Long.MAX_VALUE - 11;
   public static final int     WAARNEMINGID_HASH   = -2147483008;
+
+  public static final Message ERR_RANG      =
+      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                  "_I18N.label.rang", 3);
+  public static final Message REQ_GEBIEDID  =
+      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                  "_I18N.label.gebied");
+  public static final Message REQ_TAXONID   =
+      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                  "_I18N.label.soort");
+  public static final Message REQ_RANG      =
+      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                  "_I18N.label.rang");
 
   private TestConstants() {
     throw new IllegalStateException("Utility class");
