@@ -39,7 +39,7 @@ public class Foto
   private Gebied  gebied;
   private String  opmerking;
   private Taxon   taxon;
-  private Long    taxonSeq;
+  private Long    taxonSeq    = 0L;
 
   public Foto() {}
 
@@ -47,9 +47,17 @@ public class Foto
     fotoBestand = foto.getFotoBestand();
     fotoDetail  = foto.getFotoDetail();
     fotoId      = foto.getFotoId();
-    gebied      = new Gebied(foto.getGebied());
+    if (null == foto.getGebied()) {
+      gebied    = null;
+    } else {
+      gebied    = new Gebied(foto.getGebied());
+    }
     opmerking   = foto.getOpmerking();
-    taxon       = new Taxon(foto.getTaxon());
+    if (null == foto.getTaxon()) {
+      taxon     = null;
+    } else {
+      taxon     = new Taxon(foto.getTaxon());
+    }
     taxonSeq    = foto.getTaxonSeq();
   }
 
@@ -57,9 +65,17 @@ public class Foto
     fotoBestand = fotoDto.getFotoBestand();
     fotoDetail  = fotoDto.getFotoDetail();
     fotoId      = fotoDto.getFotoId();
-    gebied      = new Gebied(fotoDto.getGebied());
+    if (null == fotoDto.getGebied()) {
+      gebied    = null;
+    } else {
+      gebied    = new Gebied(fotoDto.getGebied());
+    }
     opmerking   = fotoDto.getOpmerking();
-    taxon       = new Taxon(fotoDto.getTaxon());
+    if (null == fotoDto.getTaxon()) {
+      taxon     = null;
+    } else {
+      taxon     = new Taxon(fotoDto.getTaxon());
+    }
     taxonSeq    = fotoDto.getTaxonSeq();
   }
 
@@ -67,9 +83,17 @@ public class Foto
     fotoBestand = fotoDto.getFotoBestand();
     fotoDetail  = fotoDto.getFotoDetail();
     fotoId      = fotoDto.getFotoId();
-    gebied      = new Gebied(fotoDto.getGebied());
+    if (null == fotoDto.getGebied()) {
+      gebied    = null;
+    } else {
+      gebied    = new Gebied(fotoDto.getGebied());
+    }
     opmerking   = fotoDto.getOpmerking();
-    taxon       = new Taxon(fotoDto.getTaxon(), taal);
+    if (null == fotoDto.getTaxon()) {
+      taxon     = null;
+    } else {
+      taxon     = new Taxon(fotoDto.getTaxon());
+    }
     taxonSeq    = fotoDto.getTaxonSeq();
   }
 
