@@ -194,12 +194,12 @@ public class WaarnemingController extends Natuur {
 
     Set<Taxon> rijen = new TreeSet<>(new Taxon.LijstComparator());
     rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
-    rijen.forEach(rij -> {
+    for (Taxon rij : rijen) {
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),
                                        rij.getNaam(),
                                        rij.getLatijnsenaam()});
-    });
+    }
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()

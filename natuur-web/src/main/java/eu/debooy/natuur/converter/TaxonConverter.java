@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,7 +19,6 @@ package eu.debooy.natuur.converter;
 import eu.debooy.doosutils.service.JNDI;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.service.TaxonService;
-
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;

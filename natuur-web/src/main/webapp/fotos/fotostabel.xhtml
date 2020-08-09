@@ -3,7 +3,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-  <table class="table table-sm" id="fotosTabel">
+  <table class="table table-sm" id="fotosTabel" aria-describedby="fotosTabel">
     <colgroup>
       <col width="70px" />
       <col width="60px" />
@@ -12,12 +12,12 @@
     </colgroup>
     <thead>
       <tr>
-        <th></th>
-        <th>#{i18nTeksten.tekst('label.seq')}</th>
-        <th>#{i18nTeksten.tekst('label.naam')}</th>
-        <th>#{i18nTeksten.tekst('label.latijnsenaam')}</th>
-        <th>#{i18nTeksten.tekst('label.gebied')}</th>
-        <th>#{i18nTeksten.tekst('label.land')}</th>
+        <th id="icoon"></th>
+        <th id="seq">#{i18nTeksten.tekst('label.seq')}</th>
+        <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
+        <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+        <th id="gebied">#{i18nTeksten.tekst('label.gebied')}</th>
+        <th id="land">#{i18nTeksten.tekst('label.land')}</th>
       </tr>
     </thead>
     <tbody>

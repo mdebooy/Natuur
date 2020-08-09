@@ -41,7 +41,7 @@
           <h:form id="formRangen">
             <h2 class="titel">#{natuurRang.subTitel}</h2>
 
-            <table class="table table-sm" id="totalenTabel">
+            <table class="table table-sm" id="totalenTabel" aria-describedby="totalenTabel">
               <colgroup>
                 <col />
                 <col />
@@ -50,10 +50,10 @@
               </colgroup>
               <thead>
                 <tr>
-                  <th>#{i18nTeksten.tekst('label.naam')}</th>
-                  <th>#{i18nTeksten.tekst('label.latijnsenaam')}</th>
-                  <th>#{i18nTeksten.tekst('label.aantal')}</th>
-                  <th>#{i18nTeksten.tekst('label.opfoto')}</th>
+                  <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
+                  <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+                  <th id="aantal">#{i18nTeksten.tekst('label.aantal')}</th>
+                  <th id="opfoto">#{i18nTeksten.tekst('label.opfoto')}</th>
                 </tr>
               </thead>
               <tbody>
@@ -67,7 +67,7 @@
                 </t:dataList>
               </tbody>
             </table>
-  
+
             <a class="btn btn-secondary btn-sm" href="#{natuur.path}/rangen/rangen.xhtml">#{i18nTeksten.tekst('button.back')}</a>
           </h:form>
         </div>

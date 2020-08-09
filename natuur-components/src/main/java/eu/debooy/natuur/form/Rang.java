@@ -33,18 +33,18 @@ public class Rang
   private static final  long  serialVersionUID  = 1L;
 
   private Long    niveau;
-  private String  rang;
+  private String  rangcode;
 
   public Rang() {}
 
   public Rang(Rang rang) {
     niveau    = rang.getNiveau();
-    this.rang = rang.getRang();
+    rangcode  = rang.getRang();
   }
 
   public Rang(RangDto rangDto) {
-    niveau  = rangDto.getNiveau();
-    rang    = rangDto.getRang();
+    niveau    = rangDto.getNiveau();
+    rangcode  = rangDto.getRang();
   }
 
   public static class NiveauComparator
@@ -59,7 +59,7 @@ public class Rang
 
   @Override
   public int compareTo(Rang andere) {
-    return new CompareToBuilder().append(rang, andere.rang)
+    return new CompareToBuilder().append(rangcode, andere.rangcode)
                                  .toComparison();
   }
 
@@ -73,7 +73,7 @@ public class Rang
     }
 
     Rang  andere  = (Rang) object;
-    return new EqualsBuilder().append(rang, andere.rang).isEquals();
+    return new EqualsBuilder().append(rangcode, andere.rangcode).isEquals();
   }
 
   public Long getNiveau() {
@@ -81,12 +81,12 @@ public class Rang
   }
 
   public String getRang() {
-    return rang;
+    return rangcode;
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(rang).toHashCode();
+    return new HashCodeBuilder().append(rangcode).toHashCode();
   }
 
   public void persist(RangDto parameter) {
@@ -94,17 +94,17 @@ public class Rang
                                     parameter.getNiveau()).isEquals()) {
       parameter.setNiveau(niveau);
     }
-    if (!new EqualsBuilder().append(rang,
+    if (!new EqualsBuilder().append(rangcode,
                                     parameter.getRang()).isEquals()) {
-      parameter.setRang(rang);
+      parameter.setRang(rangcode);
     }
   }
 
   public void setNiveau(Long niveau) {
-    this.niveau = niveau;
+    this.niveau   = niveau;
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rangcode = rang;
   }
 }

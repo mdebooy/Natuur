@@ -3,7 +3,7 @@
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
-  <table class="table table-sm" id="gebiedenTabel">
+  <table class="table table-sm" id="gebiedenTabel" aria-describedby="gebiedenTabel">
     <colgroup>
       <col width="50px" />
       <col />
@@ -11,10 +11,10 @@
     </colgroup>
     <thead>
       <tr>
-        <th></th>
-        <th>#{i18nTeksten.tekst('label.gebied')}</th>
-        <th>#{i18nTeksten.tekst('label.land')}</th>
-        <th>#{i18nTeksten.tekst('label.coordinaten')}</th>
+        <th id="icoon"></th>
+        <th id="gebied">#{i18nTeksten.tekst('label.gebied')}</th>
+        <th id="land">#{i18nTeksten.tekst('label.land')}</th>
+        <th id="coordinaten">#{i18nTeksten.tekst('label.coordinaten')}</th>
       </tr>
     </thead>
     <tbody>

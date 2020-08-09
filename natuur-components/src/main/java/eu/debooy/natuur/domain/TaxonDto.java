@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -97,13 +97,13 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> taxonnamen  =
-      new HashMap<String, TaxonnaamDto>();
+  private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
   public static class LatijnsenaamComparator
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return taxonDto1.latijnsenaam.compareTo(taxonDto2.latijnsenaam);
     }
@@ -123,6 +123,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       this.taal = taal;
     }
 
+    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return new CompareToBuilder().append(taxonDto1.getNaam(taal),
                                            taxonDto2.getNaam(taal))
@@ -136,6 +137,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return new CompareToBuilder().append(taxonDto1.volgnummer,
                                            taxonDto2.volgnummer)
@@ -159,6 +161,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       this.taal = taal;
     }
 
+    @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
       return new CompareToBuilder().append(taxonDto1.volgnummer,
                                            taxonDto2.volgnummer)
@@ -175,16 +178,15 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public TaxonDto(JsonObject json) {
     latijnsenaam  = json.getString(COL_LATIJNSENAAM);
     opmerking     = json.getString(COL_OPMERKING);
-    parentId      = Long.valueOf(json.getJsonNumber(COL_PARENTID).longValue());
-    if (parentId.equals(Long.valueOf(0L))) {
+    parentId      = json.getJsonNumber(COL_PARENTID).longValue();
+    if (parentId.equals(0L)) {
       parentId    = null;
     }
     rang          = json.getString(COL_RANG);
     if (json.containsKey(COL_TAXONID)) {
-      taxonId     = Long.valueOf(json.getJsonNumber(COL_TAXONID).longValue());
+      taxonId     = json.getJsonNumber(COL_TAXONID).longValue();
     }
-    volgnummer    =
-        Integer.valueOf(json.getJsonNumber(COL_VOLGNUMMER).intValue());
+    volgnummer    = json.getJsonNumber(COL_VOLGNUMMER).intValue();
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {
@@ -195,11 +197,13 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     taxonnamen.put(taxonnaamDto.getTaal(), taxonnaamDto);
   }
 
+  @Override
   public int compareTo(TaxonDto taxonDto) {
     return new CompareToBuilder().append(taxonId, taxonDto.taxonId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof TaxonDto)) {
       return false;
