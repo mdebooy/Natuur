@@ -35,7 +35,7 @@ public class Gebied
   private static final  long  serialVersionUID  = 1L;
 
   private Long    gebiedId;
-  private Long    landId;
+  private Long    landId            = 0L;
   private String  latitude;
   private Integer latitudeGraden;
   private Integer latitudeMinuten;

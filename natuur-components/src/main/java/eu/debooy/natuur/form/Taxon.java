@@ -43,7 +43,7 @@ public class Taxon
   private Integer             parentVolgnummer;
   private String              rang;
   private Long                taxonId;
-  private Integer             volgnummer;
+  private Integer             volgnummer          = 0;
 
   public Taxon() {}
 
