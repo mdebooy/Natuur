@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -78,15 +78,13 @@ public class FotoOverzichtDto
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", referencedColumnName="KLASSE_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> klassenamen =
-      new HashMap<String, TaxonnaamDto>();
+  private Map<String, TaxonnaamDto> klassenamen = new HashMap<>();
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", referencedColumnName="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> taxonnamen  =
-      new HashMap<String, TaxonnaamDto>();
+  private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
   public static class LijstComparator
       implements Comparator<FotoOverzichtDto>, Serializable {

@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -27,18 +27,15 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Rangtotaal;
 import eu.debooy.natuur.validator.RangValidator;
-
 import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +90,7 @@ public class RangController extends Natuur {
     List<Rangtotaal>  rijen =
         getDetailService().getTotalenVoorRang(rang.getRang());
     for (Rangtotaal rij : rijen) {
-      String  naam = null;
+      String  naam;
       try {
         naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
                                      .getNaam();
@@ -111,8 +108,8 @@ public class RangController extends Natuur {
   }
 
   public List<SelectItem> getSelectRangen() {
-    List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
+    List<SelectItem>  items = new LinkedList<>();
+    Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query());
     for (Rang rij : rijen) {
       items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
@@ -161,8 +158,8 @@ public class RangController extends Natuur {
   }
 
   public List<SelectItem> selectRangen(Long niveau) {
-    List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<Rang>         rijen = new TreeSet<Rang>(new Rang.NiveauComparator());
+    List<SelectItem>  items = new LinkedList<>();
+    Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query(niveau));
     for (Rang rij : rijen) {
       items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));

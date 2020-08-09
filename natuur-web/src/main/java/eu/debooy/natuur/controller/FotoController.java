@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -33,17 +33,14 @@ import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.FotoValidator;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +82,7 @@ public class FotoController extends Natuur {
       generateExceptionMessage(e);
       return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + fotoDto.getTaxonSeq() + " - " 
+    addInfo(PersistenceConstants.DELETED, "'" + fotoDto.getTaxonSeq() + " - "
             + fotoDto.getTaxon().getNaam(getGebruikersTaal()) + "'");
   }
 
@@ -108,8 +105,7 @@ public class FotoController extends Natuur {
     LijstComparator       lijstComparator =
         new FotoOverzichtDto.LijstComparator();
     lijstComparator.setTaal(taal);
-    Set<FotoOverzichtDto> rijen           =
-        new TreeSet<FotoOverzichtDto>(lijstComparator);
+    Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
     for (FotoOverzichtDto rij : rijen) {
       LOGGER.debug(rij.toString());
@@ -129,9 +125,7 @@ public class FotoController extends Natuur {
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();
-    } catch (IllegalArgumentException e) {
-      generateExceptionMessage(e);
-    } catch (TechnicalException e) {
+    } catch (IllegalArgumentException | TechnicalException e) {
       generateExceptionMessage(e);
     }
   }
@@ -141,12 +135,12 @@ public class FotoController extends Natuur {
   }
 
   public Collection<Foto> getFotos() {
-    return getFotoService().query(getGebruikersTaal());
+    return getFotoService().query();
   }
 
   public void retrieve(Long fotoId) {
     fotoDto = getFotoService().foto(fotoId);
-    foto    = new Foto(fotoDto, getGebruikersTaal());
+    foto    = new Foto(fotoDto);
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel(foto.getTaxonSeq() + " - " + foto.getTaxon().getNaam());
     redirect(FOTO_REDIRECT);
@@ -188,7 +182,7 @@ public class FotoController extends Natuur {
 
   public void update(Long fotoId) {
     fotoDto = getFotoService().foto(fotoId);
-    foto    = new Foto(fotoDto, getGebruikersTaal());
+    foto    = new Foto(fotoDto);
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
     redirect(FOTO_REDIRECT);

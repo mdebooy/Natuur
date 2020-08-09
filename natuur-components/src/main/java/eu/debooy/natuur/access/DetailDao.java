@@ -60,9 +60,9 @@ public class DetailDao extends Dao<DetailDto> {
     List<Object[]>    rijen   = query.getResultList();
     List<Rangtotaal>  totalen = new ArrayList<>();
     if (null != rijen) {
-      rijen.forEach(rij -> {
+      for (Object[] rij : rijen) {
         totalen.add(new Rangtotaal(rij));
-      });
+      }
     }
 
     return totalen;

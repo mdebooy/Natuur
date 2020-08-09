@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -20,14 +20,12 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -36,7 +34,6 @@ import javax.ejb.TransactionAttributeType;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +63,7 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query() {
-    List<Rang>    rangen  = new ArrayList<Rang>();
+    List<Rang>    rangen  = new ArrayList<>();
     List<RangDto> rijen   = rangDao.getAll();
     for (RangDto rij : rijen) {
       rangen.add(new Rang(rij));
@@ -77,7 +74,7 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query(Long niveau) {
-    List<Rang>          groter  = new ArrayList<Rang>();
+    List<Rang>          groter  = new ArrayList<>();
     Collection<RangDto> rijen   = rangDao.getAll();
     for (RangDto rij : rijen) {
       if (rij.getNiveau().compareTo(niveau) > 0) {
@@ -109,9 +106,8 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<SelectItem> selectRangen() {
-    List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<RangDto>      rijen =
-        new TreeSet<RangDto>(new RangDto.NiveauComparator());
+    List<SelectItem>  items = new LinkedList<>();
+    Set<RangDto>      rijen = new TreeSet<>(new RangDto.NiveauComparator());
     try {
       rijen.addAll(rangDao.getAll());
       for (RangDto rij : rijen) {

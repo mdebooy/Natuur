@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -21,10 +21,8 @@ import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.form.Foto;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -32,7 +30,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -80,21 +77,10 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Foto> query() {
-    List<Foto>    fotos = new ArrayList<Foto>();
+    List<Foto>    fotos = new ArrayList<>();
     List<FotoDto> rijen = fotoDao.getAll();
     for (FotoDto rij : rijen) {
       fotos.add(new Foto(rij));
-    }
-
-    return fotos;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Foto> query(String taal) {
-    List<Foto>    fotos = new ArrayList<Foto>();
-    List<FotoDto> rijen = fotoDao.getAll();
-    for (FotoDto rij : rijen) {
-      fotos.add(new Foto(rij, taal));
     }
 
     return fotos;

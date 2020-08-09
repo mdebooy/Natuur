@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,10 +19,8 @@ package eu.debooy.natuur.service;
 import eu.debooy.natuur.access.GebiedDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -30,7 +28,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +68,7 @@ public class GebiedService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Gebied> query() {
-    List<Gebied>    gebieden  = new ArrayList<Gebied>();
+    List<Gebied>    gebieden  = new ArrayList<>();
     List<GebiedDto> rijen     = gebiedDao.getAll();
     for (GebiedDto rij : rijen) {
       gebieden.add(new Gebied(rij));

@@ -66,9 +66,6 @@ public class RangtotaalTest {
 
     assertFalse(rangtotaal.equals(object));
     assertFalse(rangtotaal.equals(instance));
-    assertFalse(rangtotaal.equals(this));
-
-    assertTrue(rangtotaal.equals(rangtotaal));
 
     instance.setTaxonId(rangtotaal.getTaxonId());
     assertTrue(rangtotaal.equals(instance));

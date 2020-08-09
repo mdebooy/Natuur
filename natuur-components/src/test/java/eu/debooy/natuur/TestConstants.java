@@ -18,7 +18,6 @@ package eu.debooy.natuur;
 
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import java.util.Date;
 
 
 /**
@@ -28,7 +27,6 @@ public final class TestConstants {
   public static final Integer AANTAL              = 1;
   public static final String  COORDINATEN         =
       "N 30 31 33,210 - E 40 41 43,210";
-  public static final Date    DATUM               = new Date();
   public static final String  FOTOBESTAND         = "fotobestand";
   public static final String  FOTODETAIL          = "fotodetail";
   public static final Long    FOTOID              = Long.MAX_VALUE - 8;

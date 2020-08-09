@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -64,11 +64,6 @@ public class TaxonController extends Natuur {
   private Taxonnaam     taxonnaam;
   private TaxonnaamDto  taxonnaamDto;
 
-  /**
-   * Vul 'ouder' en 'ouderNiveau' voor de gevraagde parentId.
-   *
-   * @param parentId
-   */
   public void bepaalOuder(Long parentId) {
     if (null == parentId) {
       ouder       = new Taxon();
@@ -80,9 +75,6 @@ public class TaxonController extends Natuur {
     }
   }
 
-  /**
-   * Prepareer een nieuw taxon.
-   */
   public void create() {
     aktieveTab  = KINDEREN_TAB;
     taxon       = new Taxon();
@@ -93,9 +85,6 @@ public class TaxonController extends Natuur {
     redirect(TAXON_REDIRECT);
   }
 
-  /**
-   * Prepareer een nieuw taxon met parentId.
-   */
   public void create(Long parentId) {
     aktieveTab  = KINDEREN_TAB;
     taxon       = new Taxon();
@@ -108,9 +97,6 @@ public class TaxonController extends Natuur {
     redirect(TAXON_REDIRECT);
   }
 
-  /**
-   * Prepareer een nieuw Taxonnaam.
-   */
   public void createTaxonnaam() {
     aktieveTab    = NAMEN_TAB;
     taxonnaam     = new Taxonnaam();
@@ -122,13 +108,8 @@ public class TaxonController extends Natuur {
     redirect(TAXONNAAM_REDIRECT);
   }
 
-  /**
-   * Verwijder het Taxon
-   *
-   * @param Taxon
-   */
   public void delete(Long taxonId) {
-    String  naam  = "";
+    String  naam;
     try {
       taxonDto	= getTaxonService().taxon(taxonId);
       naam      = taxonDto.getNaam(getGebruikersTaal());
@@ -144,11 +125,6 @@ public class TaxonController extends Natuur {
     addInfo(PersistenceConstants.DELETED, naam);
   }
 
-  /**
-   * Verwijder de Taxonnaam.
-   *
-   * @param String taal
-   */
   public void deleteTaxonnaam(String taal) {
     try {
       taxonDto.removeTaxonnaam(taal);
@@ -164,86 +140,40 @@ public class TaxonController extends Natuur {
     addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
   }
 
-  /**
-   * Geef de aktieve tab.
-   *
-   * @return
-   */
   public String getAktieveTab() {
     return aktieveTab;
   }
 
-  /**
-   * Geef de lijst met kinderen van de taxon.
-   *
-   * @return Collection<Taxon> met Taxon objecten.
-   */
   public Collection<Taxon> getKinderen(Long parentId) {
     return getTaxonService().getKinderen(parentId, getGebruikersTaal());
   }
 
-  /**
-   * Geeft de ouder van de taxon.
-   *
-   * @return Taxon
-   */
   public Taxon getOuder() {
     return ouder;
   }
 
-  /**
-   * Geeft het rang niveau van de ouder.
-   *
-   * @return Long
-   */
   public Long getOuderNiveau() {
     return ouderNiveau;
   }
 
-  /**
-   * Geef de naam van de gevraagde rang.
-   *
-   * @return String
-   */
   public String getRangnaam() {
     return getTekst("biologie.rang." + taxon.getRang());
   }
 
-  /**
-   * Geef de lijst met taxa.
-   *
-   * @return Collection<Taxon> met Taxon objecten.
-   */
   public Collection<Taxon> getTaxa() {
     return getTaxonService().query(getGebruikersTaal());
   }
 
-  /**
-   * Geef het geselecteerde taxon.
-   *
-   * @return Taxon
-   */
   public Taxon getTaxon() {
     return taxon;
   }
 
-  /**
-   * Geef de geselecteerde werelddeelnaam.
-   *
-   * @return Taxonnaam
-   */
   public Taxonnaam getTaxonnaam() {
     return taxonnaam;
   }
 
-  /**
-   * Geef de lijst met werelddeelnamen.
-   *
-   * @return Collection<Taxonnaam>
-   */
   public Collection<Taxonnaam> getTaxonnamen() {
-    Collection<Taxonnaam> taxonnamen  =
-        new HashSet<Taxonnaam>();
+    Collection<Taxonnaam> taxonnamen  = new HashSet<>();
     for (TaxonnaamDto rij : taxonDto.getTaxonnamen()) {
       taxonnamen.add(new Taxonnaam(rij));
     }
@@ -251,11 +181,6 @@ public class TaxonController extends Natuur {
     return taxonnamen;
   }
 
-  /**
-   * Zet het Taxon dat gevraagd is klaar.
-   *
-   * @param Long taxonId
-   */
   public void retrieve(Long taxonId) {
     aktieveTab  = KINDEREN_TAB;
     taxonDto    = getTaxonService().taxon(taxonId);
@@ -266,9 +191,6 @@ public class TaxonController extends Natuur {
     redirect(TAXON_REDIRECT);
   }
 
-  /**
-   * Persist het Taxon
-   */
   public void save() {
     List<Message> messages  = TaxonValidator.valideer(taxon);
     if (!messages.isEmpty()) {
@@ -306,9 +228,6 @@ public class TaxonController extends Natuur {
     }
   }
 
-  /**
-   * Persist de Taxonnaam
-   */
   public void saveTaxonnaam() {
     List<Message> messages  = TaxonnaamValidator.valideer(taxonnaam);
     if (!messages.isEmpty()) {
@@ -347,11 +266,6 @@ public class TaxonController extends Natuur {
     }
   }
 
-  /**
-   * Geef alle taxa als SelectItems.
-   *
-   * @return List<SelectItem>
-   */
   public List<SelectItem> selectOuders(String rang) {
     Long              niveau;
     if (DoosUtils.isBlankOrNull(rang)) {
@@ -359,9 +273,8 @@ public class TaxonController extends Natuur {
     } else {
       niveau  = getRangService().rang(rang).getNiveau();
     }
-    List<SelectItem>  items = new LinkedList<SelectItem>();
-    Set<TaxonDto>     rijen =
-        new TreeSet<TaxonDto>(new TaxonDto.NaamComparator());
+    List<SelectItem>  items = new LinkedList<>();
+    Set<TaxonDto>     rijen = new TreeSet<>(new TaxonDto.NaamComparator());
     rijen.addAll(getTaxonService().getOuders(niveau));
     for (TaxonDto rij : rijen) {
       items.add(new SelectItem(rij.getTaxonId(),
@@ -372,11 +285,6 @@ public class TaxonController extends Natuur {
     return items;
   }
 
-  /**
-   * Zet de Taxon die gewijzigd gaat worden klaar.
-   *
-   * @param Long taxonId
-   */
   public void update(Long taxonId) {
     aktieveTab  = KINDEREN_TAB;
     taxonDto    = getTaxonService().taxon(taxonId);
@@ -387,11 +295,6 @@ public class TaxonController extends Natuur {
     redirect(TAXON_REDIRECT);
   }
 
-  /**
-   * Zet de Taxonnaam die gewijzigd gaat worden klaar.
-   *
-   * @param Long taxonId
-   */
   public void updateTaxonnaam(String taal) {
     aktieveTab    = NAMEN_TAB;
     taxonnaamDto  = taxonDto.getTaxonnaam(taal);

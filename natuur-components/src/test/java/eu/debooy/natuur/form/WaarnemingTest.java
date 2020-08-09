@@ -19,7 +19,6 @@ package eu.debooy.natuur.form;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosConstants;
 import static eu.debooy.natuur.TestConstants.AANTAL;
-import static eu.debooy.natuur.TestConstants.DATUM;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.TAXONID;
@@ -44,6 +43,7 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class WaarnemingTest {
+  private static Date           datum;
   private static Gebied         gebied;
   private static Taxon          taxon;
   private static Waarneming     waarneming;
@@ -51,6 +51,7 @@ public class WaarnemingTest {
 
   @BeforeClass
   public static void setUpClass() {
+    datum         = new Date();
     gebied        = new Gebied();
     gebied.setGebiedId(GEBIEDID);
 
@@ -59,7 +60,7 @@ public class WaarnemingTest {
 
     waarneming    = new Waarneming();
     waarneming.setAantal(AANTAL);
-    waarneming.setDatum(DATUM);
+    waarneming.setDatum(datum);
     waarneming.setGebied(gebied);
     waarneming.setOpmerking(OPMERKING);
     waarneming.setTaxon(taxon);
@@ -72,7 +73,7 @@ public class WaarnemingTest {
 
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setAantal(AANTAL);
-    waarnemingDto.setDatum(DATUM);
+    waarnemingDto.setDatum(datum);
     waarnemingDto.setGebied(gebiedDto);
     waarnemingDto.setOpmerking(OPMERKING);
     waarnemingDto.setTaxon(taxonDto);
@@ -117,7 +118,7 @@ public class WaarnemingTest {
 
   @Test
   public void testGetDatum() {
-    assertEquals(DATUM, waarneming.getDatum());
+    assertEquals(datum, waarneming.getDatum());
   }
 
   @Test
@@ -133,7 +134,7 @@ public class WaarnemingTest {
   @Test
   public void testGetSorteerdatum() {
     try {
-      String  sorteerdatum  = Datum.fromDate(DATUM, DoosConstants.SORTEERDATUM);
+      String  sorteerdatum  = Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
       assertEquals(sorteerdatum, waarneming.getSorteerdatum());
     } catch (ParseException e) {
       fail(e.getMessage());
@@ -181,19 +182,19 @@ public class WaarnemingTest {
   @Test
   public void testSetDatum() {
     Waarneming  instance  = new Waarneming();
-    assertNotEquals(DATUM, instance.getDatum());
-    Date        datum     = DATUM;
-    instance.setDatum(datum);
+    assertNotEquals(datum, instance.getDatum());
+    Date        datum1    = datum;
+    instance.setDatum(datum1);
 
-    assertEquals(DATUM, instance.getDatum());
+    assertEquals(datum, instance.getDatum());
 
-    Date  datum1  = instance.getDatum();
-    datum   = new Date(0);
-    assertEquals(datum1, instance.getDatum());
-    assertEquals(DATUM, instance.getDatum());
+    Date  datum2  = instance.getDatum();
     datum1  = new Date(0);
-    assertEquals(DATUM, instance.getDatum());
-    assertEquals(datum, datum1);
+    assertEquals(datum2, instance.getDatum());
+    assertEquals(datum, instance.getDatum());
+    datum2  = new Date(0);
+    assertEquals(datum, instance.getDatum());
+    assertEquals(datum1, datum2);
   }
 
   @Test

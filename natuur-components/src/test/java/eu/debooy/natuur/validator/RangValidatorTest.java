@@ -40,7 +40,7 @@ public class RangValidatorTest {
                   "_I18N.label.niveau");
 
   @Test
-  public void testValideer_GoedeRang() {
+  public void testValideerGoedeRang() {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_FouteRang() {
+  public void testValideerFouteRang() {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_LegeRang() {
+  public void testValideerLegeRang() {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
@@ -78,7 +78,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_GoedeRangDto() {
+  public void testValideerGoedeRangDto() {
     RangDto       rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
@@ -90,7 +90,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_FouteRangDto() {
+  public void testValideerFouteRangDto() {
     RangDto       rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
@@ -104,7 +104,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_LegeRangDto() {
+  public void testValideerLegeRangDto() {
     RangDto       rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
     expResult.add(REQ_RANG);
@@ -114,7 +114,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_Rang_Niveau() {
+  public void testValideerRangNiveau() {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
@@ -127,7 +127,7 @@ public class RangValidatorTest {
   }
 
   @Test
-  public void testValideer_Rang_Rang() {
+  public void testValideerRangRang() {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 

@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,10 +19,8 @@ package eu.debooy.natuur.service;
 import eu.debooy.natuur.access.TaxonDao;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -30,7 +28,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +57,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId) {
-    List<Taxon>     kinderen  = new ArrayList<Taxon>();
+    List<Taxon>     kinderen  = new ArrayList<>();
     List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
     for (TaxonDto taxonDto : rows) {
       kinderen.add(new Taxon(taxonDto));
@@ -71,7 +68,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId, String taal) {
-    List<Taxon>     kinderen  = new ArrayList<Taxon>();
+    List<Taxon>     kinderen  = new ArrayList<>();
     List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
     for (TaxonDto rij : rijen) {
       kinderen.add(new Taxon(rij, taal));
@@ -87,7 +84,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten() {
-    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<Taxon>     soorten = new ArrayList<>();
     List<TaxonDto>  rijen   = taxonDao.getSoorten();
     for (TaxonDto rij : rijen) {
       soorten.add(new Taxon(rij));
@@ -98,7 +95,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten(String taal) {
-    List<Taxon>     soorten = new ArrayList<Taxon>();
+    List<Taxon>     soorten = new ArrayList<>();
     List<TaxonDto>  rijen   = taxonDao.getSoorten();
     for (TaxonDto rij : rijen) {
       soorten.add(new Taxon(rij, taal));
@@ -109,7 +106,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query() {
-    List<Taxon>     taxa  = new ArrayList<Taxon>();
+    List<Taxon>     taxa  = new ArrayList<>();
     List<TaxonDto>  rijen = taxonDao.getAll();
     for (TaxonDto rij : rijen) {
       taxa.add(new Taxon(rij));
@@ -120,7 +117,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query(String taal) {
-    List<Taxon>     taxa  = new ArrayList<Taxon>();
+    List<Taxon>     taxa  = new ArrayList<>();
     List<TaxonDto>  rijen = taxonDao.getAll();
     for (TaxonDto rij : rijen) {
       taxa.add(new Taxon(rij, taal));

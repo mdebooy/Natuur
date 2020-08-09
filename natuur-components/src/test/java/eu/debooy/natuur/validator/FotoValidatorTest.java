@@ -37,7 +37,7 @@ public class FotoValidatorTest {
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.seq");
   @Test
-  public void testValideer_LegeFoto() {
+  public void testValideerLegeFoto() {
     Foto          foto      = new Foto();
     List<Message> expResult = new ArrayList<>();
 
@@ -49,7 +49,7 @@ public class FotoValidatorTest {
   }
 
   @Test
-  public void testValideer_LegeFotoDto() {
+  public void testValideerLegeFotoDto() {
     FotoDto       foto      = new FotoDto();
     List<Message> expResult = new ArrayList<>();
 

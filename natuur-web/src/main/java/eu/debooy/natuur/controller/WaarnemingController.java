@@ -1,5 +1,5 @@
 /**
- * Copyright 2016 Marco de Booij
+ * Copyright (c) 2016 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -112,10 +112,10 @@ public class WaarnemingController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
     rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
-    rijen.forEach(rij -> {
+    for (Taxon rij : rijen) {
       items.add(new SelectItem(rij, rij.getNaam()
                                     + " (" + rij.getLatijnsenaam() + ")"));
-    });
+    }
 
     return items;
   }

@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -19,10 +19,8 @@ package eu.debooy.natuur.service;
 import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -30,7 +28,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +57,7 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> query() {
-    List<Waarneming>    waarnemingen  = new ArrayList<Waarneming>();
+    List<Waarneming>    waarnemingen  = new ArrayList<>();
     List<WaarnemingDto> rijen         = waarnemingDao.getAll();
     for (WaarnemingDto rij : rijen) {
       waarnemingen.add(new Waarneming(rij));
@@ -71,7 +68,7 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> query(String taal) {
-    List<Waarneming>    waarnemingen  = new ArrayList<Waarneming>();
+    List<Waarneming>    waarnemingen  = new ArrayList<>();
     List<WaarnemingDto> rijen         = waarnemingDao.getAll();
     for (WaarnemingDto rij : rijen) {
       waarnemingen.add(new Waarneming(rij, taal));
