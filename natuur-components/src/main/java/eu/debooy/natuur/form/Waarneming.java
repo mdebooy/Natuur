@@ -50,27 +50,51 @@ public class Waarneming extends Formulier
   public Waarneming(Waarneming waarneming) {
     aantal        = waarneming.getAantal();
     datum         = waarneming.getDatum();
-    gebied        = new Gebied(waarneming.getGebied());
+    if (null == waarneming.getGebied()) {
+      gebied      = null;
+    } else {
+      gebied      = new Gebied(waarneming.getGebied());
+    }
     opmerking     = waarneming.getOpmerking();
-    taxon         = new Taxon(waarneming.getTaxon());
+    if (null == waarneming.getTaxon()) {
+      taxon       = null;
+    } else {
+      taxon       = new Taxon(waarneming.getTaxon());
+    }
     waarnemingId  = waarneming.getWaarnemingId();
   }
 
   public Waarneming(WaarnemingDto waarnemingDto) {
     aantal        = waarnemingDto.getAantal();
     datum         = waarnemingDto.getDatum();
-    gebied        = new Gebied(waarnemingDto.getGebied());
+    if (null == waarnemingDto.getGebied()) {
+      gebied      = null;
+    } else {
+      gebied      = new Gebied(waarnemingDto.getGebied());
+    }
     opmerking     = waarnemingDto.getOpmerking();
-    taxon         = new Taxon(waarnemingDto.getTaxon());
+    if (null == waarnemingDto.getTaxon()) {
+      taxon       = null;
+    } else {
+      taxon       = new Taxon(waarnemingDto.getTaxon());
+    }
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
 
   public Waarneming(WaarnemingDto waarnemingDto, String taal) {
     aantal        = waarnemingDto.getAantal();
     datum         = waarnemingDto.getDatum();
-    gebied        = new Gebied(waarnemingDto.getGebied());
+    if (null == waarnemingDto.getGebied()) {
+      gebied      = null;
+    } else {
+      gebied      = new Gebied(waarnemingDto.getGebied());
+    }
     opmerking     = waarnemingDto.getOpmerking();
-    taxon         = new Taxon(waarnemingDto.getTaxon(), taal);
+    if (null == waarnemingDto.getTaxon()) {
+      taxon       = null;
+    } else {
+      taxon       = new Taxon(waarnemingDto.getTaxon());
+    }
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
 
