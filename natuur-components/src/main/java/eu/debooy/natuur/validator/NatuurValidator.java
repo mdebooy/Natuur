@@ -37,7 +37,7 @@ public class NatuurValidator {
                                         List<Message> fouten) {
     if (opmerking.length() > 2000) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotodetail", 2000));
+                             "_I18N.label.opmerking", 2000));
     }
   }
 
