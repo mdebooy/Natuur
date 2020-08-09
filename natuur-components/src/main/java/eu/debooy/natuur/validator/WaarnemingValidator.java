@@ -48,13 +48,13 @@ public final class WaarnemingValidator extends NatuurValidator {
     } else {
       valideerGebiedId(waarneming.getTaxon().getTaxonId(), fouten);
     }
-    if (null == waarneming.getGebied()) {
-      valideerGebiedId(null, fouten);
-    } else {
-      valideerGebiedId(waarneming.getGebied().getGebiedId(), fouten);
-    }
     valideerOpmerking(DoosUtils.nullToEmpty(waarneming.getOpmerking()),
                       fouten);
+    if (null == waarneming.getTaxon()) {
+      valideerTaxonId(null, fouten);
+    } else {
+      valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
+    }
 
     return fouten;
   }
@@ -68,7 +68,10 @@ public final class WaarnemingValidator extends NatuurValidator {
   }
 
   private static void valideerDatum(Date datum, List<Message> fouten) {
-    if (datum.after(new Date())) {
+    if ( null == datum) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.datum"));
+    } else if (datum.after(new Date())) {
       try {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
                                Datum.fromDate(datum)));
