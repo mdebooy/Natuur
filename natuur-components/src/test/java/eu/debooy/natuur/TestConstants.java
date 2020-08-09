@@ -52,10 +52,12 @@ public final class TestConstants {
   public static final String  PARENTNAAM          = "parentnaam";
   public static final Integer PARENTVOLGNUMMER    = 5000;
   public static final String  RANG                = "ra";
+  public static final String  RANG_FOUT           = "xxxx";
   public static final String  RANG_GR             = "so";
   public static final int     RANG_HASH           = 4260;
   public static final String  RANG_KL             = "or";
   public static final String  TAAL                = "nl";
+  public static final String  TAAL_FOUT           = "xxx";
   public static final String  TAAL_GR             = "pt";
   public static final String  TAAL_KL             = "en";
   public static final Long    TAXONID             = Long.MAX_VALUE - 10;
@@ -67,18 +69,22 @@ public final class TestConstants {
   public static final Long    WAARNEMINGID        = Long.MAX_VALUE - 11;
   public static final int     WAARNEMINGID_HASH   = -2147483008;
 
+  public static final Message ERR_OPMERKING =
+      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
+                  "_I18N.label.opmerking", 2000);
   public static final Message ERR_RANG      =
       new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                   "_I18N.label.rang", 3);
+
   public static final Message REQ_GEBIEDID  =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.gebied");
-  public static final Message REQ_TAXONID   =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.soort");
   public static final Message REQ_RANG      =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.rang");
+  public static final Message REQ_TAXONID   =
+      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                  "_I18N.label.soort");
 
   private TestConstants() {
     throw new IllegalStateException("Utility class");

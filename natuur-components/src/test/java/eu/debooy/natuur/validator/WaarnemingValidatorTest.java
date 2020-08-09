@@ -16,12 +16,11 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import static eu.debooy.natuur.TestConstants.ERR_OPMERKING;
-import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
-import static eu.debooy.natuur.TestConstants.FOTODETAIL;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.LANDID;
 import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
@@ -43,13 +42,16 @@ import static eu.debooy.natuur.TestConstants.REQ_GEBIEDID;
 import static eu.debooy.natuur.TestConstants.REQ_TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
-import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
-import eu.debooy.natuur.form.Foto;
+import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
+import eu.debooy.natuur.form.Waarneming;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
@@ -57,21 +59,19 @@ import org.junit.Test;
 
 
 /**
- *
- * @author booymar
+ * @author Marco de Booij
  */
-public class FotoValidatorTest {
-  public static final Message ERR_FOTOBESTAND =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotobestand", 255);
-  public static final Message ERR_FOTODETAIL  =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotodetail", 20);
+public class WaarnemingValidatorTest {
+  public static final Message ERR_AANTAL  =
+      new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
+                  "_I18N.label.aantal", 1);
 
-  public static final Message REQ_TAXONSEQ  =
+  public static final Message REQ_DATUM =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.seq");
+                  "_I18N.label.datum");
 
+  private static  Message   ERR_DATUM;
+  private static  Date      morgen;
   private static  Gebied    gebied;
   private static  GebiedDto gebiedDto;
   private static  Taxon     taxon;
@@ -79,6 +79,18 @@ public class FotoValidatorTest {
 
   @BeforeClass
   public static void setUpClass() {
+    Calendar  kalender  = Calendar.getInstance();
+    kalender.add(Calendar.DAY_OF_YEAR, 1);
+    morgen    = kalender.getTime();
+
+    try {
+      ERR_DATUM   =
+              new Message(Message.ERROR, PersistenceConstants.FUTURE,
+                      Datum.fromDate(morgen));
+    } catch (ParseException e) {
+      // Zou nooit mogen gebeuren.
+    }
+
     gebied    = new Gebied();
     gebied.setGebiedId(GEBIEDID);
     gebied.setLandId(LANDID);
@@ -126,98 +138,96 @@ public class FotoValidatorTest {
   }
 
   @Test
-  public void testValideerFouteFoto() {
-    Foto          foto      = new Foto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerFouteWaarneming() {
+    Waarneming    waarneming  = new Waarneming();
+    List<Message> expResult   = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(FOTOBESTAND, 256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(FOTODETAIL, 21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
-    foto.setTaxonSeq(null);
+    waarneming.setAantal(0);
+    waarneming.setDatum(morgen);
+    waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
-    expResult.add(ERR_FOTOBESTAND);
-    expResult.add(ERR_FOTODETAIL);
+    expResult.add(ERR_AANTAL);
+    expResult.add(ERR_DATUM);
     expResult.add(REQ_GEBIEDID);
     expResult.add(ERR_OPMERKING);
     expResult.add(REQ_TAXONID);
-    expResult.add(REQ_TAXONSEQ);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
-  public void testValideerGoedeFoto() {
-    Foto          foto      = new Foto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerGoedeWaarneming() {
+    Waarneming    waarneming  = new Waarneming();
+    List<Message> expResult   = new ArrayList<>();
 
-    foto.setFotoBestand(FOTOBESTAND);
-    foto.setFotoDetail(FOTODETAIL);
-    foto.setGebied(gebied);
-    foto.setOpmerking(OPMERKING);
-    foto.setTaxon(taxon);
+    waarneming.setAantal(1);
+    waarneming.setDatum(new Date());
+    waarneming.setGebied(gebied);
+    waarneming.setOpmerking(OPMERKING);
+    waarneming.setTaxon(taxon);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
-  public void testValideerLegeFoto() {
-    Foto          foto      = new Foto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerLegeWaarneming() {
+    Waarneming    waarneming  = new Waarneming();
+    List<Message> expResult   = new ArrayList<>();
 
+    expResult.add(REQ_DATUM);
     expResult.add(REQ_GEBIEDID);
     expResult.add(REQ_TAXONID);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
-  public void testValideerFouteFotoDto() {
-    FotoDto       foto      = new FotoDto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerFouteWaarnemingDto() {
+    WaarnemingDto waarneming  = new WaarnemingDto();
+    List<Message> expResult   = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(FOTOBESTAND, 256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(FOTODETAIL, 21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
-    foto.setTaxonSeq(null);
+    waarneming.setAantal(-1);
+    waarneming.setDatum(morgen);
+    waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
-    expResult.add(ERR_FOTOBESTAND);
-    expResult.add(ERR_FOTODETAIL);
+    expResult.add(ERR_AANTAL);
+    expResult.add(ERR_DATUM);
     expResult.add(REQ_GEBIEDID);
     expResult.add(ERR_OPMERKING);
     expResult.add(REQ_TAXONID);
-    expResult.add(REQ_TAXONSEQ);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
-  public void testValideerGoedeFotoDto() {
-    FotoDto       foto      = new FotoDto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerGoedeWaarnemingDto() {
+    WaarnemingDto waarneming  = new WaarnemingDto();
+    List<Message> expResult   = new ArrayList<>();
 
-    foto.setFotoBestand(FOTOBESTAND);
-    foto.setFotoDetail(FOTODETAIL);
-    foto.setGebied(gebiedDto);
-    foto.setOpmerking(OPMERKING);
-    foto.setTaxon(taxonDto);
+    waarneming.setAantal(1);
+    waarneming.setDatum(new Date());
+    waarneming.setGebied(gebiedDto);
+    waarneming.setOpmerking(OPMERKING);
+    waarneming.setTaxon(taxonDto);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
-  public void testValideerLegeFotoDto() {
-    FotoDto       foto      = new FotoDto();
-    List<Message> expResult = new ArrayList<>();
+  public void testValideerLegeWaarnemingDto() {
+    WaarnemingDto waarneming  = new WaarnemingDto();
+    List<Message> expResult   = new ArrayList<>();
 
+    expResult.add(REQ_DATUM);
     expResult.add(REQ_GEBIEDID);
     expResult.add(REQ_TAXONID);
 
-    List<Message> result    = FotoValidator.valideer(foto);
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
   }
 }

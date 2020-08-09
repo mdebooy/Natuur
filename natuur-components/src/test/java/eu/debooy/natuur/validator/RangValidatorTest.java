@@ -19,6 +19,8 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import static eu.debooy.natuur.TestConstants.ERR_RANG;
+import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANG_FOUT;
 import static eu.debooy.natuur.TestConstants.REQ_RANG;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
@@ -44,7 +46,7 @@ public class RangValidatorTest {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxx");
+    rang.setRang(RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -56,7 +58,7 @@ public class RangValidatorTest {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxxx");
+    rang.setRang(RANG_FOUT);
     rang.setNiveau(Long.MIN_VALUE);
     expResult.add(ERR_RANG);
     expResult.add(ERR_NIVEAU);
@@ -82,7 +84,7 @@ public class RangValidatorTest {
     RangDto       rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxx");
+    rang.setRang(RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -94,7 +96,7 @@ public class RangValidatorTest {
     RangDto       rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxxx");
+    rang.setRang(RANG_FOUT);
     rang.setNiveau(0L);
     expResult.add(ERR_RANG);
     expResult.add(ERR_NIVEAU);
@@ -118,7 +120,7 @@ public class RangValidatorTest {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxx");
+    rang.setRang(RANG);
     rang.setNiveau(Long.MIN_VALUE);
     expResult.add(ERR_NIVEAU);
 
@@ -131,7 +133,7 @@ public class RangValidatorTest {
     Rang          rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang("xxxx");
+    rang.setRang(RANG_FOUT);
     rang.setNiveau(1L);
     expResult.add(ERR_RANG);
 
