@@ -39,6 +39,7 @@ public final class GebiedValidator extends NatuurValidator {
     List<Message> fouten  = new ArrayList<>();
 
     valideerGebied(DoosUtils.nullToEmpty(gebied.getNaam()), fouten);
+    valideerLandId(gebied.getLandId(), fouten);
     int leeg  = valideerLatitude(gebied.getLatitude(), fouten);
     leeg  += valideerLatitudeGraden(gebied.getLatitudeGraden(), fouten);
     leeg  += valideerLatitudeMinuten(gebied.getLatitudeMinuten(), fouten);
@@ -71,6 +72,13 @@ public final class GebiedValidator extends NatuurValidator {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                                "_I18N.label.gebied", 255));
       }
+    }
+  }
+
+  private static void valideerLandId(Long landId, List<Message> fouten) {
+    if (null == landId) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.land"));
     }
   }
 
