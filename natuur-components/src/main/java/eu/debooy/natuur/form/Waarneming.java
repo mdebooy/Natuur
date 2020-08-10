@@ -81,23 +81,6 @@ public class Waarneming extends Formulier
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
 
-  public Waarneming(WaarnemingDto waarnemingDto, String taal) {
-    aantal        = waarnemingDto.getAantal();
-    datum         = waarnemingDto.getDatum();
-    if (null == waarnemingDto.getGebied()) {
-      gebied      = null;
-    } else {
-      gebied      = new Gebied(waarnemingDto.getGebied());
-    }
-    opmerking     = waarnemingDto.getOpmerking();
-    if (null == waarnemingDto.getTaxon()) {
-      taxon       = null;
-    } else {
-      taxon       = new Taxon(waarnemingDto.getTaxon());
-    }
-    waarnemingId  = waarnemingDto.getWaarnemingId();
-  }
-
   public static class DatumComparator
       implements Comparator<Waarneming>, Serializable {
     private static final  long  serialVersionUID  = 1L;
