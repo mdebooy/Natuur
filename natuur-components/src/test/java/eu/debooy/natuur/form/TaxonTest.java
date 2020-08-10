@@ -27,6 +27,7 @@ import static eu.debooy.natuur.TestConstants.RANG;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -45,25 +46,8 @@ public class TaxonTest {
 
   @BeforeClass
   public static void setUpClass() {
-    taxon     = new Taxon();
-    taxon.setLatijnsenaam(LATIJNSENAAM);
-    taxon.setNaam(NAAM);
-    taxon.setOpmerking(OPMERKING);
-    taxon.setParentId(PARENTID);
-    taxon.setParentLatijnsenaam(PARENTLATIJNSENAAM);
-    taxon.setParentNaam(PARENTNAAM);
-    taxon.setParentVolgnummer(PARENTVOLGNUMMER);
-    taxon.setRang(RANG);
-    taxon.setTaxonId(TAXONID);
-    taxon.setVolgnummer(VOLGNUMMER);
-
-    taxonDto  = new TaxonDto();
-    taxonDto.setLatijnsenaam(LATIJNSENAAM);
-    taxonDto.setOpmerking(OPMERKING);
-    taxonDto.setParentId(PARENTID);
-    taxonDto.setRang(RANG);
-    taxonDto.setTaxonId(TAXONID);
-    taxonDto.setVolgnummer(VOLGNUMMER);
+    taxon     = TestUtils.getTaxon();
+    taxonDto  = TestUtils.getTaxonDto();
   }
 
   @Test

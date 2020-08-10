@@ -21,27 +21,10 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import static eu.debooy.natuur.TestConstants.ERR_OPMERKING;
-import static eu.debooy.natuur.TestConstants.GEBIEDID;
-import static eu.debooy.natuur.TestConstants.LANDID;
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.LATITUDE;
-import static eu.debooy.natuur.TestConstants.LATITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_MINUTEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_SECONDEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_SECONDEN;
-import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
-import static eu.debooy.natuur.TestConstants.PARENTID;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM;
-import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
-import static eu.debooy.natuur.TestConstants.RANG;
 import static eu.debooy.natuur.TestConstants.REQ_GEBIEDID;
 import static eu.debooy.natuur.TestConstants.REQ_TAXONID;
-import static eu.debooy.natuur.TestConstants.TAXONID;
-import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
@@ -70,7 +53,7 @@ public class WaarnemingValidatorTest {
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.datum");
 
-  private static  Message   err_datum;
+  private static  Message   errDatum;
   private static  Date      morgen;
   private static  Gebied    gebied;
   private static  GebiedDto gebiedDto;
@@ -84,57 +67,30 @@ public class WaarnemingValidatorTest {
     morgen    = kalender.getTime();
 
     try {
-      err_datum   =
-              new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                      Datum.fromDate(morgen));
+      errDatum  = new Message(Message.ERROR, PersistenceConstants.FUTURE,
+                              Datum.fromDate(morgen));
     } catch (ParseException e) {
       // Zou nooit mogen gebeuren.
     }
 
-    gebied    = new Gebied();
-    gebied.setGebiedId(GEBIEDID);
-    gebied.setLandId(LANDID);
-    gebied.setLatitude(LATITUDE);
-    gebied.setLatitudeGraden(LATITUDE_GRADEN);
-    gebied.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebied.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebied.setLongitude(LONGITUDE);
-    gebied.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebied.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebied.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebied.setNaam(NAAM);
+    gebied    = TestUtils.getGebied();
+    gebiedDto = TestUtils.getGebiedDto();
+    taxon     = TestUtils.getTaxon();
+    taxonDto  = TestUtils.getTaxonDto();
+  }
 
-    gebiedDto = new GebiedDto();
-    gebiedDto.setGebiedId(GEBIEDID);
-    gebiedDto.setLandId(LANDID);
-    gebiedDto.setLatitude(LATITUDE);
-    gebiedDto.setLatitudeGraden(LATITUDE_GRADEN);
-    gebiedDto.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebiedDto.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebiedDto.setLongitude(LONGITUDE);
-    gebiedDto.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebiedDto.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebiedDto.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebiedDto.setNaam(NAAM);
+  private void setFouten(List<Message> expResult) {
+    expResult.add(ERR_AANTAL);
+    expResult.add(errDatum);
+    expResult.add(REQ_GEBIEDID);
+    expResult.add(ERR_OPMERKING);
+    expResult.add(REQ_TAXONID);
+  }
 
-    taxon     = new Taxon();
-    taxon.setLatijnsenaam(LATIJNSENAAM);
-    taxon.setNaam(NAAM);
-    taxon.setOpmerking(OPMERKING);
-    taxon.setParentId(PARENTID);
-    taxon.setParentNaam(PARENTNAAM);
-    taxon.setParentVolgnummer(PARENTVOLGNUMMER);
-    taxon.setRang(RANG);
-    taxon.setTaxonId(TAXONID);
-    taxon.setVolgnummer(VOLGNUMMER);
-
-    taxonDto  = new TaxonDto();
-    taxonDto.setLatijnsenaam(LATIJNSENAAM);
-    taxonDto.setOpmerking(OPMERKING);
-    taxonDto.setParentId(PARENTID);
-    taxonDto.setRang(RANG);
-    taxonDto.setTaxonId(TAXONID);
-    taxonDto.setVolgnummer(VOLGNUMMER);
+  private void setLeeg(List<Message> expResult) {
+    expResult.add(REQ_DATUM);
+    expResult.add(REQ_GEBIEDID);
+    expResult.add(REQ_TAXONID);
   }
 
   @Test
@@ -146,11 +102,7 @@ public class WaarnemingValidatorTest {
     waarneming.setDatum(morgen);
     waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
-    expResult.add(ERR_AANTAL);
-    expResult.add(err_datum);
-    expResult.add(REQ_GEBIEDID);
-    expResult.add(ERR_OPMERKING);
-    expResult.add(REQ_TAXONID);
+    setFouten(expResult);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
@@ -176,9 +128,7 @@ public class WaarnemingValidatorTest {
     Waarneming    waarneming  = new Waarneming();
     List<Message> expResult   = new ArrayList<>();
 
-    expResult.add(REQ_DATUM);
-    expResult.add(REQ_GEBIEDID);
-    expResult.add(REQ_TAXONID);
+    setLeeg(expResult);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
@@ -193,11 +143,7 @@ public class WaarnemingValidatorTest {
     waarneming.setDatum(morgen);
     waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
-    expResult.add(ERR_AANTAL);
-    expResult.add(err_datum);
-    expResult.add(REQ_GEBIEDID);
-    expResult.add(ERR_OPMERKING);
-    expResult.add(REQ_TAXONID);
+    setFouten(expResult);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
@@ -223,9 +169,7 @@ public class WaarnemingValidatorTest {
     WaarnemingDto waarneming  = new WaarnemingDto();
     List<Message> expResult   = new ArrayList<>();
 
-    expResult.add(REQ_DATUM);
-    expResult.add(REQ_GEBIEDID);
-    expResult.add(REQ_TAXONID);
+    setLeeg(expResult);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());

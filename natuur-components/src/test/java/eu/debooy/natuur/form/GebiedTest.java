@@ -29,6 +29,7 @@ import static eu.debooy.natuur.TestConstants.LONGITUDE_GRADEN;
 import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
 import static eu.debooy.natuur.TestConstants.LONGITUDE_SECONDEN;
 import static eu.debooy.natuur.TestConstants.NAAM;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
@@ -51,31 +52,8 @@ public class GebiedTest {
     // Voor de juiste decimal point.
     Locale.setDefault(new Locale("nl"));
 
-    gebied    = new Gebied();
-    gebied.setGebiedId(GEBIEDID);
-    gebied.setLandId(LANDID);
-    gebied.setLatitude(LATITUDE);
-    gebied.setLatitudeGraden(LATITUDE_GRADEN);
-    gebied.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebied.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebied.setLongitude(LONGITUDE);
-    gebied.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebied.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebied.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebied.setNaam(NAAM);
-
-    gebiedDto = new GebiedDto();
-    gebiedDto.setGebiedId(GEBIEDID);
-    gebiedDto.setLandId(LANDID);
-    gebiedDto.setLatitude(LATITUDE);
-    gebiedDto.setLatitudeGraden(LATITUDE_GRADEN);
-    gebiedDto.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebiedDto.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebiedDto.setLongitude(LONGITUDE);
-    gebiedDto.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebiedDto.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebiedDto.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebiedDto.setNaam(NAAM);
+    gebied    = TestUtils.getGebied();
+    gebiedDto = TestUtils.getGebiedDto();
   }
 
   @Test
