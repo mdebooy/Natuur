@@ -21,6 +21,7 @@ import eu.debooy.doosutils.DoosConstants;
 import static eu.debooy.natuur.TestConstants.AANTAL;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
+import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
@@ -108,6 +109,9 @@ public class WaarnemingTest {
     assertTrue(waarneming.equals(instance));
 
     instance  = new Waarneming(waarnemingDto);
+    assertTrue(waarneming.equals(instance));
+
+    instance  = new Waarneming(waarnemingDto, TAAL);
     assertTrue(waarneming.equals(instance));
   }
 

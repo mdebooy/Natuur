@@ -86,6 +86,17 @@ public class FotoService {
     return fotos;
   }
 
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Foto> query(String taal) {
+    List<Foto>    fotos = new ArrayList<>();
+    List<FotoDto> rijen = fotoDao.getAll();
+    for (FotoDto rij : rijen) {
+      fotos.add(new Foto(rij, taal));
+    }
+
+    return fotos;
+  }
+
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Foto foto) {
     FotoDto  dto = new FotoDto();

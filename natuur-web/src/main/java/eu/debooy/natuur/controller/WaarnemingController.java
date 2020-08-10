@@ -127,7 +127,7 @@ public class WaarnemingController extends Natuur {
   public List<Waarneming> getWaarnemingen() {
     List<Waarneming>  resultaat;
     try {
-      resultaat = getWaarnemingService().query();
+      resultaat = getWaarnemingService().query(getGebruikersTaal());
     } catch (Exception e) {
       addError("errors.geen.i18n", e.getClass());
       resultaat = new ArrayList<>();

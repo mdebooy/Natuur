@@ -79,6 +79,24 @@ public class Foto
     taxonSeq    = fotoDto.getTaxonSeq();
   }
 
+  public Foto(FotoDto fotoDto, String taal) {
+    fotoBestand = fotoDto.getFotoBestand();
+    fotoDetail  = fotoDto.getFotoDetail();
+    fotoId      = fotoDto.getFotoId();
+    if (null == fotoDto.getGebied()) {
+      gebied    = null;
+    } else {
+      gebied    = new Gebied(fotoDto.getGebied());
+    }
+    opmerking   = fotoDto.getOpmerking();
+    if (null == fotoDto.getTaxon()) {
+      taxon     = null;
+    } else {
+      taxon     = new Taxon(fotoDto.getTaxon(), taal);
+    }
+    taxonSeq    = fotoDto.getTaxonSeq();
+  }
+
   @Override
   public int compareTo(Foto andere) {
     return new CompareToBuilder().append(fotoId, andere.fotoId).toComparison();

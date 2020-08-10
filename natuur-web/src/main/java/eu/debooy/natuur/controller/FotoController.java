@@ -135,7 +135,7 @@ public class FotoController extends Natuur {
   }
 
   public Collection<Foto> getFotos() {
-    return getFotoService().query();
+    return getFotoService().query(getGebruikersTaal());
   }
 
   public void retrieve(Long fotoId) {
