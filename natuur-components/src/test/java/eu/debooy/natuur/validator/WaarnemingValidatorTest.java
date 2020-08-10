@@ -70,7 +70,7 @@ public class WaarnemingValidatorTest {
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.datum");
 
-  private static  Message   ERR_DATUM;
+  private static  Message   err_datum;
   private static  Date      morgen;
   private static  Gebied    gebied;
   private static  GebiedDto gebiedDto;
@@ -84,7 +84,7 @@ public class WaarnemingValidatorTest {
     morgen    = kalender.getTime();
 
     try {
-      ERR_DATUM   =
+      err_datum   =
               new Message(Message.ERROR, PersistenceConstants.FUTURE,
                       Datum.fromDate(morgen));
     } catch (ParseException e) {
@@ -147,7 +147,7 @@ public class WaarnemingValidatorTest {
     waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
     expResult.add(ERR_AANTAL);
-    expResult.add(ERR_DATUM);
+    expResult.add(err_datum);
     expResult.add(REQ_GEBIEDID);
     expResult.add(ERR_OPMERKING);
     expResult.add(REQ_TAXONID);
@@ -194,7 +194,7 @@ public class WaarnemingValidatorTest {
     waarneming.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
 
     expResult.add(ERR_AANTAL);
-    expResult.add(ERR_DATUM);
+    expResult.add(err_datum);
     expResult.add(REQ_GEBIEDID);
     expResult.add(ERR_OPMERKING);
     expResult.add(REQ_TAXONID);
