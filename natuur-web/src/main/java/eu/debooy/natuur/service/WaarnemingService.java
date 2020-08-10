@@ -66,17 +66,6 @@ public class WaarnemingService {
     return waarnemingen;
   }
 
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> query(String taal) {
-    List<Waarneming>    waarnemingen  = new ArrayList<>();
-    List<WaarnemingDto> rijen         = waarnemingDao.getAll();
-    for (WaarnemingDto rij : rijen) {
-      waarnemingen.add(new Waarneming(rij, taal));
-    }
-
-    return waarnemingen;
-  }
-
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Waarneming waarneming) {
     WaarnemingDto dto = new WaarnemingDto();
