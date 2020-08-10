@@ -1,12 +1,12 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
     xmlns:f="http://java.sun.com/jsf/core"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
   <table class="table table-sm" id="waarnemingenTabel" aria-describedby="waarnemingenTabel">
     <colgroup>
-      <col width="70px" />
+      <col style="width:70px" />
       <col />
       <col />
       <col />
@@ -29,10 +29,10 @@
       <t:dataList var="waarneming" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuurWaarneming.update(waarneming.waarnemingId)}" actionFor="#{form}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink action="#{natuurWaarneming.delete(waarneming.waarnemingId)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
-            <h:commandLink onclick="confirmatie(this, '#{natuurWaarneming.formateerDatum(waarneming.datum)} - #{waarneming.taxon.naam}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
-            <h:commandLink action="#" actionFor="#{form}" disabled="true" rendered="#{!empty waarneming.opmerking}"><img src="/common/images/16x16/status/dialog-information.svg" alt="#{img.info}" title="#{waarneming.opmerking}" /></h:commandLink>
+            <h:commandLink action="#{natuurWaarneming.update(waarneming.waarnemingId)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurWaarneming.delete(waarneming.waarnemingId)}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink onclick="confirmatie(this, '#{natuurWaarneming.formateerDatum(waarneming.datum)} - #{waarneming.taxon.naam}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#" disabled="true" rendered="#{!empty waarneming.opmerking}"><img src="/common/images/16x16/status/dialog-information.svg" alt="#{img.info}" title="#{waarneming.opmerking}" /></h:commandLink>
           </td>
           <td class="text-center" data-order="#{waarneming.sorteerdatum}">
             <t:outputText value="#{waarneming.datum}">

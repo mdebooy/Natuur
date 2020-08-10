@@ -1,77 +1,75 @@
-<!DOCTYPE html>
-<html  lang="#{gebruiker.locale.language}"
-      xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
-   xmlns:ui="http://java.sun.com/jsf/facelets">
-  <ui:composition template="/WEB-INF/templates/template.xhtml">
-    <ui:define name="head">
-      <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-          $('#totalenTabel').dataTable( {
-            "order": [[0, "asc"]],
-            "columns": [{ "orderable": true },
-                        { "orderable": true },
-                        { "orderable": true },
-                        { "orderable": true }],
-            "pagingType": "full_numbers",
-            "pageLength": #{properties.appValue('natuur.pagelength')},
-            "lengthChange": false,
-            "stateSave": true,
-            "language": {
-              "paginate": {
-                "first": #{properties.appValue('natuur.pager.first')},
-                "last": #{properties.appValue('natuur.pager.last')},
-                "next": #{properties.appValue('natuur.pager.next')},
-                "previous": #{properties.appValue('natuur.pager.previous')}
-              },
-              "search": "#{i18nTeksten.tekst('pager.search')}",
-              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-              "info": "#{i18nTeksten.tekst('pager.info')}",
-              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-            }
-          } );
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#totalenTabel').dataTable( {
+          "order": [[0, "asc"]],
+          "columns": [{ "orderable": true },
+                      { "orderable": true },
+                      { "orderable": true },
+                      { "orderable": true }],
+          "pagingType": "full_numbers",
+          "pageLength": #{properties.appValue('natuur.pagelength')},
+          "lengthChange": false,
+          "stateSave": true,
+          "language": {
+            "paginate": {
+              "first": #{properties.appValue('natuur.pager.first')},
+              "last": #{properties.appValue('natuur.pager.last')},
+              "next": #{properties.appValue('natuur.pager.next')},
+              "previous": #{properties.appValue('natuur.pager.previous')}
+            },
+            "search": "#{i18nTeksten.tekst('pager.search')}",
+            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+            "info": "#{i18nTeksten.tekst('pager.info')}",
+            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+          }
         } );
-      </script>
-    </ui:define>
-    <ui:define name="body">
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <h:form id="formRangen">
-            <h2 class="titel">#{natuurRang.subTitel}</h2>
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h:form id="formRangen">
+          <h2 class="titel">#{natuurRang.subTitel}</h2>
 
-            <table class="table table-sm" id="totalenTabel" aria-describedby="totalenTabel">
-              <colgroup>
-                <col />
-                <col />
-                <col width="80px" />
-                <col width="80px" />
-              </colgroup>
-              <thead>
+          <table class="table table-sm" id="totalenTabel" aria-describedby="totalenTabel">
+            <colgroup>
+              <col />
+              <col />
+                <col style="width:80px" />
+                <col style="width:80px" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
+                <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+                <th id="aantal">#{i18nTeksten.tekst('label.aantal')}</th>
+                <th id="opfoto">#{i18nTeksten.tekst('label.opfoto')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t:dataList var="totaal" value="#{natuurRang.rangtotalen}" rowIndexVar="idx">
                 <tr>
-                  <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
-                  <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
-                  <th id="aantal">#{i18nTeksten.tekst('label.aantal')}</th>
-                  <th id="opfoto">#{i18nTeksten.tekst('label.opfoto')}</th>
+                  <td>#{totaal.naam}</td>
+                  <td>#{totaal.latijnsenaam}</td>
+                  <td class="text-right">#{totaal.totaal}</td>
+                  <td class="text-right">#{totaal.opFoto}</td>
                 </tr>
-              </thead>
-              <tbody>
-                <t:dataList var="totaal" value="#{natuurRang.rangtotalen}" rowIndexVar="idx">
-                  <tr>
-                    <td>#{totaal.naam}</td>
-                    <td>#{totaal.latijnsenaam}</td>
-                    <td class="text-right">#{totaal.totaal}</td>
-                    <td class="text-right">#{totaal.opFoto}</td>
-                  </tr>
-                </t:dataList>
-              </tbody>
-            </table>
+              </t:dataList>
+            </tbody>
+          </table>
 
-            <a class="btn btn-secondary btn-sm" href="#{natuur.path}/rangen/rangen.xhtml">#{i18nTeksten.tekst('button.back')}</a>
-          </h:form>
-        </div>
+          <a class="btn btn-secondary btn-sm" href="#{natuur.path}/rangen/rangen.xhtml">#{i18nTeksten.tekst('button.back')}</a>
+        </h:form>
       </div>
-    </ui:define>
-  </ui:composition>
-</html>
+    </div>
+  </ui:define>
+</ui:composition>

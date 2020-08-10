@@ -1,65 +1,63 @@
-<!DOCTYPE html>
-<html  lang="#{gebruiker.locale.language}"
-      xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:d="http://java.debooy.eu/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:ui="http://java.sun.com/jsf/facelets">
-  <ui:composition template="/WEB-INF/templates/template.xhtml">
-    <ui:define name="head">
-      <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-          $('#taxaTabel').dataTable( {
-            "order": [[1, "asc"]],
-            "columns": [{ "orderable": false },
-                        { "orderable": true },
-                        { "orderable": true },
-                        { "orderable": false }],
-            "pagingType": "full_numbers",
-            "pageLength": #{properties.appValue('natuur.pagelength')},
-            "lengthChange": false,
-            "stateSave": true,
-            "language": {
-              "paginate": {
-                "first": #{properties.appValue('natuur.pager.first')},
-                "last": #{properties.appValue('natuur.pager.last')},
-                "next": #{properties.appValue('natuur.pager.next')},
-                "previous": #{properties.appValue('natuur.pager.previous')}
-              },
-              "search": "#{i18nTeksten.tekst('pager.search')}",
-              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-              "info": "#{i18nTeksten.tekst('pager.info')}",
-              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-            }
-          } );
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#taxaTabel').dataTable( {
+          "order": [[1, "asc"]],
+          "columns": [{ "orderable": false },
+                      { "orderable": true },
+                      { "orderable": true },
+                      { "orderable": false }],
+          "pagingType": "full_numbers",
+          "pageLength": #{properties.appValue('natuur.pagelength')},
+          "lengthChange": false,
+          "stateSave": true,
+          "language": {
+            "paginate": {
+              "first": #{properties.appValue('natuur.pager.first')},
+              "last": #{properties.appValue('natuur.pager.last')},
+              "next": #{properties.appValue('natuur.pager.next')},
+              "previous": #{properties.appValue('natuur.pager.previous')}
+            },
+            "search": "#{i18nTeksten.tekst('pager.search')}",
+            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+            "info": "#{i18nTeksten.tekst('pager.info')}",
+            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+          }
         } );
-      </script>
-    </ui:define>
-    <ui:define name="body">
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <h:form id="formTaxa">
-            <div class="row titel">
-              <div class="col-10">
-                <h2>#{i18nTeksten.tekst('natuur.titel.taxa')}</h2>
-              </div>
-              <div class="col-2 text-right" >
-                <h:commandLink action="#{natuurTaxon.create}" actionFor="#{formTaxa}">
-                  <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-                </h:commandLink>
-              </div>
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h:form id="formTaxa">
+          <div class="row titel">
+            <div class="col-10">
+              <h2>#{i18nTeksten.tekst('natuur.titel.taxa')}</h2>
             </div>
+            <div class="col-2 text-right" >
+              <h:commandLink action="#{natuurTaxon.create}">
+                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+              </h:commandLink>
+            </div>
+          </div>
 
-            <ui:include src="taxatabel.xhtml">
-              <ui:param name="form" value="formTaxa" />
-              <ui:param name="lijst" value="#{natuurTaxon.taxa}" />
-            </ui:include>
-          </h:form>
-        </div>
+          <ui:include src="taxatabel.xhtml">
+            <ui:param name="form" value="formTaxa" />
+            <ui:param name="lijst" value="#{natuurTaxon.taxa}" />
+          </ui:include>
+        </h:form>
       </div>
-    </ui:define>
-    <ui:define name="modal">
-      <d:confirmatie confirmatietitel="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
-    </ui:define>
-  </ui:composition>
-</html>
+    </div>
+  </ui:define>
+  <ui:define name="modal">
+    <d:confirmatie confirmatietitel="#{i18nTeksten.tekst('natuur.titel.taxon.delete')}" />
+  </ui:define>
+</ui:composition>

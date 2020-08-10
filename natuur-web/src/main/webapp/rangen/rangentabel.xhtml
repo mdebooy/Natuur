@@ -1,12 +1,12 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
+      xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://java.sun.com/jsf/html"
     xmlns:t="http://myfaces.apache.org/tomahawk"
     xmlns:ui="http://java.sun.com/jsf/facelets">
   <table class="table table-sm" id="rangenTabel" aria-describedby="rangenTabel">
     <colgroup>
-      <col width="50px" />
-      <col width="60px" />
+      <col style="width:50px" />
+      <col style="width:60px" />
       <col />
     </colgroup>
     <thead>
@@ -21,9 +21,9 @@
         <tr>
           <ui:param name="rangtekst" value="#{natuurRang.getRangtekst(rang.rang)}" />
           <td>
-            <h:commandLink action="#{natuurRang.retrieve(rang.rang)}" actionFor="#{form}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-            <h:commandLink action="#{natuurRang.delete(rang.rang)}" actionFor="#{form}" class="lnkDelete" id="lnkDelete" />
-            <h:commandLink onclick="confirmatie(this, '#{rangtekst}');return false;" actionFor="#{form}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurRang.retrieve(rang.rang)}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+            <h:commandLink action="#{natuurRang.delete(rang.rang)}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink onclick="confirmatie(this, '#{rangtekst}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{rang.niveau}</td>
           <td>#{rangtekst}</td>

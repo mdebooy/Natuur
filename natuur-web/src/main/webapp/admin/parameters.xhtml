@@ -1,51 +1,49 @@
-<!DOCTYPE html>
-<html  lang="#{gebruiker.locale.language}"
-      xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:ui="http://java.sun.com/jsf/facelets">
-  <ui:composition template="/WEB-INF/templates/template.xhtml">
-    <ui:define name="head">
-      <script type="text/javascript" charset="utf-8">
-        $(document).ready(function() {
-          $('#parametersTabel').dataTable( {
-            "order": [[1, "asc"]],
-            "columns": [{ "orderable": false, "visible": #{natuur.administrator} },
-                        { "orderable": true },
-                        { "orderable": false }],
-            "pagingType": "full_numbers",
-            "pageLength": #{properties.appValue('natuur.pagelength')},
-            "lengthChange": false,
-            "stateSave": true,
-            "language": {
-              "paginate": {
-                "first": #{properties.appValue('natuur.pager.first')},
-                "last": #{properties.appValue('natuur.pager.last')},
-                "next": #{properties.appValue('natuur.pager.next')},
-                "previous": #{properties.appValue('natuur.pager.previous')}
-              },
-              "search": "#{i18nTeksten.tekst('pager.search')}",
-              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-              "info": "#{i18nTeksten.tekst('pager.info')}",
-              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-            }
-          } );
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#parametersTabel').dataTable( {
+          "order": [[1, "asc"]],
+          "columns": [{ "orderable": false, "visible": #{natuur.administrator} },
+                      { "orderable": true },
+                      { "orderable": false }],
+          "pagingType": "full_numbers",
+          "pageLength": #{properties.appValue('natuur.pagelength')},
+          "lengthChange": false,
+          "stateSave": true,
+          "language": {
+            "paginate": {
+              "first": #{properties.appValue('natuur.pager.first')},
+              "last": #{properties.appValue('natuur.pager.last')},
+              "next": #{properties.appValue('natuur.pager.next')},
+              "previous": #{properties.appValue('natuur.pager.previous')}
+            },
+            "search": "#{i18nTeksten.tekst('pager.search')}",
+            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+            "info": "#{i18nTeksten.tekst('pager.info')}",
+            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+          }
         } );
-      </script>
-    </ui:define>
-    <ui:define name="body">
-      <div class="row justify-content-center">
-        <div class="col-10">
-          <h:form id="formParameters">
-            <h2 class="titel">#{i18nTeksten.tekst('titel.applicatie.parameters')}</h2>
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <h:form id="formParameters">
+          <h2 class="titel">#{i18nTeksten.tekst('titel.applicatie.parameters')}</h2>
 
-            <ui:include src="parameterstabel.xhtml">
-              <ui:param name="form" value="formParameters" />
-              <ui:param name="lijst" value="#{properties.properties('natuur')}" />
-            </ui:include>
-          </h:form>
-        </div>
+          <ui:include src="parameterstabel.xhtml">
+            <ui:param name="form" value="formParameters" />
+            <ui:param name="lijst" value="#{properties.properties('natuur')}" />
+          </ui:include>
+        </h:form>
       </div>
-    </ui:define>
-  </ui:composition>
-</html>
+    </div>
+  </ui:define>
+</ui:composition>
