@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
@@ -62,21 +63,7 @@ public class Foto
   }
 
   public Foto(FotoDto fotoDto) {
-    fotoBestand = fotoDto.getFotoBestand();
-    fotoDetail  = fotoDto.getFotoDetail();
-    fotoId      = fotoDto.getFotoId();
-    if (null == fotoDto.getGebied()) {
-      gebied    = null;
-    } else {
-      gebied    = new Gebied(fotoDto.getGebied());
-    }
-    opmerking   = fotoDto.getOpmerking();
-    if (null == fotoDto.getTaxon()) {
-      taxon     = null;
-    } else {
-      taxon     = new Taxon(fotoDto.getTaxon());
-    }
-    taxonSeq    = fotoDto.getTaxonSeq();
+    this(fotoDto, null);
   }
 
   public Foto(FotoDto fotoDto, String taal) {
@@ -92,7 +79,11 @@ public class Foto
     if (null == fotoDto.getTaxon()) {
       taxon     = null;
     } else {
-      taxon     = new Taxon(fotoDto.getTaxon(), taal);
+      if (DoosUtils.isBlankOrNull(taal)) {
+        taxon   = new Taxon(fotoDto.getTaxon());
+      } else {
+        taxon   = new Taxon(fotoDto.getTaxon(), taal);
+      }
     }
     taxonSeq    = fotoDto.getTaxonSeq();
   }

@@ -61,17 +61,14 @@ public class Taxon
   }
 
   public Taxon(TaxonDto taxonDto) {
-    latijnsenaam  = taxonDto.getLatijnsenaam();
-    opmerking     = taxonDto.getOpmerking();
-    parentId      = taxonDto.getParentId();
-    rang          = taxonDto.getRang();
-    taxonId       = taxonDto.getTaxonId();
-    volgnummer    = taxonDto.getVolgnummer();
+    this(taxonDto, null);
   }
 
   public Taxon(TaxonDto taxonDto, String taal) {
     latijnsenaam  = taxonDto.getLatijnsenaam();
-    naam          = taxonDto.getNaam(taal);
+    if (DoosUtils.isNotBlankOrNull(taal)) {
+      naam        = taxonDto.getNaam(taal);
+    }
     opmerking     = taxonDto.getOpmerking();
     parentId      = taxonDto.getParentId();
     rang          = taxonDto.getRang();
@@ -80,21 +77,18 @@ public class Taxon
   }
 
   public Taxon(DetailDto detailDto) {
-    latijnsenaam  = detailDto.getLatijnsenaam();
-    opmerking     = detailDto.getOpmerking();
-    parentId      = detailDto.getParentId();
-    rang          = detailDto.getRang();
-    taxonId       = detailDto.getTaxonId();
-    volgnummer    = detailDto.getVolgnummer();
+    this(detailDto, null);
   }
 
   public Taxon(DetailDto detailDto, String taal) {
     latijnsenaam        = detailDto.getLatijnsenaam();
-    naam                = detailDto.getNaam(taal);
+    if (DoosUtils.isNotBlankOrNull(taal)) {
+      naam              = detailDto.getNaam(taal);
+      parentNaam        = detailDto.getParentNaam(taal);
+    }
     opmerking           = detailDto.getOpmerking();
     parentId            = detailDto.getParentId();
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
-    parentNaam          = detailDto.getParentNaam(taal);
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
     taxonId             = detailDto.getTaxonId();

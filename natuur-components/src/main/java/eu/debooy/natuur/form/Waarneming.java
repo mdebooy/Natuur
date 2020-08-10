@@ -18,6 +18,7 @@ package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -65,20 +66,7 @@ public class Waarneming extends Formulier
   }
 
   public Waarneming(WaarnemingDto waarnemingDto) {
-    aantal        = waarnemingDto.getAantal();
-    datum         = waarnemingDto.getDatum();
-    if (null == waarnemingDto.getGebied()) {
-      gebied      = null;
-    } else {
-      gebied      = new Gebied(waarnemingDto.getGebied());
-    }
-    opmerking     = waarnemingDto.getOpmerking();
-    if (null == waarnemingDto.getTaxon()) {
-      taxon       = null;
-    } else {
-      taxon       = new Taxon(waarnemingDto.getTaxon());
-    }
-    waarnemingId  = waarnemingDto.getWaarnemingId();
+    this(waarnemingDto, null);
   }
 
   public Waarneming(WaarnemingDto waarnemingDto, String taal) {
@@ -93,7 +81,11 @@ public class Waarneming extends Formulier
     if (null == waarnemingDto.getTaxon()) {
       taxon       = null;
     } else {
-      taxon       = new Taxon(waarnemingDto.getTaxon(), taal);
+      if (DoosUtils.isBlankOrNull(taal)) {
+        taxon   = new Taxon(waarnemingDto.getTaxon());
+      } else {
+        taxon   = new Taxon(waarnemingDto.getTaxon(), taal);
+      }
     }
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
