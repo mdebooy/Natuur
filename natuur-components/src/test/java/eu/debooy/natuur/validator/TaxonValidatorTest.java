@@ -48,6 +48,13 @@ public class TaxonValidatorTest {
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.volgnummer");
 
+  private static void setFoutenList(List<Message> expResult) {
+    expResult.add(ERR_LATIJNSENAAM);
+    expResult.add(ERR_OPMERKING);
+    expResult.add(ERR_RANG);
+    expResult.add(REQ_VOLGNUMER);
+  }
+
   @Test
   public void testValideerFouteTaxon() {
     Taxon         taxon     = new Taxon();
@@ -58,10 +65,7 @@ public class TaxonValidatorTest {
     taxon.setRang(RANG_FOUT);
     taxon.setVolgnummer(null);
 
-    expResult.add(ERR_LATIJNSENAAM);
-    expResult.add(ERR_OPMERKING);
-    expResult.add(ERR_RANG);
-    expResult.add(REQ_VOLGNUMER);
+    setFoutenList(expResult);
 
     List<Message> result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
@@ -102,10 +106,7 @@ public class TaxonValidatorTest {
     taxon.setRang(RANG_FOUT);
     taxon.setVolgnummer(null);
 
-    expResult.add(ERR_LATIJNSENAAM);
-    expResult.add(ERR_OPMERKING);
-    expResult.add(ERR_RANG);
-    expResult.add(REQ_VOLGNUMER);
+    setFoutenList(expResult);
 
     List<Message> result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());

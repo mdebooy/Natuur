@@ -70,6 +70,40 @@ public class GebiedValidatorTest {
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.land");
 
+  private Gebied getFoutGebied1() {
+    Gebied  gebied  = new Gebied();
+
+    gebied.setLandId(null);
+    gebied.setLatitude("X");
+    gebied.setLatitudeGraden(-1);
+    gebied.setLatitudeMinuten(-1);
+    gebied.setLatitudeSeconden(-0.1d);
+    gebied.setLongitude("X");
+    gebied.setLongitudeGraden(-1);
+    gebied.setLongitudeMinuten(-1);
+    gebied.setLongitudeSeconden(-0.1d);
+    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+
+    return gebied;
+  }
+
+  private Gebied getFoutGebied2() {
+    Gebied  gebied  = new Gebied();
+
+    gebied.setLandId(null);
+    gebied.setLatitude("X");
+    gebied.setLatitudeGraden(91);
+    gebied.setLatitudeMinuten(60);
+    gebied.setLatitudeSeconden(60.0d);
+    gebied.setLongitude("X");
+    gebied.setLongitudeGraden(181);
+    gebied.setLongitudeMinuten(60);
+    gebied.setLongitudeSeconden(60.0d);
+    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+
+    return gebied;
+  }
+
   private void setFouten(List<Message> expResult) {
     expResult.add(ERR_GEBIED);
     expResult.add(REQ_LANDID);
@@ -85,19 +119,8 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteGebied1() {
-    Gebied        gebied    = new Gebied();
+    Gebied        gebied    = getFoutGebied1();
     List<Message> expResult = new ArrayList<>();
-
-    gebied.setLandId(null);
-    gebied.setLatitude("X");
-    gebied.setLatitudeGraden(-1);
-    gebied.setLatitudeMinuten(-1);
-    gebied.setLatitudeSeconden(-0.1d);
-    gebied.setLongitude("X");
-    gebied.setLongitudeGraden(-1);
-    gebied.setLongitudeMinuten(-1);
-    gebied.setLongitudeSeconden(-0.1d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
 
     setFouten(expResult);
 
@@ -107,19 +130,8 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteGebied2() {
-    Gebied        gebied    = new Gebied();
+    Gebied        gebied    = getFoutGebied2();
     List<Message> expResult = new ArrayList<>();
-
-    gebied.setLandId(null);
-    gebied.setLatitude("X");
-    gebied.setLatitudeGraden(91);
-    gebied.setLatitudeMinuten(60);
-    gebied.setLatitudeSeconden(60.0d);
-    gebied.setLongitude("X");
-    gebied.setLongitudeGraden(181);
-    gebied.setLongitudeMinuten(60);
-    gebied.setLongitudeSeconden(60.0d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
 
     setFouten(expResult);
 
@@ -207,16 +219,7 @@ public class GebiedValidatorTest {
     GebiedDto     gebied    = new GebiedDto();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(null);
-    gebied.setLatitude("X");
-    gebied.setLatitudeGraden(-1);
-    gebied.setLatitudeMinuten(-1);
-    gebied.setLatitudeSeconden(-0.1d);
-    gebied.setLongitude("X");
-    gebied.setLongitudeGraden(-1);
-    gebied.setLongitudeMinuten(-1);
-    gebied.setLongitudeSeconden(-0.1d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    getFoutGebied1().persist(gebied);
 
     setFouten(expResult);
 
@@ -229,61 +232,11 @@ public class GebiedValidatorTest {
     GebiedDto     gebied    = new GebiedDto();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(null);
-    gebied.setLatitude("X");
-    gebied.setLatitudeGraden(91);
-    gebied.setLatitudeMinuten(60);
-    gebied.setLatitudeSeconden(60.0d);
-    gebied.setLongitude("X");
-    gebied.setLongitudeGraden(181);
-    gebied.setLongitudeMinuten(60);
-    gebied.setLongitudeSeconden(60.0d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    getFoutGebied2().persist(gebied);
 
     setFouten(expResult);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
-    assertEquals(expResult.toString(), result.toString());
-  }
-
-  @Test
-  public void testValideerFouteGebiedDto3() {
-    GebiedDto     gebied    = TestUtils.getGebiedDto();
-    List<Message> expResult = new ArrayList<>();
-
-    gebied.setLatitude(null);
-
-    expResult.add(ERR_ONVOLLEDIG);
-
-    List<Message> result    = GebiedValidator.valideer(gebied);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitude(LATITUDE);
-    gebied.setLatitudeGraden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeGraden(LATITUDE_GRADEN);
-    gebied.setLatitudeMinuten(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebied.setLatitudeSeconden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebied.setLongitude(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitude(LONGITUDE);
-    gebied.setLongitudeGraden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebied.setLongitudeMinuten(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebied.setLongitudeSeconden(null);
     assertEquals(expResult.toString(), result.toString());
   }
 

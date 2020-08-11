@@ -46,6 +46,8 @@ import eu.debooy.natuur.form.Taxon;
  * @author Marco de Booij
  */
 public final class TestUtils {
+  private TestUtils() {}
+
   public static Gebied getGebied() {
     Gebied  gebied  = new Gebied();
     gebied.setGebiedId(GEBIEDID);
