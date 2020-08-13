@@ -17,10 +17,12 @@
 package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
+import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
 import java.util.ArrayList;
 import java.util.List;
+import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceContextType;
@@ -30,6 +32,7 @@ import javax.persistence.Query;
 /**
  * @author Marco de Booij
  */
+@Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class DetailDao extends Dao<DetailDto> {
   @PersistenceContext(unitName="natuur",
                       type=PersistenceContextType.TRANSACTION)
