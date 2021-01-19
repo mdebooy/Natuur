@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -29,6 +29,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
+
 /**
  * @author Marco de Booij
  */
@@ -54,16 +55,19 @@ public class RangDto extends Dto implements Comparable<RangDto> {
       implements Comparator<RangDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(RangDto rangDto1, RangDto rangDto2) {
       return rangDto1.niveau.compareTo(rangDto2.niveau);
     }
   }
 
-  public int compareTo(RangDto taxonDto) {
-    return new CompareToBuilder().append(rang, taxonDto.rang)
+  @Override
+  public int compareTo(RangDto rangDto) {
+    return new CompareToBuilder().append(rang, rangDto.rang)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof RangDto)) {
       return false;
@@ -85,6 +89,7 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     return rang;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
   }
