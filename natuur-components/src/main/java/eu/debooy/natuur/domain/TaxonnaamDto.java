@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -44,6 +44,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_NAAM    = "naam";
+  public static final String  COL_TAAL    = "taal";
+  public static final String  COL_TAXONID = "taxonId";
+
   public static final String  PAR_TAAL    = "taal";
   public static final String  PAR_TAXONID = "taxonId";
 
@@ -63,18 +67,21 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
       implements Comparator<TaxonnaamDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(TaxonnaamDto naamDto1,
                        TaxonnaamDto naamDto2) {
       return naamDto1.naam.compareTo(naamDto2.naam);
     }
   }
 
+  @Override
   public int compareTo(TaxonnaamDto naamDto) {
     return new CompareToBuilder().append(taxonId, naamDto.taxonId)
                                  .append(taal, naamDto.taal)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof TaxonnaamDto)) {
       return false;
@@ -101,6 +108,7 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
     return naam;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).append(taal).toHashCode();
   }

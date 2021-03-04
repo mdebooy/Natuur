@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
@@ -34,7 +35,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -54,12 +54,10 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="TAXA", schema="NATUUR")
-@NamedQueries({
-  @NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder"),
-  @NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam"),
-  @NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind"),
-  @NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
-})
+@NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder")
+@NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam")
+@NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind")
+@NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
 public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -117,7 +115,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "nl";
+    private String  taal  = ComponentsConstants.DEF_TAAL;
 
     public void setTaal(String taal) {
       this.taal = taal;
@@ -155,7 +153,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "nl";
+    private String  taal  = ComponentsConstants.DEF_TAAL;
 
     public void setTaal(String taal) {
       this.taal = taal;
@@ -262,6 +260,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return volgnummer;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
   }
