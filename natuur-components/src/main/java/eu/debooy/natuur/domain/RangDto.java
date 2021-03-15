@@ -22,7 +22,6 @@ import java.util.Comparator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -35,9 +34,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="RANGEN", schema="NATUUR")
-@NamedQueries({
-  @NamedQuery(name="rangenVanaf", query="select r from RangDto r where r.niveau>:niveau")
-})
+@NamedQuery(name="rangenVanaf", query="select r from RangDto r where r.niveau>:niveau")
 public class RangDto extends Dto implements Comparable<RangDto> {
   private static final  long  serialVersionUID  = 1L;
 
