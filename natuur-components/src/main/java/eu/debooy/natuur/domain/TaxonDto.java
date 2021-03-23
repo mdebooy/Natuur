@@ -54,9 +54,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="TAXA", schema="NATUUR")
-@NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder")
+@NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder order by t.rang, t.volgnummer")
 @NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam")
-@NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind")
+@NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind order by t.rang, t.volgnummer")
 @NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
 public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private static final  long  serialVersionUID  = 1L;
