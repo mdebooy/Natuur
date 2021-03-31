@@ -22,6 +22,7 @@ import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import java.io.Serializable;
+import java.util.Date;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -34,6 +35,7 @@ public class Foto
     extends Formulier implements Comparable<Foto>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
+  private Date    datum;
   private String  fotoBestand;
   private String  fotoDetail;
   private Long    fotoId;
@@ -41,51 +43,57 @@ public class Foto
   private String  opmerking;
   private Taxon   taxon;
   private Long    taxonSeq    = 0L;
+  private Long    waarnemingId;
 
   public Foto() {}
 
   public Foto(Foto foto) {
-    fotoBestand = foto.getFotoBestand();
-    fotoDetail  = foto.getFotoDetail();
-    fotoId      = foto.getFotoId();
+    datum         = foto.getDatum();
+    fotoBestand   = foto.getFotoBestand();
+    fotoDetail    = foto.getFotoDetail();
+    fotoId        = foto.getFotoId();
     if (null == foto.getGebied()) {
-      gebied    = null;
+      gebied      = null;
     } else {
-      gebied    = new Gebied(foto.getGebied());
+      gebied      = new Gebied(foto.getGebied());
     }
-    opmerking   = foto.getOpmerking();
+    opmerking     = foto.getOpmerking();
     if (null == foto.getTaxon()) {
-      taxon     = null;
+      taxon       = null;
     } else {
-      taxon     = new Taxon(foto.getTaxon());
+      taxon       = new Taxon(foto.getTaxon());
     }
-    taxonSeq    = foto.getTaxonSeq();
+    taxonSeq      = foto.getTaxonSeq();
+    waarnemingId  = foto.getWaarnemingId();
   }
 
   public Foto(FotoDto fotoDto) {
     this(fotoDto, null);
   }
 
+  @Deprecated
   public Foto(FotoDto fotoDto, String taal) {
-    fotoBestand = fotoDto.getFotoBestand();
-    fotoDetail  = fotoDto.getFotoDetail();
-    fotoId      = fotoDto.getFotoId();
+    datum         = fotoDto.getDatum();
+    fotoBestand   = fotoDto.getFotoBestand();
+    fotoDetail    = fotoDto.getFotoDetail();
+    fotoId        = fotoDto.getFotoId();
     if (null == fotoDto.getGebied()) {
-      gebied    = null;
+      gebied      = null;
     } else {
-      gebied    = new Gebied(fotoDto.getGebied());
+      gebied      = new Gebied(fotoDto.getGebied());
     }
-    opmerking   = fotoDto.getOpmerking();
+    opmerking     = fotoDto.getOpmerking();
     if (null == fotoDto.getTaxon()) {
-      taxon     = null;
+      taxon       = null;
     } else {
       if (DoosUtils.isBlankOrNull(taal)) {
-        taxon   = new Taxon(fotoDto.getTaxon());
+        taxon     = new Taxon(fotoDto.getTaxon());
       } else {
-        taxon   = new Taxon(fotoDto.getTaxon(), taal);
+        taxon     = new Taxon(fotoDto.getTaxon(), taal);
       }
     }
-    taxonSeq    = fotoDto.getTaxonSeq();
+    taxonSeq      = fotoDto.getTaxonSeq();
+    waarnemingId  = fotoDto.getWaarnemingId();
   }
 
   @Override
@@ -104,6 +112,14 @@ public class Foto
 
     Foto  andere  = (Foto) object;
     return new EqualsBuilder().append(fotoId, andere.fotoId).isEquals();
+  }
+
+  public Date getDatum() {
+    if (null == datum) {
+      return null;
+    }
+
+    return new Date(datum.getTime());
   }
 
   public String getFotoBestand() {
@@ -134,12 +150,20 @@ public class Foto
     return taxonSeq;
   }
 
+  public Long getWaarnemingId() {
+    return waarnemingId;
+  }
+
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
   public void persist(FotoDto fotoDto) {
+    if (!new EqualsBuilder().append(datum, fotoDto.getDatum())
+                            .isEquals()) {
+      fotoDto.setDatum(datum);
+    }
     if (!new EqualsBuilder().append(fotoBestand,
                                     fotoDto.getFotoBestand()).isEquals()) {
       fotoDto.setFotoBestand(fotoBestand);
@@ -172,6 +196,18 @@ public class Foto
                                     fotoDto.getTaxonSeq()).isEquals()) {
       fotoDto.setTaxonSeq(taxonSeq);
     }
+    if (!new EqualsBuilder().append(waarnemingId,
+                                    fotoDto.getWaarnemingId()).isEquals()) {
+      fotoDto.setWaarnemingId(waarnemingId);
+    }
+  }
+
+  public void setDatum(Date datum) {
+    if (null == datum) {
+      this.datum  = null;
+    } else {
+      this.datum  = new Date(datum.getTime());
+    }
   }
 
   public void setFotoBestand(String fotoBestand) {
@@ -200,5 +236,9 @@ public class Foto
 
   public void setTaxonSeq(Long taxonSeq) {
     this.taxonSeq = taxonSeq;
+  }
+
+  public void setWaarnemingId(Long waarnemingId) {
+    this.waarnemingId = waarnemingId;
   }
 }
