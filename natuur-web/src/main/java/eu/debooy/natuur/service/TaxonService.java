@@ -16,11 +16,22 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.PersistenceConstants;
+import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.access.TaxonDao;
+import eu.debooy.natuur.access.TaxonnaamDao;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.domain.TaxonnaamPK;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -28,6 +39,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,13 +55,20 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("natuurTaxonService")
+@Path("/taxa")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 @Lock(LockType.WRITE)
 public class TaxonService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(TaxonService.class);
 
   @Inject
-  private TaxonDao  taxonDao;
+  private RangDao       rangDao;
+  @Inject
+  private TaxonDao      taxonDao;
+  @Inject
+  private TaxonnaamDao  taxonnaamDao;
 
   public TaxonService() {
     LOGGER.debug("init TaxonService");
@@ -58,10 +83,10 @@ public class TaxonService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId) {
     List<Taxon>     kinderen  = new ArrayList<>();
-    List<TaxonDto>  rows      = taxonDao.getKinderen(parentId);
-    for (TaxonDto taxonDto : rows) {
+    List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
+    rijen.forEach(taxonDto -> {
       kinderen.add(new Taxon(taxonDto));
-    }
+    });
 
     return kinderen;
   }
@@ -70,9 +95,9 @@ public class TaxonService {
   public List<Taxon> getKinderen(Long parentId, String taal) {
     List<Taxon>     kinderen  = new ArrayList<>();
     List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij -> {
       kinderen.add(new Taxon(rij, taal));
-    }
+    });
 
     return kinderen;
   }
@@ -86,9 +111,9 @@ public class TaxonService {
   public List<Taxon> getSoorten() {
     List<Taxon>     soorten = new ArrayList<>();
     List<TaxonDto>  rijen   = taxonDao.getSoorten();
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij -> {
       soorten.add(new Taxon(rij));
-    }
+    });
 
     return soorten;
   }
@@ -97,20 +122,61 @@ public class TaxonService {
   public List<Taxon> getSoorten(String taal) {
     List<Taxon>     soorten = new ArrayList<>();
     List<TaxonDto>  rijen   = taxonDao.getSoorten();
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij -> {
       soorten.add(new Taxon(rij, taal));
-    }
+    });
 
     return soorten;
+  }
+
+  @GET
+  public Response getTaxa() {
+    return Response.ok().entity(taxonDao.getAll()).build();
+  }
+
+  @GET
+  @Path("/{taxonId}")
+  public Response getTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
+    TaxonDto  taxon;
+    try {
+      taxon = taxonDao.getTaxon(taxonId);
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(TaxonDto.COL_TAXONID)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(taxon).build();
+  }
+
+  @GET
+  @Path("/taxonnaam/{taxonId}/{taal}")
+  public Response getTaxonnaam(@PathParam(TaxonDto.COL_TAXONID) Long taxonId,
+                               @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    TaxonnaamPK   sleutel   = new TaxonnaamPK(taxonId, taal);
+    TaxonnaamDto  taxonnaam;
+    try {
+      taxonnaam = taxonnaamDao.getByPrimaryKey(sleutel);
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(TaxonnaamDto.COL_TAAL)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(taxonnaam).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query() {
     List<Taxon>     taxa  = new ArrayList<>();
     List<TaxonDto>  rijen = taxonDao.getAll();
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij -> {
       taxa.add(new Taxon(rij));
-    }
+    });
 
     return taxa;
   }
@@ -119,9 +185,9 @@ public class TaxonService {
   public List<Taxon> query(String taal) {
     List<Taxon>     taxa  = new ArrayList<>();
     List<TaxonDto>  rijen = taxonDao.getAll();
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij -> {
       taxa.add(new Taxon(rij, taal));
-    }
+    });
 
     return taxa;
   }
@@ -134,6 +200,34 @@ public class TaxonService {
     } else {
       taxonDao.update(taxon);
     }
+  }
+
+  @GET
+  @Path("/ddlb/ouders/{rang}/{taal}")
+  public Response selectOuders(@PathParam(TaxonDto.COL_RANG) String rang,
+                               @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    Long                    niveau;
+    try {
+      niveau  = rangDao.getByPrimaryKey(rang).getNiveau();
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(TaxonDto.COL_RANG)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    Map<String, String>     items   = new LinkedHashMap<>();
+    TaxonDto.NaamComparator comp    = new TaxonDto.NaamComparator();
+    comp.setTaal(taal);
+    Set<TaxonDto>           rijen   = new TreeSet<>(comp);
+    rijen.addAll(taxonDao.getOuders(niveau));
+    rijen.forEach(rij -> {
+      items.put(" " + rij.getTaxonId(),
+                rij.getNaam(taal) + " (" + rij.getLatijnsenaam() + ")");
+    });
+
+    return Response.ok().entity(items).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
