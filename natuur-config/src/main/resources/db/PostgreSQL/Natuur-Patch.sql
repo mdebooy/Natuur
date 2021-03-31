@@ -22,10 +22,22 @@ REASSIGN OWNED BY NATUUR TO POSTGRES;
 REVOKE ALL ON DATABASE :DBNAME FROM NATUUR;
 DROP ROLE NATUUR;
 
+CREATE TABLE NATUUR.RANGNAMEN (
+  NAAM                            VARCHAR(255)    NOT NULL,
+  RANG                            VARCHAR(3)      NOT NULL,
+  TAAL                            CHARACTER(2)    NOT NULL,
+  CONSTRAINT PK_TAXONNAMEN PRIMARY KEY (RANG, TAAL));
+
 ALTER TABLE NATUUR.FOTOS
+  ADD COLUMN DATUM                           DATE,
   ADD COLUMN FOTO_BESTAND                    VARCHAR(255),
   ADD COLUMN FOTO_DETAIL                     VARCHAR(20),
-  ADD COLUMN OPMERKING                       VARCHAR(2000);
+  ADD COLUMN OPMERKING                       VARCHAR(2000)
+  ADD COLUMN WAARNEMING_ID                   INTEGER;
+
+ALTER TABLE NATUUR.RANGNAMEN
+  ADD CONSTRAINT FK_RNM_RANG FOREIGN KEY (RANG)
+  REFERENCES NATUUR.RANGEN (RANG);
 
 ALTER TABLE NATUUR.TAXA
   ADD COLUMN VOLGNUMMER                      SMALLINT        NOT NULL  DEFAULT 0;
@@ -89,14 +101,16 @@ WITH ZONDERFOTO AS (
 SELECT   D.PARENT_ID, D.PARENT_RANG, D.TAXON_ID
 FROM     NATUUR.DETAILS D JOIN ZONDERFOTO Z ON D.TAXON_ID=Z.TAXON_ID;
 
-GRANT SELECT  ON TABLE NATUUR.DETAILS         TO NATUUR_SEL;
-GRANT SELECT  ON TABLE NATUUR.GEEN_FOTO       TO NATUUR_SEL;
-GRANT SELECT  ON TABLE NATUUR.FOTO_OVERZICHT  TO NATUUR_SEL;
-GRANT SELECT  ON TABLE NATUUR.TAXONOMIE       TO NATUUR_SEL;
-GRANT SELECT  ON TABLE NATUUR.DETAILS         TO NATUUR_UPD;
-GRANT SELECT  ON TABLE NATUUR.GEEN_FOTO       TO NATUUR_UPD;
-GRANT SELECT  ON TABLE NATUUR.FOTO_OVERZICHT  TO NATUUR_UPD;
-GRANT SELECT  ON TABLE NATUUR.TAXONOMIE       TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.DETAILS        TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO      TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.RANGNAMEN      TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE      TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.DETAILS        TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO      TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE NATUUR.RANGNAMEN      TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE      TO NATUUR_UPD;
 
 COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
@@ -121,13 +135,21 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
+COMMENT ON COLUMN NATUUR.FOTOS.DATUM                        IS 'De datum van de foto (tijdelijk).';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID                    IS 'De sleutel van het gebied waarin de foto gemaakt is (deprecated).';
 COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID                     IS 'De sleutel van de taxon op de foto (deprecated).';
+COMMENT ON COLUMN NATUUR.FOTOS.WAARNEMING_ID                IS 'De sleutel van de waarneming.';
 COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat alle waarnemingen waar nog geen foto van is.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG              IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                 IS 'De sleutel van de taxon.';
+COMMENT ON TABLE  NATUUR.RANGNAMEN                          IS 'Deze tabel bevat de namen van de rangen.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.NAAM                     IS 'De naam van de rang.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.RANG                     IS 'De sleutel van de rang.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.TAAL                     IS 'De taal.';
 COMMENT ON COLUMN NATUUR.TAXA.VOLGNUMMER                    IS 'Het volgnummer dat gebruikt wordt in publicaties. Is 0 als er op (latijnse)naam gesorteerd wordt.';
 COMMENT ON VIEW   NATUUR.TAXONOMIE                          IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.LATIJNSENAAM             IS 'De latijnse naam van de taxon.';

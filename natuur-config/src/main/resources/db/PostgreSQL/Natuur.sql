@@ -76,6 +76,7 @@ CREATE SEQUENCE NATUUR.SEQ_WAARNEMINGEN
 
 -- Tabellen
 CREATE TABLE NATUUR.FOTOS (
+  DATUM                           DATE,
   FOTO_BESTAND                    VARCHAR(255),
   FOTO_DETAIL                     VARCHAR(20),
   FOTO_ID                         INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_FOTOS'::REGCLASS),
@@ -83,6 +84,7 @@ CREATE TABLE NATUUR.FOTOS (
   OPMERKING                       VARCHAR(2000),
   TAXON_ID                        INTEGER         NOT NULL,
   TAXON_SEQ                       NUMERIC(3)      NOT NULL  DEFAULT 0,
+  WAARNEMING_ID                   INTEGER,
   CONSTRAINT PK_FOTOS PRIMARY KEY (FOTO_ID)
 );
 
@@ -106,6 +108,12 @@ CREATE TABLE NATUUR.RANGEN (
   RANG                            VARCHAR(3)      NOT NULL,
   CONSTRAINT PK_RANGEN PRIMARY KEY (RANG)
 );
+
+CREATE TABLE NATUUR.RANGNAMEN (
+  NAAM                            VARCHAR(255)    NOT NULL,
+  RANG                            VARCHAR(3)      NOT NULL,
+  TAAL                            CHARACTER(2)    NOT NULL,
+  CONSTRAINT PK_TAXONNAMEN PRIMARY KEY (RANG, TAAL));
 
 CREATE TABLE NATUUR.TAXA (
   LATIJNSENAAM                    VARCHAR(255)    NOT NULL,
@@ -205,6 +213,10 @@ ALTER TABLE NATUUR.FOTOS
   ON DELETE RESTRICT
   ON UPDATE RESTRICT;
 
+ALTER TABLE NATUUR.RANGNAMEN
+  ADD CONSTRAINT FK_RNM_RANG FOREIGN KEY (RANG)
+  REFERENCES NATUUR.RANGEN (RANG);
+
 ALTER TABLE NATUUR.GEBIEDEN
   ADD CONSTRAINT CHK_GEB_LATITUDE CHECK(LATITUDE = ANY (ARRAY['N'::bpchar, 'S'::bpchar]));
 
@@ -276,6 +288,7 @@ GRANT SELECT                         ON TABLE NATUUR.FOTOS          TO NATUUR_SE
 GRANT SELECT                         ON TABLE NATUUR.GEBIEDEN       TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO      TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.RANGEN         TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.RANGNAMEN      TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXA           TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONNAMEN     TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE      TO NATUUR_SEL;
@@ -287,6 +300,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.FOTOS             TO NAT
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.GEBIEDEN          TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE    NATUUR.GEEN_FOTO         TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGEN            TO NATUUR_UPD;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGNAMEN         TO NATUUR_UPD;
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_FOTOS         TO NATUUR_UPD;
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_GEBIEDEN      TO NATUUR_UPD;
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_TAXA          TO NATUUR_UPD;
@@ -321,13 +335,15 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgn
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
 COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s.';
+COMMENT ON COLUMN NATUUR.FOTOS.DATUM                        IS 'De datum van de foto (tijdelijk).';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID                      IS 'De sleutel van de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID                    IS 'De sleutel van het gebied waarin de foto gemaakt is.';
+COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID                    IS 'De sleutel van het gebied waarin de foto gemaakt is (deprecated).';
 COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID                     IS 'De sleutel van de taxon op de foto.';
+COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID                     IS 'De sleutel van de taxon op de foto (deprecated).';
 COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ                    IS 'Een volgnummer voor de foto voor de betreffende taxon.';
+COMMENT ON COLUMN NATUUR.FOTOS.WAARNEMING_ID                IS 'De sleutel van de waarneming.';
 COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID                 IS 'De sleut      el van het gebied.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID                   IS 'De sleutel van het land waarin dit gebied ligt.';
@@ -347,6 +363,10 @@ COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                 IS 'De sleutel van d
 COMMENT ON TABLE  NATUUR.RANGEN                             IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
 COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU                      IS 'Het niveau rang binnen de taxa.';
 COMMENT ON COLUMN NATUUR.RANGEN.RANG                        IS 'De rang van een taxon.';
+COMMENT ON TABLE  NATUUR.RANGNAMEN                          IS 'Deze tabel bevat de namen van de rangen.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.NAAM                     IS 'De naam van de rang.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.RANG                     IS 'De sleutel van de rang.';
+COMMENT ON COLUMN NATUUR.RANGNAMEN.TAAL                     IS 'De taal.';
 COMMENT ON TABLE  NATUUR.TAXA                               IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
 COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM                  IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.OPMERKING                     IS 'Een opmerking voor deze taxon.';
