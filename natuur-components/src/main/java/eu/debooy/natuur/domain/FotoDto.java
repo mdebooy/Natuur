@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -23,7 +23,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,10 +36,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="FOTOS", schema="NATUUR")
-@NamedQueries({
-  @NamedQuery(name="fotosPerGebied", query="select f from FotoDto f where f.gebied.gebiedId=:gebiedId"),
-  @NamedQuery(name="fotosPerTaxon", query="select f from FotoDto f where f.taxon.taxonId=:taxonId")
-})
+@NamedQuery(name="fotosPerGebied", query="select f from FotoDto f where f.gebied.gebiedId=:gebiedId")
+@NamedQuery(name="fotosPerTaxon", query="select f from FotoDto f where f.taxon.taxonId=:taxonId")
 public class FotoDto extends Dto implements Comparable<FotoDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -68,10 +65,12 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
   @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq    = Long.valueOf("0");
 
+  @Override
   public int compareTo(FotoDto fotoDto) {
     return new CompareToBuilder().append(fotoId, fotoDto.fotoId).toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof FotoDto)) {
       return false;
@@ -113,6 +112,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return taxonSeq;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
