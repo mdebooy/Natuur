@@ -16,8 +16,8 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.DetailDao;
-import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Rangtotaal;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class DetailService {
       LoggerFactory.getLogger(DetailService.class);
 
   @Inject
-  private DetailDao       detailDao;
+  private DetailDao detailDao;
 
   public DetailService() {
     LOGGER.debug("init DetailService");
@@ -52,10 +52,13 @@ public class DetailService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoortenMetKlasse(String taal) {
-    List<Taxon>     details = new ArrayList<>();
-    List<DetailDto> rijen   = detailDao.getSoortenMetKlasse();
-    for (DetailDto rij : rijen) {
-      details.add(new Taxon(rij, taal));
+    List<Taxon> details = new ArrayList<>();
+
+    try {
+      detailDao.getSoortenMetKlasse()
+               .forEach(rij -> details.add(new Taxon(rij, taal)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return details;
@@ -63,15 +66,26 @@ public class DetailService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rangtotaal> getTotalenVoorRang(String rang) {
-    return detailDao.getSoortenMetRang(rang);
+    List<Rangtotaal>  totalen = new ArrayList<>();
+
+    try {
+      detailDao.getSoortenMetRang(rang).forEach(rij -> totalen.add(rij));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return totalen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getWaargenomen(String taal) {
-    List<Taxon>     soorten = new ArrayList<>();
-    List<DetailDto> rijen   = detailDao.getWaargenomen();
-    for (DetailDto rij : rijen) {
-      soorten.add(new Taxon(rij, taal));
+    List<Taxon> soorten = new ArrayList<>();
+
+    try {
+      detailDao.getWaargenomen()
+               .forEach(rij -> soorten.add(new Taxon(rij, taal)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return soorten;

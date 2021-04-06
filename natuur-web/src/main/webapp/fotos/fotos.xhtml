@@ -15,6 +15,7 @@
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
+                      { "orderable": false },
                       { "orderable": false }],
           "pagingType": "full_numbers",
           "pageLength": #{properties.appValue('natuur.pagelength')},
@@ -39,16 +40,13 @@
   </ui:define>
   <ui:define name="body">
     <div class="row justify-content-center">
-      <div class="col-10">
+      <div class="col-12">
         <h:form id="formFotos">
           <div class="row titel">
             <div class="col-10">
               <h2>#{i18nTeksten.tekst('natuur.titel.fotos')}</h2>
             </div>
             <div class="col-2 text-right" >
-              <h:commandLink action="#{natuurFoto.create}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
               <h:commandLink action="#{natuurFoto.fotolijst}">
                 <f:setPropertyActionListener target="#{natuurFoto.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
               </h:commandLink>

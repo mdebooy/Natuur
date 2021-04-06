@@ -82,49 +82,69 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId) {
-    List<Taxon>     kinderen  = new ArrayList<>();
-    List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-    rijen.forEach(taxonDto -> {
-      kinderen.add(new Taxon(taxonDto));
-    });
+    List<Taxon>       kinderen  = new ArrayList<>();
+    try {
+      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
+      rijen.forEach(taxonDto -> kinderen.add(new Taxon(taxonDto)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return kinderen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId, String taal) {
-    List<Taxon>     kinderen  = new ArrayList<>();
-    List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-    rijen.forEach(rij -> {
-      kinderen.add(new Taxon(rij, taal));
-    });
+    List<Taxon>       kinderen  = new ArrayList<>();
+    try {
+      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
+      rijen.forEach(rij -> {
+        kinderen.add(new Taxon(rij, taal));
+      });
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return kinderen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<TaxonDto> getOuders(Long kind) {
-    return taxonDao.getOuders(kind);
+    try {
+      return taxonDao.getOuders(kind);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return new ArrayList<>();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten() {
-    List<Taxon>     soorten = new ArrayList<>();
-    List<TaxonDto>  rijen   = taxonDao.getSoorten();
-    rijen.forEach(rij -> {
-      soorten.add(new Taxon(rij));
-    });
+    List<Taxon>       soorten = new ArrayList<>();
+    try {
+      List<TaxonDto>  rijen   = taxonDao.getSoorten();
+      rijen.forEach(rij -> {
+        soorten.add(new Taxon(rij));
+      });
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return soorten;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten(String taal) {
-    List<Taxon>     soorten = new ArrayList<>();
-    List<TaxonDto>  rijen   = taxonDao.getSoorten();
-    rijen.forEach(rij -> {
-      soorten.add(new Taxon(rij, taal));
-    });
+    List<Taxon>       soorten = new ArrayList<>();
+    try {
+      List<TaxonDto>  rijen   = taxonDao.getSoorten();
+      rijen.forEach(rij -> {
+        soorten.add(new Taxon(rij, taal));
+      });
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return soorten;
   }

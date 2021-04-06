@@ -40,6 +40,7 @@ public class Waarneming extends Formulier
   private static final  long  serialVersionUID  = 1L;
 
   private Integer aantal;
+  private Integer aantalFotos;
   private Date    datum;
   private Gebied  gebied;
   private String  opmerking;
@@ -50,6 +51,7 @@ public class Waarneming extends Formulier
 
   public Waarneming(Waarneming waarneming) {
     aantal        = waarneming.getAantal();
+    aantalFotos   = waarneming.getAantalFotos();
     datum         = waarneming.getDatum();
     if (null == waarneming.getGebied()) {
       gebied      = null;
@@ -71,6 +73,7 @@ public class Waarneming extends Formulier
 
   public Waarneming(WaarnemingDto waarnemingDto, String taal) {
     aantal        = waarnemingDto.getAantal();
+    aantalFotos   = waarnemingDto.getAantalFotos();
     datum         = waarnemingDto.getDatum();
     if (null == waarnemingDto.getGebied()) {
       gebied      = null;
@@ -123,6 +126,10 @@ public class Waarneming extends Formulier
 
   public Integer getAantal() {
     return aantal;
+  }
+
+  public Integer getAantalFotos() {
+    return aantalFotos;
   }
 
   public Date getDatum() {

@@ -10,14 +10,14 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         $('#waarnemingenTabel').dataTable( {
-          "order": [[1, "desc"], [3, "asc"]],
-          "columns": [{ "orderable": false },
+          "order": [[0, "desc"], [2, "asc"]],
+          "columns": [{ "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
-                      { "orderable": true }],
+                      { "orderable": false }],
           "pagingType": "full_numbers",
           "pageLength": #{properties.appValue('natuur.pagelength')},
           "lengthChange": false,
@@ -48,9 +48,6 @@
               <h2 class="titel">#{i18nTeksten.tekst('natuur.titel.waarnemingen')}</h2>
             </div>
             <div class="col-2 text-right" >
-              <h:commandLink action="#{natuurWaarneming.create}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
               <h:commandLink action="#{natuurWaarneming.waarnemingenlijst}">
                 <f:setPropertyActionListener target="#{natuurWaarneming.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
               </h:commandLink>

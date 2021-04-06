@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -30,7 +30,6 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -50,11 +49,9 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
-@NamedQueries({
-  @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')"),
-  @NamedQuery(name="detailTotalen", query="select d.parentId as naam, d.parentLatijnsenaam as latijnsenaam, count(d.parentId) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentId, d.parentLatijnsenaam"),
-  @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
-})
+@NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
+@NamedQuery(name="detailTotalen", query="select d.parentId as naam, d.parentLatijnsenaam as latijnsenaam, count(d.parentId) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentId, d.parentLatijnsenaam")
+@NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -119,6 +116,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(DetailDto detailDto1, DetailDto detailDto2) {
       return new CompareToBuilder().append(detailDto1.parentVolgnummer,
                                            detailDto2.parentVolgnummer)
@@ -146,6 +144,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       this.taal = taal;
     }
 
+    @Override
     public int compare(DetailDto detailDto1, DetailDto detailDto2) {
       return new CompareToBuilder().append(detailDto1.parentVolgnummer,
                                            detailDto2.parentVolgnummer)
@@ -163,12 +162,14 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     }
   }
 
+  @Override
   public int compareTo(DetailDto detailDto) {
     return new CompareToBuilder().append(parentId, detailDto.parentId)
                                  .append(taxonId, detailDto.taxonId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof DetailDto)) {
       return false;
@@ -253,6 +254,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return volgnummer;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(parentId).append(taxonId).toHashCode();
   }

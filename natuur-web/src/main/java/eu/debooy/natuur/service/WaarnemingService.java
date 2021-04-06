@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
@@ -51,16 +52,32 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long waarnemingId) {
-    WaarnemingDto waarneming  = waarnemingDao.getByPrimaryKey(waarnemingId);
-    waarnemingDao.delete(waarneming);
+    waarnemingDao.delete(waarnemingDao.getByPrimaryKey(waarnemingId));
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Waarneming> getTaxonWaarnemingen(Long taxon_id) {
+    List<Waarneming>      waarnemingen  = new ArrayList<>();
+
+    try {
+      waarnemingDao.getPerTaxon(taxon_id)
+                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return waarnemingen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> query() {
-    List<Waarneming>    waarnemingen  = new ArrayList<>();
-    List<WaarnemingDto> rijen         = waarnemingDao.getAll();
-    for (WaarnemingDto rij : rijen) {
-      waarnemingen.add(new Waarneming(rij));
+    List<Waarneming>      waarnemingen  = new ArrayList<>();
+
+    try {
+      waarnemingDao.getAll()
+                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return waarnemingen;
@@ -69,9 +86,12 @@ public class WaarnemingService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> query(String taal) {
     List<Waarneming>    waarnemingen  = new ArrayList<>();
-    List<WaarnemingDto> rijen         = waarnemingDao.getAll();
-    for (WaarnemingDto rij : rijen) {
-      waarnemingen.add(new Waarneming(rij, taal));
+
+    try {
+      waarnemingDao.getAll()
+                   .forEach(rij -> waarnemingen.add(new Waarneming(rij, taal)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return waarnemingen;
@@ -108,6 +128,12 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<WaarnemingDto> waarnemingOverzicht() {
-    return waarnemingDao.getAll();
+    try {
+      return waarnemingDao.getAll();
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return new ArrayList<>();
   }
 }

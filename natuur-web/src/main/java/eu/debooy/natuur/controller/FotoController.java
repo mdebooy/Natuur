@@ -32,6 +32,8 @@ import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
+import eu.debooy.natuur.form.Taxon;
+import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
 import java.util.Collection;
 import java.util.List;
@@ -55,8 +57,9 @@ public class FotoController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(FotoController.class);
 
-  private Foto    foto;
-  private FotoDto fotoDto;
+  private Foto        foto;
+  private FotoDto     fotoDto;
+  private Waarneming  waarneming;
 
   public void create() {
     GebiedDto gebied  = getGebiedService().gebied(
@@ -65,6 +68,22 @@ public class FotoController extends Natuur {
     foto.setGebied(new Gebied(gebied));
     fotoDto = new FotoDto();
     fotoDto.setGebied(gebied);
+    waarneming  = new Waarneming();
+    waarneming.setGebied(new Gebied(gebied));
+    setAktie(PersistenceConstants.CREATE);
+    setSubTitel("natuur.titel.foto.create");
+    redirect(FOTO_REDIRECT);
+  }
+
+  public void create(Long waarnemingId) {
+    waarneming  =
+        new Waarneming(getWaarnemingService().waarneming(waarnemingId));
+    foto        = new Foto();
+    foto.setGebied(new Gebied(waarneming.getGebied()));
+    foto.setTaxon(new Taxon(waarneming.getTaxon()));
+    foto.setWaarnemingId(waarnemingId);
+    fotoDto     = new FotoDto();
+    fotoDto.setWaarnemingId(waarnemingId);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.foto.create");
     redirect(FOTO_REDIRECT);
@@ -107,8 +126,7 @@ public class FotoController extends Natuur {
     lijstComparator.setTaal(taal);
     Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
-    for (FotoOverzichtDto rij : rijen) {
-      LOGGER.debug(rij.toString());
+    rijen.forEach(rij -> {
       exportData.addData(new String[] {rij.getKlasseNaam(taal),
                                        rij.getKlasseLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
@@ -117,7 +135,7 @@ public class FotoController extends Natuur {
                                                             taal),
                                        rij.getNaam(taal),
                                        rij.getGebied()});
-    }
+    });
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
@@ -136,6 +154,10 @@ public class FotoController extends Natuur {
 
   public Collection<Foto> getFotos() {
     return getFotoService().query(getGebruikersTaal());
+  }
+
+  public Waarneming getWaarneming() {
+    return waarneming;
   }
 
   public void retrieve(Long fotoId) {
@@ -169,7 +191,7 @@ public class FotoController extends Natuur {
         addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
         break;
       }
-      redirect(FOTOS_REDIRECT);
+      redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, melding);
     } catch (ObjectNotFoundException e) {
@@ -181,8 +203,14 @@ public class FotoController extends Natuur {
   }
 
   public void update(Long fotoId) {
-    fotoDto = getFotoService().foto(fotoId);
-    foto    = new Foto(fotoDto);
+    fotoDto       = getFotoService().foto(fotoId);
+    foto          = new Foto(fotoDto);
+    if (null == foto.getWaarnemingId()) {
+      waarneming  = new Waarneming();
+    } else {
+      waarneming  = new Waarneming(getWaarnemingService()
+                                       .waarneming(foto.getWaarnemingId()));
+    }
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
     redirect(FOTO_REDIRECT);

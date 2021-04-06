@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -17,18 +17,24 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -39,10 +45,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="WAARNEMINGEN", schema="NATUUR")
-@NamedQueries({
-  @NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId"),
-  @NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w where w.taxon.taxonId=:taxonId")
-})
+@NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId")
+@NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w where w.taxon.taxonId=:taxonId")
 public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -70,12 +74,18 @@ public class WaarnemingDto
   @Column(name="WAARNEMING_ID", nullable=false)
   private Long      waarnemingId;
 
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=FotoDto.class, orphanRemoval=true)
+  @JoinColumn(name="WAARNEMING_ID", nullable=false, updatable=false, insertable=true)
+  private Collection<FotoDto> fotos = new ArrayList<>();
+
+  @Override
   public int compareTo(WaarnemingDto waarnemingDto) {
     return new CompareToBuilder().append(waarnemingId,
                                          waarnemingDto.waarnemingId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof WaarnemingDto)) {
       return false;
@@ -94,12 +104,21 @@ public class WaarnemingDto
     return aantal;
   }
 
+  @Transient
+  public int getAantalFotos() {
+    return fotos.size();
+  }
+
   public Date getDatum() {
     if (null == datum) {
       return null;
     }
 
     return (Date) datum.clone();
+  }
+
+  public Collection<FotoDto> getFotos() {
+    return List.copyOf(fotos);
   }
 
   public GebiedDto getGebied() {
@@ -118,6 +137,7 @@ public class WaarnemingDto
     return waarnemingId;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(waarnemingId).toHashCode();
   }
@@ -132,6 +152,11 @@ public class WaarnemingDto
     } else {
       this.datum  = (Date) datum.clone();
     }
+  }
+
+  public void setFotos(Collection<FotoDto> fotos) {
+    this.fotos.clear();
+    this.fotos.addAll(fotos);
   }
 
   public void setGebied(GebiedDto gebied) {

@@ -1,5 +1,6 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:t="http://myfaces.apache.org/tomahawk"
  xmlns:ui="http://java.sun.com/jsf/facelets">
@@ -18,22 +19,27 @@
         <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
         <th id="gebied">#{i18nTeksten.tekst('label.gebied')}</th>
         <th id="land">#{i18nTeksten.tekst('label.land')}</th>
+        <th id="seq">#{i18nTeksten.tekst('label.datum')}</th>
       </tr>
     </thead>
     <tbody>
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuurFoto.retrieve(foto.fotoId)}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
-            <h:commandLink action="#{natuurFoto.update(foto.fotoId)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink action="#{natuurFoto.delete(foto.fotoId)}" class="lnkDelete" id="lnkDelete" />
-            <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.taxon.naam}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurFoto.update(foto.fotoId)}" rendered="#{empty foto.waarnemingId}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurFoto.delete(foto.fotoId)}" class="lnkDelete" id="lnkDelete" rendered="#{empty foto.waarnemingId}" />
+            <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.taxon.naam}');return false;" rendered="#{empty foto.waarnemingId}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{foto.taxonSeq}</td>
           <td>#{foto.taxon.naam}</td>
           <td><em>#{foto.taxon.latijnsenaam}</em></td>
           <td>#{foto.gebied.naam}</td>
           <td>#{i18nLandnaam.landnaam(foto.gebied.landId)}</td>
+          <td>
+            <t:outputText value="#{foto.datum}">
+              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
+            </t:outputText>
+          </td>
         </tr>
       </t:dataList>
     </tbody>

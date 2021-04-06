@@ -38,6 +38,9 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class RangDto extends Dto implements Comparable<RangDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_NIVEAU  = "niveau";
+  public static final String  COL_RANG    = "rang";
+
   public static final String  PAR_NIVEAU  = "niveau";
 
   public static final String  QRY_VANAF = "rangVanaf";

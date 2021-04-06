@@ -16,12 +16,13 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.PersistenceConstants;
+import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RangDao;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +35,13 @@ import javax.ejb.TransactionAttributeType;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +51,9 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("natuurRangService")
+@Path("/rangen")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 @Lock(LockType.WRITE)
 public class RangService {
   private static final  Logger  LOGGER  =
@@ -61,12 +72,52 @@ public class RangService {
     rangDao.delete(rang);
   }
 
+  @GET
+  public Response getRangen() {
+    return Response.ok().entity(rangDao.getAll()).build();
+  }
+
+  @GET
+  @Path("/{rang}")
+  public Response getRang(@PathParam(RangDto.COL_RANG) String rang) {
+    RangDto rangDto;
+    try {
+      rangDto = rangDao.getByPrimaryKey(rang);
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(RangDto.COL_RANG)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(rangDto).build();
+  }
+
+  @GET
+  @Path("/vanaf/{niveau}")
+  public Response getVanafRang(@PathParam(RangDto.COL_NIVEAU) Long niveau) {
+    List<RangDto> rangen;
+    try {
+      rangen  = rangDao.getVanaf(niveau);
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(RangDto.COL_NIVEAU)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(rangen).build();
+  }
+
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query() {
-    List<Rang>    rangen  = new ArrayList<>();
-    List<RangDto> rijen   = rangDao.getAll();
-    for (RangDto rij : rijen) {
-      rangen.add(new Rang(rij));
+    List<Rang>  rangen  = new ArrayList<>();
+    try {
+      rangDao.getAll().forEach(rij -> rangen.add(new Rang(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
     return rangen;
@@ -74,26 +125,21 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query(Long niveau) {
-    List<Rang>          groter  = new ArrayList<>();
-    Collection<RangDto> rijen   = rangDao.getAll();
-    for (RangDto rij : rijen) {
-      if (rij.getNiveau().compareTo(niveau) > 0) {
-        groter.add(new Rang(rij));
-      }
-    }
+    List<Rang>  groter  = new ArrayList<>();
+    rangDao.getAll().stream()
+                    .filter(rij -> (rij.getNiveau().compareTo(niveau) > 0))
+                    .forEachOrdered(rij ->  groter.add(new Rang(rij)));
 
     return groter;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public RangDto rang(String rang) {
-    RangDto resultaat = rangDao.getByPrimaryKey(rang);
-
-    if (null == resultaat) {
+    try {
+      return rangDao.getByPrimaryKey(rang);
+    } catch (ObjectNotFoundException e) {
       return new RangDto();
     }
-
-    return resultaat;
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -110,9 +156,9 @@ public class RangService {
     Set<RangDto>      rijen = new TreeSet<>(new RangDto.NiveauComparator());
     try {
       rijen.addAll(rangDao.getAll());
-      for (RangDto rij : rijen) {
+      rijen.forEach(rij -> {
         items.add(new SelectItem(rij.getRang(), rij.getRang()));
-      }
+      });
     } catch (NullPointerException | ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }

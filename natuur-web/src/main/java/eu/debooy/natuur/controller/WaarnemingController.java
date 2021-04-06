@@ -28,7 +28,9 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
+import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
@@ -62,15 +64,18 @@ public class WaarnemingController extends Natuur {
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
 
-  public void create() {
+  public void create(Long taxonId) {
     GebiedDto gebied  = getGebiedService().gebied(
         Long.valueOf(getParameter("natuur.default.gebiedid")));
+    TaxonDto  taxon   = getTaxonService().taxon(taxonId);
     waarnemingDto = new WaarnemingDto();
+    waarnemingDto.setTaxon(taxon);
     waarnemingDto.setDatum(new Date());
     waarnemingDto.setGebied(gebied);
     waarneming    = new Waarneming();
     waarneming.setDatum(waarnemingDto.getDatum());
     waarneming.setGebied(new Gebied(gebied));
+    waarneming.setTaxon(new Taxon(taxon, getGebruikersTaal()));
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.waarneming.create");
     redirect(WAARNEMING_REDIRECT);
@@ -108,16 +113,38 @@ public class WaarnemingController extends Natuur {
     }
   }
 
+  public List<Foto> getFotos() {
+    List<Foto>  fotos = new ArrayList<>();
+    waarnemingDto.getFotos().forEach(foto -> {
+      fotos.add(new Foto(foto));
+    });
+
+    return fotos;
+  }
+
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
     rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
-    for (Taxon rij : rijen) {
-      items.add(new SelectItem(rij, rij.getNaam()
-                                    + " (" + rij.getLatijnsenaam() + ")"));
-    }
+    rijen.forEach(rij -> {
+      items.add(new SelectItem(rij,
+                               rij.getNaam()
+                                       + " (" + rij.getLatijnsenaam() + ")"));
+    });
 
     return items;
+  }
+
+  public List<Waarneming> getTaxonWaarnemingen(Long taxon_id) {
+    List<Waarneming>  resultaat;
+    try {
+      resultaat = getWaarnemingService().getTaxonWaarnemingen(taxon_id);
+    } catch (Exception e) {
+      addError("errors.geen.i18n", e.getClass());
+      resultaat = new ArrayList<>();
+    }
+
+    return resultaat;
   }
 
   public Waarneming getWaarneming() {
@@ -126,12 +153,14 @@ public class WaarnemingController extends Natuur {
 
   public List<Waarneming> getWaarnemingen() {
     List<Waarneming>  resultaat;
+
     try {
       resultaat = getWaarnemingService().query(getGebruikersTaal());
     } catch (Exception e) {
       addError("errors.geen.i18n", e.getClass());
       resultaat = new ArrayList<>();
     }
+
     return resultaat;
   }
 
@@ -159,7 +188,7 @@ public class WaarnemingController extends Natuur {
         addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
         break;
       }
-      redirect(WAARNEMINGEN_REDIRECT);
+      redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, melding);
     } catch (ObjectNotFoundException e) {
@@ -172,7 +201,7 @@ public class WaarnemingController extends Natuur {
 
   public void update(Long waarnemingId) {
     waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
-    waarneming    = new Waarneming(waarnemingDto);
+    waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.waarneming.update");
     redirect(WAARNEMING_REDIRECT);
@@ -194,12 +223,12 @@ public class WaarnemingController extends Natuur {
 
     Set<Taxon> rijen = new TreeSet<>(new Taxon.LijstComparator());
     rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
-    for (Taxon rij : rijen) {
+    rijen.forEach(rij -> {
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),
                                        rij.getNaam(),
                                        rij.getLatijnsenaam()});
-    }
+    });
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()

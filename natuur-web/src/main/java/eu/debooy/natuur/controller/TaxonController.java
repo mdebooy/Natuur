@@ -53,8 +53,9 @@ public class TaxonController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(TaxonController.class);
 
-  public static final String  KINDEREN_TAB  = "kinderenTab";
-  public static final String  NAMEN_TAB     = "namenTab";
+  public static final String  KINDEREN_TAB      = "kinderenTab";
+  public static final String  NAMEN_TAB         = "namenTab";
+  public static final String  WAARNEMINGEN_TAB  = "waarnemingenTab";
 
   private String        aktieveTab;
   private Taxon         ouder;
@@ -174,9 +175,7 @@ public class TaxonController extends Natuur {
 
   public Collection<Taxonnaam> getTaxonnamen() {
     Collection<Taxonnaam> taxonnamen  = new HashSet<>();
-    for (TaxonnaamDto rij : taxonDto.getTaxonnamen()) {
-      taxonnamen.add(new Taxonnaam(rij));
-    }
+    taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
 
     return taxonnamen;
   }
@@ -276,11 +275,10 @@ public class TaxonController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<TaxonDto>     rijen = new TreeSet<>(new TaxonDto.NaamComparator());
     rijen.addAll(getTaxonService().getOuders(niveau));
-    for (TaxonDto rij : rijen) {
+    rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
                                rij.getNaam(getGebruikersTaal()) + " ("
-                                   + rij.getLatijnsenaam() + ")"));
-    }
+                                + rij.getLatijnsenaam() + ")")));
 
     return items;
   }

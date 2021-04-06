@@ -64,13 +64,13 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
   private Long      fotoId;
   // Deprecated attribute tot de link naar de waarneming gemaakt is.
   @OneToOne
-  @JoinColumn(name="GEBIED_ID", nullable=false)
+  @JoinColumn(name="GEBIED_ID")
   private GebiedDto gebied;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
   // Deprecated attribute tot de link naar de waarneming gemaakt is.
   @OneToOne
-  @JoinColumn(name="TAXON_ID", nullable=false)
+  @JoinColumn(name="TAXON_ID")
   private TaxonDto  taxon;
   @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq    = Long.valueOf("0");

@@ -55,6 +55,32 @@
               "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
             }
           } );
+        $('#waarnemingenTabel').dataTable( {
+            "order": [[1, "asc"]],
+            "columns": [{ "orderable": false },
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": true },
+                        { "orderable": false }],
+            "pagingType": "full_numbers",
+            "pageLength": #{properties.appValue('natuur.pagelength')},
+            "lengthChange": false,
+            "stateSave": true,
+            "language": {
+              "paginate": {
+                "first": #{properties.appValue('natuur.pager.first')},
+                "last": #{properties.appValue('natuur.pager.last')},
+                "next": #{properties.appValue('natuur.pager.next')},
+                "previous": #{properties.appValue('natuur.pager.previous')}
+              },
+              "search": "#{i18nTeksten.tekst('pager.search')}",
+              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+              "info": "#{i18nTeksten.tekst('pager.info')}",
+              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+            }
+          } );
         $('.nav-tabs a[href="##{natuurTaxon.aktieveTab}"]').tab('show');
       } );
     </script>
@@ -128,6 +154,7 @@
               <ul class="nav nav-tabs" data-tabs="tabs">
                 <li class="nav-item"><a class="nav-link active" href="#kinderenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.kinderen')}</a></li>
                 <li class="nav-item"><a class="nav-link" href="#namenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.namen')}</a></li>
+                <li class="nav-item"><a class="nav-link" href="#waarnemingenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
               </ul>
               <div class="tab-content">
                 <div id="kinderenTab" class="tab-pane fade show active" role="tabpanel">
@@ -148,6 +175,21 @@
                     <ui:param name="form" value="formTaxon" />
                     <ui:param name="lijst" value="#{natuurTaxon.taxonnamen}" />
                   </ui:include>
+                </div>
+                <div id="waarnemingenTab" class="tab-pane fade" role="tabpanel">
+                  <d:spacer />
+                  <div class="col-12 text-right">
+                    <h:commandLink action="#{natuurWaarneming.create(natuurTaxon.taxon.taxonId)}" rendered="#{natuurTaxon.aktie.wijzig}">
+                      <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+                    </h:commandLink>
+                    <d:spacer />
+                  </div>
+                  <div>
+                    <ui:include src="waarnemingtabel.xhtml">
+                      <ui:param name="form" value="formTaxon" />
+                      <ui:param name="lijst" value="#{natuurWaarneming.getTaxonWaarnemingen(natuurTaxon.taxon.taxonId)}" />
+                    </ui:include>
+                  </div>
                 </div>
               </div>
             </div>
