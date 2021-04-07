@@ -89,7 +89,7 @@ public class RangController extends Natuur {
     String            taal  = getGebruikersTaal();
     List<Rangtotaal>  rijen =
         getDetailService().getTotalenVoorRang(rang.getRang());
-    for (Rangtotaal rij : rijen) {
+    rijen.forEach(rij -> {
       String  naam;
       try {
         naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
@@ -102,7 +102,7 @@ public class RangController extends Natuur {
       } else {
         rij.setNaam(naam);
       }
-    }
+    });
 
     return rijen;
   }
@@ -111,9 +111,8 @@ public class RangController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query());
-    for (Rang rij : rijen) {
-      items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
-    }
+    rijen.forEach(rij ->  items.add(new SelectItem(rij.getRang(),
+                                    getRangtekst(rij.getRang()))));
 
     return items;
   }
@@ -161,9 +160,8 @@ public class RangController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
     rijen.addAll(getRangService().query(niveau));
-    rijen.forEach(rij -> {
-      items.add(new SelectItem(rij.getRang(), getRangtekst(rij.getRang())));
-    });
+    rijen.forEach(rij ->  items.add(new SelectItem(rij.getRang(),
+                                    getRangtekst(rij.getRang()))));
 
     return items;
   }

@@ -51,7 +51,7 @@ public final class TaxonnaamValidator extends NatuurValidator {
     } else {
       if (naam.length() > 255) {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                               new Object[] {"_I18N.label.naam", 255}));
+                               "_I18N.label.naam", 255));
       }
     }
   }
@@ -63,7 +63,7 @@ public final class TaxonnaamValidator extends NatuurValidator {
     } else {
       if (taal.length() != 2) {
         fouten.add(new Message(Message.ERROR, PersistenceConstants.FIXLENGTH,
-                               new Object[] {"_I18N.label.taal", 2}));
+                               "_I18N.label.taal", 2));
       }
     }
   }

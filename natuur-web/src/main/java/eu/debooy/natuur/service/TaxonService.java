@@ -76,13 +76,13 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long taxonId) {
-    TaxonDto  taxon = taxonDao.getByPrimaryKey(taxonId);
-    taxonDao.delete(taxon);
+    taxonDao.delete(taxonDao.getByPrimaryKey(taxonId));
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId) {
     List<Taxon>       kinderen  = new ArrayList<>();
+
     try {
       List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
       rijen.forEach(taxonDto -> kinderen.add(new Taxon(taxonDto)));
@@ -96,11 +96,10 @@ public class TaxonService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getKinderen(Long parentId, String taal) {
     List<Taxon>       kinderen  = new ArrayList<>();
+
     try {
       List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-      rijen.forEach(rij -> {
-        kinderen.add(new Taxon(rij, taal));
-      });
+      rijen.forEach(rij -> kinderen.add(new Taxon(rij, taal)));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
@@ -121,12 +120,10 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten() {
-    List<Taxon>       soorten = new ArrayList<>();
+    List<Taxon> soorten = new ArrayList<>();
+
     try {
-      List<TaxonDto>  rijen   = taxonDao.getSoorten();
-      rijen.forEach(rij -> {
-        soorten.add(new Taxon(rij));
-      });
+      taxonDao.getSoorten().forEach(rij -> soorten.add(new Taxon(rij)));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
@@ -136,12 +133,10 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoorten(String taal) {
-    List<Taxon>       soorten = new ArrayList<>();
+    List<Taxon> soorten = new ArrayList<>();
+
     try {
-      List<TaxonDto>  rijen   = taxonDao.getSoorten();
-      rijen.forEach(rij -> {
-        soorten.add(new Taxon(rij, taal));
-      });
+      taxonDao.getSoorten().forEach(rij -> soorten.add(new Taxon(rij, taal)));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
@@ -158,6 +153,7 @@ public class TaxonService {
   @Path("/{taxonId}")
   public Response getTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
     TaxonDto  taxon;
+
     try {
       taxon = taxonDao.getTaxon(taxonId);
     } catch (ObjectNotFoundException e) {
@@ -177,6 +173,7 @@ public class TaxonService {
                                @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
     TaxonnaamPK   sleutel   = new TaxonnaamPK(taxonId, taal);
     TaxonnaamDto  taxonnaam;
+
     try {
       taxonnaam = taxonnaamDao.getByPrimaryKey(sleutel);
     } catch (ObjectNotFoundException e) {
@@ -193,21 +190,17 @@ public class TaxonService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query() {
     List<Taxon>     taxa  = new ArrayList<>();
-    List<TaxonDto>  rijen = taxonDao.getAll();
-    rijen.forEach(rij -> {
-      taxa.add(new Taxon(rij));
-    });
+
+    taxonDao.getAll().forEach(rij -> taxa.add(new Taxon(rij)));
 
     return taxa;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query(String taal) {
-    List<Taxon>     taxa  = new ArrayList<>();
-    List<TaxonDto>  rijen = taxonDao.getAll();
-    rijen.forEach(rij -> {
-      taxa.add(new Taxon(rij, taal));
-    });
+    List<Taxon> taxa  = new ArrayList<>();
+
+    taxonDao.getAll().forEach(rij -> taxa.add(new Taxon(rij, taal)));
 
     return taxa;
   }
@@ -227,6 +220,7 @@ public class TaxonService {
   public Response selectOuders(@PathParam(TaxonDto.COL_RANG) String rang,
                                @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
     Long                    niveau;
+
     try {
       niveau  = rangDao.getByPrimaryKey(rang).getNiveau();
     } catch (ObjectNotFoundException e) {
@@ -242,10 +236,10 @@ public class TaxonService {
     comp.setTaal(taal);
     Set<TaxonDto>           rijen   = new TreeSet<>(comp);
     rijen.addAll(taxonDao.getOuders(niveau));
-    rijen.forEach(rij -> {
-      items.put(" " + rij.getTaxonId(),
-                rij.getNaam(taal) + " (" + rij.getLatijnsenaam() + ")");
-    });
+    // Waarom zo?
+    rijen.forEach(rij ->  items.put(" " + rij.getTaxonId(),
+                                    rij.getNaam(taal)
+                                        + " (" + rij.getLatijnsenaam() + ")"));
 
     return Response.ok().entity(items).build();
   }

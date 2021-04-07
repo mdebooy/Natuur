@@ -56,11 +56,11 @@ public class WaarnemingService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> getTaxonWaarnemingen(Long taxon_id) {
-    List<Waarneming>      waarnemingen  = new ArrayList<>();
+  public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
+    List<Waarneming>  waarnemingen  = new ArrayList<>();
 
     try {
-      waarnemingDao.getPerTaxon(taxon_id)
+      waarnemingDao.getPerTaxon(taxonId)
                    .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
@@ -85,7 +85,7 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> query(String taal) {
-    List<Waarneming>    waarnemingen  = new ArrayList<>();
+    List<Waarneming>  waarnemingen  = new ArrayList<>();
 
     try {
       waarnemingDao.getAll()
@@ -100,6 +100,7 @@ public class WaarnemingService {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Waarneming waarneming) {
     WaarnemingDto dto = new WaarnemingDto();
+
     waarneming.persist(dto);
 
     save(dto);

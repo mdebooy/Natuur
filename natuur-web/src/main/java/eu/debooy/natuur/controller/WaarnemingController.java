@@ -115,9 +115,8 @@ public class WaarnemingController extends Natuur {
 
   public List<Foto> getFotos() {
     List<Foto>  fotos = new ArrayList<>();
-    waarnemingDto.getFotos().forEach(foto -> {
-      fotos.add(new Foto(foto));
-    });
+
+    waarnemingDto.getFotos().forEach(foto -> fotos.add(new Foto(foto)));
 
     return fotos;
   }
@@ -126,19 +125,19 @@ public class WaarnemingController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
     rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
-    rijen.forEach(rij -> {
+    rijen.forEach(rij ->
       items.add(new SelectItem(rij,
                                rij.getNaam()
-                                       + " (" + rij.getLatijnsenaam() + ")"));
-    });
+                                       + " (" + rij.getLatijnsenaam() + ")")));
 
     return items;
   }
 
-  public List<Waarneming> getTaxonWaarnemingen(Long taxon_id) {
+  public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
     List<Waarneming>  resultaat;
+
     try {
-      resultaat = getWaarnemingService().getTaxonWaarnemingen(taxon_id);
+      resultaat = getWaarnemingService().getTaxonWaarnemingen(taxonId);
     } catch (Exception e) {
       addError("errors.geen.i18n", e.getClass());
       resultaat = new ArrayList<>();
@@ -223,12 +222,11 @@ public class WaarnemingController extends Natuur {
 
     Set<Taxon> rijen = new TreeSet<>(new Taxon.LijstComparator());
     rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
-    rijen.forEach(rij -> {
+    rijen.forEach(rij ->
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),
                                        rij.getNaam(),
-                                       rij.getLatijnsenaam()});
-    });
+                                       rij.getLatijnsenaam()}));
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()

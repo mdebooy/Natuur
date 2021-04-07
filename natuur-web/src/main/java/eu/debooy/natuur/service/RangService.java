@@ -114,6 +114,7 @@ public class RangService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query() {
     List<Rang>  rangen  = new ArrayList<>();
+
     try {
       rangDao.getAll().forEach(rij -> rangen.add(new Rang(rij)));
     } catch (ObjectNotFoundException e) {
@@ -126,6 +127,7 @@ public class RangService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Rang> query(Long niveau) {
     List<Rang>  groter  = new ArrayList<>();
+
     rangDao.getAll().stream()
                     .filter(rij -> (rij.getNiveau().compareTo(niveau) > 0))
                     .forEachOrdered(rij ->  groter.add(new Rang(rij)));
@@ -154,11 +156,11 @@ public class RangService {
   public List<SelectItem> selectRangen() {
     List<SelectItem>  items = new LinkedList<>();
     Set<RangDto>      rijen = new TreeSet<>(new RangDto.NiveauComparator());
+
     try {
       rijen.addAll(rangDao.getAll());
-      rijen.forEach(rij -> {
-        items.add(new SelectItem(rij.getRang(), rij.getRang()));
-      });
+      rijen.forEach(rij -> items.add(new SelectItem(rij.getRang(),
+                                                    rij.getRang())));
     } catch (NullPointerException | ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }

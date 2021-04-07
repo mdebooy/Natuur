@@ -69,7 +69,7 @@ public class DetailService {
     List<Rangtotaal>  totalen = new ArrayList<>();
 
     try {
-      detailDao.getSoortenMetRang(rang).forEach(rij -> totalen.add(rij));
+      detailDao.getSoortenMetRang(rang).forEach(totalen::add);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }

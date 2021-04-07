@@ -126,7 +126,7 @@ public class FotoController extends Natuur {
     lijstComparator.setTaal(taal);
     Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
-    rijen.forEach(rij -> {
+    rijen.forEach(rij ->
       exportData.addData(new String[] {rij.getKlasseNaam(taal),
                                        rij.getKlasseLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
@@ -134,8 +134,7 @@ public class FotoController extends Natuur {
                                            .getI18nLandnaam(rij.getLandId(),
                                                             taal),
                                        rij.getNaam(taal),
-                                       rij.getGebied()});
-    });
+                                       rij.getGebied()}));
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
