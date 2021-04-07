@@ -1,5 +1,5 @@
 /**
- * Copyright 2015 Marco de Booij
+ * Copyright (c) 2015 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -67,16 +67,19 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
       implements Comparator<GebiedDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
+    @Override
     public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
       return gebiedDto1.naam.compareTo(gebiedDto2.naam);
     }
   }
 
+  @Override
   public int compareTo(GebiedDto gebiedDto) {
     return new CompareToBuilder().append(gebiedId, gebiedDto.gebiedId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof GebiedDto)) {
       return false;
@@ -133,6 +136,7 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
     return naam;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
   }
