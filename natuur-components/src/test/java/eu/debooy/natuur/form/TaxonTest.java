@@ -30,7 +30,6 @@ import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -59,7 +58,7 @@ public class TaxonTest {
     kleiner.setTaxonId(taxon.getTaxonId() - 1);
 
     assertTrue(taxon.compareTo(groter) < 0);
-    assertTrue(taxon.compareTo(gelijk) == 0);
+    assertEquals(taxon.compareTo(gelijk), 0);
     assertTrue(taxon.compareTo(kleiner) > 0);
   }
 
@@ -68,17 +67,17 @@ public class TaxonTest {
     Taxon object    = null;
     Taxon instance  = new Taxon();
 
-    assertFalse(taxon.equals(object));
-    assertFalse(taxon.equals(instance));
+    assertNotEquals(taxon, object);
+    assertNotEquals(taxon, instance);
 
     instance.setTaxonId(taxon.getTaxonId());
-    assertTrue(taxon.equals(instance));
+    assertEquals(taxon, instance);
 
     instance  = new Taxon(taxon);
-    assertTrue(taxon.equals(instance));
+    assertEquals(taxon, instance);
 
     instance  = new Taxon(taxonDto);
-    assertTrue(taxon.equals(instance));
+    assertEquals(taxon, instance);
   }
 
   @Test

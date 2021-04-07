@@ -24,7 +24,6 @@ import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM_HASH;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -60,7 +59,7 @@ public class TaxonnaamTest {
     kleiner.setTaxonId(taxonnaam.getTaxonId() - 1);
 
     assertTrue(taxonnaam.compareTo(groter) < 0);
-    assertTrue(taxonnaam.compareTo(gelijk) == 0);
+    assertEquals(taxonnaam.compareTo(gelijk), 0);
     assertTrue(taxonnaam.compareTo(kleiner) > 0);
 
     groter.setTaxonId(taxonnaam.getTaxonId());
@@ -69,7 +68,7 @@ public class TaxonnaamTest {
     kleiner.setTaal(TAAL_KL);
 
     assertTrue(taxonnaam.compareTo(groter) < 0);
-    assertTrue(taxonnaam.compareTo(gelijk) == 0);
+    assertEquals(taxonnaam.compareTo(gelijk), 0);
     assertTrue(taxonnaam.compareTo(kleiner) > 0);
   }
 
@@ -78,18 +77,18 @@ public class TaxonnaamTest {
     Taxonnaam object    = null;
     Taxonnaam instance  = new Taxonnaam();
 
-    assertFalse(taxonnaam.equals(object));
-    assertFalse(taxonnaam.equals(instance));
+    assertNotEquals(taxonnaam, object);
+    assertNotEquals(taxonnaam, instance);
 
     instance.setTaal(taxonnaam.getTaal());
     instance.setTaxonId(taxonnaam.getTaxonId());
-    assertTrue(taxonnaam.equals(instance));
+    assertEquals(taxonnaam, instance);
 
     instance  = new Taxonnaam(taxonnaam);
-    assertTrue(taxonnaam.equals(instance));
+    assertEquals(taxonnaam, instance);
 
     instance  = new Taxonnaam(taxonnaamDto);
-    assertTrue(taxonnaam.equals(instance));
+    assertEquals(taxonnaam, instance);
   }
 
   @Test

@@ -28,7 +28,6 @@ import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -86,7 +85,7 @@ public class FotoTest {
     kleiner.setFotoId(foto.getFotoId()- 1);
 
     assertTrue(foto.compareTo(groter) < 0);
-    assertTrue(foto.compareTo(gelijk) == 0);
+    assertEquals(foto.compareTo(gelijk), 0);
     assertTrue(foto.compareTo(kleiner) > 0);
   }
 
@@ -95,17 +94,17 @@ public class FotoTest {
     Foto  object    = null;
     Foto  instance  = new Foto();
 
-    assertFalse(foto.equals(object));
-    assertFalse(foto.equals(instance));
+    assertNotEquals(foto, object);
+    assertNotEquals(foto, instance);
 
     instance.setFotoId(foto.getFotoId());
-    assertTrue(foto.equals(instance));
+    assertEquals(foto, instance);
 
     instance  = new Foto(foto);
-    assertTrue(foto.equals(instance));
+    assertEquals(foto, instance);
 
     instance  = new Foto(fotoDto);
-    assertTrue(foto.equals(instance));
+    assertEquals(foto, instance);
   }
 
   @Test
@@ -152,14 +151,16 @@ public class FotoTest {
   public void testPersist() {
     FotoDto parameter = new FotoDto();
     Foto    instance  = new Foto();
+    instance.setGebied(gebied);
+    instance.setTaxon(taxon);
     instance.persist(parameter);
 
     assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());
     assertEquals(instance.getFotoDetail(), parameter.getFotoDetail());
     assertEquals(instance.getFotoId(), parameter.getFotoId());
-    assertEquals(instance.getGebied(), parameter.getGebied());
+    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
     assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxon(), parameter.getTaxon());
+    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
     assertEquals(instance.getTaxonSeq(), parameter.getTaxonSeq());
   }
 

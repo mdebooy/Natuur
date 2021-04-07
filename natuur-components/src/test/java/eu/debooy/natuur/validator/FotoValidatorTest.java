@@ -41,7 +41,7 @@ import org.junit.Test;
 
 /**
  *
- * @author booymar
+ * @author Marco de Booij
  */
 public class FotoValidatorTest {
   public static final Message ERR_FOTOBESTAND =
@@ -50,7 +50,6 @@ public class FotoValidatorTest {
   public static final Message ERR_FOTODETAIL  =
       new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.fotodetail", 20);
-
   public static final Message REQ_TAXONSEQ  =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.seq");

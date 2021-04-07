@@ -24,7 +24,7 @@ import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
 import static eu.debooy.natuur.TestConstants.TOTAAL;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -55,7 +55,7 @@ public class RangtotaalTest {
     kleiner.setTaxonId(rangtotaal.getTaxonId() - 1);
 
     assertTrue(rangtotaal.compareTo(groter) < 0);
-    assertTrue(rangtotaal.compareTo(gelijk) == 0);
+    assertEquals(rangtotaal.compareTo(gelijk), 0);
     assertTrue(rangtotaal.compareTo(kleiner) > 0);
   }
 
@@ -64,11 +64,11 @@ public class RangtotaalTest {
     Rangtotaal  object    = null;
     Rangtotaal  instance  = new Rangtotaal(LEEG);
 
-    assertFalse(rangtotaal.equals(object));
-    assertFalse(rangtotaal.equals(instance));
+    assertNotEquals(rangtotaal, object);
+    assertNotEquals(rangtotaal, instance);
 
     instance.setTaxonId(rangtotaal.getTaxonId());
-    assertTrue(rangtotaal.equals(instance));
+    assertEquals(rangtotaal, instance);
   }
 
   @Test

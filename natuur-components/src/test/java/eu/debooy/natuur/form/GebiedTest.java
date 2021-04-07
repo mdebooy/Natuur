@@ -33,7 +33,6 @@ import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -65,7 +64,7 @@ public class GebiedTest {
     kleiner.setGebiedId(gebied.getGebiedId() - 1);
 
     assertTrue(gebied.compareTo(groter) < 0);
-    assertTrue(gebied.compareTo(gelijk) == 0);
+    assertEquals(gebied.compareTo(gelijk), 0);
     assertTrue(gebied.compareTo(kleiner) > 0);
   }
 
@@ -74,17 +73,17 @@ public class GebiedTest {
     Gebied  object    = null;
     Gebied  instance  = new Gebied();
 
-    assertFalse(gebied.equals(object));
-    assertFalse(gebied.equals(instance));
+    assertNotEquals(gebied, object);
+    assertNotEquals(gebied, instance);
 
     instance.setGebiedId(gebied.getGebiedId());
-    assertTrue(gebied.equals(instance));
+    assertEquals(gebied, instance);
 
     instance  = new Gebied(gebied);
-    assertTrue(gebied.equals(instance));
+    assertEquals(gebied, instance);
 
     instance  = new Gebied(gebiedDto);
-    assertTrue(gebied.equals(instance));
+    assertEquals(gebied, instance);
   }
 
   @Test

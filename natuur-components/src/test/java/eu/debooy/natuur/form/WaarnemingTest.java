@@ -164,13 +164,15 @@ public class WaarnemingTest {
   public void testPersist() {
     WaarnemingDto parameter = new WaarnemingDto();
     Waarneming    instance  = new Waarneming();
+    instance.setGebied(gebied);
+    instance.setTaxon(taxon);
     instance.persist(parameter);
 
     assertEquals(instance.getAantal(), parameter.getAantal());
     assertEquals(instance.getDatum(), parameter.getDatum());
-    assertEquals(instance.getGebied(), parameter.getGebied());
+    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
     assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxon(), parameter.getTaxon());
+    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
     assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
   }
 

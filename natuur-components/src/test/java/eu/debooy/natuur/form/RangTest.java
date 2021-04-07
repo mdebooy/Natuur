@@ -23,7 +23,6 @@ import static eu.debooy.natuur.TestConstants.RANG_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_KL;
 import eu.debooy.natuur.domain.RangDto;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -57,7 +56,7 @@ public class RangTest {
     kleiner.setRang(RANG_KL);
 
     assertTrue(rang.compareTo(groter) < 0);
-    assertTrue(rang.compareTo(gelijk) == 0);
+    assertEquals(rang.compareTo(gelijk), 0);
     assertTrue(rang.compareTo(kleiner) > 0);
   }
 
@@ -66,17 +65,17 @@ public class RangTest {
     Rang  object    = null;
     Rang  instance  = new Rang();
 
-    assertFalse(rang.equals(object));
-    assertFalse(rang.equals(instance));
+    assertNotEquals(rang, object);
+    assertNotEquals(rang, instance);
 
     instance.setRang(rang.getRang());
-    assertTrue(rang.equals(instance));
+    assertEquals(rang, instance);
 
     instance  = new Rang(rang);
-    assertTrue(rang.equals(instance));
+    assertEquals(rang, instance);
 
     instance  = new Rang(rangDto);
-    assertTrue(rang.equals(instance));
+    assertEquals(rang, instance);
   }
 
   @Test
