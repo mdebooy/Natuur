@@ -43,7 +43,7 @@ public class RangDto extends Dto implements Comparable<RangDto> {
 
   public static final String  PAR_NIVEAU  = "niveau";
 
-  public static final String  QRY_VANAF = "rangVanaf";
+  public static final String  QRY_VANAF = "rangenVanaf";
 
   @Column(name="NIVEAU", nullable=false, updatable=false)
   private Long    niveau;
