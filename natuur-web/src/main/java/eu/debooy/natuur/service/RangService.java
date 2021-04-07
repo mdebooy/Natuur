@@ -128,9 +128,7 @@ public class RangService {
   public List<Rang> query(Long niveau) {
     List<Rang>  groter  = new ArrayList<>();
 
-    rangDao.getAll().stream()
-                    .filter(rij -> (rij.getNiveau().compareTo(niveau) > 0))
-                    .forEachOrdered(rij ->  groter.add(new Rang(rij)));
+    rangDao.getVanaf(niveau).forEach(rij ->  groter.add(new Rang(rij)));
 
     return groter;
   }
