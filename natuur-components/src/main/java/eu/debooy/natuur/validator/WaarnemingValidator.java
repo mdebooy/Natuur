@@ -22,7 +22,6 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -72,13 +71,8 @@ public final class WaarnemingValidator extends NatuurValidator {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.datum"));
     } else if (datum.after(new Date())) {
-      try {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                               Datum.fromDate(datum)));
-      } catch (ParseException e) {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.WRONGDATE,
-                               datum));
-      }
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
+                             Datum.fromDate(datum)));
     }
   }
 }

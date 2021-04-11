@@ -28,14 +28,12 @@ import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
-import java.text.ParseException;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -137,12 +135,8 @@ public class WaarnemingTest {
 
   @Test
   public void testGetSorteerdatum() {
-    try {
-      String  sorteerdatum  = Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
-      assertEquals(sorteerdatum, waarneming.getSorteerdatum());
-    } catch (ParseException e) {
-      fail(e.getMessage());
-    }
+    String  sorteerdatum  = Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
+    assertEquals(sorteerdatum, waarneming.getSorteerdatum());
   }
 
   @Test

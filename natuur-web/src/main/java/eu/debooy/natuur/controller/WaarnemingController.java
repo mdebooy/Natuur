@@ -35,7 +35,6 @@ import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.WaarnemingValidator;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
@@ -94,23 +93,12 @@ public class WaarnemingController extends Natuur {
       generateExceptionMessage(e);
       return;
     }
-    try {
-      addInfo(PersistenceConstants.DELETED,
-              Datum.fromDate(waarneming.getDatum()));
-    } catch (ParseException e) {
-      addInfo(PersistenceConstants.DELETED,
-              waarneming.getDatum() + " " + waarneming.getTaxon().getNaam());
-    }
+    addInfo(PersistenceConstants.DELETED,
+            Datum.fromDate(waarneming.getDatum()));
   }
 
   public String formateerDatum(Date datum) {
-    try {
-      return Datum.fromDate(datum);
-    } catch (ParseException e) {
-      LOGGER.error("PE: " + e.getLocalizedMessage(), e);
-      generateExceptionMessage(e);
-      return datum.toString();
-    }
+    return Datum.fromDate(datum);
   }
 
   public List<Foto> getFotos() {

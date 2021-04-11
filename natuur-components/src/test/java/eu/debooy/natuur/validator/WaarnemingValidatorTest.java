@@ -31,7 +31,6 @@ import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -66,12 +65,8 @@ public class WaarnemingValidatorTest {
     kalender.add(Calendar.DAY_OF_YEAR, 1);
     morgen    = kalender.getTime();
 
-    try {
-      errDatum  = new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                              Datum.fromDate(morgen));
-    } catch (ParseException e) {
-      // Zou nooit mogen gebeuren.
-    }
+    errDatum  = new Message(Message.ERROR, PersistenceConstants.FUTURE,
+                            Datum.fromDate(morgen));
 
     gebied    = TestUtils.getGebied();
     gebiedDto = TestUtils.getGebiedDto();

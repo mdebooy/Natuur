@@ -24,7 +24,6 @@ import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Comparator;
 import java.util.Date;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -153,11 +152,7 @@ public class Waarneming extends Formulier
       return "";
     }
 
-    try {
-      return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
-    } catch (ParseException e) {
-      return "????????";
-    }
+    return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
   }
 
   public Taxon getTaxon() {
