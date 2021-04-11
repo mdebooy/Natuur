@@ -14,8 +14,8 @@
   <description>Waarnemingen in de natuur.</description>
   <inceptionYear>2015</inceptionYear>
   <scm>
-    <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</developerConnection>
-    <connection>scm:git:ssh://ptah.debooy.eu/srv/git/debooy/Natuur.git</connection>
+    <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/Natuur.git</developerConnection>
+    <connection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/Natuur.git</connection>
     <tag>HEAD</tag>
   </scm>
 
@@ -56,7 +56,7 @@
       <dependency>
         <groupId>eu.debooy.doos</groupId>
         <artifactId>doos-components</artifactId>
-        <version>3.3.0-SNAPSHOT</version>
+        <version>3.2.0</version>
       </dependency>
       <dependency>
         <groupId>eu.debooy.doosutils</groupId>
