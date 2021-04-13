@@ -195,7 +195,7 @@ public class FotoTest {
   public void testSetWaarnemingId() {
     Foto  instance  = new Foto();
     assertNotEquals(WAARNEMINGID, instance.getWaarnemingId());
-    instance.setTaxonSeq(WAARNEMINGID);
+    instance.setWaarnemingId(WAARNEMINGID);
 
     assertEquals(WAARNEMINGID, instance.getWaarnemingId());
   }
