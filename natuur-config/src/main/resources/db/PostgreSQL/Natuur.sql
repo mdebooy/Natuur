@@ -76,15 +76,12 @@ CREATE SEQUENCE NATUUR.SEQ_WAARNEMINGEN
 
 -- Tabellen
 CREATE TABLE NATUUR.FOTOS (
-  DATUM                           DATE,
   FOTO_BESTAND                    VARCHAR(255),
   FOTO_DETAIL                     VARCHAR(20),
   FOTO_ID                         INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_FOTOS'::REGCLASS),
-  GEBIED_ID                       INTEGER,
   OPMERKING                       VARCHAR(2000),
-  TAXON_ID                        INTEGER,
   TAXON_SEQ                       NUMERIC(3)      NOT NULL  DEFAULT 0,
-  WAARNEMING_ID                   INTEGER,
+  WAARNEMING_ID                   INTEGER         NOT NULL,
   CONSTRAINT PK_FOTOS PRIMARY KEY (FOTO_ID)
 );
 
@@ -171,9 +168,10 @@ FROM     NATUUR.TAXONOMIE T
              AND (P.TAXON_ID =ANY(T.PATH))
            JOIN NATUUR.RANGEN R
              ON  T.RANG=R.RANG
-           LEFT JOIN (SELECT   TAXON_ID, COUNT(*) AANTAL
-                      FROM     NATUUR.FOTOS
-                      GROUP BY TAXON_ID) F
+           LEFT JOIN (SELECT   WND.TAXON_ID, COUNT(*) AANTAL
+                      FROM     NATUUR.FOTOS FOT
+                               JOIN NATUUR.WAARNEMINGEN WNM ON FOT.WAARNEMING_ID = WNM.WAARNEMING_ID
+                      GROUP BY WND.TAXON_ID) F
              ON T.TAXON_ID=F.TAXON_ID;
 
 CREATE OR REPLACE VIEW NATUUR.FOTO_OVERZICHT AS
@@ -181,10 +179,12 @@ SELECT   FOT.FOTO_ID, DET.PARENT_ID AS KLASSE_ID,
          DET.PARENT_VOLGNUMMER AS KLASSE_VOLGNUMMER,
          DET.PARENT_LATIJNSENAAM AS KLASSE_LATIJNSENAAM,
          DET.TAXON_ID, DET.VOLGNUMMER, DET.LATIJNSENAAM,
-         FOT.TAXON_SEQ, GEB.LAND_ID, GEB.NAAM AS GEBIED
-FROM     NATUUR.FOTOS FOT
-           JOIN NATUUR.DETAILS DET  ON FOT.TAXON_ID  = DET.TAXON_ID
-           JOIN NATUUR.GEBIEDEN GEB ON FOT.GEBIED_ID = GEB.GEBIED_ID
+         FOT.TAXON_SEQ, WNM.DATUM, FOT.FOTO_BESTAND, FOT.FOTO_DETAIL,
+         GEB.LAND_ID, GEB.NAAM AS GEBIED
+FROM     NATUUR.WAARNEMINGEN WNM
+           JOIN NATUUR.FOTOS FOT    ON WNM.WAARNEMING_ID = FOT.WAARNEMING_ID
+           JOIN NATUUR.DETAILS DET  ON WNM.TAXON_ID      = DET.TAXON_ID
+           JOIN NATUUR.GEBIEDEN GEB ON WNM.GEBIED_ID     = GEB.GEBIED_ID
 WHERE    DET.PARENT_RANG='kl';
 
 CREATE OR REPLACE VIEW NATUUR.GEEN_FOTO AS
@@ -192,8 +192,9 @@ WITH ZONDERFOTO AS (
   SELECT   W.TAXON_ID
   FROM     NATUUR.WAARNEMINGEN W
   EXCEPT
-  SELECT   F.TAXON_ID
-  FROM     NATUUR.FOTOS F)
+  SELECT   W.TAXON_ID
+  FROM     NATUUR.WAARNEMINGEN W
+             JOIN NATUUR.FOTOS F ON F.WAARNEMING_ID = W.WAARNEMING_ID)
 SELECT   D.PARENT_ID, D.PARENT_RANG, D.TAXON_ID
 FROM     NATUUR.DETAILS D JOIN ZONDERFOTO Z ON D.TAXON_ID=Z.TAXON_ID;
 
@@ -341,13 +342,10 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgn
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
 COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s.';
-COMMENT ON COLUMN NATUUR.FOTOS.DATUM                        IS 'De datum van de foto (tijdelijk).';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID                      IS 'De sleutel van de foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.GEBIED_ID                    IS 'De sleutel van het gebied waarin de foto gemaakt is (deprecated).';
 COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
-COMMENT ON COLUMN NATUUR.FOTOS.TAXON_ID                     IS 'De sleutel van de taxon op de foto (deprecated).';
 COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ                    IS 'Een volgnummer voor de foto voor de betreffende taxon.';
 COMMENT ON COLUMN NATUUR.FOTOS.WAARNEMING_ID                IS 'De sleutel van de waarneming.';
 COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';

@@ -40,18 +40,9 @@ public final class FotoValidator extends NatuurValidator {
 
     valideerFotoBestand(DoosUtils.nullToEmpty(foto.getFotoBestand()), fouten);
     valideerFotoDetail(DoosUtils.nullToEmpty(foto.getFotoDetail()), fouten);
-    if (null == foto.getGebied()) {
-      valideerGebiedId(null, fouten);
-    } else {
-      valideerGebiedId(foto.getGebied().getGebiedId(), fouten);
-    }
     valideerOpmerking(DoosUtils.nullToEmpty(foto.getOpmerking()), fouten);
-    if (null == foto.getTaxon()) {
-      valideerTaxonId(null, fouten);
-    } else {
-      valideerTaxonId(foto.getTaxon().getTaxonId(), fouten);
-    }
     valideerTaxonSeq(foto.getTaxonSeq(), fouten);
+    valideerWaarnemingId(foto.getWaarnemingId(), fouten);
 
     return fouten;
   }
@@ -76,6 +67,14 @@ public final class FotoValidator extends NatuurValidator {
     if (DoosUtils.isBlankOrNull(taxonSeq)) {
       fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                              "_I18N.label.seq"));
+    }
+  }
+
+  private static void valideerWaarnemingId(Long waarnemingId,
+                                           List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(waarnemingId)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.sleutel"));
     }
   }
 }

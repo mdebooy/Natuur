@@ -29,10 +29,7 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
-import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Foto;
-import eu.debooy.natuur.form.Gebied;
-import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
 import java.util.Collection;
@@ -62,14 +59,9 @@ public class FotoController extends Natuur {
   private Waarneming  waarneming;
 
   public void create() {
-    GebiedDto gebied  = getGebiedService().gebied(
-        Long.valueOf(getParameter("natuur.default.gebiedid")));
-    foto    = new Foto();
-    foto.setGebied(new Gebied(gebied));
-    fotoDto = new FotoDto();
-    fotoDto.setGebied(gebied);
+    foto        = new Foto();
+    fotoDto     = new FotoDto();
     waarneming  = new Waarneming();
-    waarneming.setGebied(new Gebied(gebied));
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.foto.create");
     redirect(FOTO_REDIRECT);
@@ -79,8 +71,6 @@ public class FotoController extends Natuur {
     waarneming  =
         new Waarneming(getWaarnemingService().waarneming(waarnemingId));
     foto        = new Foto();
-    foto.setGebied(new Gebied(waarneming.getGebied()));
-    foto.setTaxon(new Taxon(waarneming.getTaxon()));
     foto.setWaarnemingId(waarnemingId);
     fotoDto     = new FotoDto();
     fotoDto.setWaarnemingId(waarnemingId);
@@ -101,8 +91,7 @@ public class FotoController extends Natuur {
       generateExceptionMessage(e);
       return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + fotoDto.getTaxonSeq() + " - "
-            + fotoDto.getTaxon().getNaam(getGebruikersTaal()) + "'");
+    addInfo(PersistenceConstants.DELETED, "'" + fotoDto.getTaxonSeq() + "'");
   }
 
   public void fotolijst() {
@@ -163,7 +152,8 @@ public class FotoController extends Natuur {
     fotoDto = getFotoService().foto(fotoId);
     foto    = new Foto(fotoDto);
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(foto.getTaxonSeq() + " - " + foto.getTaxon().getNaam());
+    // TODO Default message
+    setSubTitel(foto.getTaxonSeq().toString());
     redirect(FOTO_REDIRECT);
   }
 
@@ -174,7 +164,8 @@ public class FotoController extends Natuur {
       return;
     }
 
-    String  melding = foto.getTaxonSeq() + " - " + foto.getTaxon().getNaam();
+    // TODO Default message
+    String  melding = foto.getTaxonSeq().toString();
     try {
       foto.persist(fotoDto);
       getFotoService().save(fotoDto);

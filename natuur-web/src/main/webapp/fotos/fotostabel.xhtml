@@ -6,14 +6,12 @@
  xmlns:ui="http://java.sun.com/jsf/facelets">
   <table class="table table-sm" id="fotosTabel" aria-describedby="fotosTabel">
     <colgroup>
-      <col style="width:70px" />
       <col style="width:60px" />
       <col />
       <col />
     </colgroup>
     <thead>
       <tr>
-        <th id="icoon"></th>
         <th id="seq">#{i18nTeksten.tekst('label.seq')}</th>
         <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
         <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
@@ -25,16 +23,11 @@
     <tbody>
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <td>
-            <h:commandLink action="#{natuurFoto.update(foto.fotoId)}" rendered="#{empty foto.waarnemingId}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink action="#{natuurFoto.delete(foto.fotoId)}" class="lnkDelete" id="lnkDelete" rendered="#{empty foto.waarnemingId}" />
-            <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.taxon.naam}');return false;" rendered="#{empty foto.waarnemingId}"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
-          </td>
           <td class="text-right">#{foto.taxonSeq}</td>
-          <td>#{foto.taxon.naam}</td>
-          <td><em>#{foto.taxon.latijnsenaam}</em></td>
-          <td>#{foto.gebied.naam}</td>
-          <td>#{i18nLandnaam.landnaam(foto.gebied.landId)}</td>
+          <td>{foto.taxon.naam}</td>
+          <td><em>{foto.taxon.latijnsenaam}</em></td>
+          <td>{foto.gebied.naam}</td>
+          <td>{i18nLandnaam.landnaam(foto.gebied.landId)}</td>
           <td>
             <t:outputText value="#{foto.datum}">
               <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />

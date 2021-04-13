@@ -17,15 +17,12 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -37,23 +34,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="FOTOS", schema="NATUUR")
-@NamedQuery(name="fotosPerGebied", query="select f from FotoDto f where f.gebied.gebiedId=:gebiedId")
-@NamedQuery(name="fotosPerTaxon", query="select f from FotoDto f where f.taxon.taxonId=:taxonId")
 @NamedQuery(name="fotosPerWaarneming", query="select f from FotoDto f where f.waarnemingId=:waarnemingId")
 public class FotoDto extends Dto implements Comparable<FotoDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  PAR_GEBIEDID      = "gebiedId";
-  public static final String  PAR_TAXONID       = "taxonId";
   public static final String  PAR_WAARNEMINGID  = "waarnemingId";
 
-  public static final String  QRY_PERGEBIED     = "fotosPerGebied";
-  public static final String  QRY_PERTAXON      = "fotosPerTaxon";
   public static final String  QRY_WAARNEMINGID  = "fotosPerWaarneming";
 
-  // Tijdelijk attribute om de link naar de waarneming te maken.
-  @Column(name="DATUM")
-  private Date      datum;
   @Column(name="FOTO_BESTAND", length=255)
   private String    fotoBestand;
   @Column(name="FOTO_DETAIL", length=20)
@@ -62,20 +50,11 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="FOTO_ID", nullable=false)
   private Long      fotoId;
-  // Deprecated attribute tot de link naar de waarneming gemaakt is.
-  @OneToOne
-  @JoinColumn(name="GEBIED_ID")
-  private GebiedDto gebied;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
-  // Deprecated attribute tot de link naar de waarneming gemaakt is.
-  @OneToOne
-  @JoinColumn(name="TAXON_ID")
-  private TaxonDto  taxon;
   @Column(name="TAXON_SEQ", nullable=false)
   private Long      taxonSeq    = Long.valueOf("0");
-  // Zet nullable=false nadat de link naar de waarneming gemaakt is.
-  @Column(name="WAARNEMING_ID")
+  @Column(name="WAARNEMING_ID", nullable=false)
   private Long      waarnemingId;
 
   @Override
@@ -97,14 +76,6 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
   }
 
-  public Date getDatum() {
-    if (null == datum) {
-      return null;
-    }
-
-    return (Date) datum.clone();
-  }
-
   public String getFotoBestand() {
     return fotoBestand;
   }
@@ -117,16 +88,8 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return fotoId;
   }
 
-  public GebiedDto getGebied() {
-    return gebied;
-  }
-
   public String getOpmerking() {
     return opmerking;
-  }
-
-  public TaxonDto getTaxon() {
-    return taxon;
   }
 
   public Long getTaxonSeq() {
@@ -142,14 +105,6 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
-  public void setDatum(Date datum) {
-    if (null == datum) {
-      this.datum  = null;
-    } else {
-      this.datum  = (Date) datum.clone();
-    }
-  }
-
   public void setFotoBestand(String fotoBestand) {
     this.fotoBestand  = fotoBestand;
   }
@@ -162,16 +117,8 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     this.fotoId       = fotoId;
   }
 
-  public void setGebied(GebiedDto gebied) {
-    this.gebied       = gebied;
-  }
-
   public void setOpmerking(String opmerking) {
     this.opmerking    = opmerking;
-  }
-
-  public void setTaxon(TaxonDto taxon) {
-    this.taxon        = taxon;
   }
 
   public void setTaxonSeq(Long taxonSeq) {

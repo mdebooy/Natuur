@@ -78,10 +78,8 @@ public class FotoService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Foto> query() {
     List<Foto>    fotos = new ArrayList<>();
-    List<FotoDto> rijen = fotoDao.getAll();
-    for (FotoDto rij : rijen) {
-      fotos.add(new Foto(rij));
-    }
+
+    fotoDao.getAll().forEach(rij -> fotos.add(new Foto(rij)));
 
     return fotos;
   }
@@ -89,10 +87,8 @@ public class FotoService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Foto> query(String taal) {
     List<Foto>    fotos = new ArrayList<>();
-    List<FotoDto> rijen = fotoDao.getAll();
-    for (FotoDto rij : rijen) {
-      fotos.add(new Foto(rij, taal));
-    }
+
+    fotoDao.getAll().forEach(rij -> fotos.add(new Foto(rij)));
 
     return fotos;
   }

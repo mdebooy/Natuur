@@ -24,12 +24,12 @@ import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONSEQ;
+import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -39,27 +39,18 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class FotoTest {
-  private static Gebied   gebied;
-  private static Taxon    taxon;
   private static Foto     foto;
   private static FotoDto  fotoDto;
 
   @BeforeClass
   public static void setUpClass() {
-    gebied  = new Gebied();
-    gebied.setGebiedId(GEBIEDID);
-
-    taxon   = new Taxon();
-    taxon.setTaxonId(TAXONID);
-
     foto    = new Foto();
     foto.setFotoBestand(FOTOBESTAND);
     foto.setFotoDetail(FOTODETAIL);
     foto.setFotoId(FOTOID);
-    foto.setGebied(gebied);
     foto.setOpmerking(OPMERKING);
-    foto.setTaxon(taxon);
     foto.setTaxonSeq(TAXONSEQ);
+    foto.setWaarnemingId(WAARNEMINGID);
 
     GebiedDto gebiedDto = new GebiedDto();
     gebiedDto.setGebiedId(GEBIEDID);
@@ -70,10 +61,9 @@ public class FotoTest {
     fotoDto.setFotoBestand(FOTOBESTAND);
     fotoDto.setFotoDetail(FOTODETAIL);
     fotoDto.setFotoId(FOTOID);
-    fotoDto.setGebied(gebiedDto);
     fotoDto.setOpmerking(OPMERKING);
-    fotoDto.setTaxon(taxonDto);
     fotoDto.setTaxonSeq(TAXONSEQ);
+    fotoDto.setWaarnemingId(WAARNEMINGID);
   }
 
   @Test
@@ -85,7 +75,7 @@ public class FotoTest {
     kleiner.setFotoId(foto.getFotoId()- 1);
 
     assertTrue(foto.compareTo(groter) < 0);
-    assertEquals(foto.compareTo(gelijk), 0);
+    assertEquals(0, foto.compareTo(gelijk));
     assertTrue(foto.compareTo(kleiner) > 0);
   }
 
@@ -123,23 +113,18 @@ public class FotoTest {
   }
 
   @Test
-  public void testGetGebied() {
-    assertEquals(GEBIEDID, foto.getGebied().getGebiedId());
-  }
-
-  @Test
   public void testGetOpmerking() {
     assertEquals(OPMERKING, foto.getOpmerking());
   }
 
   @Test
-  public void testGetTaxon() {
-    assertEquals(TAXONID, foto.getTaxon().getTaxonId());
+  public void testGetTaxonSeq() {
+    assertEquals(TAXONSEQ, foto.getTaxonSeq());
   }
 
   @Test
-  public void testGetTaxonSeq() {
-    assertEquals(TAXONSEQ, foto.getTaxonSeq());
+  public void testGetWaarnemingId() {
+    assertEquals(WAARNEMINGID, foto.getWaarnemingId());
   }
 
   @Test
@@ -151,17 +136,14 @@ public class FotoTest {
   public void testPersist() {
     FotoDto parameter = new FotoDto();
     Foto    instance  = new Foto();
-    instance.setGebied(gebied);
-    instance.setTaxon(taxon);
     instance.persist(parameter);
 
     assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());
     assertEquals(instance.getFotoDetail(), parameter.getFotoDetail());
     assertEquals(instance.getFotoId(), parameter.getFotoId());
-    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
     assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
     assertEquals(instance.getTaxonSeq(), parameter.getTaxonSeq());
+    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
   }
 
   @Test
@@ -192,15 +174,6 @@ public class FotoTest {
   }
 
   @Test
-  public void testSetGebied() {
-    Foto  instance  = new Foto();
-    assertNull(instance.getGebied());
-    instance.setGebied(gebied);
-
-    assertEquals(GEBIEDID, instance.getGebied().getGebiedId());
-  }
-
-  @Test
   public void testSetOpmerking() {
     Foto  instance  = new Foto();
     assertNotEquals(OPMERKING, instance.getOpmerking());
@@ -210,20 +183,20 @@ public class FotoTest {
   }
 
   @Test
-  public void testSetTaxon() {
-    Foto  instance  = new Foto();
-    assertNull(instance.getTaxon());
-    instance.setTaxon(taxon);
-
-    assertEquals(TAXONID, instance.getTaxon().getTaxonId());
-  }
-
-  @Test
   public void testSetTaxonSeq() {
     Foto  instance  = new Foto();
     assertNotEquals(TAXONSEQ, instance.getTaxonSeq());
     instance.setTaxonSeq(TAXONSEQ);
 
     assertEquals(TAXONSEQ, instance.getTaxonSeq());
+  }
+
+  @Test
+  public void testSetWaarnemingId() {
+    Foto  instance  = new Foto();
+    assertNotEquals(WAARNEMINGID, instance.getWaarnemingId());
+    instance.setTaxonSeq(WAARNEMINGID);
+
+    assertEquals(WAARNEMINGID, instance.getWaarnemingId());
   }
 }

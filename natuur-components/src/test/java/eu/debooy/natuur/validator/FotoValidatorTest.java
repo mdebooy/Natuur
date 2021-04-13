@@ -23,19 +23,12 @@ import static eu.debooy.natuur.TestConstants.ERR_OPMERKING;
 import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
 import static eu.debooy.natuur.TestConstants.FOTODETAIL;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
-import static eu.debooy.natuur.TestConstants.REQ_GEBIEDID;
-import static eu.debooy.natuur.TestConstants.REQ_TAXONID;
-import eu.debooy.natuur.TestUtils;
+import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import eu.debooy.natuur.domain.FotoDto;
-import eu.debooy.natuur.domain.GebiedDto;
-import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Foto;
-import eu.debooy.natuur.form.Gebied;
-import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -44,41 +37,30 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class FotoValidatorTest {
-  public static final Message ERR_FOTOBESTAND =
+  public static final Message ERR_FOTOBESTAND   =
       new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.fotobestand", 255);
-  public static final Message ERR_FOTODETAIL  =
+  public static final Message ERR_FOTODETAIL    =
       new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
                              "_I18N.label.fotodetail", 20);
-  public static final Message REQ_TAXONSEQ  =
+  public static final Message REQ_TAXONSEQ      =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
                   "_I18N.label.seq");
+  public static final Message REQ_WAARNEMINGID  =
+      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                  "_I18N.label.sleutel");
 
-  private static  Gebied    gebied;
-  private static  GebiedDto gebiedDto;
-  private static  Taxon     taxon;
-  private static  TaxonDto  taxonDto;
-
-  @BeforeClass
-  public static void setUpClass() {
-    gebied    = TestUtils.getGebied();
-    gebiedDto = TestUtils.getGebiedDto();
-    taxon     = TestUtils.getTaxon();
-    taxonDto  = TestUtils.getTaxonDto();
-  }
 
   private void setFouten(List<Message> expResult) {
     expResult.add(ERR_FOTOBESTAND);
     expResult.add(ERR_FOTODETAIL);
-    expResult.add(REQ_GEBIEDID);
     expResult.add(ERR_OPMERKING);
-    expResult.add(REQ_TAXONID);
     expResult.add(REQ_TAXONSEQ);
+    expResult.add(REQ_WAARNEMINGID);
   }
 
   private void setLeeg(List<Message> expResult) {
-    expResult.add(REQ_GEBIEDID);
-    expResult.add(REQ_TAXONID);
+    expResult.add(REQ_WAARNEMINGID);
   }
 
   @Test
@@ -90,6 +72,7 @@ public class FotoValidatorTest {
     foto.setFotoDetail(DoosUtils.stringMetLengte(FOTODETAIL, 21, "X"));
     foto.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
     foto.setTaxonSeq(null);
+    foto.setWaarnemingId(null);
 
     setFouten(expResult);
 
@@ -104,9 +87,8 @@ public class FotoValidatorTest {
 
     foto.setFotoBestand(FOTOBESTAND);
     foto.setFotoDetail(FOTODETAIL);
-    foto.setGebied(gebied);
     foto.setOpmerking(OPMERKING);
-    foto.setTaxon(taxon);
+    foto.setWaarnemingId(WAARNEMINGID);
 
     List<Message> result    = FotoValidator.valideer(foto);
     assertEquals(expResult.toString(), result.toString());
@@ -132,6 +114,7 @@ public class FotoValidatorTest {
     foto.setFotoDetail(DoosUtils.stringMetLengte(FOTODETAIL, 21, "X"));
     foto.setOpmerking(DoosUtils.stringMetLengte(OPMERKING, 2001, "X"));
     foto.setTaxonSeq(null);
+    foto.setWaarnemingId(null);
 
     setFouten(expResult);
 
@@ -146,9 +129,8 @@ public class FotoValidatorTest {
 
     foto.setFotoBestand(FOTOBESTAND);
     foto.setFotoDetail(FOTODETAIL);
-    foto.setGebied(gebiedDto);
     foto.setOpmerking(OPMERKING);
-    foto.setTaxon(taxonDto);
+    foto.setWaarnemingId(WAARNEMINGID);
 
     List<Message> result    = FotoValidator.valideer(foto);
     assertEquals(expResult.toString(), result.toString());

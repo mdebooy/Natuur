@@ -46,20 +46,6 @@ public class FotoDao extends Dao<FotoDto> {
     return em;
   }
 
-  public List<FotoDto> getPerGebied(Long gebiedId) {
-    Map<String, Object> params  = new HashMap<>();
-    params.put(FotoDto.PAR_GEBIEDID, gebiedId);
-
-    return namedQuery(FotoDto.QRY_PERGEBIED, params);
-  }
-
-  public List<FotoDto> getPerTaxon(Long taxonId) {
-    Map<String, Object> params  = new HashMap<>();
-    params.put(FotoDto.PAR_TAXONID, taxonId);
-
-    return namedQuery(FotoDto.QRY_PERTAXON, params);
-  }
-
   public List<FotoDto> getPerWaarneming(Long waarnemingId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(FotoDto.PAR_WAARNEMINGID, waarnemingId);
