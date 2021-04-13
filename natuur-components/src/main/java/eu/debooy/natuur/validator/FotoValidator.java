@@ -69,12 +69,4 @@ public final class FotoValidator extends NatuurValidator {
                              "_I18N.label.seq"));
     }
   }
-
-  private static void valideerWaarnemingId(Long waarnemingId,
-                                           List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(waarnemingId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.sleutel"));
-    }
-  }
 }

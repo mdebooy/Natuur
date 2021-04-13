@@ -30,7 +30,6 @@ import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -88,7 +87,7 @@ public class WaarnemingTest {
     kleiner.setWaarnemingId(waarneming.getWaarnemingId()- 1);
 
     assertTrue(waarneming.compareTo(groter) < 0);
-    assertTrue(waarneming.compareTo(gelijk) == 0);
+    assertEquals(0, waarneming.compareTo(gelijk));
     assertTrue(waarneming.compareTo(kleiner) > 0);
   }
 
@@ -97,20 +96,20 @@ public class WaarnemingTest {
     Waarneming  object    = null;
     Waarneming  instance  = new Waarneming();
 
-    assertFalse(waarneming.equals(object));
-    assertFalse(waarneming.equals(instance));
+    assertNotEquals(waarneming, object);
+    assertNotEquals(waarneming, instance);
 
     instance.setWaarnemingId(waarneming.getWaarnemingId());
-    assertTrue(waarneming.equals(instance));
+    assertEquals(waarneming, instance);
 
     instance  = new Waarneming(waarneming);
-    assertTrue(waarneming.equals(instance));
+    assertEquals(waarneming, instance);
 
     instance  = new Waarneming(waarnemingDto);
-    assertTrue(waarneming.equals(instance));
+    assertEquals(waarneming, instance);
 
     instance  = new Waarneming(waarnemingDto, TAAL);
-    assertTrue(waarneming.equals(instance));
+    assertEquals(waarneming, instance);
   }
 
   @Test

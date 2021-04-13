@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
 @Lock(LockType.WRITE)
 public class RangService {
   private static final  Logger  LOGGER  =
-      LoggerFactory.getLogger(TaxonService.class);
+      LoggerFactory.getLogger(RangService.class);
 
   @Inject
   private RangDao rangDao;

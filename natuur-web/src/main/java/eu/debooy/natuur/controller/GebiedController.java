@@ -64,7 +64,7 @@ public class GebiedController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, naam);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -147,7 +147,7 @@ public class GebiedController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

@@ -56,7 +56,7 @@ public class RangTest {
     kleiner.setRang(RANG_KL);
 
     assertTrue(rang.compareTo(groter) < 0);
-    assertEquals(rang.compareTo(gelijk), 0);
+    assertEquals(0, rang.compareTo(gelijk));
     assertTrue(rang.compareTo(kleiner) > 0);
   }
 

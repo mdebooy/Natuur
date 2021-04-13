@@ -57,4 +57,12 @@ public class NatuurValidator {
                              "_I18N.label.soort"));
     }
   }
+
+  protected static void valideerWaarnemingId(Long waarnemingId,
+                                             List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(waarnemingId)) {
+      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
+                             "_I18N.label.waarneming"));
+    }
+  }
 }

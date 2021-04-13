@@ -119,7 +119,7 @@ public class TaxonController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, taxonId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -134,7 +134,7 @@ public class TaxonController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, taal);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -222,7 +222,7 @@ public class TaxonController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxon.getNaam());
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }
@@ -260,7 +260,7 @@ public class TaxonController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

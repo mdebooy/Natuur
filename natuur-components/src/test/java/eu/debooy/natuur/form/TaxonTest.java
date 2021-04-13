@@ -58,7 +58,7 @@ public class TaxonTest {
     kleiner.setTaxonId(taxon.getTaxonId() - 1);
 
     assertTrue(taxon.compareTo(groter) < 0);
-    assertEquals(taxon.compareTo(gelijk), 0);
+    assertEquals(0, taxon.compareTo(gelijk));
     assertTrue(taxon.compareTo(kleiner) > 0);
   }
 

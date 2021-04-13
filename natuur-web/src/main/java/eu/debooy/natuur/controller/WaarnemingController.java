@@ -58,7 +58,7 @@ import org.slf4j.LoggerFactory;
 public class WaarnemingController extends Natuur {
   private static final  long    serialVersionUID  = 1L;
   private static final  Logger  LOGGER            =
-      LoggerFactory.getLogger(GebiedController.class);
+      LoggerFactory.getLogger(WaarnemingController.class);
 
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
@@ -89,7 +89,7 @@ public class WaarnemingController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -181,7 +181,7 @@ public class WaarnemingController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, melding);
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

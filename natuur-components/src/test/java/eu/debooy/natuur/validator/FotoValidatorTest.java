@@ -48,7 +48,7 @@ public class FotoValidatorTest {
                   "_I18N.label.seq");
   public static final Message REQ_WAARNEMINGID  =
       new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.sleutel");
+                  "_I18N.label.waarneming");
 
 
   private void setFouten(List<Message> expResult) {

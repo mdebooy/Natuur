@@ -59,7 +59,7 @@ public class TaxonnaamTest {
     kleiner.setTaxonId(taxonnaam.getTaxonId() - 1);
 
     assertTrue(taxonnaam.compareTo(groter) < 0);
-    assertEquals(taxonnaam.compareTo(gelijk), 0);
+    assertEquals(0, taxonnaam.compareTo(gelijk));
     assertTrue(taxonnaam.compareTo(kleiner) > 0);
 
     groter.setTaxonId(taxonnaam.getTaxonId());
@@ -68,7 +68,7 @@ public class TaxonnaamTest {
     kleiner.setTaal(TAAL_KL);
 
     assertTrue(taxonnaam.compareTo(groter) < 0);
-    assertEquals(taxonnaam.compareTo(gelijk), 0);
+    assertEquals(0, taxonnaam.compareTo(gelijk));
     assertTrue(taxonnaam.compareTo(kleiner) > 0);
   }
 

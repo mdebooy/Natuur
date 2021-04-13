@@ -55,7 +55,7 @@ public class RangtotaalTest {
     kleiner.setTaxonId(rangtotaal.getTaxonId() - 1);
 
     assertTrue(rangtotaal.compareTo(groter) < 0);
-    assertEquals(rangtotaal.compareTo(gelijk), 0);
+    assertEquals(0, rangtotaal.compareTo(gelijk));
     assertTrue(rangtotaal.compareTo(kleiner) > 0);
   }
 

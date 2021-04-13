@@ -66,7 +66,7 @@ public class RangController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, rang);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -151,7 +151,7 @@ public class RangController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, rang.getRang());
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

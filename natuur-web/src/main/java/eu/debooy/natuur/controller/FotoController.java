@@ -87,7 +87,7 @@ public class FotoController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, fotoId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -149,11 +149,14 @@ public class FotoController extends Natuur {
   }
 
   public void retrieve(Long fotoId) {
-    fotoDto = getFotoService().foto(fotoId);
-    foto    = new Foto(fotoDto);
+    fotoDto     = getFotoService().foto(fotoId);
+    foto        = new Foto(fotoDto);
+    waarneming  =
+        new Waarneming(getWaarnemingService()
+                .waarneming(fotoDto.getWaarnemingId()));
+
     setAktie(PersistenceConstants.RETRIEVE);
-    // TODO Default message
-    setSubTitel(foto.getTaxonSeq().toString());
+    setSubTitel("natuur.titel.foto.retrieve");
     redirect(FOTO_REDIRECT);
   }
 
@@ -187,7 +190,7 @@ public class FotoController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, melding);
     } catch (DoosRuntimeException e) {
-      LOGGER.error("RT: " + e.getLocalizedMessage(), e);
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

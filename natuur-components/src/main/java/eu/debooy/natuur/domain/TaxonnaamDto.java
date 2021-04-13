@@ -23,7 +23,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -37,10 +36,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Entity
 @Table(name="TAXONNAMEN", schema="NATUUR")
 @IdClass(TaxonnaamPK.class)
-@NamedQueries({
-  @NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:taxonId"),
-  @NamedQuery(name="taxonnaamPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")
-})
+@NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:taxonId")
+@NamedQuery(name="taxonnaamPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")
 public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   private static final  long  serialVersionUID  = 1L;
 

@@ -64,7 +64,7 @@ public class GebiedTest {
     kleiner.setGebiedId(gebied.getGebiedId() - 1);
 
     assertTrue(gebied.compareTo(groter) < 0);
-    assertEquals(gebied.compareTo(gelijk), 0);
+    assertEquals(0, gebied.compareTo(gelijk));
     assertTrue(gebied.compareTo(kleiner) > 0);
   }
 
