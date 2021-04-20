@@ -19,6 +19,7 @@ package eu.debooy.natuur.controller;
 import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -198,11 +199,11 @@ public class FotoController extends Natuur {
   public void update(Long fotoId) {
     fotoDto       = getFotoService().foto(fotoId);
     foto          = new Foto(fotoDto);
-    if (null == foto.getWaarnemingId()) {
-      waarneming  = new Waarneming();
-    } else {
+    if (DoosUtils.isNotBlankOrNull(foto.getWaarnemingId())) {
       waarneming  = new Waarneming(getWaarnemingService()
-                                       .waarneming(foto.getWaarnemingId()));
+                            .waarneming(foto.getWaarnemingId()));
+    } else {
+      waarneming  = new Waarneming();
     }
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.foto.update");
