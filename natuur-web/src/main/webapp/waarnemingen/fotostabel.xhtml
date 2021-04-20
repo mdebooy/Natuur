@@ -17,8 +17,8 @@
         <th id="icoon"></th>
         <th id="seq">#{i18nTeksten.tekst('label.seq')}</th>
         <th id="naam">#{i18nTeksten.tekst('label.opmerking')}</th>
-        <th id="latijnsenaam">#{i18nTeksten.tekst('label.fotodetail')}</th>
-        <th id="gebied">#{i18nTeksten.tekst('label.fotobestand')}</th>
+        <th id="fotodetail">#{i18nTeksten.tekst('label.detail')}</th>
+        <th id="fotobestand">#{i18nTeksten.tekst('label.fotobestand')}</th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +27,7 @@
           <td>
             <h:commandLink action="#{natuurFoto.update(foto.fotoId)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
             <h:commandLink action="#{natuurFoto.delete(foto.fotoId)}" class="lnkDelete" id="lnkDelete" />
-            <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.taxon.naam}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
+            <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.fotoBestand}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{foto.taxonSeq}</td>
           <td>#{foto.opmerking}</td>
