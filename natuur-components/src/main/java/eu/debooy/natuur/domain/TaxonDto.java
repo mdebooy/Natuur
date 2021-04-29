@@ -300,9 +300,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public void setTaxonnamen(Collection<TaxonnaamDto> taxonnamen) {
     this.taxonnamen.clear();
-    for (TaxonnaamDto taxonnaam : taxonnamen) {
-      this.taxonnamen.put(taxonnaam.getTaal(), taxonnaam);
-    }
+    taxonnamen.forEach(taxonnaam -> this.taxonnamen.put(taxonnaam.getTaal(),
+                                                        taxonnaam));
   }
 
   public void setTaxonnamen(Map<String, TaxonnaamDto> taxonnamen) {
