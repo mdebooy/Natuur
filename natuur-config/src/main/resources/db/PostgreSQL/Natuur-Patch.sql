@@ -86,3 +86,51 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LATIJNSENAAM        IS 'De latijnse naam
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.LAND_ID             IS 'De sleutel van het land waar de foto genomen is.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.GEBIED              IS 'De naam van het gebied waar de foto genomen is.';
+
+INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+  VALUES ('do' , 'Domein',        'nl'),
+         ('fa' , 'Familie',       'nl'),
+         ('ge' , 'Geslacht',      'nl'),
+         ('ior', 'Infraorde',     'nl'),
+         ('ist', 'Infrastam',     'nl'),
+         ('kl' , 'Klasse',        'nl'),
+         ('le' , 'Leven',         'nl'),
+         ('ofa', 'Onderfamilie',  'nl'),
+         ('oge', 'Ondergeslacht', 'nl'),
+         ('okl', 'Onderklasse',   'nl'),
+         ('oor', 'Onderorde',     'nl'),
+         ('or' , 'Orde',          'nl'),
+         ('ori', 'Onderrijk',     'nl'),
+         ('oso', 'Ondersoort',    'nl'),
+         ('ost', 'Onderstam',     'nl'),
+         ('ota', 'Ondertak',      'nl'),
+         ('ri' , 'Rijk',          'nl'),
+         ('sfa', 'Superfamilie',  'nl'),
+         ('so' , 'Soort',         'nl'),
+         ('sor', 'Superorde',     'nl'),
+         ('st' , 'Stam',          'nl'),
+         ('ta' , 'Tak',           'nl');
+
+INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+  VALUES ('do' , 'Domain',      'en'),
+         ('fa' , 'Family',      'en'),
+         ('ge' , 'Genus',       'en'),
+         ('ior', 'Infraorder',  'en'),
+         ('ist', 'Infraphylum', 'en'),
+         ('kl' , 'Class',       'en'),
+         ('le' , 'Life',        'en'),
+         ('ofa', 'Subfamily',   'en'),
+         ('oge', 'Subgenus',    'en'),
+         ('okl', 'Subclass',    'en'),
+         ('oor', 'Suborder',    'en'),
+         ('or' , 'Order',       'en'),
+         ('ori', 'Subkingdom',  'en'),
+         ('oso', 'Subspecies',  'en'),
+         ('ost', 'Subphylum',   'en'),
+         ('ota', 'Subtribe',    'en'),
+         ('ri' , 'Kingdom',     'en'),
+         ('sfa', 'Superfamily', 'en'),
+         ('so' , 'Species',     'en'),
+         ('sor', 'Superorder',  'en'),
+         ('st' , 'Phylum',      'en'),
+         ('ta' , 'Tribe',       'en');
