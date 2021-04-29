@@ -70,7 +70,7 @@ public class Rangnaam
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Taxonnaam)) {
+    if (!(object instanceof Rangnaam)) {
       return false;
     }
     if (object == this) {

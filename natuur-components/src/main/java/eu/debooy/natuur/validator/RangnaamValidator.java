@@ -19,8 +19,8 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.domain.TaxonnaamDto;
-import eu.debooy.natuur.form.Taxonnaam;
+import eu.debooy.natuur.domain.RangnaamDto;
+import eu.debooy.natuur.form.Rangnaam;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +31,15 @@ import java.util.List;
 public class RangnaamValidator extends NatuurValidator {
   private RangnaamValidator() {}
 
-  public static List<Message> valideer(TaxonnaamDto taxonnaam) {
-    return valideer(new Taxonnaam(taxonnaam));
+  public static List<Message> valideer(RangnaamDto rangnaam) {
+    return valideer(new Rangnaam(rangnaam));
   }
 
-  public static List<Message> valideer(Taxonnaam taxonnaam) {
+  public static List<Message> valideer(Rangnaam rangnaam) {
     List<Message> fouten  = new ArrayList<>();
 
-    valideerNaam(DoosUtils.nullToEmpty(taxonnaam.getNaam()), fouten);
-    valideerTaal(DoosUtils.nullToEmpty(taxonnaam.getTaal()), fouten);
+    valideerNaam(DoosUtils.nullToEmpty(rangnaam.getNaam()), fouten);
+    valideerTaal(DoosUtils.nullToEmpty(rangnaam.getTaal()), fouten);
 
     return fouten;
   }
