@@ -51,7 +51,7 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   public static final String  QRY_TAXON = "taxonnaamPerTaxon";
   public static final String  QRY_TAAL  = "taxonnaamPerTaal";
 
-  @Column(name="NAAM", length=155, nullable=false)
+  @Column(name="NAAM", length=255, nullable=false)
   private String  naam;
   @Id
   @Column(name="TAAL", length=2, nullable=false)
@@ -87,10 +87,14 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
       return true;
     }
 
-    TaxonnaamDto naamDto = (TaxonnaamDto) object;
+    TaxonnaamDto  naamDto = (TaxonnaamDto) object;
     return new EqualsBuilder().append(taxonId, naamDto.taxonId)
                               .append(taal, naamDto.taal)
                               .isEquals();
+  }
+
+  public String getNaam() {
+    return naam;
   }
 
   public String getTaal() {
@@ -101,13 +105,13 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
     return taxonId;
   }
 
-  public String getNaam() {
-    return naam;
-  }
-
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).append(taal).toHashCode();
+  }
+
+  public void setNaam(String naam) {
+    this.naam = naam;
   }
 
   public void setTaal(String taal) {
@@ -116,9 +120,5 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
 
   public void setTaxonId(Long taxonId) {
     this.taxonId  = taxonId;
-  }
-
-  public void setNaam(String naam) {
-    this.naam = naam;
   }
 }
