@@ -1,5 +1,5 @@
 /**
- * Copyright 2017 Marco de Booij
+ * Copyright (c) 2017 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -25,8 +25,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class TaxonnaamPK
-    implements Comparable<TaxonnaamPK>, Serializable {
+public class TaxonnaamPK implements Comparable<TaxonnaamPK>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private Long    taxonId;
@@ -40,43 +39,47 @@ public class TaxonnaamPK
     this.taal     = taal;
   }
 
-  public int compareTo(TaxonnaamPK taxonnaamPK) {
-    return new CompareToBuilder().append(taxonId, taxonnaamPK.taxonId)
-                                 .append(taal, taxonnaamPK.taal)
+  @Override
+  public int compareTo(TaxonnaamPK naamPK) {
+    return new CompareToBuilder().append(taxonId, naamPK.taxonId)
+                                 .append(taal, naamPK.taal)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof TaxonnaamPK)) {
       return false;
     }
-    TaxonnaamPK taxonnaamPK = (TaxonnaamPK) object;
-    return new EqualsBuilder().append(taxonId, taxonnaamPK.taxonId)
-                              .append(taal, taxonnaamPK.taal)
+    TaxonnaamPK naamPK  = (TaxonnaamPK) object;
+    return new EqualsBuilder().append(taxonId, naamPK.taxonId)
+                              .append(taal, naamPK.taal)
                               .isEquals();
-  }
-
-  public Long getLandId() {
-    return taxonId;
   }
 
   public String getTaal() {
     return taal;
   }
 
+  public Long getTaxonId() {
+    return taxonId;
+  }
+
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId)
                                 .append(taal).toHashCode();
-  }
-
-  public void setLandId(Long taxonId) {
-    this.taxonId  = taxonId;
   }
 
   public void setTaal(String taal) {
     this.taal = taal;
   }
 
+  public void setTaxonId(Long taxonId) {
+    this.taxonId  = taxonId;
+  }
+
+  @Override
   public String toString() {
     return new StringBuilder().append("TaxonnaamPK")
                               .append(" (taxonId=").append(taxonId)
