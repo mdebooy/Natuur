@@ -16,14 +16,26 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -51,6 +63,11 @@ public class RangDto extends Dto implements Comparable<RangDto> {
   @Column(name="RANG", length=3, nullable=false)
   private String  rang;
 
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=RangnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="RANG", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, RangnaamDto>  rangnamen = new HashMap<>();
+
   public static class NiveauComparator
       implements Comparator<RangDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
@@ -59,6 +76,13 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     public int compare(RangDto rangDto1, RangDto rangDto2) {
       return rangDto1.niveau.compareTo(rangDto2.niveau);
     }
+  }
+
+  public void addNaam(RangnaamDto rangnaamDto) {
+    if (DoosUtils.isBlankOrNull(rangnaamDto.getRang())) {
+      rangnaamDto.setRang(rang);
+    }
+    rangnamen.put(rangnaamDto.getTaal(), rangnaamDto);
   }
 
   @Override
@@ -81,6 +105,15 @@ public class RangDto extends Dto implements Comparable<RangDto> {
                               .isEquals();
   }
 
+  @Transient
+  public String getNaam(String taal) {
+    if (rangnamen.containsKey(taal)) {
+      return rangnamen.get(taal).getNaam();
+    } else {
+      return rang;
+    }
+  }
+
   public Long getNiveau() {
     return niveau;
   }
@@ -89,9 +122,26 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     return rang;
   }
 
+  public Collection<RangnaamDto> getRangnamen() {
+    return rangnamen.values();
+  }
+
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();
+  }
+
+  @Transient
+  public boolean hasRangnaam(String taal) {
+    return rangnamen.containsKey(taal);
+  }
+
+  public void removeRangnaam(String taal) {
+    if (rangnamen.containsKey(taal)) {
+      rangnamen.remove(taal);
+    } else {
+      throw new ObjectNotFoundException(DoosLayer.PERSISTENCE, taal);
+    }
   }
 
   public void setNiveau(Long niveau) {
@@ -100,5 +150,16 @@ public class RangDto extends Dto implements Comparable<RangDto> {
 
   public void setRang(String rang) {
     this.rang = rang;
+  }
+
+  public void setRangnamen(Collection<RangnaamDto> rangnamen) {
+    this.rangnamen.clear();
+    rangnamen.forEach(rangnaam -> this.rangnamen.put(rangnaam.getTaal(),
+                                                     rangnaam));
+  }
+
+  public void setRangnamen(Map<String, TaxonnaamDto> taxonnamen) {
+    this.rangnamen.clear();
+    this.rangnamen.putAll(rangnamen);
   }
 }
