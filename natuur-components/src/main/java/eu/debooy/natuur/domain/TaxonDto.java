@@ -188,7 +188,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {
-    //TODO Kijken voor 'de' JPA manier.
     if (null == taxonnaamDto.getTaxonId()) {
       taxonnaamDto.setTaxonId(taxonId);
     }
