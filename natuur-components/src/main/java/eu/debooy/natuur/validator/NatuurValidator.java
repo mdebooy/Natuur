@@ -19,6 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.List;
 
 
@@ -61,8 +62,13 @@ public class NatuurValidator {
   protected static void valideerWaarnemingId(Long waarnemingId,
                                              List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(waarnemingId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.waarneming"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(WaarnemingDto.COL_WAARNEMINGID)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.waarneming"})
+                            .build());
+
     }
   }
 }

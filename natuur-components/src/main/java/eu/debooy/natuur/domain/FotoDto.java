@@ -38,6 +38,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class FotoDto extends Dto implements Comparable<FotoDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_FOTOBESTAND   = "FOTO_BESTAND";
+  public static final String  COL_FOTODETAIL    = "FOTO_DETAIL";
+  public static final String  COL_FOTOID        = "FOTO_ID";
+  public static final String  COL_OPMERKING     = "OPMERKING";
+  public static final String  COL_TAXONSEQ      = "TAXON_SEQ";
+  public static final String  COL_WAARNEMINGID  = "WAARNEMING_ID";
+
   public static final String  PAR_WAARNEMINGID  = "waarnemingId";
 
   public static final String  QRY_WAARNEMINGID  = "fotosPerWaarneming";

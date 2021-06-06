@@ -50,23 +50,37 @@ public final class FotoValidator extends NatuurValidator {
   private static void valideerFotoBestand(String fotoBestand,
                                           List<Message> fouten) {
     if (fotoBestand.length() > 255) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotobestand", 255));
+      fouten.add(new Message.Builder()
+                            .setAttribute(FotoDto.COL_FOTOBESTAND)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.fotobestand",
+                                                    255})
+                            .build());
     }
   }
 
   private static void valideerFotoDetail(String fotoDetail,
                                          List<Message> fouten) {
     if (fotoDetail.length() > 20) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotodetail", 20));
+      fouten.add(new Message.Builder()
+                            .setAttribute(FotoDto.COL_FOTODETAIL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.fotodetail",
+                                                    20})
+                            .build());
     }
   }
 
   private static void valideerTaxonSeq(Long taxonSeq, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(taxonSeq)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.seq"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(FotoDto.COL_TAXONSEQ)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.seq"})
+                            .build());
     }
   }
 }

@@ -38,18 +38,33 @@ import org.junit.Test;
  */
 public class FotoValidatorTest {
   public static final Message ERR_FOTOBESTAND   =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotobestand", 255);
+      new Message.Builder()
+                 .setAttribute(FotoDto.COL_FOTOBESTAND)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.fotobestand", 255})
+                 .build();
   public static final Message ERR_FOTODETAIL    =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.fotodetail", 20);
+      new Message.Builder()
+                 .setAttribute(FotoDto.COL_FOTODETAIL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.fotodetail",20})
+                 .build();
   public static final Message REQ_TAXONSEQ      =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.seq");
+      new Message.Builder()
+                 .setAttribute(FotoDto.COL_TAXONSEQ)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.seq"})
+                 .build();
   public static final Message REQ_WAARNEMINGID  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.waarneming");
-
+      new Message.Builder()
+                 .setAttribute(FotoDto.COL_WAARNEMINGID)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.waarneming"})
+                 .build();
 
   private void setFouten(List<Message> expResult) {
     expResult.add(ERR_FOTOBESTAND);
