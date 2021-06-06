@@ -17,10 +17,12 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
-import java.util.ArrayList;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,6 +31,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.MapKey;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -50,6 +53,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;
+
+  public static final String COL_AANTAL       = "AANTAL";
+  public static final String COL_DATUM        = "DATUM";
+  public static final String COL_GEBIEDID     = "GEBIED_ID";
+  public static final String COL_OPMERKING    = "OPMERKING";
+  public static final String COL_TAXONID      = "TAXON_ID";
+  public static final String COL_WAARNEMINGID = "WAARNEMING_ID";
 
   public static final String  PAR_GEBIEDID  = "gebiedId";
   public static final String  PAR_TAXONID   = "taxonId";
@@ -76,7 +86,15 @@ public class WaarnemingDto
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=FotoDto.class, orphanRemoval=true)
   @JoinColumn(name="WAARNEMING_ID", nullable=false, updatable=false, insertable=true)
-  private Collection<FotoDto> fotos = new ArrayList<>();
+  @MapKey(name="taxonSeq")
+  private Map<Long, FotoDto>  fotos = new HashMap<>();
+
+  public void addFoto(FotoDto fotoDto) {
+    if (null == fotoDto.getWaarnemingId()) {
+      fotoDto.setWaarnemingId(waarnemingId);
+    }
+    fotos.put(fotoDto.getTaxonSeq(), fotoDto);
+  }
 
   @Override
   public int compareTo(WaarnemingDto waarnemingDto) {
@@ -114,11 +132,19 @@ public class WaarnemingDto
       return null;
     }
 
-    return (Date) datum.clone();
+    return new Date(datum.getTime());
+  }
+
+  public FotoDto getFoto(Long taxonSeq) {
+    if (fotos.containsKey(taxonSeq)) {
+      return fotos.get(taxonSeq);
+    } else {
+      return new FotoDto();
+    }
   }
 
   public Collection<FotoDto> getFotos() {
-    return List.copyOf(fotos);
+    return fotos.values();
   }
 
   public GebiedDto getGebied() {
@@ -142,6 +168,15 @@ public class WaarnemingDto
     return new HashCodeBuilder().append(waarnemingId).toHashCode();
   }
 
+  public void removeFoto(Long taxonSeq) {
+    if (fotos.containsKey(taxonSeq)) {
+      fotos.remove(taxonSeq);
+    } else {
+      throw new ObjectNotFoundException(DoosLayer.PERSISTENCE,
+                                        taxonSeq.toString());
+    }
+  }
+
   public void setAantal(Integer aantal) {
     this.aantal = aantal;
   }
@@ -150,13 +185,18 @@ public class WaarnemingDto
     if (null == datum) {
       this.datum  = null;
     } else {
-      this.datum  = (Date) datum.clone();
+      this.datum  = new Date(datum.getTime());
     }
   }
 
   public void setFotos(Collection<FotoDto> fotos) {
     this.fotos.clear();
-    this.fotos.addAll(fotos);
+    fotos.forEach(foto -> this.fotos.put(foto.getTaxonSeq(), foto));
+  }
+
+  public void setFotos(Map<Long, FotoDto> fotos) {
+    this.fotos.clear();
+    this.fotos.putAll(fotos);
   }
 
   public void setGebied(GebiedDto gebied) {
