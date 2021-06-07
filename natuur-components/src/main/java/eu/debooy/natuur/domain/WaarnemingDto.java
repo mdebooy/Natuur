@@ -54,12 +54,12 @@ public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String COL_AANTAL       = "AANTAL";
-  public static final String COL_DATUM        = "DATUM";
-  public static final String COL_GEBIEDID     = "GEBIED_ID";
-  public static final String COL_OPMERKING    = "OPMERKING";
-  public static final String COL_TAXONID      = "TAXON_ID";
-  public static final String COL_WAARNEMINGID = "WAARNEMING_ID";
+  public static final String COL_AANTAL       = "aantal";
+  public static final String COL_DATUM        = "datum";
+  public static final String COL_GEBIEDID     = "gebiedId";
+  public static final String COL_OPMERKING    = "opmerking";
+  public static final String COL_TAXONID      = "taxonId";
+  public static final String COL_WAARNEMINGID = "waarnemingId";
 
   public static final String  PAR_GEBIEDID  = "gebiedId";
   public static final String  PAR_TAXONID   = "taxonId";
