@@ -41,34 +41,81 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class GebiedValidatorTest {
-  private static final  Message ERR_GEBIED        =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.gebied", 255);
   private static final  Message ERR_LATITUDE      =
-      new Message(Message.ERROR, "error.latitude");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LATITUDE)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.latitude")
+                 .build();
   private static final  Message ERR_LATITUDE_GR   =
-      new Message(Message.ERROR, "error.latitude.graden");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LATITUDEGRADEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.latitude.graden")
+                 .build();
   private static final  Message ERR_LATITUDE_MIN  =
-      new Message(Message.ERROR, "error.latitude.minuten");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LATITUDEMINUTEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.latitude.minuten")
+                 .build();
   private static final  Message ERR_LATITUDE_SEC  =
-      new Message(Message.ERROR, "error.latitude.seconden");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LATITUDESECONDEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.latitude.seconden")
+                 .build();
   private static final  Message ERR_LONGITUDE     =
-      new Message(Message.ERROR, "error.longitude");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LONGITUDE)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.longitude")
+                 .build();
   private static final  Message ERR_LONGITUDE_GR  =
-      new Message(Message.ERROR, "error.longitude.graden");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LONGITUDEGRADEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.longitude.graden")
+                 .build();
   private static final  Message ERR_LONGITUDE_MIN =
-      new Message(Message.ERROR, "error.longitude.minuten");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LONGITUDEMINUTEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.longitude.minuten")
+                 .build();
   private static final  Message ERR_LONGITUDE_SEC =
-      new Message(Message.ERROR, "error.longitude.seconden");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LONGITUDESECONDEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.longitude.seconden")
+                 .build();
+  private static final  Message ERR_NAAM          =
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.gebied", 255})
+                 .build();
   private static final  Message ERR_ONVOLLEDIG    =
-      new Message(Message.ERROR, "error.coordinaten.onvolledig");
+      new Message.Builder()
+                 .setSeverity(Message.ERROR)
+                 .setMessage("error.coordinaten.onvolledig")
+                 .build();
 
   private static final  Message REQ_GEBIED  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.gebied");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.gebied"})
+                 .build();
   private static final  Message REQ_LANDID  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.land");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_LANDID)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.land"})
+                 .build();
 
   private Gebied getFoutGebied1() {
     Gebied  gebied  = new Gebied();
@@ -105,8 +152,8 @@ public class GebiedValidatorTest {
   }
 
   private void setFouten(List<Message> expResult) {
-    expResult.add(ERR_GEBIED);
     expResult.add(REQ_LANDID);
+    expResult.add(ERR_NAAM);
     expResult.add(ERR_LATITUDE);
     expResult.add(ERR_LATITUDE_GR);
     expResult.add(ERR_LATITUDE_MIN);
