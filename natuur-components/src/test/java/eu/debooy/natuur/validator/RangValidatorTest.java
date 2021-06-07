@@ -35,11 +35,19 @@ import org.junit.Test;
  */
 public class RangValidatorTest {
   public static final Message ERR_NIVEAU  =
-      new Message(Message.ERROR, PersistenceConstants.NIETGROTER,
-                  "_I18N.label.niveau", 0);
+      new Message.Builder()
+                 .setAttribute(RangDto.COL_NIVEAU)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.NIETGROTER)
+                 .setParams(new Object[]{"_I18N.label.niveau", 0})
+                 .build();
   public static final Message REQ_NIVEAU  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.niveau");
+      new Message.Builder()
+                 .setAttribute(RangDto.COL_NIVEAU)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.niveau"})
+                 .build();
 
   @Test
   public void testValideerGoedeRang() {

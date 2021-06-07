@@ -46,11 +46,19 @@ public final class RangValidator extends NatuurValidator {
 
   private static void valideerNiveau(Long niveau, List<Message> fouten) {
     if (null == niveau) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.niveau"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(RangDto.COL_NIVEAU)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.niveau"})
+                            .build());
     } else if (niveau <= 0) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.NIETGROTER,
-                             "_I18N.label.niveau", 0));
+      fouten.add(new Message.Builder()
+                            .setAttribute(RangDto.COL_NIVEAU)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.NIETGROTER)
+                            .setParams(new Object[]{"_I18N.label.niveau", 0})
+                            .build());
     }
   }
 }
