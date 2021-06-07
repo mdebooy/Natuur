@@ -39,14 +39,26 @@ import org.junit.Test;
  */
 public class TaxonValidatorTest {
   private static final  Message ERR_LATIJNSENAAM  =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.latijnsenaam", 255);
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.latijnsenaam", 255})
+                 .build();
   private static final  Message REQ_LATIJNSENAAM  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.latijnsenaam");
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.latijnsenaam"})
+                 .build();
   private static final  Message REQ_VOLGNUMER     =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.volgnummer");
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_VOLGNUMMER)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.volgnummer"})
+                 .build();
 
   private static void setFoutenList(List<Message> expResult) {
     expResult.add(ERR_LATIJNSENAAM);

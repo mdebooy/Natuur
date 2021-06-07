@@ -49,20 +49,33 @@ public final class TaxonValidator extends NatuurValidator {
 
   private static void valideerLatijnsenaam(String latijnsenaam,
                                            List<Message> fouten) {
-    if (latijnsenaam.length() < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.latijnsenaam"));
+    if (DoosUtils.isBlankOrNull(latijnsenaam)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.latijnsenaam"})
+                            .build());
     } else if (latijnsenaam.length() > 255) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.latijnsenaam", 255));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.latijnsenaam",
+                                                    255})
+                            .build());
     }
   }
 
   private static void valideerVolgnummer(Integer volgnummer,
                                          List<Message> fouten) {
     if (null == volgnummer) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.volgnummer"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_VOLGNUMMER)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.volgnummer"})
+                            .build());
     }
   }
 }
