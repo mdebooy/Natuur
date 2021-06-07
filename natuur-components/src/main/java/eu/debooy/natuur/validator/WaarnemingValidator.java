@@ -61,18 +61,30 @@ public final class WaarnemingValidator extends NatuurValidator {
   private static void valideerAantal(Integer aantal, List<Message> fouten) {
     if (null != aantal
         && aantal.compareTo(0) < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
-                             "_I18N.label.aantal", 1));
+      fouten.add(new Message.Builder()
+                            .setAttribute(WaarnemingDto.COL_AANTAL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.ISKLEINER)
+                            .setParams(new Object[]{"_I18N.label.aantal", 1})
+                            .build());
     }
   }
 
   private static void valideerDatum(Date datum, List<Message> fouten) {
     if ( null == datum) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.datum"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(WaarnemingDto.COL_DATUM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.datum"})
+                            .build());
     } else if (datum.after(new Date())) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                             Datum.fromDate(datum)));
+      fouten.add(new Message.Builder()
+                            .setAttribute(WaarnemingDto.COL_DATUM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.FUTURE)
+                            .setParams(new Object[]{Datum.fromDate(datum)})
+                            .build());
     }
   }
 }

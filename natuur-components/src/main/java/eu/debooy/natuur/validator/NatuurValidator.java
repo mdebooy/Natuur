@@ -19,6 +19,9 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.RangDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.List;
 
@@ -29,33 +32,54 @@ import java.util.List;
 public class NatuurValidator {
   protected static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(gebiedId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.gebied"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_GEBIEDID)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.gebied"})
+                            .build());
     }
   }
 
   protected static void valideerOpmerking(String opmerking,
                                         List<Message> fouten) {
     if (opmerking.length() > 2000) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.opmerking", 2000));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_OPMERKING)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.opmerking",
+                                                    2000})
+                            .build());
     }
   }
 
   protected static void valideerRang(String rang, List<Message> fouten) {
-    if (rang.length() < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.rang"));
+    if (DoosUtils.isBlankOrNull(rang)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(RangDto.COL_RANG)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.rang"})
+                            .build());
     } else if (rang.length() > 3) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                             "_I18N.label.rang", 3));
+      fouten.add(new Message.Builder()
+                            .setAttribute(RangDto.COL_RANG)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.rang", 3})
+                            .build());
     }
   }
 
   protected static void valideerTaxonId(Long taxonId, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(taxonId)) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.soort"));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_TAXONID)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.soort"})
+                            .build());
     }
   }
 

@@ -18,6 +18,9 @@ package eu.debooy.natuur;
 
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.RangDto;
+import eu.debooy.natuur.domain.TaxonDto;
 
 
 /**
@@ -71,21 +74,41 @@ public final class TestConstants {
   public static final int     WAARNEMINGID_HASH   = -2147483008;
 
   public static final Message ERR_OPMERKING =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.opmerking", 2000);
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_OPMERKING)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.opmerking", 2000})
+                 .build();
   public static final Message ERR_RANG      =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.rang", 3);
+      new Message.Builder()
+                 .setAttribute(RangDto.COL_RANG)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.rang", 3})
+                 .build();
 
   public static final Message REQ_GEBIEDID  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.gebied");
+      new Message.Builder()
+                 .setAttribute(GebiedDto.COL_GEBIEDID)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.gebied"})
+                 .build();
   public static final Message REQ_RANG      =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.rang");
+      new Message.Builder()
+                 .setAttribute(RangDto.COL_RANG)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.rang"})
+                 .build();
   public static final Message REQ_TAXONID   =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.soort");
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_TAXONID)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.soort"})
+                 .build();
 
   private TestConstants() {
     throw new IllegalStateException("Utility class");

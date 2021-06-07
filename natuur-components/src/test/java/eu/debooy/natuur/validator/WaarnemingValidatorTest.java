@@ -45,12 +45,20 @@ import org.junit.Test;
  */
 public class WaarnemingValidatorTest {
   public static final Message ERR_AANTAL  =
-      new Message(Message.ERROR, PersistenceConstants.ISKLEINER,
-                  "_I18N.label.aantal", 1);
+      new Message.Builder()
+                 .setAttribute(WaarnemingDto.COL_AANTAL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.ISKLEINER)
+                 .setParams(new Object[]{"_I18N.label.aantal", 1})
+                 .build();
 
   public static final Message REQ_DATUM =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.datum");
+      new Message.Builder()
+                 .setAttribute(WaarnemingDto.COL_DATUM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.datum"})
+                 .build();
 
   private static  Message   errDatum;
   private static  Date      morgen;
@@ -65,10 +73,14 @@ public class WaarnemingValidatorTest {
     kalender.add(Calendar.DAY_OF_YEAR, 1);
     morgen    = kalender.getTime();
 
-    errDatum  = new Message(Message.ERROR, PersistenceConstants.FUTURE,
-                            Datum.fromDate(morgen));
+    errDatum  = new Message.Builder()
+                           .setAttribute(WaarnemingDto.COL_DATUM)
+                           .setSeverity(Message.ERROR)
+                           .setMessage(PersistenceConstants.FUTURE)
+                           .setParams(new Object[]{Datum.fromDate(morgen)})
+                           .build();
 
-    gebied    = TestUtils.getGebied();
+gebied    = TestUtils.getGebied();
     gebiedDto = TestUtils.getGebiedDto();
     taxon     = TestUtils.getTaxon();
     taxonDto  = TestUtils.getTaxonDto();
