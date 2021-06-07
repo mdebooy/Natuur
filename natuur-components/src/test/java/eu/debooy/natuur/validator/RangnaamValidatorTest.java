@@ -22,6 +22,7 @@ import eu.debooy.doosutils.components.Message;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_FOUT;
+import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.form.Rangnaam;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +35,34 @@ import org.junit.Test;
  */
 public class RangnaamValidatorTest {
   private static final  Message ERR_NAAM  =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.naam", 255);
+      new Message.Builder()
+                 .setAttribute(RangnaamDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.naam", 255})
+                 .build();
   private static final  Message ERR_TAAL  =
-      new Message(Message.ERROR, PersistenceConstants.FIXLENGTH,
-                  "_I18N.label.taal", 2);
+      new Message.Builder()
+                 .setAttribute(RangnaamDto.COL_TAAL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.FIXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.taal", 2})
+                 .build();
 
   private static final  Message REQ_NAAM  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.naam");
+      new Message.Builder()
+                 .setAttribute(RangnaamDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.naam"})
+                 .build();
   private static final  Message REQ_TAAL  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.taal");
+      new Message.Builder()
+                 .setAttribute(RangnaamDto.COL_TAAL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.taal"})
+                 .build();
 
   @Test
   public void testValideerFouteRangnaam() {
