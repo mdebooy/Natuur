@@ -35,18 +35,34 @@ import org.junit.Test;
  */
 public class TaxonnaamValidatorTest {
   private static final  Message ERR_NAAM  =
-      new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                  "_I18N.label.naam", 255);
+      new Message.Builder()
+                 .setAttribute(TaxonnaamDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.MAXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.naam", 255})
+                 .build();
   private static final  Message ERR_TAAL  =
-      new Message(Message.ERROR, PersistenceConstants.FIXLENGTH,
-                  "_I18N.label.taal", 2);
+      new Message.Builder()
+                 .setAttribute(TaxonnaamDto.COL_TAAL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.FIXLENGTH)
+                 .setParams(new Object[]{"_I18N.label.taal", 2})
+                 .build();
 
   private static final  Message REQ_NAAM  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.naam");
+      new Message.Builder()
+                 .setAttribute(TaxonnaamDto.COL_NAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.naam"})
+                 .build();
   private static final  Message REQ_TAAL  =
-      new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                  "_I18N.label.taal");
+      new Message.Builder()
+                 .setAttribute(TaxonnaamDto.COL_TAAL)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.taal"})
+                 .build();
 
   @Test
   public void testValideerFouteTaxonnaam() {

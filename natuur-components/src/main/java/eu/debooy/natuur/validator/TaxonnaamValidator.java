@@ -45,25 +45,41 @@ public final class TaxonnaamValidator extends NatuurValidator {
   }
 
   private static void valideerNaam(String naam, List<Message> fouten) {
-    if (naam.length() < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.naam"));
+    if (DoosUtils.isBlankOrNull(naam)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_NAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.naam"})
+                            .build());
     } else {
       if (naam.length() > 255) {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.MAXLENGTH,
-                               "_I18N.label.naam", 255));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_NAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.naam", 255})
+                            .build());
       }
     }
   }
 
   private static void valideerTaal(String taal, List<Message> fouten) {
-    if (taal.length() < 1) {
-      fouten.add(new Message(Message.ERROR, PersistenceConstants.REQUIRED,
-                             "_I18N.label.taal"));
+    if (DoosUtils.isBlankOrNull(taal)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_TAAL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.taal"})
+                            .build());
     } else {
       if (taal.length() != 2) {
-        fouten.add(new Message(Message.ERROR, PersistenceConstants.FIXLENGTH,
-                               "_I18N.label.taal", 2));
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_TAAL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.FIXLENGTH)
+                            .setParams(new Object[]{"_I18N.label.taal", 2})
+                            .build());
       }
     }
   }
