@@ -27,6 +27,8 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import static eu.debooy.natuur.Natuur.TAXON_REDIRECT;
+import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
@@ -34,6 +36,7 @@ import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
+import eu.debooy.natuur.validator.FotoValidator;
 import eu.debooy.natuur.validator.WaarnemingValidator;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,6 +63,8 @@ public class WaarnemingController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(WaarnemingController.class);
 
+  private Foto          foto;
+  private FotoDto       fotoDto;
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
 
@@ -80,6 +85,14 @@ public class WaarnemingController extends Natuur {
     redirect(WAARNEMING_REDIRECT);
   }
 
+  public void createFoto() {
+    foto    = new Foto();
+    fotoDto = new FotoDto();
+    setDetailAktie(PersistenceConstants.CREATE);
+    setDetailSubTitel("natuur.titel.foto.create");
+    redirect(WNMFOTO_REDIRECT);
+  }
+
   public void delete(Long waarnemingId) {
     try {
       waarneming =
@@ -97,14 +110,33 @@ public class WaarnemingController extends Natuur {
             Datum.fromDate(waarneming.getDatum()));
   }
 
+  public void deleteFoto(Long taxonSeq) {
+    try {
+      waarnemingDto.removeFoto(taxonSeq);
+      getWaarnemingService().save(waarnemingDto);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, taxonSeq);
+      return;
+    } catch (DoosRuntimeException e) {
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      generateExceptionMessage(e);
+      return;
+    }
+    addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
+  }
+
   public String formateerDatum(Date datum) {
     return Datum.fromDate(datum);
+  }
+
+  public Foto getFoto() {
+    return foto;
   }
 
   public List<Foto> getFotos() {
     List<Foto>  fotos = new ArrayList<>();
 
-    waarnemingDto.getFotos().forEach(foto -> fotos.add(new Foto(foto)));
+    waarnemingDto.getFotos().forEach(rij -> fotos.add(new Foto(rij)));
 
     return fotos;
   }
@@ -186,12 +218,55 @@ public class WaarnemingController extends Natuur {
     }
   }
 
+  public void saveFoto() {
+    List<Message> messages  = FotoValidator.valideer(foto);
+    if (!messages.isEmpty()) {
+      addMessage(messages);
+      return;
+    }
+
+    try {
+      fotoDto = new FotoDto();
+      foto.persist(fotoDto);
+      waarnemingDto.addFoto(fotoDto);
+      getWaarnemingService().save(waarnemingDto);
+      switch (getDetailAktie().getAktie()) {
+      case PersistenceConstants.CREATE:
+        addInfo(PersistenceConstants.CREATED, "'" + foto.getTaxonSeq()+ "'");
+        break;
+      case PersistenceConstants.UPDATE:
+        addInfo(PersistenceConstants.UPDATED, "'" + foto.getTaxonSeq() + "'");
+        break;
+      default:
+        addError(ComponentsConstants.WRONGREDIRECT,
+                 getDetailAktie().getAktie()) ;
+        break;
+      }
+      redirect(WAARNEMING_REDIRECT);
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, foto.getTaxonSeq());
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, foto.getTaxonSeq());
+    } catch (DoosRuntimeException e) {
+      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      generateExceptionMessage(e);
+    }
+  }
+
   public void update(Long waarnemingId) {
     waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
     waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.waarneming.update");
     redirect(WAARNEMING_REDIRECT);
+  }
+
+  public void updateFoto(Long taxonSeq) {
+    fotoDto = waarnemingDto.getFoto(taxonSeq);
+    foto    = new Foto(fotoDto);
+    setDetailAktie(PersistenceConstants.UPDATE);
+    setDetailSubTitel("natuur.titel.taxonnaam.update");
+    redirect(WNMFOTO_REDIRECT);
   }
 
   public void waarnemingenlijst() {

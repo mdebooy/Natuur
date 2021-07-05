@@ -26,11 +26,9 @@ import eu.debooy.natuur.service.TaxonService;
 import eu.debooy.natuur.service.TaxonnaamService;
 import eu.debooy.natuur.service.WaarnemingService;
 import eu.debooy.sedes.component.business.II18nLandnaam;
-
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,6 +72,8 @@ public class Natuur extends DoosBean {
       "/waarnemingen/waarneming.xhtml";
   public static final String  WAARNEMINGEN_REDIRECT =
       "/waarnemingen/waarnemingen.xhtml";
+  public static final String  WNMFOTO_REDIRECT      =
+      "/waarnemingen/foto.xhtml";
 
   public Natuur() {
     LOGGER.debug("Nieuwe Natuur Sessie geopend.");
@@ -97,7 +97,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de DetailService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return DetailService
    */
   protected DetailService getDetailService() {
@@ -111,7 +111,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de FotoService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return FotoService
    */
   protected FotoService getFotoService() {
@@ -125,7 +125,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de GebiedService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return GebiedService
    */
   protected GebiedService getGebiedService() {
@@ -139,7 +139,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de II18nLandnaam.
-   * 
+   *
    * @return II18nLandnaam
    */
   protected II18nLandnaam getI18nLandnaam() {
@@ -148,7 +148,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de RangService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return RangService
    */
   protected RangService getRangService() {
@@ -162,7 +162,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de TaxonnaamService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return TaxonnaamService
    */
   protected TaxonnaamService getTaxonnaamService() {
@@ -176,7 +176,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de TaxonService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return TaxonService
    */
   protected TaxonService getTaxonService() {
@@ -190,7 +190,7 @@ public class Natuur extends DoosBean {
 
   /**
    * Geef de WaarnemingService. Als die nog niet gekend is haal het dan op.
-   * 
+   *
    * @return WaarnemingService
    */
   protected WaarnemingService getWaarnemingService() {
