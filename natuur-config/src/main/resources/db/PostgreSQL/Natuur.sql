@@ -118,6 +118,7 @@ CREATE TABLE NATUUR.TAXA (
   PARENT_ID                       INTEGER,
   RANG                            VARCHAR(3)      NOT NULL,
   TAXON_ID                        INTEGER         NOT NULL  DEFAULT NEXTVAL('NATUUR.SEQ_TAXA'::REGCLASS),
+  UITGESTORVEN                    CHAR(1)         NOT NULL  DEFAULT 'N',
   VOLGNUMMER                      SMALLINT        NOT NULL  DEFAULT 0,
   CONSTRAINT PK_TAXA PRIMARY KEY (TAXON_ID)
 );
@@ -255,6 +256,9 @@ ALTER TABLE NATUUR.TAXA
   ADD CONSTRAINT UK_TAX_LATIJNSENAAM UNIQUE(LATIJNSENAAM);
 
 ALTER TABLE NATUUR.TAXA
+  ADD CONSTRAINT CHK_TAX_UITGESTORVEN CHECK(UITGESTORVEN = ANY (ARRAY['N'::bpchar, 'J'::bpchar]));
+
+ALTER TABLE NATUUR.TAXA
   ADD CONSTRAINT FK_TAX_PARENT_ID FOREIGN KEY (PARENT_ID)
   REFERENCES NATUUR.TAXA (TAXON_ID)
   ON DELETE RESTRICT
@@ -377,6 +381,7 @@ COMMENT ON COLUMN NATUUR.TAXA.OPMERKING                     IS 'Een opmerking vo
 COMMENT ON COLUMN NATUUR.TAXA.PARENT_ID                     IS 'De parent van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.RANG                          IS 'De rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.TAXON_ID                      IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXA.UITGESTORVEN                  IS 'Is de taxon uitgestorven?';
 COMMENT ON COLUMN NATUUR.TAXA.VOLGNUMMER                    IS 'Het volgnummer dat gebruikt wordt in publicaties. Is 0 als er op (latijnse)naam gesorteerd wordt.';
 COMMENT ON TABLE  NATUUR.TAXONNAMEN                         IS 'Deze tabel bevat de namen van de TAXA in verschillende talen.';
 COMMENT ON COLUMN NATUUR.TAXONNAMEN.NAAM                    IS 'De naam van de taxon.';
@@ -414,24 +419,28 @@ INSERT INTO NATUUR.RANGEN
          (7 , 'ist'),
          (8 , 'kl'),
          (9 , 'okl'),
-         (10, 'sor'),
-         (11, 'or'),
-         (12, 'oor'),
-         (13, 'ior'),
-         (14, 'sfa'),
-         (15, 'fa'),
-         (16, 'ofa'),
-         (17, 'ta'),
-         (18, 'ota'),
-         (19, 'ge'),
-         (20, 'oge'),
-         (21, 'so'),
-         (22, 'oso');
+         (10, 'ikl'),
+         (11, 'pkl'),
+         (12, 'sor'),
+         (13, 'or'),
+         (14, 'oor'),
+         (15, 'ior'),
+         (16, 'por'),
+         (17, 'sfa'),
+         (18, 'fa'),
+         (19, 'ofa'),
+         (20, 'ta'),
+         (21, 'ota'),
+         (22, 'ge'),
+         (23, 'oge'),
+         (24, 'so'),
+         (25, 'oso');
 
 INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domein',        'nl'),
          ('fa' , 'Familie',       'nl'),
          ('ge' , 'Geslacht',      'nl'),
+         ('ikl', 'Infraklasse',   'nl'),
          ('ior', 'Infraorde',     'nl'),
          ('ist', 'Infrastam',     'nl'),
          ('kl' , 'Klasse',        'nl'),
@@ -445,6 +454,8 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
          ('oso', 'Ondersoort',    'nl'),
          ('ost', 'Onderstam',     'nl'),
          ('ota', 'Ondertak',      'nl'),
+         ('pkl', 'Parvklasse',    'nl'),
+         ('por', 'Parvorde',      'nl'),
          ('ri' , 'Rijk',          'nl'),
          ('sfa', 'Superfamilie',  'nl'),
          ('so' , 'Soort',         'nl'),
@@ -456,6 +467,7 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domain',      'en'),
          ('fa' , 'Family',      'en'),
          ('ge' , 'Genus',       'en'),
+         ('ikl', 'Infraclass',  'en'),
          ('ior', 'Infraorder',  'en'),
          ('ist', 'Infraphylum', 'en'),
          ('kl' , 'Class',       'en'),
@@ -469,10 +481,39 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
          ('oso', 'Subspecies',  'en'),
          ('ost', 'Subphylum',   'en'),
          ('ota', 'Subtribe',    'en'),
+         ('pkl', 'Parvclass',   'en'),
+         ('por', 'Parvorder',   'en'),
          ('ri' , 'Kingdom',     'en'),
          ('sfa', 'Superfamily', 'en'),
          ('so' , 'Species',     'en'),
          ('sor', 'Superorder',  'en'),
          ('st' , 'Phylum',      'en'),
          ('ta' , 'Tribe',       'en');
+
+INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+  VALUES ('do' , 'Domäne',        'de'),
+         ('fa' , 'Familie',       'de'),
+         ('ge' , 'Gattung',       'de'),
+         ('ikl', 'Infraklasse',   'de'),
+         ('ior', 'Infraordnung',  'de'),
+         ('ist', 'Infrastamm',    'de'),
+         ('kl' , 'Klasse',        'de'),
+         ('le' , 'Lebewesen',     'de'),
+         ('ofa', 'Subfamilie',    'de'),
+         ('oge', 'Subgattung',    'de'),
+         ('okl', 'Subklasse',     'de'),
+         ('oor', 'Subordnung',    'de'),
+         ('or' , 'Ordnung',       'de'),
+         ('ori', 'Subreich',      'de'),
+         ('oso', 'Subart',        'de'),
+         ('ost', 'Substamm',      'de'),
+         ('ota', 'Subtribus',     'de'),
+         ('pkl', 'Parvklasse',    'de'),
+         ('por', 'Parvordnung',   'de'),
+         ('ri' , 'Reich',         'de'),
+         ('sfa', 'Superfamilie',  'de'),
+         ('so' , 'Art',           'de'),
+         ('sor', 'Superordnung',  'de'),
+         ('st' , 'Stamm',         'de'),
+         ('ta' , 'Tribus',        'de');
 
