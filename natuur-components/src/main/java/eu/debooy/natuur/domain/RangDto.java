@@ -158,7 +158,7 @@ public class RangDto extends Dto implements Comparable<RangDto> {
                                                      rangnaam));
   }
 
-  public void setRangnamen(Map<String, TaxonnaamDto> taxonnamen) {
+  public void setRangnamen(Map<String, RangnaamDto> rangnamen) {
     this.rangnamen.clear();
     this.rangnamen.putAll(rangnamen);
   }

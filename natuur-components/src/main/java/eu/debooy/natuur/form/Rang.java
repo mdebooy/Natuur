@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RangDto;
 import java.io.Serializable;
@@ -32,17 +33,26 @@ public class Rang
     extends Formulier implements Comparable<Rang>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
+  private String  naam;
   private Long    niveau;
   private String  rangcode;
 
   public Rang() {}
 
   public Rang(Rang rang) {
+    naam      = rang.getNaam();
     niveau    = rang.getNiveau();
     rangcode  = rang.getRang();
   }
 
   public Rang(RangDto rangDto) {
+    this(rangDto, null);
+  }
+
+  public Rang(RangDto rangDto, String taal) {
+    if (DoosUtils.isNotBlankOrNull(taal)) {
+      naam    = rangDto.getNaam(taal);
+    }
     niveau    = rangDto.getNiveau();
     rangcode  = rangDto.getRang();
   }
@@ -74,6 +84,10 @@ public class Rang
 
     Rang  andere  = (Rang) object;
     return new EqualsBuilder().append(rangcode, andere.rangcode).isEquals();
+  }
+
+  public String getNaam() {
+    return (DoosUtils.isBlankOrNull(naam) ? rangcode : naam);
   }
 
   public Long getNiveau() {

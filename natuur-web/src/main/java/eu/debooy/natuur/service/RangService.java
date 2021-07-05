@@ -134,6 +134,15 @@ public class RangService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Rang> query(String taal) {
+    List<Rang>  rangen  = new ArrayList<>();
+
+    rangDao.getAll().forEach(rij -> rangen.add(new Rang(rij, taal)));
+
+    return rangen;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public RangDto rang(String rang) {
     try {
       return rangDao.getByPrimaryKey(rang);

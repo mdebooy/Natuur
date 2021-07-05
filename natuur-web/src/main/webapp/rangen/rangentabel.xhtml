@@ -19,14 +19,13 @@
     <tbody>
       <t:dataList var="rang" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <ui:param name="rangtekst" value="#{natuurRang.getRangtekst(rang.rang)}" />
           <td>
             <h:commandLink action="#{natuurRang.retrieve(rang.rang)}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
             <h:commandLink action="#{natuurRang.delete(rang.rang)}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{rangtekst}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{rang.niveau}</td>
-          <td>#{rangtekst}</td>
+          <td>#{rang.naam}</td>
         </tr>
       </t:dataList>
     </tbody>

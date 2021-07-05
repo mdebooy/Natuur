@@ -78,11 +78,11 @@ public class RangController extends Natuur {
   }
 
   public Collection<Rang> getRangen() {
-    return getRangService().query();
+    return getRangService().query(getGebruikersTaal());
   }
 
   public String getRangtekst(String rang) {
-    return getTekst("biologie.rang." + rang);
+    return getRangService().rang(rang).getNaam(getGebruikersTaal());
   }
 
   public Collection<Rangtotaal> getRangtotalen() {
