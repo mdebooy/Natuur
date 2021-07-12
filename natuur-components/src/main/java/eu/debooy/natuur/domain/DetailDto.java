@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
 import java.util.Collection;
@@ -93,6 +94,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="TAXON_ID", insertable= false, updatable=false)
   private Long      taxonId;
+  @Column(name="UITGESTORVEN", length=1, nullable=false)
+  private String    uitgestorven;
   @Column(name="VOLGNUMMER")
   private Integer   volgnummer;
 
@@ -250,6 +253,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return taxonnamen.values();
   }
 
+  public boolean getUitgestorven() {
+    return uitgestorven.equals(DoosConstants.WAAR);
+  }
+
   public Integer getVolgnummer() {
     return volgnummer;
   }
@@ -257,5 +264,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(parentId).append(taxonId).toHashCode();
+  }
+
+  public boolean isUitgestorven() {
+    return getUitgestorven();
   }
 }

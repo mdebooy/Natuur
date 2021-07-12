@@ -17,6 +17,7 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
@@ -66,6 +67,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  COL_PARENTID      = "parentId";
   public static final String  COL_RANG          = "rang";
   public static final String  COL_TAXONID       = "taxonId";
+  public static final String  COL_UITGESTORVEN  = "uitgestorven";
   public static final String  COL_VOLGNUMMER    = "volgnummer";
 
   public static final String  PAR_KIND          = "kind";
@@ -89,6 +91,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
   private Long      taxonId;
+  @Column(name="UITGESTORVEN", length=1, nullable=false)
+  private String    uitgestorven  = DoosConstants.ONWAAR;
   @Column(name="VOLGNUMMER", nullable=false)
   private Integer   volgnummer    = 0;
 
@@ -184,6 +188,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     if (json.containsKey(COL_TAXONID)) {
       taxonId     = json.getJsonNumber(COL_TAXONID).longValue();
     }
+    uitgestorven  = json.getString(COL_UITGESTORVEN);
     volgnummer    = json.getJsonNumber(COL_VOLGNUMMER).intValue();
   }
 
@@ -255,6 +260,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return taxonnamen.values();
   }
 
+  public boolean getUitgestorven() {
+    return uitgestorven.equals(DoosConstants.WAAR);
+  }
+
   public Integer getVolgnummer() {
     return volgnummer;
   }
@@ -267,6 +276,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @Transient
   public boolean hasTaxonnaam(String taal) {
     return taxonnamen.containsKey(taal);
+  }
+
+  public boolean isUitgestorven() {
+    return getUitgestorven();
   }
 
   public void removeTaxonnaam(String taal) {
@@ -306,6 +319,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public void setTaxonnamen(Map<String, TaxonnaamDto> taxonnamen) {
     this.taxonnamen.clear();
     this.taxonnamen.putAll(taxonnamen);
+  }
+
+  public void setUitgestorven(boolean uitgestorven) {
+    this.uitgestorven =
+        uitgestorven ? DoosConstants.WAAR : DoosConstants.ONWAAR;
   }
 
   public void setVolgnummer(Integer volgnummer) {

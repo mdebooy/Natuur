@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -42,6 +43,8 @@ public final class TaxonValidator extends NatuurValidator {
                          fouten);
     valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
+    valideerUitgestorven(DoosUtils.nullToEmpty(taxon.getUitgestorven()),
+                         fouten);
     valideerVolgnummer(taxon.getVolgnummer(), fouten);
 
     return fouten;
@@ -56,13 +59,39 @@ public final class TaxonValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.latijnsenaam"})
                             .build());
-    } else if (latijnsenaam.length() > 255) {
+      return;
+    }
+    if (latijnsenaam.length() > 255) {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
                             .setParams(new Object[]{"_I18N.label.latijnsenaam",
                                                     255})
+                            .build());
+    }
+  }
+
+  private static void valideerUitgestorven(String uitgestorven,
+                                           List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(uitgestorven)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_UITGESTORVEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.REQUIRED)
+                            .setParams(new Object[]{"_I18N.label.uitgestorven"})
+                            .build());
+      return;
+    }
+    if (!uitgestorven.equals(DoosConstants.WAAR)
+        && !uitgestorven.equals(DoosConstants.ONWAAR)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_UITGESTORVEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.WRONGVALUE)
+                            .setParams(new Object[]{"_I18N.label.uitgestorven",
+                                                    DoosConstants.WAAR,
+                                                    DoosConstants.ONWAAR})
                             .build());
     }
   }

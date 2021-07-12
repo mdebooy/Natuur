@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
@@ -43,6 +44,7 @@ public class Taxon
   private Integer             parentVolgnummer;
   private String              rang;
   private Long                taxonId;
+  private String              uitgestorven        = DoosConstants.ONWAAR;
   private Integer             volgnummer          = 0;
 
   public Taxon() {}
@@ -57,6 +59,7 @@ public class Taxon
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
     taxonId             = taxon.getTaxonId();
+    uitgestorven        = taxon.getUitgestorven();
     volgnummer          = taxon.getVolgnummer();
   }
 
@@ -73,6 +76,8 @@ public class Taxon
     parentId      = taxonDto.getParentId();
     rang          = taxonDto.getRang();
     taxonId       = taxonDto.getTaxonId();
+    uitgestorven  = taxonDto.getUitgestorven() ? DoosConstants.WAAR
+                                               : DoosConstants.ONWAAR;
     volgnummer    = taxonDto.getVolgnummer();
   }
 
@@ -92,6 +97,8 @@ public class Taxon
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
     taxonId             = detailDto.getTaxonId();
+    uitgestorven        = detailDto.getUitgestorven() ? DoosConstants.WAAR
+                                                      : DoosConstants.ONWAAR;
     volgnummer          = detailDto.getVolgnummer();
  }
 
@@ -244,6 +251,10 @@ public class Taxon
     return taxonId;
   }
 
+  public String getUitgestorven() {
+    return uitgestorven;
+  }
+
   public Integer getVolgnummer() {
     return volgnummer;
   }
@@ -251,6 +262,10 @@ public class Taxon
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(taxonId).toHashCode();
+  }
+
+  public boolean isUitgestorven() {
+    return DoosConstants.WAAR.equals(getUitgestorven());
   }
 
   public void persist(TaxonDto parameter) {
@@ -274,6 +289,11 @@ public class Taxon
                                     parameter.getTaxonId()).isEquals()) {
       parameter.setTaxonId(this.taxonId);
     }
+    boolean vlag  = DoosConstants.WAAR.equals(uitgestorven);
+    if (!new EqualsBuilder().append(vlag, parameter.getUitgestorven())
+                                                   .isEquals()) {
+      parameter.setUitgestorven(vlag);
+    }
     if (!new EqualsBuilder().append(this.volgnummer,
                                     parameter.getVolgnummer()).isEquals()) {
       parameter.setVolgnummer(this.volgnummer);
@@ -281,19 +301,19 @@ public class Taxon
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam;
+    this.latijnsenaam       = latijnsenaam;
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam               = naam;
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking  = opmerking;
+    this.opmerking          = opmerking;
   }
 
   public void setParentId(Long parentId) {
-    this.parentId = parentId;
+    this.parentId           = parentId;
   }
 
   public void setParentLatijnsenaam(String parentLatijnsenaam) {
@@ -301,22 +321,26 @@ public class Taxon
   }
 
   public void setParentNaam(String parentNaam) {
-    this.parentNaam = parentNaam;
+    this.parentNaam         = parentNaam;
   }
 
   public void setParentVolgnummer(Integer parentVolgnummer) {
-    this.parentVolgnummer = parentVolgnummer;
+    this.parentVolgnummer   = parentVolgnummer;
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rang               = rang;
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+    this.taxonId            = taxonId;
+  }
+
+  public void setUitgestorven(String uitgestorven) {
+    this.uitgestorven       = uitgestorven;
   }
 
   public void setVolgnummer(Integer volgnummer) {
-    this.volgnummer = volgnummer;
+    this.volgnummer       = volgnummer;
   }
 }
