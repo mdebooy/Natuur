@@ -1,6 +1,6 @@
 ﻿-- Kreatie van alle objecten voor het Natuur schema.
 --
--- Copyright 2015 Marco de Booij
+-- Copyright (c) 2015 Marco de Booij
 --
 -- Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
 -- the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -154,7 +154,7 @@ WITH RECURSIVE Q AS (
 SELECT   (Q.H).TAXON_ID AS TAXON_ID, (Q.H).VOLGNUMMER AS VOLGNUMMER,
          (Q.H).PARENT_ID AS PARENT_ID, (Q.H).RANG AS RANG,
          (Q.H).LATIJNSENAAM AS LATIJNSENAAM, (Q.H).OPMERKING AS OPMERKING,
-         Q.LEVEL, Q.BREADCRUMB AS PATH
+         (Q.H).UITGESTORVEN, Q.LEVEL, Q.BREADCRUMB AS PATH
 FROM     Q
 ORDER BY Q.BREADCRUMB;
 
@@ -162,17 +162,18 @@ CREATE OR REPLACE VIEW NATUUR.DETAILS AS
 SELECT   P.TAXON_ID AS PARENT_ID, P.VOLGNUMMER AS PARENT_VOLGNUMMER,
          P.RANG AS PARENT_RANG, P.LATIJNSENAAM AS PARENT_LATIJNSENAAM,
          R.NIVEAU, T.TAXON_ID, T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM,
-         T.OPMERKING, CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
+         T.OPMERKING, T.UITGESTORVEN,
+         CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
 FROM     NATUUR.TAXONOMIE T
            JOIN NATUUR.TAXA P
              ON  P.TAXON_ID<>T.TAXON_ID
              AND (P.TAXON_ID =ANY(T.PATH))
            JOIN NATUUR.RANGEN R
              ON  T.RANG=R.RANG
-           LEFT JOIN (SELECT   WND.TAXON_ID, COUNT(*) AANTAL
+           LEFT JOIN (SELECT   WNM.TAXON_ID, COUNT(*) AANTAL
                       FROM     NATUUR.FOTOS FOT
                                JOIN NATUUR.WAARNEMINGEN WNM ON FOT.WAARNEMING_ID = WNM.WAARNEMING_ID
-                      GROUP BY WND.TAXON_ID) F
+                      GROUP BY WNM.TAXON_ID) F
              ON T.TAXON_ID=F.TAXON_ID;
 
 CREATE OR REPLACE VIEW NATUUR.FOTO_OVERZICHT AS
@@ -334,6 +335,7 @@ COMMENT ON COLUMN NATUUR.DETAILS.RANG                       IS 'De rang van de t
 COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM               IS 'De latijnse naam van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                  IS 'Een opmerking voor deze taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                    IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
+COMMENT ON COLUMN NATUUR.DETAILS.UITGESTORVEN               IS 'Is de taxon uitgestorven?';
 COMMENT ON VIEW   NATUUR.FOTO_OVERZICHT                     IS 'Deze view bevat alle foto''s met gegevens uit meerdere tabellen.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.FOTO_ID             IS 'De sleutel van de foto.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.KLASSE_ID           IS 'De sleutel van de klasse van de taxon.';
@@ -395,6 +397,7 @@ COMMENT ON COLUMN NATUUR.TAXONOMIE.PARENT_ID                IS 'De sleutel van d
 COMMENT ON COLUMN NATUUR.TAXONOMIE.PATH                     IS 'Een array met alle hogere niveaus''s van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.RANG                     IS 'De sleutel van rang van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.TAXON_ID                 IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.TAXONOMIE.UITGESTORVEN             IS 'Is de taxon uitgestorven?';
 COMMENT ON COLUMN NATUUR.TAXONOMIE.VOLGNUMMER               IS 'Het volgnummer van de taxon.';
 COMMENT ON TABLE  NATUUR.WAARNEMINGEN                       IS 'Deze tabel bevat alle waarnemingen.';
 COMMENT ON COLUMN NATUUR.WAARNEMINGEN.AANTAL                IS 'Het aantal wat waargenomen is.';

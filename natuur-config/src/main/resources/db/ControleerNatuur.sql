@@ -26,11 +26,21 @@ from     natuur.taxa tax join natuur.rangen rng on tax.rang     =rng.rang
 where    par.rang   =rn1.rang
 and      rng.niveau<=rn1.niveau;
 
-select   t.latijnsenaam, n.naam, count(n1.taal)
+select   t.latijnsenaam, n.naam, t.rang, count(n1.taal)
 from     natuur.taxa t join natuur.taxonnamen n on t.taxon_id=n.taxon_id
                        join natuur.taxonnamen n1 on t.taxon_id=n1.taxon_id
 where    n.taal='nl'
-group by t.latijnsenaam, n.naam
+group by t.latijnsenaam, n.naam, t.rang
 --having   count(n.taal)=30
-order by t.latijnsenaam, n.naam;
+order by t.latijnsenaam, n.naam, t.rang;
 
+-- Dubbele Taxa?
+with dubbel as (
+  select   naam, taal, count(taxon_id)
+  from     natuur.taxonnamen
+  group by naam, taal
+  having   count(taxon_id)>1)
+select   tax.*, tnm.taal, tnm.naam
+from     natuur.taxonnamen tnm join natuur.taxa tax on tnm.taxon_id=tax.taxon_id
+                               join dubbel dub on tnm.naam=dub.naam and tnm.taal=dub.taal
+order by tnm.naam, tax.latijnsenaam;
