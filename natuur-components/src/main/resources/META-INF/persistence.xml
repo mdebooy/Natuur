@@ -10,6 +10,7 @@
     <class>eu.debooy.natuur.domain.FotoDto</class>
     <class>eu.debooy.natuur.domain.GebiedDto</class>
     <class>eu.debooy.natuur.domain.RangDto</class>
+    <class>eu.debooy.natuur.domain.RangnaamDto</class>
     <class>eu.debooy.natuur.domain.TaxonDto</class>
     <class>eu.debooy.natuur.domain.TaxonnaamDto</class>
     <class>eu.debooy.natuur.domain.WaarnemingDto</class>

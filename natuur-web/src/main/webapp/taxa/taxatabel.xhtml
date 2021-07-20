@@ -29,8 +29,7 @@
           </td>
           <td>#{taxon.naam}</td>
           <td><em>#{taxon.latijnsenaam}</em></td>
-          <ui:param name="rang" value="biologie.rang.#{taxon.rang}"/>
-          <td>#{i18nTeksten.tekst(rang)}</td>
+          <td>#{natuurRang.getRangtekst(taxon.rang)}</td>
         </tr>
       </t:dataList>
     </tbody>

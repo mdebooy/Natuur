@@ -5,17 +5,49 @@
   xmlns:t="http://myfaces.apache.org/tomahawk"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $("#formWaarneming\\:datum").datepicker({dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
+                                                 monthNames: [ "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" ]});
+        $('#rangnamenTabel').dataTable( {
+          "order": [[1, "asc"]],
+          "columns": [{ "orderable": false },
+                      { "orderable": true },
+                      { "orderable": true }],
+          "pagingType": "full_numbers",
+          "pageLength": #{properties.appValue('natuur.pagelength')},
+          "lengthChange": false,
+          "stateSave": true,
+          "language": {
+            "paginate": {
+              "first": #{properties.appValue('natuur.pager.first')},
+              "last": #{properties.appValue('natuur.pager.last')},
+              "next": #{properties.appValue('natuur.pager.next')},
+              "previous": #{properties.appValue('natuur.pager.previous')}
+            },
+            "search": "#{i18nTeksten.tekst('pager.search')}",
+            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+            "info": "#{i18nTeksten.tekst('pager.info')}",
+            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+          }
+        } );
+      } );
+    </script>
+  </ui:define>
   <ui:define name="body">
     <div class="row justify-content-center">
-      <div class="col-10">
+      <div class="col-8">
         <h:form class="form-horizontal" id="formRang">
-          <div class="col-10">
-            <h2 class="titel">#{i18nTeksten.tekst(natuurRang.subTitel)}</h2>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="niveau" class="col-2 control-label">#{i18nTeksten.tekst('label.niveau')}</label>
-            <div class="col-1">
-              <t:inputText id="niveau" styleClass="form-control form-control-sm" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" readonly="#{!natuurRang.aktie.nieuw}" />
+          <div class="row titel">
+            <div class="col-10">
+              <h2 class="titel">#{i18nTeksten.tekst(natuurRang.subTitel)}</h2>
+            </div>
+            <div class="col-2 text-right" >
+              <h:commandLink action="#{natuurRang.createRangnaam}">
+                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+              </h:commandLink>
             </div>
           </div>
           <div class="form-group form-group-sm row">
@@ -24,9 +56,23 @@
               <t:inputText id="rang" styleClass="form-control form-control-sm" value="#{natuurRang.rang.rang}" maxlength="3" size="3" readonly="#{!natuurRang.aktie.nieuw}" />
             </div>
           </div>
+          <div class="form-group form-group-sm row">
+            <label for="niveau" class="col-2 control-label">#{i18nTeksten.tekst('label.niveau')}</label>
+            <div class="col-1">
+              <t:inputText id="niveau" styleClass="form-control form-control-sm" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" readonly="#{natuurRang.aktie.readonly}" />
+            </div>
+          </div>
 
           <h:commandLink action="#{natuurRang.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurRang.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/rangen/rangen.xhtml" aktie="#{natuurRang.aktie}"/>
+          <h:commandLink action="#{natuurRang.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurRang.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+        <d:cancel href="#{natuur.path}/rangen/rangen.xhtml" aktie="#{natuurRang.aktie}"/>
+
+          <d:spacer />
+          <d:spacer />
+          <ui:include src="rangnamentabel.xhtml">
+            <ui:param name="form" value="formRang" />
+            <ui:param name="lijst" value="#{natuurRang.rangnamen}" />
+          </ui:include>
         </h:form>
       </div>
     </div>

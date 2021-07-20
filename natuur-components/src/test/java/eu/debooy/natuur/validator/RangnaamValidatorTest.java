@@ -19,6 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.TestConstants;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_FOUT;
@@ -70,9 +71,11 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    rangnaam.setRang(TestConstants.RANG_FOUT);
     rangnaam.setTaal(TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
+    expResult.add(TestConstants.ERR_RANG);
     expResult.add(ERR_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -85,6 +88,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(NAAM);
+    rangnaam.setRang(TestConstants.RANG);
     rangnaam.setTaal(TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -97,6 +101,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
+    expResult.add(TestConstants.REQ_RANG);
     expResult.add(REQ_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -109,9 +114,11 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    rangnaam.setRang(TestConstants.RANG_FOUT);
     rangnaam.setTaal(TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
+    expResult.add(TestConstants.ERR_RANG);
     expResult.add(ERR_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -124,6 +131,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(NAAM);
+    rangnaam.setRang(TestConstants.RANG);
     rangnaam.setTaal(TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -136,6 +144,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
+    expResult.add(TestConstants.REQ_RANG);
     expResult.add(REQ_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);

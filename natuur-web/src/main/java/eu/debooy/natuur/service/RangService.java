@@ -20,7 +20,11 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RangDao;
+import eu.debooy.natuur.access.RangnaamDao;
 import eu.debooy.natuur.domain.RangDto;
+import eu.debooy.natuur.domain.RangnaamDto;
+import eu.debooy.natuur.domain.RangnaamPK;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Rang;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -60,7 +64,10 @@ public class RangService {
       LoggerFactory.getLogger(RangService.class);
 
   @Inject
-  private RangDao rangDao;
+  private RangDao     rangDao;
+
+  @Inject
+  private RangnaamDao rangnaamDao;
 
   public RangService() {
     LOGGER.debug("init RangService");
@@ -92,6 +99,26 @@ public class RangService {
     }
 
     return Response.ok().entity(rangDto).build();
+  }
+
+  @GET
+  @Path("/rangnaam/{rang}/{taal}")
+  public Response getRangnaam(@PathParam(RangDto.COL_RANG) String rang,
+                              @PathParam(RangnaamDto.COL_TAAL) String taal) {
+    RangnaamPK  sleutel   = new RangnaamPK(rang, taal);
+    RangnaamDto rangnaam;
+
+    try {
+      rangnaam = rangnaamDao.getByPrimaryKey(sleutel);
+    } catch (ObjectNotFoundException e) {
+      Message message = new Message.Builder()
+                                   .setAttribute(TaxonnaamDto.COL_TAAL)
+                                   .setMessage(PersistenceConstants.NOTFOUND)
+                                   .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(rangnaam).build();
   }
 
   @GET
@@ -157,6 +184,11 @@ public class RangService {
     rang.persist(dto);
 
     rangDao.create(dto);
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void save(RangDto rang) {
+    rangDao.update(rang);
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

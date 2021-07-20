@@ -102,7 +102,8 @@ public class WaarnemingController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -118,7 +119,8 @@ public class WaarnemingController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, taxonSeq);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -213,7 +215,8 @@ public class WaarnemingController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, melding);
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }
@@ -248,7 +251,8 @@ public class WaarnemingController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, foto.getTaxonSeq());
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

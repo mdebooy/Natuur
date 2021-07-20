@@ -126,6 +126,14 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     return rangnamen.values();
   }
 
+  public RangnaamDto getRangnaam(String taal) {
+    if (rangnamen.containsKey(taal)) {
+      return rangnamen.get(taal);
+    } else {
+      return new RangnaamDto();
+    }
+  }
+
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(rang).toHashCode();

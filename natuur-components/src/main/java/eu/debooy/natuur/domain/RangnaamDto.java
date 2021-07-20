@@ -40,11 +40,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class RangnaamDto extends Dto implements Comparable<RangnaamDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  COL_NAAM    = "naam";
-  public static final String  COL_TAAL    = "taal";
-  public static final String  COL_TAXONID = "taxonId";
+  public static final String  COL_NAAM  = "naam";
+  public static final String  COL_RANG  = "rang";
+  public static final String  COL_TAAL  = "taal";
 
-  public static final String  PAR_TAAL    = "taal";
+  public static final String  PAR_TAAL  = "taal";
 
   public static final String  QRY_TAAL  = "rangnaamPerTaal";
 

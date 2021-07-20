@@ -48,7 +48,7 @@ public class RangnaamPK implements Comparable<RangnaamPK>, Serializable {
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof TaxonnaamPK)) {
+    if (!(object instanceof RangnaamPK)) {
       return false;
     }
     RangnaamPK  naamPK  = (RangnaamPK) object;

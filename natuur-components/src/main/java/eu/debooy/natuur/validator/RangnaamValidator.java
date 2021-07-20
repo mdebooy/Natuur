@@ -39,6 +39,7 @@ public class RangnaamValidator extends NatuurValidator {
     List<Message> fouten  = new ArrayList<>();
 
     valideerNaam(DoosUtils.nullToEmpty(rangnaam.getNaam()), fouten);
+    valideerRang(DoosUtils.nullToEmpty(rangnaam.getRang()), fouten);
     valideerTaal(DoosUtils.nullToEmpty(rangnaam.getTaal()), fouten);
 
     return fouten;

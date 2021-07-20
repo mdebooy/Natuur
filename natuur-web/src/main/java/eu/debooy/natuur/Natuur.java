@@ -63,6 +63,7 @@ public class Natuur extends DoosBean {
       "/gebieden/gebieden.xhtml";
   public static final String  RANG_REDIRECT         = "/rangen/rang.xhtml";
   public static final String  RANGEN_REDIRECT       = "/rangen/rangen.xhtml";
+  public static final String  RANGNAAM_REDIRECT     = "/rangen/rangnaam.xhtml";
   public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.xhtml";
   public static final String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
   public static final String  TAXONNAAM_REDIRECT    = "/taxa/taxonnaam.xhtml";

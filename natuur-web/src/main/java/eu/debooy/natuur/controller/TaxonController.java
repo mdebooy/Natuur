@@ -112,14 +112,15 @@ public class TaxonController extends Natuur {
   public void delete(Long taxonId) {
     String  naam;
     try {
-      taxonDto	= getTaxonService().taxon(taxonId);
+      taxonDto  = getTaxonService().taxon(taxonId);
       naam      = taxonDto.getNaam(getGebruikersTaal());
       getTaxonService().delete(taxonId);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -134,7 +135,8 @@ public class TaxonController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, taal);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -155,10 +157,6 @@ public class TaxonController extends Natuur {
 
   public Long getOuderNiveau() {
     return ouderNiveau;
-  }
-
-  public String getRangnaam() {
-    return getTekst("biologie.rang." + taxon.getRang());
   }
 
   public Collection<Taxon> getTaxa() {
@@ -222,7 +220,8 @@ public class TaxonController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxon.getNaam());
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }
@@ -260,7 +259,8 @@ public class TaxonController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }

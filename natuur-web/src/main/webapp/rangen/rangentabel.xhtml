@@ -5,7 +5,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
   <table class="table table-sm" id="rangenTabel" aria-describedby="rangenTabel">
     <colgroup>
-      <col style="width:50px" />
+      <col style="width:75px" />
       <col style="width:60px" />
       <col />
     </colgroup>
@@ -21,6 +21,7 @@
         <tr>
           <td>
             <h:commandLink action="#{natuurRang.retrieve(rang.rang)}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
+            <h:commandLink action="#{natuurRang.update(rang.rang)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
             <h:commandLink action="#{natuurRang.delete(rang.rang)}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{rangtekst}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
