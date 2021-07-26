@@ -64,6 +64,13 @@ public class OverzichtPK implements Serializable {
     return rang;
   }
 
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(parentId)
+                                .append(parentRang)
+                                .append(rang).toHashCode();
+  }
+
   public void setParentId(Long parentId) {
     this.parentId = parentId;
   }
@@ -74,13 +81,6 @@ public class OverzichtPK implements Serializable {
 
   public void setRang(String rang) {
     this.rang = rang;
-  }
-
-  @Override
-  public int hashCode() {
-    return new HashCodeBuilder().append(parentId)
-                                .append(parentRang)
-                                .append(rang).toHashCode();
   }
 
   @Override

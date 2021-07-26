@@ -38,17 +38,17 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class GebiedDto extends Dto implements Comparable<GebiedDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static String COL_GEBIEDID           = "gebiedId";
-  public static String COL_LANDID             = "landId";
-  public static String COL_LATITUDE           = "latitude";
-  public static String COL_LATITUDEGRADEN     = "latitudeGraden";
-  public static String COL_LATITUDEMINUTEN    = "latitudeMinuten";
-  public static String COL_LATITUDESECONDEN   = "latitudeSeconden";
-  public static String COL_LONGITUDE          = "longitude";
-  public static String COL_LONGITUDEGRADEN    = "longitudeGraden";
-  public static String COL_LONGITUDEMINUTEN   = "longitudeMinuten";
-  public static String COL_LONGITUDESECONDEN  = "longitudeSeconden";
-  public static String COL_NAAM               = "naam";
+  public static final String  COL_GEBIEDID          = "gebiedId";
+  public static final String  COL_LANDID            = "landId";
+  public static final String  COL_LATITUDE          = "latitude";
+  public static final String  COL_LATITUDEGRADEN    = "latitudeGraden";
+  public static final String  COL_LATITUDEMINUTEN   = "latitudeMinuten";
+  public static final String  COL_LATITUDESECONDEN  = "latitudeSeconden";
+  public static final String  COL_LONGITUDE         = "longitude";
+  public static final String  COL_LONGITUDEGRADEN   = "longitudeGraden";
+  public static final String  COL_LONGITUDEMINUTEN  = "longitudeMinuten";
+  public static final String  COL_LONGITUDESECONDEN = "longitudeSeconden";
+  public static final String  COL_NAAM              = "naam";
 
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)

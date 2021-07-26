@@ -63,9 +63,7 @@ public class TaxonnaamService {
   public List<Taxonnaam> taxonnamen(String taal) {
     List<Taxonnaam>     taxonnamen  = new ArrayList<>();
     List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaal(taal);
-    for (TaxonnaamDto rij : rijen) {
-      taxonnamen.add(new Taxonnaam(rij));
-    }
+    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
 
     return taxonnamen;
   }
@@ -74,9 +72,7 @@ public class TaxonnaamService {
   public List<Taxonnaam> query(Long taxonId) {
     List<Taxonnaam>     taxonnamen  = new ArrayList<>();
     List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaxon(taxonId);
-    for (TaxonnaamDto rij : rijen) {
-      taxonnamen.add(new Taxonnaam(rij));
-    }
+    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
 
     return taxonnamen;
   }
@@ -86,9 +82,8 @@ public class TaxonnaamService {
     List<SelectItem>  items = new LinkedList<>();
     Set<TaxonnaamDto> rijen = new TreeSet<>(new TaxonnaamDto.NaamComparator());
     rijen.addAll(taxonnaamDao.getPerTaal(taal));
-    for (TaxonnaamDto rij : rijen) {
-      items.add(new SelectItem(rij.getTaxonId(), rij.getNaam()));
-    }
+    rijen.forEach(rij -> items.add(new SelectItem(rij.getTaxonId(),
+                                                  rij.getNaam())));
 
     return items;
   }

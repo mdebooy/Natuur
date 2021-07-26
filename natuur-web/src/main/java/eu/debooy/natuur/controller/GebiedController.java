@@ -87,9 +87,7 @@ public class GebiedController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Gebied>       rijen = new TreeSet<>(new Gebied.NaamComparator());
     rijen.addAll(getGebiedService().query());
-    for (Gebied rij : rijen) {
-      items.add(new SelectItem(rij, rij.getNaam()));
-    }
+    rijen.forEach(rij -> items.add(new SelectItem(rij, rij.getNaam())));
 
     return items;
   }
@@ -98,9 +96,8 @@ public class GebiedController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
     Set<Gebied>       rijen = new TreeSet<>(new Gebied.NaamComparator());
     rijen.addAll(getGebiedService().query());
-    for (Gebied rij : rijen) {
-      items.add(new SelectItem(rij.getGebiedId(), rij.getNaam()));
-    }
+    rijen.forEach(rij -> items.add(new SelectItem(rij.getGebiedId(),
+                                                  rij.getNaam())));
 
     return items;
   }

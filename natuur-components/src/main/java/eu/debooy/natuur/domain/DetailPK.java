@@ -37,6 +37,7 @@ public class DetailPK  implements Serializable {
     this.taxonId  = taxonId;
   }
 
+  @Override
    public boolean equals(Object object) {
      if (!(object instanceof DetailPK)) {
        return false;
@@ -55,6 +56,7 @@ public class DetailPK  implements Serializable {
     return taxonId;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(parentId)
                                 .append(taxonId).toHashCode();
@@ -68,6 +70,7 @@ public class DetailPK  implements Serializable {
     this.taxonId  = taxonId;
   }
 
+  @Override
   public String toString() {
     return new StringBuilder().append("DetailPK")
                               .append(" (parentId=").append(parentId)

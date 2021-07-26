@@ -96,6 +96,7 @@ public class FotoOverzichtDto
       this.taal = taal;
     }
 
+    @Override
     public int compare(FotoOverzichtDto fotoOverzichtDto1,
                        FotoOverzichtDto fotoOverzichtDto2) {
       return
@@ -109,11 +110,13 @@ public class FotoOverzichtDto
     }
   }
 
+  @Override
   public int compareTo(FotoOverzichtDto fotoOverzichtDto) {
     return new CompareToBuilder().append(fotoId, fotoOverzichtDto.fotoId)
                                  .toComparison();
   }
 
+  @Override
   public boolean equals(Object object) {
     if (!(object instanceof FotoOverzichtDto)) {
       return false;
@@ -178,6 +181,7 @@ public class FotoOverzichtDto
     return taxonSeq;
   }
 
+  @Override
   public int hashCode() {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }

@@ -70,9 +70,7 @@ public class GebiedService {
   public List<Gebied> query() {
     List<Gebied>    gebieden  = new ArrayList<>();
     List<GebiedDto> rijen     = gebiedDao.getAll();
-    for (GebiedDto rij : rijen) {
-      gebieden.add(new Gebied(rij));
-    }
+    rijen.forEach(rij -> gebieden.add(new Gebied(rij)));
 
     return gebieden;
   }
