@@ -128,7 +128,7 @@
           <div class="form-group form-group-sm row">
             <label for="rang" class="col-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
             <div class="col-3">
-              <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurTaxon.rangnaam}" />
+              <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurRang.getRangtekst(natuurTaxon.taxon.rang)}" />
             </div>
             <t:div class="col-7 input-group input-group-sm" rendered="#{!empty natuurTaxon.taxon.parentId or natuurTaxon.aktie.nieuw}">
               <label for="parentId" class="col-3 control-label">#{i18nTeksten.tekst('label.ouder')}</label>
