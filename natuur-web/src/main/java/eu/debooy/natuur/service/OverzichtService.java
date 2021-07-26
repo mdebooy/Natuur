@@ -1,7 +1,7 @@
-/**
- * Copyright (c) 2015 Marco de Booij
+/*
+ * Copyright (c) 2021 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -17,8 +17,8 @@
 package eu.debooy.natuur.service;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
-import eu.debooy.natuur.access.DetailDao;
-import eu.debooy.natuur.form.Taxon;
+import eu.debooy.natuur.access.OverzichtDao;
+import eu.debooy.natuur.domain.OverzichtDto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Lock;
@@ -36,44 +36,29 @@ import org.slf4j.LoggerFactory;
  * @author Marco de Booij
  */
 @Singleton
-@Named("natuurDetailService")
+@Named("natuurOverzichtService")
 @Lock(LockType.WRITE)
-public class DetailService {
+public class OverzichtService {
   private static final  Logger  LOGGER  =
-      LoggerFactory.getLogger(DetailService.class);
+      LoggerFactory.getLogger(OverzichtService.class);
 
   @Inject
-  private DetailDao detailDao;
+  private OverzichtDao  overzichtDao;
 
-  public DetailService() {
-    LOGGER.debug("init DetailService");
+  public OverzichtService() {
+    LOGGER.debug("init OverzichtService");
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxon> getSoortenMetKlasse(String taal) {
-    List<Taxon> details = new ArrayList<>();
+  public List<OverzichtDto> getTotalenVoorRang(String rang) {
+    List<OverzichtDto> overzicht = new ArrayList<>();
 
     try {
-      detailDao.getSoortenMetKlasse()
-               .forEach(rij -> details.add(new Taxon(rij, taal)));
+      overzicht.addAll(overzichtDao.getOverzichtRang(rang));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return details;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxon> getWaargenomen(String taal) {
-    List<Taxon> soorten = new ArrayList<>();
-
-    try {
-      detailDao.getWaargenomen()
-               .forEach(rij -> soorten.add(new Taxon(rij, taal)));
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return soorten;
+    return overzicht;
   }
 }

@@ -35,23 +35,31 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class RangtotaalTest {
-  private static final  Object[]  LEEG  = new Object[] {0L, "", 0L, 0L};
-
+  private static  Rangtotaal  leeg;
   private static  Rangtotaal  rangtotaal;
 
   @BeforeClass
   public static void setUpClass() {
-    rangtotaal  = new Rangtotaal(new Object[] {TAXONID, LATIJNSENAAM,
-                                               TOTAAL, OPFOTO});
+    leeg  = new Rangtotaal();
+    leeg.setLatijnsenaam("");
+    leeg.setTaxonId(0L);
+    leeg.setTotaal(0);
+    leeg.setOpFoto(0);
+
+    rangtotaal  = new Rangtotaal();
+    rangtotaal.setLatijnsenaam(LATIJNSENAAM);
+    rangtotaal.setTaxonId(TAXONID);
+    rangtotaal.setTotaal(TOTAAL);
+    rangtotaal.setOpFoto(OPFOTO);
   }
 
   @Test
   public void testCompareTo() {
-    Rangtotaal  gelijk  = new Rangtotaal(LEEG);
+    Rangtotaal  gelijk  = new Rangtotaal(leeg);
     gelijk.setTaxonId(TAXONID);
-    Rangtotaal  groter  = new Rangtotaal(LEEG);
+    Rangtotaal  groter  = new Rangtotaal(leeg);
     groter.setTaxonId(rangtotaal.getTaxonId() + 1);
-    Rangtotaal  kleiner = new Rangtotaal(LEEG);
+    Rangtotaal  kleiner = new Rangtotaal(leeg);
     kleiner.setTaxonId(rangtotaal.getTaxonId() - 1);
 
     assertTrue(rangtotaal.compareTo(groter) < 0);
@@ -62,7 +70,7 @@ public class RangtotaalTest {
   @Test
   public void testEquals() {
     Rangtotaal  object    = null;
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
 
     assertNotEquals(rangtotaal, object);
     assertNotEquals(rangtotaal, instance);
@@ -103,7 +111,7 @@ public class RangtotaalTest {
 
   @Test
   public void testSetLatijnsenaam() {
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
     Assert.assertNotEquals(LATIJNSENAAM, instance.getLatijnsenaam());
     instance.setLatijnsenaam(LATIJNSENAAM);
 
@@ -112,7 +120,7 @@ public class RangtotaalTest {
 
   @Test
   public void testSetNaam() {
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
     Assert.assertNotEquals(NAAM, instance.getNaam());
     instance.setNaam(NAAM);
 
@@ -121,7 +129,7 @@ public class RangtotaalTest {
 
   @Test
   public void testSetOpFoto() {
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
     Assert.assertNotEquals(OPFOTO, instance.getOpFoto());
     instance.setOpFoto(OPFOTO);
 
@@ -130,7 +138,7 @@ public class RangtotaalTest {
 
   @Test
   public void testSetTaxonId() {
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
     Assert.assertNotEquals(TAXONID, instance.getTaxonId());
     instance.setTaxonId(TAXONID);
 
@@ -139,7 +147,7 @@ public class RangtotaalTest {
 
   @Test
   public void testSetTotaal() {
-    Rangtotaal  instance  = new Rangtotaal(LEEG);
+    Rangtotaal  instance  = new Rangtotaal(leeg);
     Assert.assertNotEquals(TOTAAL, instance.getTotaal());
     instance.setTotaal(TOTAAL);
 

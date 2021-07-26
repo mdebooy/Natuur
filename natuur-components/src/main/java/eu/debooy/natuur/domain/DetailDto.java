@@ -51,15 +51,12 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
-@NamedQuery(name="detailTotalen", query="select d.parentId as naam, d.parentLatijnsenaam as latijnsenaam, count(d.parentId) as totaal, sum(d.opFoto) from DetailDto d where d.parentRang=:groep and d.rang in ('so', 'oso') group by d.parentId, d.parentLatijnsenaam")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  PAR_GROUP = "groep";
 
   public static final String  QRY_SOORTMETKLASSE  = "detailSoortMetKlasse";
-  public static final String  QRY_TOTALEN         = "detailTotalen";
   public static final String  QRY_WAARGENOMEN     = "detailWaargenomen";
 
   @ReadOnly

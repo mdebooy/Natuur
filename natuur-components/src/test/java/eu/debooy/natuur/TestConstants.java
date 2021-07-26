@@ -48,7 +48,7 @@ public final class TestConstants {
   public static final Double  LONGITUDE_SECONDEN  = 43.21;
   public static final String  NAAM                = "naam";
   public static final Long    NIVEAU              = 3L;
-  public static final Long    OPFOTO              = 1L;
+  public static final Integer OPFOTO              = 1;
   public static final String  OPMERKING           = "opmerking";
   public static final Long    PARENTID            = 2L;
   public static final String  PARENTLATIJNSENAAM  = "parentlatijnsenaam";
@@ -68,7 +68,7 @@ public final class TestConstants {
   public static final int     TAXONID_HASH        = -2147483009;
   public static final int     TAXONNAAM_HASH      = -2147456487;
   public static final Long    TAXONSEQ            = 5L;
-  public static final Long    TOTAAL              = 10L;
+  public static final Integer TOTAAL              = 10;
   public static final Integer VOLGNUMMER          = Integer.MIN_VALUE;
   public static final Long    WAARNEMINGID        = Long.MAX_VALUE - 11;
   public static final int     WAARNEMINGID_HASH   = -2147483008;

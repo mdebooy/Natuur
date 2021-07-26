@@ -21,6 +21,7 @@ import eu.debooy.doosutils.service.JNDI;
 import eu.debooy.natuur.service.DetailService;
 import eu.debooy.natuur.service.FotoService;
 import eu.debooy.natuur.service.GebiedService;
+import eu.debooy.natuur.service.OverzichtService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
 import eu.debooy.natuur.service.TaxonnaamService;
@@ -46,6 +47,7 @@ public class Natuur extends DoosBean {
   private transient DetailService     detailService;
   private transient FotoService       fotoService;
   private transient GebiedService     gebiedService;
+  private transient OverzichtService  overzichtService;
   private transient RangService       rangService;
   private transient TaxonnaamService  taxonnaamService;
   private transient TaxonService      taxonService;
@@ -96,11 +98,6 @@ public class Natuur extends DoosBean {
     addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
   }
 
-  /**
-   * Geef de DetailService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return DetailService
-   */
   protected DetailService getDetailService() {
     if (null == detailService) {
       detailService = (DetailService)
@@ -110,11 +107,6 @@ public class Natuur extends DoosBean {
     return detailService;
   }
 
-  /**
-   * Geef de FotoService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return FotoService
-   */
   protected FotoService getFotoService() {
     if (null == fotoService) {
       fotoService = (FotoService)
@@ -124,11 +116,6 @@ public class Natuur extends DoosBean {
     return fotoService;
   }
 
-  /**
-   * Geef de GebiedService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return GebiedService
-   */
   protected GebiedService getGebiedService() {
     if (null == gebiedService) {
       gebiedService = (GebiedService)
@@ -138,20 +125,19 @@ public class Natuur extends DoosBean {
     return gebiedService;
   }
 
-  /**
-   * Geef de II18nLandnaam.
-   *
-   * @return II18nLandnaam
-   */
   protected II18nLandnaam getI18nLandnaam() {
     return i18nLandnaam;
   }
 
-  /**
-   * Geef de RangService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return RangService
-   */
+  protected OverzichtService getOverzichtService() {
+    if (null == overzichtService) {
+      overzichtService  = (OverzichtService)
+          new JNDI.JNDINaam().metBean(OverzichtService.class).locate();
+    }
+
+    return overzichtService;
+  }
+
   protected RangService getRangService() {
     if (null == rangService) {
       rangService = (RangService)
@@ -161,11 +147,6 @@ public class Natuur extends DoosBean {
     return rangService;
   }
 
-  /**
-   * Geef de TaxonnaamService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return TaxonnaamService
-   */
   protected TaxonnaamService getTaxonnaamService() {
     if (null == taxonnaamService) {
       taxonnaamService  = (TaxonnaamService)
@@ -175,11 +156,6 @@ public class Natuur extends DoosBean {
     return taxonnaamService;
   }
 
-  /**
-   * Geef de TaxonService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return TaxonService
-   */
   protected TaxonService getTaxonService() {
     if (null == taxonService) {
       taxonService  = (TaxonService)
@@ -189,11 +165,6 @@ public class Natuur extends DoosBean {
     return taxonService;
   }
 
-  /**
-   * Geef de WaarnemingService. Als die nog niet gekend is haal het dan op.
-   *
-   * @return WaarnemingService
-   */
   protected WaarnemingService getWaarnemingService() {
     if (null == waarnemingService) {
       waarnemingService = (WaarnemingService)

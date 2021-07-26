@@ -16,7 +16,9 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
+import eu.debooy.natuur.domain.OverzichtDto;
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -32,15 +34,58 @@ public class Rangtotaal
 
   private String  latijnsenaam;
   private String  naam;
-  private Long    opFoto;
+  private Integer opFoto;
   private Long    taxonId;
-  private Long    totaal;
+  private Integer totaal;
+  private Integer volgnummer;
+  private Integer waargenomen;
 
-  public Rangtotaal(Object[] rij) {
-    taxonId       = (Long)   rij[0];
-    latijnsenaam  = (String) rij[1];
-    totaal        = (Long)   rij[2];
-    opFoto        = (Long)   rij[3];
+  public Rangtotaal() {}
+
+  public Rangtotaal(OverzichtDto overzicht) {
+    latijnsenaam  = overzicht.getParentLatijnsenaam();
+    naam          = overzicht.getParentLatijnsenaam();
+    opFoto        = overzicht.getOpFoto();
+    taxonId       = overzicht.getParentId();
+    totaal        = overzicht.getTotaal();
+    volgnummer    = overzicht.getParentVolgnummer();
+    waargenomen   = overzicht.getWaargenomen();
+  }
+
+  public Rangtotaal(OverzichtDto overzicht, String taal) {
+    latijnsenaam  = overzicht.getParentLatijnsenaam();
+    if (DoosUtils.isNotBlankOrNull(taal)) {
+      naam        = overzicht.getNaam(taal);
+    } else {
+      naam        = overzicht.getParentLatijnsenaam();
+    }
+    opFoto        = overzicht.getOpFoto();
+    taxonId       = overzicht.getParentId();
+    totaal        = overzicht.getTotaal();
+    volgnummer    = overzicht.getParentVolgnummer();
+    waargenomen   = overzicht.getWaargenomen();
+  }
+
+  public Rangtotaal(Rangtotaal rangtotaal) {
+    latijnsenaam  = rangtotaal.getLatijnsenaam();
+    naam          = rangtotaal.getNaam();
+    opFoto        = rangtotaal.getOpFoto();
+    taxonId       = rangtotaal.getTaxonId();
+    totaal        = rangtotaal.getTotaal();
+    volgnummer    = rangtotaal.getVolgnummer();
+    waargenomen   = rangtotaal.getWaargenomen();
+  }
+
+  public void addTotaal(Integer aantal) {
+    totaal      += aantal;
+  }
+
+  public void addOpFoto(Integer aantal) {
+    opFoto      += aantal;
+  }
+
+  public void addWaargenomen(Integer aantal) {
+    waargenomen += aantal;
   }
 
   @Override
@@ -70,16 +115,28 @@ public class Rangtotaal
     return naam;
   }
 
-  public Long getOpFoto() {
+  public Integer getOpFoto() {
     return opFoto;
+  }
+
+  public int getPctOpFoto() {
+    return Math.round(((float)opFoto/waargenomen)*100);
   }
 
   public Long getTaxonId() {
     return taxonId;
   }
 
-  public Long getTotaal() {
+  public Integer getTotaal() {
     return totaal;
+  }
+
+  public Integer getVolgnummer() {
+    return volgnummer;
+  }
+
+  public Integer getWaargenomen() {
+    return waargenomen;
   }
 
   @Override
@@ -92,18 +149,26 @@ public class Rangtotaal
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam         = naam;
   }
 
-  public void setOpFoto(Long opFoto) {
-    this.opFoto = opFoto;
+  public void setOpFoto(Integer opFoto) {
+    this.opFoto       = opFoto;
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+    this.taxonId      = taxonId;
   }
 
-  public void setTotaal(Long totaal) {
-    this.totaal = totaal;
+  public void setTotaal(Integer totaal) {
+    this.totaal       = totaal;
+  }
+
+  public void setVolgnummer(Integer volgnummer) {
+    this.volgnummer   = volgnummer;
+  }
+
+  public void setWaargenomen(Integer waargenomen) {
+    this.waargenomen  = waargenomen;
   }
 }

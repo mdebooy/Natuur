@@ -1,7 +1,7 @@
-/**
- * Copyright (c) 2015 Marco de Booij
+/*
+ * Copyright (c) 2021 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
+ * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -18,7 +18,7 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
-import eu.debooy.natuur.domain.DetailDto;
+import eu.debooy.natuur.domain.OverzichtDto;
 import java.util.List;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -30,13 +30,13 @@ import javax.persistence.PersistenceContextType;
  * @author Marco de Booij
  */
 @Interceptors({PersistenceExceptionHandlerInterceptor.class})
-public class DetailDao extends Dao<DetailDto> {
+public class OverzichtDao extends Dao<OverzichtDto> {
   @PersistenceContext(unitName="natuur",
                       type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
-  public DetailDao() {
-    super(DetailDto.class);
+  public OverzichtDao() {
+    super(OverzichtDto.class);
   }
 
   @Override
@@ -45,15 +45,13 @@ public class DetailDao extends Dao<DetailDto> {
   }
 
   @Override
-  public DetailDto create(DetailDto dto) {
+  public OverzichtDto create(OverzichtDto dto) {
     throw new UnsupportedOperationException();
   }
 
-  public List<DetailDto> getSoortenMetKlasse() {
-    return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
-  }
-
-  public List<DetailDto> getWaargenomen() {
-    return namedQuery(DetailDto.QRY_WAARGENOMEN);
+  public List<OverzichtDto> getOverzichtRang(String rang) {
+    return getEntityManager().createNamedQuery(OverzichtDto.QRY_OVERZICHTRANG)
+                             .setParameter(OverzichtDto.PAR_PARENTRANG, rang)
+                             .getResultList();
   }
 }

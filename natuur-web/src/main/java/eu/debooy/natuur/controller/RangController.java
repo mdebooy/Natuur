@@ -17,7 +17,6 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doosutils.ComponentsConstants;
-import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -33,9 +32,11 @@ import eu.debooy.natuur.validator.RangValidator;
 import eu.debooy.natuur.validator.RangnaamValidator;
 import java.text.MessageFormat;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
@@ -135,25 +136,23 @@ public class RangController extends Natuur {
   }
 
   public Collection<Rangtotaal> getRangtotalen() {
-    String            taal  = getGebruikersTaal();
-    List<Rangtotaal>  rijen =
-        getDetailService().getTotalenVoorRang(rang.getRang());
-    rijen.forEach(rij -> {
-      String  naam;
-      try {
-        naam  = getTaxonnaamService().taxonnaam(rij.getTaxonId(), taal)
-                                     .getNaam();
-      } catch (ObjectNotFoundException e) {
-        naam  = rij.getLatijnsenaam();
-      }
-      if (DoosUtils.isBlankOrNull(naam)) {
-        rij.setNaam(rij.getLatijnsenaam());
+    Map<Long, Rangtotaal> totalen = new HashMap<>();
+
+    getOverzichtService()
+        .getTotalenVoorRang(rang.getRang()).forEach(rij -> {
+      Long  taxonId = rij.getParentId();
+      if (totalen.containsKey(taxonId)) {
+        Rangtotaal  rangtotaal  = totalen.get(taxonId);
+        rangtotaal.addOpFoto(rij.getOpFoto());
+        rangtotaal.addTotaal(rij.getTotaal());
+        rangtotaal.addWaargenomen(rij.getWaargenomen());
+        totalen.put(taxonId, rangtotaal);
       } else {
-        rij.setNaam(naam);
+        totalen.put(taxonId, new Rangtotaal(rij, getGebruikersTaal()));
       }
     });
 
-    return rijen;
+    return totalen.values();
   }
 
   public List<SelectItem> getSelectRangen() {

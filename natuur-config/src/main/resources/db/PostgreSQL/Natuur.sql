@@ -200,6 +200,22 @@ WITH ZONDERFOTO AS (
 SELECT   D.PARENT_ID, D.PARENT_RANG, D.TAXON_ID
 FROM     NATUUR.DETAILS D JOIN ZONDERFOTO Z ON D.TAXON_ID=Z.TAXON_ID;
 
+CREATE OR REPLACE VIEW NATUUR.OVERZICHT AS
+WITH WNM AS (
+  SELECT   DISTINCT W.TAXON_ID
+  FROM     NATUUR.WAARNEMINGEN W)
+SELECT   D.PARENT_ID, D.PARENT_VOLGNUMMER, D.PARENT_LATIJNSENAAM,
+         D.PARENT_RANG, D.RANG, COUNT(D.TAXON_ID) AS TOTAAL,
+         COUNT(WNM.TAXON_ID) AS WAARGENOMEN, SUM(D.OP_FOTO) AS OP_FOTO
+FROM     NATUUR.DETAILS D
+           LEFT JOIN WNM ON D.TAXON_ID = WNM.TAXON_ID
+WHERE    D.RANG IN (SELECT R.RANG
+                     FROM   NATUUR.RANGEN R
+                       JOIN NATUUR.RANGEN R2 ON R.NIVEAU >= R2.NIVEAU
+                         AND R2.RANG = 'so')
+GROUP BY D.PARENT_ID, D.PARENT_VOLGNUMMER, D.PARENT_LATIJNSENAAM, D.PARENT_RANG,
+         D.RANG;
+
 -- Constraints
 ALTER TABLE NATUUR.FOTOS
   ADD CONSTRAINT UK_FOT_NIVEAU UNIQUE(TAXON_ID, TAXON_SEQ);
@@ -299,6 +315,7 @@ GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT TO NATUUR_SE
 GRANT SELECT                         ON TABLE NATUUR.FOTOS          TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.GEBIEDEN       TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO      TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.OVERZICHT      TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.RANGEN         TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.RANGNAMEN      TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXA           TO NATUUR_SEL;
@@ -311,6 +328,7 @@ GRANT SELECT                         ON TABLE    NATUUR.FOTO_OVERZICHT    TO NAT
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.FOTOS             TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.GEBIEDEN          TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE    NATUUR.GEEN_FOTO         TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE    NATUUR.OVERZICHT         TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGEN            TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE    NATUUR.RANGNAMEN         TO NATUUR_UPD;
 GRANT SELECT, UPDATE                 ON SEQUENCE NATUUR.SEQ_FOTOS         TO NATUUR_UPD;
@@ -370,6 +388,15 @@ COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat 
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG              IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                 IS 'De sleutel van de taxon.';
+COMMENT ON VIEW   NATUUR.OVERZICHT                          IS 'Deze view bevat een overzicht van alle rangen met info over aantal soorten, waarnemingen en foto''s.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_ID                IS 'De sleutel van de taxon van de parent.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_LATIJNSENAAM      IS 'De latijnsenaam van de parent rang.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_RANG              IS 'De parent rang.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_VOLGNUMMER        IS 'Het volgnummer van de parent rang';
+COMMENT ON COLUMN NATUUR.OVERZICHT.RANG                     IS 'De rang waarop de aantallen zijn berekend (>= so).';
+COMMENT ON COLUMN NATUUR.OVERZICHT.TOTAAL                   IS 'Aantal soorten binnen de parent rang.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.WAARGENOMEN              IS 'Aantal soorten waargenomen binnen de parent rang.';
+COMMENT ON COLUMN NATUUR.OVERZICHT.OP_FOTO                  IS 'Aantal soorten gefotografeerd binnen de parent rang.';
 COMMENT ON TABLE  NATUUR.RANGEN                             IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
 COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU                      IS 'Het niveau rang binnen de taxa.';
 COMMENT ON COLUMN NATUUR.RANGEN.RANG                        IS 'De rang van een taxon.';
