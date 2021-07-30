@@ -116,7 +116,7 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
       return true;
     }
 
-    OverzichtDto  overzichtDto  = (OverzichtDto) object;
+    var overzichtDto  = (OverzichtDto) object;
     return new EqualsBuilder().append(parentLatijnsenaam,
                                       overzichtDto.parentLatijnsenaam)
                               .append(parentRang, overzichtDto.parentRang)

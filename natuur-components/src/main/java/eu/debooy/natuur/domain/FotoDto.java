@@ -78,7 +78,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
       return true;
     }
 
-    FotoDto fotoDto = (FotoDto) object;
+    var fotoDto = (FotoDto) object;
 
     return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
   }

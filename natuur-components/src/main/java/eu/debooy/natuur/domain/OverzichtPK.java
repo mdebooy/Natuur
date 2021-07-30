@@ -45,7 +45,11 @@ public class OverzichtPK implements Serializable {
     if (!(object instanceof OverzichtPK)) {
       return false;
     }
-    OverzichtPK  overzichtPK = (OverzichtPK) object;
+    if (object == this) {
+      return true;
+    }
+
+    var overzichtPK = (OverzichtPK) object;
     return new EqualsBuilder().append(parentId, overzichtPK.parentId)
                               .append(parentRang, overzichtPK.parentRang)
                               .append(rang, overzichtPK.rang)

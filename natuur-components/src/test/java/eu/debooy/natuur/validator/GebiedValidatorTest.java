@@ -165,6 +165,23 @@ public class GebiedValidatorTest {
   }
 
   @Test
+  public void testEqual() {
+    Gebied        gebied    = TestUtils.getGebied();
+    assertEquals(gebied, gebied);
+  }
+
+  @Test
+  public void testLeeg() {
+    Gebied        gebied    = new Gebied();
+    List<Message> expResult = new ArrayList<>();
+
+    expResult.add(REQ_GEBIED);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
   public void testValideerFouteGebied1() {
     Gebied        gebied    = getFoutGebied1();
     List<Message> expResult = new ArrayList<>();

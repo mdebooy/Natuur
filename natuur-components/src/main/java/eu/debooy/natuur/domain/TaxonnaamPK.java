@@ -51,7 +51,11 @@ public class TaxonnaamPK implements Comparable<TaxonnaamPK>, Serializable {
     if (!(object instanceof TaxonnaamPK)) {
       return false;
     }
-    TaxonnaamPK naamPK  = (TaxonnaamPK) object;
+    if (object == this) {
+      return true;
+    }
+
+    var naamPK  = (TaxonnaamPK) object;
     return new EqualsBuilder().append(taxonId, naamPK.taxonId)
                               .append(taal, naamPK.taal)
                               .isEquals();

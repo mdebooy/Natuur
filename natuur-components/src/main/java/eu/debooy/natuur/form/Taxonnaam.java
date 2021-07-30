@@ -62,9 +62,9 @@ public class Taxonnaam
   }
 
   @Override
-  public int compareTo(Taxonnaam andere) {
-    return new CompareToBuilder().append(taxonId, andere.taxonId)
-                                 .append(taal, andere.taal)
+  public int compareTo(Taxonnaam taxonnaam) {
+    return new CompareToBuilder().append(taxonId, taxonnaam.taxonId)
+                                 .append(taal, taxonnaam.taal)
                                  .toComparison();
   }
 
@@ -77,9 +77,9 @@ public class Taxonnaam
       return true;
     }
 
-    Taxonnaam andere  = (Taxonnaam) object;
-    return new EqualsBuilder().append(taxonId, andere.taxonId)
-                              .append(taal, andere.taal).isEquals();
+    var taxonnaam = (Taxonnaam) object;
+    return new EqualsBuilder().append(taxonId, taxonnaam.taxonId)
+                              .append(taal, taxonnaam.taal).isEquals();
   }
 
   public String getNaam() {

@@ -19,6 +19,7 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.CascadeType;
@@ -29,6 +30,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -48,6 +50,16 @@ public class FotoOverzichtDto
     extends Dto implements Comparable<FotoOverzichtDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  @ReadOnly
+  @OrderColumn
+  @Column(name="DATUM", nullable=false)
+  private Date    datum;
+  @ReadOnly
+  @Column(name="FOTO_BESTAND")
+  private String  fotoBestand;
+  @ReadOnly
+  @Column(name="FOTO_DETAIL")
+  private String  fotoDetail;
   @Id
   @ReadOnly
   @Column(name="FOTO_ID")
@@ -62,6 +74,9 @@ public class FotoOverzichtDto
   @Column(name="KLASSE_LATIJNSENAAM")
   private String  klasseLatijnsenaam;
   @ReadOnly
+  @Column(name="KLASSE_VOLGNUMMER")
+  private Long    klasseVolgnummer;
+  @ReadOnly
   @Column(name="LAND_ID")
   private Long    landId;
   @ReadOnly
@@ -73,6 +88,9 @@ public class FotoOverzichtDto
   @ReadOnly
   @Column(name="TAXON_SEQ")
   private Long    taxonSeq;
+  @ReadOnly
+  @Column(name="VOLGNUMMER")
+  private Long    volgnummer;
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
@@ -112,7 +130,8 @@ public class FotoOverzichtDto
 
   @Override
   public int compareTo(FotoOverzichtDto fotoOverzichtDto) {
-    return new CompareToBuilder().append(fotoId, fotoOverzichtDto.fotoId)
+    return new CompareToBuilder().append(datum, fotoOverzichtDto.datum)
+                                 .append(fotoId, fotoOverzichtDto.fotoId)
                                  .toComparison();
   }
 
@@ -125,10 +144,26 @@ public class FotoOverzichtDto
       return true;
     }
 
-    FotoOverzichtDto  fotoOverzichtDto  = (FotoOverzichtDto) object;
+    var fotoOverzichtDto  = (FotoOverzichtDto) object;
 
     return new EqualsBuilder().append(fotoId, fotoOverzichtDto.fotoId)
                               .isEquals();
+  }
+
+  public Date getDatum() {
+    return new Date(datum.getTime());
+  }
+
+  public String getFotoBestand() {
+    return fotoBestand;
+  }
+
+  public String getFotoDetail() {
+    return fotoDetail;
+  }
+
+  public Map<String, TaxonnaamDto> getKlassenamen() {
+    return klassenamen;
   }
 
   public Long getFotoId() {
@@ -156,6 +191,10 @@ public class FotoOverzichtDto
     }
   }
 
+  public Long getKlasseVolgnummer() {
+    return klasseVolgnummer;
+  }
+
   public Long getLandId() {
     return landId;
   }
@@ -177,8 +216,16 @@ public class FotoOverzichtDto
     return taxonId;
   }
 
+  public Map<String, TaxonnaamDto> getTaxonnamen() {
+    return taxonnamen;
+  }
+
   public Long getTaxonSeq() {
     return taxonSeq;
+  }
+
+  public Long getVolgnummer() {
+    return volgnummer;
   }
 
   @Override

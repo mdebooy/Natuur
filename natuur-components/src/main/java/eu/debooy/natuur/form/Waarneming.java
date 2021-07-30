@@ -104,9 +104,9 @@ public class Waarneming extends Formulier
   }
 
   @Override
-  public int compareTo(Waarneming andere) {
-    return new CompareToBuilder().append(waarnemingId,
-                                         andere.waarnemingId).toComparison();
+  public int compareTo(Waarneming waarneming) {
+    return new CompareToBuilder().append(waarnemingId, waarneming.waarnemingId)
+                                 .toComparison();
   }
 
   @Override
@@ -118,9 +118,9 @@ public class Waarneming extends Formulier
       return true;
     }
 
-    Waarneming  andere  = (Waarneming) object;
-    return new EqualsBuilder().append(waarnemingId,
-                                      andere.waarnemingId).isEquals();
+    var waarneming  = (Waarneming) object;
+    return new EqualsBuilder().append(waarnemingId, waarneming.waarnemingId)
+                              .isEquals();
   }
 
   public Integer getAantal() {

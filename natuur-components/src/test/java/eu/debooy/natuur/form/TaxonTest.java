@@ -16,6 +16,8 @@
  */
 package eu.debooy.natuur.form;
 
+import static eu.debooy.doosutils.DoosConstants.ONWAAR;
+import static eu.debooy.doosutils.DoosConstants.WAAR;
 import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
@@ -30,6 +32,7 @@ import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
@@ -229,6 +232,29 @@ public class TaxonTest {
     instance.setTaxonId(TAXONID);
 
     assertEquals(TAXONID, instance.getTaxonId());
+  }
+
+  @Test
+  public void testSetUitgestorven() {
+    Taxon instance  = new Taxon();
+    assertFalse("init ONWAAR", instance.isUitgestorven());
+    assertEquals("init get ONWAAR", ONWAAR, instance.getUitgestorven());
+
+    instance.setUitgestorven(WAAR);
+    assertTrue("String WAAR", instance.isUitgestorven());
+    assertEquals("String get WAAR", WAAR, instance.getUitgestorven());
+
+    instance.setUitgestorven(ONWAAR);
+    assertFalse("String ONWAAR", instance.isUitgestorven());
+    assertEquals("String get ONWAAR", ONWAAR, instance.getUitgestorven());
+
+    instance.setUitgestorven(true);
+    assertTrue("boolean WAAR", instance.isUitgestorven());
+    assertEquals("boolean get WAAR", WAAR, instance.getUitgestorven());
+
+    instance.setUitgestorven(false);
+    assertFalse("boolean ONWAAR", instance.isUitgestorven());
+    assertEquals("boolean get ONWAAR", ONWAAR, instance.getUitgestorven());
   }
 
   @Test

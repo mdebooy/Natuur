@@ -110,7 +110,7 @@ public class RangnaamValidatorTest {
 
   @Test
   public void testValideerFouteRangnaamDto() {
-    Rangnaam      rangnaam  = new Rangnaam();
+    RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
@@ -127,7 +127,7 @@ public class RangnaamValidatorTest {
 
   @Test
   public void testValideerGoedeRangnaamDto() {
-    Rangnaam      rangnaam  = new Rangnaam();
+    RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
     rangnaam.setNaam(NAAM);
@@ -140,7 +140,7 @@ public class RangnaamValidatorTest {
 
   @Test
   public void testValideerLegeRangnaamDto() {
-    Rangnaam      rangnaam  = new Rangnaam();
+    RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);

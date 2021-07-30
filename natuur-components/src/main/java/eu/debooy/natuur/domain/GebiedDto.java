@@ -100,7 +100,7 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
       return true;
     }
 
-    GebiedDto gebiedDto  = (GebiedDto) object;
+    var gebiedDto  = (GebiedDto) object;
     return new EqualsBuilder().append(gebiedId, gebiedDto.gebiedId).isEquals();
   }
 

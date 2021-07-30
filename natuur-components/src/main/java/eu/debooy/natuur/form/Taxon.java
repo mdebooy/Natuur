@@ -17,6 +17,8 @@
 package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.DoosConstants;
+import static eu.debooy.doosutils.DoosConstants.ONWAAR;
+import static eu.debooy.doosutils.DoosConstants.WAAR;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
@@ -43,6 +45,7 @@ public class Taxon
   private String              parentNaam;
   private Integer             parentVolgnummer;
   private String              rang;
+  private String              rangnaam;
   private Long                taxonId;
   private String              uitgestorven        = DoosConstants.ONWAAR;
   private Integer             volgnummer          = 0;
@@ -196,8 +199,8 @@ public class Taxon
   }
 
   @Override
-  public int compareTo(Taxon andere) {
-    return new CompareToBuilder().append(taxonId, andere.taxonId)
+  public int compareTo(Taxon taxon) {
+    return new CompareToBuilder().append(taxonId, taxon.taxonId)
                                  .toComparison();
   }
 
@@ -210,8 +213,8 @@ public class Taxon
       return true;
     }
 
-    Taxon andere  = (Taxon) object;
-    return new EqualsBuilder().append(taxonId, andere.taxonId).isEquals();
+    var taxon = (Taxon) object;
+    return new EqualsBuilder().append(taxonId, taxon.taxonId).isEquals();
   }
 
   public String getLatijnsenaam() {
@@ -245,6 +248,10 @@ public class Taxon
 
   public String getRang() {
     return rang;
+  }
+
+  public String getRangnaam() {
+    return rangnaam;
   }
 
   public Long getTaxonId() {
@@ -332,12 +339,20 @@ public class Taxon
     this.rang               = rang;
   }
 
+  public void setRangnaam(String rangnaam) {
+    this.rangnaam           = rangnaam;
+  }
+
   public void setTaxonId(Long taxonId) {
     this.taxonId            = taxonId;
   }
 
   public void setUitgestorven(String uitgestorven) {
     this.uitgestorven       = uitgestorven;
+  }
+
+  public void setUitgestorven(boolean uitgestorven) {
+    this.uitgestorven       = (uitgestorven ? WAAR : ONWAAR);
   }
 
   public void setVolgnummer(Integer volgnummer) {

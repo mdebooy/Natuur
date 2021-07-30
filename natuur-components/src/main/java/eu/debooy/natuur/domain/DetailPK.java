@@ -42,17 +42,21 @@ public class DetailPK  implements Serializable {
      if (!(object instanceof DetailPK)) {
        return false;
      }
-     DetailPK detailPK  = (DetailPK) object;
+    if (object == this) {
+      return true;
+    }
+
+    var detailPK  = (DetailPK) object;
      return new EqualsBuilder().append(parentId, detailPK.parentId)
                                .append(taxonId, detailPK.taxonId)
                                .isEquals();
    }
 
-  public Long getTaxonID() {
+  public Long getParentId() {
     return parentId;
   }
 
-  public Long getTaxonSeq() {
+  public Long getTaxonId() {
     return taxonId;
   }
 
@@ -62,11 +66,11 @@ public class DetailPK  implements Serializable {
                                 .append(taxonId).toHashCode();
   }
 
-  public void setTaxonID(Long parentId) {
+  public void setParentId(Long parentId) {
     this.parentId = parentId;
   }
 
-  public void setTaxonSeq(Long taxonId) {
+  public void setTaxonId(Long taxonId) {
     this.taxonId  = taxonId;
   }
 

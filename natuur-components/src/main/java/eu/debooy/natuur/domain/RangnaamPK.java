@@ -51,6 +51,10 @@ public class RangnaamPK implements Comparable<RangnaamPK>, Serializable {
     if (!(object instanceof RangnaamPK)) {
       return false;
     }
+    if (object == this) {
+      return true;
+    }
+
     RangnaamPK  naamPK  = (RangnaamPK) object;
     return new EqualsBuilder().append(rang, naamPK.rang)
                               .append(taal, naamPK.taal)
@@ -71,7 +75,7 @@ public class RangnaamPK implements Comparable<RangnaamPK>, Serializable {
                                 .append(taal).toHashCode();
   }
 
-  public void setLandId(String rang) {
+  public void setRang(String rang) {
     this.rang = rang;
   }
 

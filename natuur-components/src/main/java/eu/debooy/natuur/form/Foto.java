@@ -59,8 +59,8 @@ public class Foto
   }
 
   @Override
-  public int compareTo(Foto andere) {
-    return new CompareToBuilder().append(fotoId, andere.fotoId).toComparison();
+  public int compareTo(Foto foto) {
+    return new CompareToBuilder().append(fotoId, foto.fotoId).toComparison();
   }
 
   @Override
@@ -72,8 +72,8 @@ public class Foto
       return true;
     }
 
-    Foto  andere  = (Foto) object;
-    return new EqualsBuilder().append(fotoId, andere.fotoId).isEquals();
+    var foto  = (Foto) object;
+    return new EqualsBuilder().append(fotoId, foto.fotoId).isEquals();
   }
 
   public String getFotoBestand() {

@@ -89,8 +89,8 @@ public class Rangtotaal
   }
 
   @Override
-  public int compareTo(Rangtotaal andere) {
-    return new CompareToBuilder().append(taxonId, andere.taxonId)
+  public int compareTo(Rangtotaal rangtotaal) {
+    return new CompareToBuilder().append(taxonId, rangtotaal.taxonId)
                                  .toComparison();
   }
 
@@ -103,8 +103,8 @@ public class Rangtotaal
       return true;
     }
 
-    Rangtotaal  andere  = (Rangtotaal) object;
-    return new EqualsBuilder().append(taxonId, andere.taxonId).isEquals();
+    var rangtotaal  = (Rangtotaal) object;
+    return new EqualsBuilder().append(taxonId, rangtotaal.taxonId).isEquals();
   }
 
   public String getLatijnsenaam() {

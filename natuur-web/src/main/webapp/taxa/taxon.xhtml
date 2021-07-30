@@ -115,8 +115,12 @@
           </t:div>
           <div class="form-group form-group-sm row">
             <label for="volgnummer" class="col-2 control-label">#{i18nTeksten.tekst('label.volgnummer')}</label>
-            <div class="col-10">
+            <div class="col-4">
               <t:inputText id="volgnummer" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxon.volgnummer}" maxlength="10" size="10" readonly="#{natuurTaxon.aktie.readonly}" />
+            </div>
+            <label for="uitgestorven" class="col-2 control-label">#{i18nTeksten.tekst('label.uitgestorven')}</label>
+            <div class="col-1">
+              <t:selectBooleanCheckbox id="uitgestorven" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxon.uitgestorven}" disabled="#{natuurTaxon.aktie.readonly}" />
             </div>
           </div>
           <div class="form-group form-group-sm row">

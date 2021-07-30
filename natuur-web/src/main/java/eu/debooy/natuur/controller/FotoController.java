@@ -31,10 +31,14 @@ import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.form.Foto;
+import eu.debooy.natuur.form.FotoOverzicht;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
@@ -111,20 +115,24 @@ public class FotoController extends Natuur {
                        getTekst("natuur.titel.fotolijst"));
 
     String                taal            = getGebruikersTaal();
+    Map<Long, String>     landnamen       = new HashMap<>();
     LijstComparator       lijstComparator =
         new FotoOverzichtDto.LijstComparator();
     lijstComparator.setTaal(taal);
     Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
-    rijen.forEach(rij ->
+    rijen.forEach(rij -> {
+      Long  landId  = rij.getLandId();
+      if (!landnamen.containsKey(landId)) {
+        landnamen.put(landId, getI18nLandnaam().getI18nLandnaam(landId, taal));
+      }
       exportData.addData(new String[] {rij.getKlasseNaam(taal),
                                        rij.getKlasseLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
-                                       getI18nLandnaam()
-                                           .getI18nLandnaam(rij.getLandId(),
-                                                            taal),
+                                       landnamen.get(landId),
                                        rij.getNaam(taal),
-                                       rij.getGebied()}));
+                                       rij.getGebied()});
+    });
 
     HttpServletResponse response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
@@ -141,8 +149,19 @@ public class FotoController extends Natuur {
     return foto;
   }
 
-  public Collection<Foto> getFotos() {
-    return getFotoService().query(getGebruikersTaal());
+  public Collection<FotoOverzicht> getFotos() {
+    Map<Long, String>   landnamen = new HashMap<>();
+    String              taal      = getGebruikersTaal();
+    List<FotoOverzicht> overzicht = new ArrayList<>();
+    getFotoService().fotoOverzicht().forEach(rij -> {
+      Long  landId  = rij.getLandId();
+      if (!landnamen.containsKey(landId)) {
+        landnamen.put(landId, getI18nLandnaam().getI18nLandnaam(landId, taal));
+      }
+      overzicht.add(new FotoOverzicht(rij, taal, landnamen.get(landId)));
+    });
+
+    return overzicht;
   }
 
   public Waarneming getWaarneming() {

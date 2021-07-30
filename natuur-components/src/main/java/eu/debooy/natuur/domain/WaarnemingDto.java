@@ -112,7 +112,7 @@ public class WaarnemingDto
       return true;
     }
 
-    WaarnemingDto waarnemingDto = (WaarnemingDto) object;
+    var waarnemingDto = (WaarnemingDto) object;
 
     return new EqualsBuilder().append(waarnemingId,
                                       waarnemingDto.waarnemingId).isEquals();

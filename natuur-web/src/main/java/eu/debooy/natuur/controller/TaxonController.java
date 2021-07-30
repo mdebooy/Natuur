@@ -30,10 +30,13 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.natuur.validator.TaxonnaamValidator;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
@@ -160,7 +163,19 @@ public class TaxonController extends Natuur {
   }
 
   public Collection<Taxon> getTaxa() {
-    return getTaxonService().query(getGebruikersTaal());
+    Map<String, String> rangnamen = new HashMap<>();
+    List<Taxon>         taxa      = new ArrayList<>();
+
+    getRangService().query(getGebruikersTaal())
+                    .forEach(rij -> rangnamen.put(rij.getRang(),
+                                                  rij.getNaam()));
+    getTaxonService().query(getGebruikersTaal())
+                     .forEach(rij -> {
+      rij.setRangnaam(rangnamen.get(rij.getRang()));
+      taxa.add(rij);
+    });
+
+    return taxa;
   }
 
   public Taxon getTaxon() {

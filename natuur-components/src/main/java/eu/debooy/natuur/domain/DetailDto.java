@@ -178,7 +178,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       return true;
     }
 
-    DetailDto detailDto = (DetailDto) object;
+    var detailDto = (DetailDto) object;
     return new EqualsBuilder().append(parentId, detailDto.parentId)
                               .append(taxonId, detailDto.taxonId)
                               .isEquals();

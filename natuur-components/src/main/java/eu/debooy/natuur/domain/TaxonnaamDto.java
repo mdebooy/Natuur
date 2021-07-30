@@ -87,7 +87,7 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
       return true;
     }
 
-    TaxonnaamDto  naamDto = (TaxonnaamDto) object;
+    var naamDto = (TaxonnaamDto) object;
     return new EqualsBuilder().append(taxonId, naamDto.taxonId)
                               .append(taal, naamDto.taal)
                               .isEquals();

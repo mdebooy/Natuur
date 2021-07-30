@@ -84,7 +84,7 @@ public class RangnaamDto extends Dto implements Comparable<RangnaamDto> {
       return true;
     }
 
-    RangnaamDto naamDto = (RangnaamDto) object;
+    var naamDto = (RangnaamDto) object;
     return new EqualsBuilder().append(rang, naamDto.rang)
                               .append(taal, naamDto.taal)
                               .isEquals();

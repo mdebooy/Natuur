@@ -87,8 +87,8 @@ public class Gebied
   }
 
   @Override
-  public int compareTo(Gebied andere) {
-    return new CompareToBuilder().append(gebiedId, andere.gebiedId)
+  public int compareTo(Gebied gebied) {
+    return new CompareToBuilder().append(gebiedId, gebied.gebiedId)
                                  .toComparison();
   }
 
@@ -101,15 +101,15 @@ public class Gebied
       return true;
     }
 
-    Gebied  andere  = (Gebied) object;
-    return new EqualsBuilder().append(gebiedId, andere.gebiedId).isEquals();
+    var gebied  = (Gebied) object;
+    return new EqualsBuilder().append(gebiedId, gebied.gebiedId).isEquals();
   }
 
   public String getCoordinaten() {
-    StringBuilder coordinaten = new StringBuilder();
+    var coordinaten = new StringBuilder();
 
     if (DoosUtils.isNotBlankOrNull(latitude)) {
-      DecimalFormat seconden    = new DecimalFormat("#0.000");
+      var seconden    = new DecimalFormat("#0.000");
 
       coordinaten.append(latitude).append(" ").append(latitudeGraden)
                  .append(" ").append(latitudeMinuten).append(" ")

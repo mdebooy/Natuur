@@ -62,9 +62,9 @@ public class Rangnaam
   }
 
   @Override
-  public int compareTo(Rangnaam andere) {
-    return new CompareToBuilder().append(rang, andere.rang)
-                                 .append(taal, andere.taal)
+  public int compareTo(Rangnaam rangnaam) {
+    return new CompareToBuilder().append(rang, rangnaam.rang)
+                                 .append(taal, rangnaam.taal)
                                  .toComparison();
   }
 
@@ -77,9 +77,9 @@ public class Rangnaam
       return true;
     }
 
-    Rangnaam  andere  = (Rangnaam) object;
-    return new EqualsBuilder().append(rang, andere.rang)
-                              .append(taal, andere.taal).isEquals();
+    var rangnaam  = (Rangnaam) object;
+    return new EqualsBuilder().append(rang, rangnaam.rang)
+                              .append(taal, rangnaam.taal).isEquals();
   }
 
   public String getNaam() {

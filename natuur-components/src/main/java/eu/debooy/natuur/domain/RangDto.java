@@ -100,7 +100,7 @@ public class RangDto extends Dto implements Comparable<RangDto> {
       return true;
     }
 
-    RangDto rangDto  = (RangDto) object;
+    var rangDto  = (RangDto) object;
     return new EqualsBuilder().append(rang, rangDto.rang)
                               .isEquals();
   }

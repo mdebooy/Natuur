@@ -53,6 +53,7 @@ public final class TestConstants {
   public static final Long    PARENTID            = 2L;
   public static final String  PARENTLATIJNSENAAM  = "parentlatijnsenaam";
   public static final String  PARENTNAAM          = "parentnaam";
+  public static final String  PARENTRANG          = "pr";
   public static final Integer PARENTVOLGNUMMER    = 5000;
   public static final String  RANG                = "ra";
   public static final String  RANG_FOUT           = "xxxx";

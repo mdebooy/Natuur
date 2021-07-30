@@ -68,8 +68,8 @@ public class Rang
   }
 
   @Override
-  public int compareTo(Rang andere) {
-    return new CompareToBuilder().append(rangcode, andere.rangcode)
+  public int compareTo(Rang rang) {
+    return new CompareToBuilder().append(rangcode, rang.rangcode)
                                  .toComparison();
   }
 
@@ -82,8 +82,8 @@ public class Rang
       return true;
     }
 
-    Rang  andere  = (Rang) object;
-    return new EqualsBuilder().append(rangcode, andere.rangcode).isEquals();
+    var rang  = (Rang) object;
+    return new EqualsBuilder().append(rangcode, rang.rangcode).isEquals();
   }
 
   public String getNaam() {

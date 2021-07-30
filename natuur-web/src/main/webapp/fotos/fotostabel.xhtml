@@ -24,10 +24,10 @@
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td class="text-right">#{foto.taxonSeq}</td>
-          <td>{foto.taxon.naam}</td>
-          <td><em>{foto.taxon.latijnsenaam}</em></td>
-          <td>{foto.gebied.naam}</td>
-          <td>{i18nLandnaam.landnaam(foto.gebied.landId)}</td>
+          <td>#{foto.naam}</td>
+          <td><em>#{foto.latijnsenaam}</em></td>
+          <td>#{foto.gebied}</td>
+          <td>#{foto.landnaam}</td>
           <td>
             <t:outputText value="#{foto.datum}">
               <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
