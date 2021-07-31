@@ -31,7 +31,7 @@ public class TaxonConverter implements Converter {
   @Override
   public Object getAsObject(FacesContext facesContext,
                             UIComponent uiComponent, String sleutel) {
-    TaxonService  taxonService  = (TaxonService)
+    var taxonService  = (TaxonService)
         new JNDI.JNDINaam().metBean(TaxonService.class).locate();
 
     if (null == sleutel) {

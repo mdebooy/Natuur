@@ -179,7 +179,7 @@ public class Waarneming extends Formulier
     }
     if (!new EqualsBuilder().append(gebied, waarnemingDto.getGebied())
                             .isEquals()) {
-      GebiedDto gebiedDto = new GebiedDto();
+      var gebiedDto = new GebiedDto();
       gebied.persist(gebiedDto);
       waarnemingDto.setGebied(gebiedDto);
     }
@@ -189,7 +189,7 @@ public class Waarneming extends Formulier
     }
     if (!new EqualsBuilder().append(taxon, waarnemingDto.getTaxon())
                             .isEquals()) {
-      TaxonDto  taxonDto  = new TaxonDto();
+      var taxonDto  = new TaxonDto();
       taxon.persist(taxonDto);
       waarnemingDto.setTaxon(taxonDto);
     }

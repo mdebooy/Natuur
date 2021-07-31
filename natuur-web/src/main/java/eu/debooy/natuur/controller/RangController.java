@@ -138,8 +138,8 @@ public class RangController extends Natuur {
   public Collection<Rangtotaal> getRangtotalen() {
     Map<Long, Rangtotaal> totalen = new HashMap<>();
 
-    getOverzichtService()
-        .getTotalenVoorRang(rang.getRang()).forEach(rij -> {
+    getOverzichtService().getTotalenVoorRang(rang.getRang())
+                         .forEach(rij -> {
       Long  taxonId = rij.getParentId();
       if (totalen.containsKey(taxonId)) {
         Rangtotaal  rangtotaal  = totalen.get(taxonId);

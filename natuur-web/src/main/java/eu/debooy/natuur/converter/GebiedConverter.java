@@ -31,7 +31,7 @@ public class GebiedConverter implements Converter {
   @Override
   public Object getAsObject(FacesContext facesContext,
                             UIComponent uiComponent, String sleutel) {
-    GebiedService gebiedService = (GebiedService)
+    var gebiedService = (GebiedService)
         new JNDI.JNDINaam().metBean(GebiedService.class).locate();
 
     if (null == sleutel) {

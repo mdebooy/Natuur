@@ -20,6 +20,7 @@ import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -161,7 +162,7 @@ public class WaarnemingController extends Natuur {
     try {
       resultaat = getWaarnemingService().getTaxonWaarnemingen(taxonId);
     } catch (Exception e) {
-      addError("errors.geen.i18n", e.getClass());
+      addError(DoosConstants.NOI18N, e.getClass());
       resultaat = new ArrayList<>();
     }
 
@@ -178,7 +179,7 @@ public class WaarnemingController extends Natuur {
     try {
       resultaat = getWaarnemingService().query(getGebruikersTaal());
     } catch (Exception e) {
-      addError("errors.geen.i18n", e.getClass());
+      addError(DoosConstants.NOI18N, e.getClass());
       resultaat = new ArrayList<>();
     }
 
@@ -274,7 +275,7 @@ public class WaarnemingController extends Natuur {
   }
 
   public void waarnemingenlijst() {
-    ExportData  exportData  = new ExportData();
+    var exportData  = new ExportData();
 
     exportData.addMetadata("application", getApplicatieNaam());
     exportData.addMetadata("auteur",      getGebruikerNaam());

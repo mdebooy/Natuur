@@ -92,7 +92,8 @@ public class FotoController extends Natuur {
       addError(PersistenceConstants.NOTFOUND, fotoId);
       return;
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
       return;
     }
@@ -100,7 +101,7 @@ public class FotoController extends Natuur {
   }
 
   public void fotolijst() {
-    ExportData  exportData  = new ExportData();
+    var exportData  = new ExportData();
 
     exportData.addMetadata("application", getApplicatieNaam());
     exportData.addMetadata("auteur",      getGebruikerNaam());
@@ -187,7 +188,6 @@ public class FotoController extends Natuur {
       return;
     }
 
-    // TODO Default message
     String  melding = foto.getTaxonSeq().toString();
     try {
       foto.persist(fotoDto);
@@ -210,7 +210,8 @@ public class FotoController extends Natuur {
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, melding);
     } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format("RT: %s", e.getLocalizedMessage()), e);
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
   }
