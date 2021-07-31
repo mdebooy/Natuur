@@ -124,9 +124,9 @@ public class FotoController extends Natuur {
     rijen.addAll(getFotoService().fotoOverzicht());
     rijen.forEach(rij -> {
       Long  landId  = rij.getLandId();
-      if (!landnamen.containsKey(landId)) {
-        landnamen.put(landId, getI18nLandnaam().getI18nLandnaam(landId, taal));
-      }
+      landnamen.computeIfAbsent(landId,
+                                k -> getI18nLandnaam().getI18nLandnaam(landId,
+                                                                       taal));
       exportData.addData(new String[] {rij.getKlasseNaam(taal),
                                        rij.getKlasseLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
@@ -156,9 +156,9 @@ public class FotoController extends Natuur {
     List<FotoOverzicht> overzicht = new ArrayList<>();
     getFotoService().fotoOverzicht().forEach(rij -> {
       Long  landId  = rij.getLandId();
-      if (!landnamen.containsKey(landId)) {
-        landnamen.put(landId, getI18nLandnaam().getI18nLandnaam(landId, taal));
-      }
+      landnamen.computeIfAbsent(landId,
+                                k -> getI18nLandnaam().getI18nLandnaam(landId,
+                                                                       taal));
       overzicht.add(new FotoOverzicht(rij, taal, landnamen.get(landId)));
     });
 
