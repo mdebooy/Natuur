@@ -56,9 +56,8 @@ public class TaxonController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(TaxonController.class);
 
-  public static final String  KINDEREN_TAB      = "kinderenTab";
-  public static final String  NAMEN_TAB         = "namenTab";
-  public static final String  WAARNEMINGEN_TAB  = "waarnemingenTab";
+  private static final  String  KINDEREN_TAB      = "kinderenTab";
+  private static final  String  NAMEN_TAB         = "namenTab";
 
   private String        aktieveTab;
   private Taxon         ouder;
