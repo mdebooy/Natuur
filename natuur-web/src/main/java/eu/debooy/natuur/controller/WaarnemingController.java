@@ -89,6 +89,8 @@ public class WaarnemingController extends Natuur {
   public void createFoto() {
     foto    = new Foto();
     fotoDto = new FotoDto();
+    foto.setWaarnemingId(waarneming.getWaarnemingId());
+    fotoDto.setWaarnemingId(waarnemingDto.getWaarnemingId());
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel("natuur.titel.foto.create");
     redirect(WNMFOTO_REDIRECT);

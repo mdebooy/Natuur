@@ -25,8 +25,8 @@
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
-            <h:commandLink action="#{natuurFoto.update(foto.fotoId)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-            <h:commandLink action="#{natuurFoto.delete(foto.fotoId)}" class="lnkDelete" id="lnkDelete" />
+            <h:commandLink action="#{natuurWaarneming.updateFoto(foto.taxonSeq)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
+            <h:commandLink action="#{natuurWaarneming.deleteFoto(foto.taxonSeq)}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{foto.taxonSeq} - #{foto.fotoBestand}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
           <td class="text-right">#{foto.taxonSeq}</td>
