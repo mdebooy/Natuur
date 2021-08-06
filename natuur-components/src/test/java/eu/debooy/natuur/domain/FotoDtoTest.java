@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Marco de Booij
+ * Copyright (c) 2021 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,7 +14,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.natuur.form;
+package eu.debooy.natuur.domain;
 
 import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
 import static eu.debooy.natuur.TestConstants.FOTODETAIL;
@@ -23,7 +23,6 @@ import static eu.debooy.natuur.TestConstants.FOTOID_HASH;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.TAXONSEQ;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
-import eu.debooy.natuur.domain.FotoDto;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -35,112 +34,85 @@ import org.junit.Test;
 /**
  * @author Marco de Booij
  */
-public class FotoTest {
-  private static Foto foto;
+public class FotoDtoTest {
+  private static FotoDto  fotoDto;
 
   @BeforeClass
   public static void setUpClass() {
-    foto    = new Foto();
-    foto.setFotoBestand(FOTOBESTAND);
-    foto.setFotoDetail(FOTODETAIL);
-    foto.setFotoId(FOTOID);
-    foto.setOpmerking(OPMERKING);
-    foto.setTaxonSeq(TAXONSEQ);
-    foto.setWaarnemingId(WAARNEMINGID);
-  }
-
-  @Test
-  public void testCompareTo() {
-    var gelijk  = new Foto(foto);
-    var groter  = new Foto();
-    groter.setFotoId(foto.getFotoId() + 1);
-    var kleiner = new Foto();
-    kleiner.setFotoId(foto.getFotoId() - 1);
-
-    assertTrue(foto.compareTo(groter) < 0);
-    assertEquals(0, foto.compareTo(gelijk));
-    assertTrue(foto.compareTo(kleiner) > 0);
-  }
-
-  @Test
-  public void testEquals() {
-    var   fotoDto   = new FotoDto();
-    var   instance  = new Foto();
-
+    fotoDto = new FotoDto();
     fotoDto.setFotoBestand(FOTOBESTAND);
     fotoDto.setFotoDetail(FOTODETAIL);
     fotoDto.setFotoId(FOTOID);
     fotoDto.setOpmerking(OPMERKING);
     fotoDto.setTaxonSeq(TAXONSEQ);
     fotoDto.setWaarnemingId(WAARNEMINGID);
+  }
 
-    assertEquals(foto, foto);
-    assertNotEquals(foto, null);
-    assertNotEquals(foto, FotoDto.COL_FOTODETAIL);
-    assertNotEquals(foto, instance);
+  @Test
+  public void testCompareTo() {
+    var gelijk  = new FotoDto();
+    gelijk.setFotoId(fotoDto.getFotoId());
+    var groter  = new FotoDto();
+    groter.setFotoId(fotoDto.getFotoId() + 1);
+    var kleiner = new FotoDto();
+    kleiner.setFotoId(fotoDto.getFotoId() - 1);
 
-    instance.setFotoId(foto.getFotoId());
-    assertEquals(foto, instance);
+    assertTrue(fotoDto.compareTo(groter) < 0);
+    assertEquals(0, fotoDto.compareTo(gelijk));
+    assertTrue(fotoDto.compareTo(kleiner) > 0);
+  }
 
-    instance  = new Foto(foto);
-    assertEquals(foto, instance);
+  @Test
+  public void testEquals() {
+    var instance  = new FotoDto();
 
-    instance  = new Foto(fotoDto);
-    assertEquals(foto, instance);
+    assertEquals(fotoDto, fotoDto);
+    assertNotEquals(fotoDto, null);
+    assertNotEquals(fotoDto, FotoDto.COL_FOTODETAIL);
+    assertNotEquals(fotoDto, instance);
+
+    instance.setFotoId(fotoDto.getFotoId());
+    assertEquals(fotoDto, instance);
   }
 
   @Test
   public void testGetFotoBestand() {
-    assertEquals(FOTOBESTAND, foto.getFotoBestand());
+    assertEquals(FOTOBESTAND, fotoDto.getFotoBestand());
   }
 
   @Test
   public void testGetFotoDetail() {
-    assertEquals(FOTODETAIL, foto.getFotoDetail());
+    assertEquals(FOTODETAIL, fotoDto.getFotoDetail());
   }
 
   @Test
   public void testGetFotoId() {
-    assertEquals(FOTOID, foto.getFotoId());
+    assertEquals(FOTOID, fotoDto.getFotoId());
   }
 
   @Test
   public void testGetOpmerking() {
-    assertEquals(OPMERKING, foto.getOpmerking());
+    assertEquals(OPMERKING, fotoDto.getOpmerking());
   }
 
   @Test
   public void testGetTaxonSeq() {
-    assertEquals(TAXONSEQ, foto.getTaxonSeq());
+    assertEquals(TAXONSEQ, fotoDto.getTaxonSeq());
   }
 
   @Test
   public void testGetWaarnemingId() {
-    assertEquals(WAARNEMINGID, foto.getWaarnemingId());
+    assertEquals(WAARNEMINGID, fotoDto.getWaarnemingId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(FOTOID_HASH, foto.hashCode());
-  }
-
-  @Test
-  public void testPersist() {
-    var parameter = new FotoDto();
-    var instance  = new Foto();
-    instance.persist(parameter);
-
-    assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());
-    assertEquals(instance.getFotoDetail(), parameter.getFotoDetail());
-    assertEquals(instance.getFotoId(), parameter.getFotoId());
-    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxonSeq(), parameter.getTaxonSeq());
-    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
+    assertEquals(FOTOID_HASH, fotoDto.hashCode());
   }
 
   @Test
   public void testSetFotoBestand() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(FOTOBESTAND, instance.getFotoBestand());
     instance.setFotoBestand(FOTOBESTAND);
 
@@ -154,7 +126,7 @@ public class FotoTest {
 
   @Test
   public void testSetFotoDetail() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(FOTODETAIL, instance.getFotoDetail());
     instance.setFotoDetail(FOTODETAIL);
 
@@ -168,7 +140,7 @@ public class FotoTest {
 
   @Test
   public void testSetFotoId() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(FOTOID, instance.getFotoId());
     instance.setFotoId(FOTOID);
 
@@ -182,7 +154,7 @@ public class FotoTest {
 
   @Test
   public void testSetOpmerking() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(OPMERKING, instance.getOpmerking());
     instance.setOpmerking(OPMERKING);
 
@@ -196,7 +168,7 @@ public class FotoTest {
 
   @Test
   public void testSetTaxonSeq() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(TAXONSEQ, instance.getTaxonSeq());
     instance.setTaxonSeq(TAXONSEQ);
 
@@ -210,7 +182,7 @@ public class FotoTest {
 
   @Test
   public void testSetWaarnemingId() {
-    var instance  = new Foto();
+    var instance  = new FotoDto();
     assertNotEquals(WAARNEMINGID, instance.getWaarnemingId());
     instance.setWaarnemingId(WAARNEMINGID);
 

@@ -19,7 +19,11 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import static eu.debooy.natuur.TestConstants.NIVEAU;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANGNAAM;
+import static eu.debooy.natuur.TestConstants.RANGNAAM_GR;
+import static eu.debooy.natuur.TestConstants.RANGNAAM_KL;
 import static eu.debooy.natuur.TestConstants.RANG_GR;
+import static eu.debooy.natuur.TestConstants.RANG_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_GR;
@@ -32,6 +36,7 @@ import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,193 +46,235 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class RangDtoTest {
-  private static final int    HASHCODE  = 4260;
-
-  private static final Map<String, RangnaamDto>  rangnamen  = new HashMap<>();
+  private static  RangDto                   rangDto;
+  private static  Map<String, RangnaamDto>  rangnamen;
 
   @BeforeClass
   public static void beforeClass() {
+    rangDto   = new RangDto();
+    rangnamen = new HashMap<>();
+
     var rangnaamDto = new RangnaamDto();
     rangnaamDto.setTaal(TAAL);
     rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam("taal " + TAAL);
+    rangnaamDto.setNaam(RANGNAAM);
     rangnamen.put(TAAL, rangnaamDto);
     rangnaamDto = new RangnaamDto();
     rangnaamDto.setTaal(TAAL_KL);
     rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam("taal " + TAAL_KL);
+    rangnaamDto.setNaam(RANGNAAM_KL);
     rangnamen.put(TAAL_KL, rangnaamDto);
+
+    rangDto.setNiveau(NIVEAU);
+    rangDto.setRang(RANG);
+    rangDto.setRangnamen(rangnamen);
+  }
+
+  @Test
+  public void testAddNaam() {
+    var instance = new RangDto();
+
+    instance.setNiveau(NIVEAU);
+    instance.setRang(RANG);
+
+    rangnamen.values().forEach(rangnaam ->  instance.addNaam(rangnaam));
+
+    var rangnaamDto = new RangnaamDto();
+    rangnaamDto.setTaal(TAAL_GR);
+    rangnaamDto.setNaam(RANGNAAM_GR);
+    instance.addNaam(rangnaamDto);
+
+    assertEquals(3, instance.getRangnamen().size());
   }
 
   @Test
   public void testCompareTo() {
-    RangDto rangDto1  = new RangDto();
-    RangDto rangDto2  = new RangDto();
-    RangDto rangDto3  = new RangDto();
+    var gelijk  = new RangDto();
+    var groter  = new RangDto();
+    var kleiner = new RangDto();
 
-    rangDto1.setNiveau(NIVEAU);
-    rangDto1.setRang(RANG);
-    rangDto1.setRangnamen(rangnamen);
+    gelijk.setNiveau(NIVEAU);
+    gelijk.setRang(RANG);
+    gelijk.setRangnamen(rangnamen);
 
-    rangDto2.setNiveau(NIVEAU);
-    rangDto2.setRang(RANG_KL);
-    rangDto2.setRangnamen(rangnamen);
+    groter.setNiveau(NIVEAU);
+    groter.setRang(RANG_GR);
+    groter.setRangnamen(rangnamen);
 
-    rangDto3.setNiveau(NIVEAU);
-    rangDto3.setRang(RANG);
-    rangDto3.setRangnamen(rangnamen);
+    kleiner.setNiveau(NIVEAU);
+    kleiner.setRang(RANG_KL);
+    kleiner.setRangnamen(rangnamen);
 
-    assertEquals("groter dan", 3, rangDto1.compareTo(rangDto2));
-    assertEquals("kleiner dan", -3, rangDto2.compareTo(rangDto1));
-    assertEquals("gelijk aan", 0, rangDto1.compareTo(rangDto3));
+    assertTrue(rangDto.compareTo(groter) < 0);
+    assertEquals(0, rangDto.compareTo(gelijk));
+    assertTrue(rangDto.compareTo(kleiner) > 0);
   }
 
   @Test
   public void testEquals() {
-    var rangDto   = new RangDto();
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    assertEquals("== this", rangDto, rangDto);
+    var instance  = new RangDto();
 
-    var gelijk    = new RangDto();
-    gelijk.setNiveau(NIVEAU);
-    gelijk.setRang(RANG);
-    assertEquals("equals1", gelijk, rangDto);
+    assertEquals(rangDto, rangDto);
+    assertNotEquals(rangDto, null);
+    assertNotEquals(rangDto, RANGNAAM);
+    assertNotEquals(rangDto, instance);
 
-    gelijk.setRang(RANG_GR);
-    assertNotEquals("!equals", gelijk, rangDto);
+    instance.setRang(RANG);
+    assertEquals(rangDto, instance);
 
-    gelijk.setNiveau(NIVEAU + 1);
-    gelijk.setRang(RANG);
-    assertEquals("equals2", gelijk, rangDto);
+    instance.setRang(RANG_GR);
+    assertNotEquals(rangDto, instance);
+  }
+
+  @Test
+  public void testGetNiveau() {
+    assertEquals(NIVEAU, rangDto.getNiveau());
+  }
+
+  @Test
+  public void testGetRang() {
+    assertEquals(RANG, rangDto.getRang());
+  }
+
+  @Test
+  public void testGetNaam() {
+    assertEquals(RANG, rangDto.getNaam(TAAL_GR));
+    assertEquals(RANGNAAM, rangDto.getNaam(TAAL));
+  }
+
+  @Test
+  public void testGetRangnaam() {
+    assertNull(rangDto.getRangnaam(TAAL_GR).getRang());
+    assertEquals(RANGNAAM, rangDto.getRangnaam(TAAL).getNaam());
+    assertEquals(RANGNAAM_KL, rangDto.getRangnaam(TAAL_KL).getNaam());
+  }
+
+  @Test
+  public void testGetRangnamen() {
+    assertEquals(2, rangDto.getRangnamen().size());
+    assertTrue(TAAL, rangDto.hasRangnaam(TAAL));
+    assertTrue(TAAL_KL, rangDto.hasRangnaam(TAAL_KL));
+    assertFalse(TAAL_GR, rangDto.hasRangnaam(TAAL_GR));
   }
 
   @Test
   public void testHashCode() {
-    RangDto rangDto = new RangDto();
-
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    rangDto.setRangnamen(rangnamen);
-
-    assertEquals("HashCode", HASHCODE, rangDto.hashCode());
+    assertEquals(RANG_HASH, rangDto.hashCode());
   }
 
   @Test
   public void testNiveauComparator() {
-    RangDto rangDto1  = new RangDto();
-    RangDto rangDto2  = new RangDto();
-    RangDto rangDto3  = new RangDto();
+    var groter  = new RangDto();
+    var kleiner = new RangDto();
 
-    rangDto1.setNiveau(NIVEAU);
-    rangDto1.setRang(RANG);
-    rangDto1.setRangnamen(rangnamen);
+    groter.setNiveau(NIVEAU + 1);
+    groter.setRang(RANG_KL);
+    groter.setRangnamen(rangnamen);
 
-    rangDto2.setNiveau(NIVEAU + 1);
-    rangDto2.setRang(RANG_KL);
-    rangDto2.setRangnamen(rangnamen);
-
-    rangDto3.setNiveau(NIVEAU - 1);
-    rangDto3.setRang(RANG);
-    rangDto3.setRangnamen(rangnamen);
+    kleiner.setNiveau(NIVEAU - 1);
+    kleiner.setRang(RANG);
+    kleiner.setRangnamen(rangnamen);
 
     Set<RangDto>  rangen  = new TreeSet<>(new RangDto.NiveauComparator());
-    rangen.add(rangDto1);
-    rangen.add(rangDto2);
-    rangen.add(rangDto3);
+    rangen.add(groter);
+    rangen.add(rangDto);
+    rangen.add(kleiner);
 
-    RangDto[] tabel = new RangDto[rangen.size()];
-    System.arraycopy(rangen.toArray(),0,tabel,0,rangen.size());
-    assertEquals("rang[0]", Long.valueOf(NIVEAU - 1), tabel[0].getNiveau());
-    assertEquals("rang[1]", NIVEAU, tabel[1].getNiveau());
-    assertEquals("rang[2]", Long.valueOf(NIVEAU + 1), tabel[2].getNiveau());
+    var tabel = new RangDto[rangen.size()];
+    System.arraycopy(rangen.toArray(), 0, tabel, 0, rangen.size());
+    assertEquals(kleiner.getNiveau(), tabel[0].getNiveau());
+    assertEquals(rangDto.getNiveau(), tabel[1].getNiveau());
+    assertEquals(groter.getNiveau(), tabel[2].getNiveau());
   }
 
   @Test
-  public void testRangDto1() {
-    RangDto rangDto = new RangDto();
+  public void testRemoveRangnaam() {
+    var instance  = new RangDto();
 
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    rangDto.setRangnamen(rangnamen);
+    instance.setNiveau(NIVEAU);
+    instance.setRang(RANG);
+    instance.setRangnamen(rangnamen);
 
-    assertEquals("Niveau", NIVEAU, rangDto.getNiveau());
-    assertEquals("Rang", RANG, rangDto.getRang());
-    assertEquals("Namen", 2, rangDto.getRangnamen().size());
-    assertTrue(TAAL, rangDto.hasRangnaam(TAAL));
-    assertTrue(TAAL_KL, rangDto.hasRangnaam(TAAL_KL));
-    assertFalse(TAAL_GR, rangDto.hasRangnaam(TAAL_GR));
-    assertEquals("taal onbekend", RANG, rangDto.getNaam(TAAL_GR));
-    assertEquals("Naam " + TAAL, "taal " + TAAL, rangDto.getRangnaam(TAAL).getNaam());
-    assertEquals("Naam " + TAAL_KL, "taal " + TAAL_KL, rangDto.getRangnaam(TAAL_KL).getNaam());
-  }
-
-  @Test
-  public void testRangDto2() {
-    RangDto rangDto = new RangDto();
-
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    rangDto.setRangnamen(rangnamen.values());
-
-    assertEquals("Niveau", NIVEAU, rangDto.getNiveau());
-    assertEquals("Rang", RANG, rangDto.getRang());
-    assertEquals("Namen", 2, rangDto.getRangnamen().size());
-    assertTrue(TAAL, rangDto.hasRangnaam(TAAL));
-    assertTrue(TAAL_KL, rangDto.hasRangnaam(TAAL_KL));
-    assertFalse(TAAL_GR, rangDto.hasRangnaam(TAAL_GR));
-    assertEquals("taal onbekend", RANG, rangDto.getNaam(TAAL_GR));
-    assertEquals("Naam " + TAAL, "taal " + TAAL, rangDto.getRangnaam(TAAL).getNaam());
-    assertEquals("Naam " + TAAL_KL, "taal " + TAAL_KL, rangDto.getRangnaam(TAAL_KL).getNaam());
-  }
-
-  @Test
-  public void testRangnamen1() {
-    RangDto rangDto = new RangDto();
-
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    rangDto.setRangnamen(rangnamen);
-
-    assertEquals("Namen", 2, rangDto.getRangnamen().size());
-    rangDto.removeRangnaam(TAAL_KL);
-    assertEquals("Namen", 1, rangDto.getRangnamen().size());
-  }
-
-  @Test
-  public void testRangnamen2() {
-    RangDto rangDto = new RangDto();
-
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-    rangDto.setRangnamen(rangnamen.values());
-
-    assertEquals("Namen", 2, rangDto.getRangnamen().size());
-    rangDto.removeRangnaam(TAAL_KL);
-    assertEquals("Namen", 1, rangDto.getRangnamen().size());
-  }
-
-  @Test
-  public void testRangnamen3() {
-    RangDto rangDto = new RangDto();
-
-    rangDto.setNiveau(NIVEAU);
-    rangDto.setRang(RANG);
-
-    rangnamen.values().forEach(rangnaam ->  rangDto.addNaam(rangnaam));
-    var rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(TAAL_GR);
-    rangnaamDto.setNaam("taal " + TAAL_GR);
-    rangDto.addNaam(rangnaamDto);
-
-    assertEquals("Namen", 3, rangDto.getRangnamen().size());
-    rangDto.removeRangnaam(TAAL_KL);
-    assertEquals("Namen", 2, rangDto.getRangnamen().size());
+    assertEquals(2, instance.getRangnamen().size());
+    instance.removeRangnaam(TAAL_KL);
+    assertEquals(1, instance.getRangnamen().size());
     try {
-      rangDto.removeRangnaam(TAAL_KL);
+      instance.removeRangnaam(TAAL_KL);
       Assert.fail("Geen throw ObjectNotFoundException");
     } catch (ObjectNotFoundException e) {
       // Is goed.
     }
+  }
+
+  @Test
+  public void testSetNiveau() {
+    var instance  = new RangDto();
+    assertNotEquals(NIVEAU, instance.getNiveau());
+
+    instance.setNiveau(NIVEAU);
+
+    assertEquals(NIVEAU, instance.getNiveau());
+    assertNull(instance.getRang());
+    assertTrue(instance.getRangnamen().isEmpty());
+  }
+
+  @Test
+  public void testSetRang() {
+    var instance  = new RangDto();
+    assertNotEquals(RANG, instance.getRang());
+
+    instance.setRang(RANG);
+
+    assertNull(instance.getNiveau());
+    assertEquals(RANG, instance.getRang());
+    assertTrue(instance.getRangnamen().isEmpty());
+}
+
+  @Test
+  public void testSetRangnamen1() {
+    var instance    = new RangDto();
+    var rangnaamDto = new RangnaamDto();
+
+    assertTrue(instance.getRangnamen().isEmpty());
+
+    instance.setRangnamen(rangnamen);
+    rangnaamDto.setTaal(TAAL_GR);
+    rangnaamDto.setNaam(RANGNAAM_GR);
+    instance.addNaam(rangnaamDto);
+
+    assertEquals(3, instance.getRangnamen().size());
+    assertTrue(TAAL, instance.hasRangnaam(TAAL));
+    assertTrue(TAAL_KL, instance.hasRangnaam(TAAL_KL));
+    assertTrue(TAAL_GR, instance.hasRangnaam(TAAL_GR));
+
+    instance.setRangnamen(rangnamen);
+    assertEquals(2, instance.getRangnamen().size());
+    assertTrue(TAAL, instance.hasRangnaam(TAAL));
+    assertTrue(TAAL_KL, instance.hasRangnaam(TAAL_KL));
+    assertFalse(TAAL_GR, instance.hasRangnaam(TAAL_GR));
+  }
+
+  @Test
+  public void testSetRangnamen2() {
+    var instance    = new RangDto();
+    var rangnaamDto = new RangnaamDto();
+
+    assertTrue(instance.getRangnamen().isEmpty());
+
+    instance.setRangnamen(rangnamen.values());
+    rangnaamDto.setTaal(TAAL_GR);
+    rangnaamDto.setNaam(RANGNAAM_GR);
+    instance.addNaam(rangnaamDto);
+
+    assertEquals(3, instance.getRangnamen().size());
+    assertTrue(TAAL, instance.hasRangnaam(TAAL));
+    assertTrue(TAAL_KL, instance.hasRangnaam(TAAL_KL));
+    assertTrue(TAAL_GR, instance.hasRangnaam(TAAL_GR));
+
+    instance.setRangnamen(rangnamen.values());
+    assertEquals(2, instance.getRangnamen().size());
+    assertTrue(TAAL, instance.hasRangnaam(TAAL));
+    assertTrue(TAAL_KL, instance.hasRangnaam(TAAL_KL));
+    assertFalse(TAAL_GR, instance.hasRangnaam(TAAL_GR));
   }
 }

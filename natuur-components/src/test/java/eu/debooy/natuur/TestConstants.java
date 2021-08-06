@@ -60,7 +60,10 @@ public final class TestConstants {
   public static final String  RANG_GR             = "so";
   public static final int     RANG_HASH           = 4260;
   public static final String  RANG_KL             = "or";
+  public static final String  RANGNAAM            = "rang";
+  public static final String  RANGNAAM_GR         = "soort";
   public static final int     RANGNAAM_HASH       = 161138;
+  public static final String  RANGNAAM_KL         = "order";
   public static final String  TAAL                = "nl";
   public static final String  TAAL_FOUT           = "xxx";
   public static final String  TAAL_GR             = "pt";
