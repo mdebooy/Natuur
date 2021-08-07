@@ -109,15 +109,17 @@ public class Gebied
     var coordinaten = new StringBuilder();
 
     if (DoosUtils.isNotBlankOrNull(latitude)) {
-      var seconden    = new DecimalFormat("#0.000");
+      var seconden  = new DecimalFormat("#0.000");
 
       coordinaten.append(latitude).append(" ").append(latitudeGraden)
                  .append(" ").append(latitudeMinuten).append(" ")
-                 .append(seconden.format(latitudeSeconden))
+                 .append(null == latitudeSeconden ? "" :
+                            seconden.format(latitudeSeconden))
                  .append(" - ")
                  .append(longitude).append(" ").append(longitudeGraden)
                  .append(" ").append(longitudeMinuten).append(" ")
-                 .append(seconden.format(longitudeSeconden));
+                 .append(null == longitudeSeconden ? "" :
+                            seconden.format(longitudeSeconden));
     }
 
     return coordinaten.toString();
