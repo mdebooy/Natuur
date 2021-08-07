@@ -28,7 +28,7 @@ import static eu.debooy.natuur.TestConstants.RANG_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_GR;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
-import java.util.HashMap;
+import eu.debooy.natuur.TestUtils;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -52,18 +52,7 @@ public class RangDtoTest {
   @BeforeClass
   public static void beforeClass() {
     rangDto   = new RangDto();
-    rangnamen = new HashMap<>();
-
-    var rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(TAAL);
-    rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam(RANGNAAM);
-    rangnamen.put(TAAL, rangnaamDto);
-    rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(TAAL_KL);
-    rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam(RANGNAAM_KL);
-    rangnamen.put(TAAL_KL, rangnaamDto);
+    rangnamen = TestUtils.getRangnamen();
 
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);

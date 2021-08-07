@@ -21,12 +21,12 @@ import eu.debooy.doosutils.DoosConstants;
 import static eu.debooy.natuur.TestConstants.AANTAL;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
+import static eu.debooy.natuur.TestConstants.RANGNAAM;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
-import eu.debooy.natuur.domain.GebiedDto;
-import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
@@ -50,11 +50,8 @@ public class WaarnemingTest {
   @BeforeClass
   public static void setUpClass() {
     datum         = new Date();
-    gebied        = new Gebied();
-    gebied.setGebiedId(GEBIEDID);
-
-    taxon         = new Taxon();
-    taxon.setTaxonId(TAXONID);
+    gebied        = TestUtils.getGebied();
+    taxon         = TestUtils.getTaxon();
 
     waarneming    = new Waarneming();
     waarneming.setAantal(AANTAL);
@@ -64,26 +61,22 @@ public class WaarnemingTest {
     waarneming.setTaxon(taxon);
     waarneming.setWaarnemingId(WAARNEMINGID);
 
-    GebiedDto gebiedDto = new GebiedDto();
-    gebiedDto.setGebiedId(GEBIEDID);
-    TaxonDto  taxonDto  = new TaxonDto();
-    taxonDto.setTaxonId(TAXONID);
-
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setAantal(AANTAL);
     waarnemingDto.setDatum(datum);
-    waarnemingDto.setGebied(gebiedDto);
+    waarnemingDto.setGebied(TestUtils.getGebiedDto());
     waarnemingDto.setOpmerking(OPMERKING);
-    waarnemingDto.setTaxon(taxonDto);
+    waarnemingDto.setTaxon(TestUtils.getTaxonDto());
     waarnemingDto.setWaarnemingId(WAARNEMINGID);
   }
 
   @Test
   public void testCompareTo() {
-    Waarneming  gelijk  = new Waarneming(waarneming);
-    Waarneming  groter  = new Waarneming();
+    var gelijk  = new Waarneming(waarneming);
+    var groter  = new Waarneming();
+    var kleiner = new Waarneming();
+
     groter.setWaarnemingId(waarneming.getWaarnemingId()+ 1);
-    Waarneming  kleiner = new Waarneming();
     kleiner.setWaarnemingId(waarneming.getWaarnemingId()- 1);
 
     assertTrue(waarneming.compareTo(groter) < 0);
@@ -93,10 +86,11 @@ public class WaarnemingTest {
 
   @Test
   public void testEquals() {
-    Waarneming  object    = null;
     Waarneming  instance  = new Waarneming();
 
-    assertNotEquals(waarneming, object);
+    assertEquals(waarneming, waarneming);
+    assertNotEquals(waarneming, null);
+    assertNotEquals(waarneming, RANGNAAM);
     assertNotEquals(waarneming, instance);
 
     instance.setWaarnemingId(waarneming.getWaarnemingId());
@@ -167,6 +161,15 @@ public class WaarnemingTest {
     assertEquals(instance.getOpmerking(), parameter.getOpmerking());
     assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
     assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
+
+    instance.persist(parameter);
+
+    assertEquals(instance.getAantal(), parameter.getAantal());
+    assertEquals(instance.getDatum(), parameter.getDatum());
+    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
+    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
+    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
+    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
   }
 
   @Test
@@ -182,6 +185,7 @@ public class WaarnemingTest {
   public void testSetDatum() {
     Waarneming  instance  = new Waarneming();
     assertNotEquals(datum, instance.getDatum());
+    // Geen reference maar value?
     Date        datum1    = datum;
     instance.setDatum(datum1);
 
@@ -194,6 +198,10 @@ public class WaarnemingTest {
     datum2  = new Date(0);
     assertEquals(datum, instance.getDatum());
     assertEquals(datum1, datum2);
+
+    instance.setDatum(null);
+    assertNull(instance.getDatum());
+    assertEquals("", instance.getSorteerdatum());
   }
 
   @Test

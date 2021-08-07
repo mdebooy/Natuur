@@ -125,9 +125,23 @@ public class FotoTest {
   }
 
   @Test
+  public void testInit() {
+
+  }
+
+  @Test
   public void testPersist() {
     var parameter = new FotoDto();
     var instance  = new Foto();
+    instance.persist(parameter);
+
+    assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());
+    assertEquals(instance.getFotoDetail(), parameter.getFotoDetail());
+    assertEquals(instance.getFotoId(), parameter.getFotoId());
+    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
+    assertEquals(instance.getTaxonSeq(), parameter.getTaxonSeq());
+    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
+
     instance.persist(parameter);
 
     assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());

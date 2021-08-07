@@ -30,6 +30,7 @@ public final class TestConstants {
   public static final Integer AANTAL              = 1;
   public static final String  COORDINATEN         =
       "N 30 31 33,210 - E 40 41 43,210";
+  public static final int     DETAILPK_HASH       = -2147460291;
   public static final String  FOTOBESTAND         = "fotobestand";
   public static final String  FOTODETAIL          = "fotodetail";
   public static final Long    FOTOID              = Long.MAX_VALUE - 8;
@@ -47,9 +48,12 @@ public final class TestConstants {
   public static final Integer LONGITUDE_MINUTEN   = 41;
   public static final Double  LONGITUDE_SECONDEN  = 43.21;
   public static final String  NAAM                = "naam";
+  public static final String  NAAM_GR             = "onaam";
+  public static final String  NAAM_KL             = "mnaam";
   public static final Long    NIVEAU              = 3L;
   public static final Integer OPFOTO              = 1;
   public static final String  OPMERKING           = "opmerking";
+  public static final int     OVERZICHTPK_HASH    = 1000152;
   public static final Long    PARENTID            = 2L;
   public static final String  PARENTLATIJNSENAAM  = "parentlatijnsenaam";
   public static final String  PARENTNAAM          = "parentnaam";

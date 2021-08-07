@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2020 Marco de Booij
+ * Copyright (c) 2021 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,10 +14,8 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.natuur.form;
+package eu.debooy.natuur.domain;
 
-import eu.debooy.doosutils.DoosUtils;
-import static eu.debooy.natuur.TestConstants.COORDINATEN;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.GEBIEDID_HASH;
 import static eu.debooy.natuur.TestConstants.LANDID;
@@ -33,7 +31,6 @@ import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.NAAM_GR;
 import static eu.debooy.natuur.TestConstants.NAAM_KL;
 import eu.debooy.natuur.TestUtils;
-import eu.debooy.natuur.domain.GebiedDto;
 import java.util.Locale;
 import java.util.Set;
 import java.util.TreeSet;
@@ -44,12 +41,10 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 /**
  * @author Marco de Booij
  */
-public class GebiedTest {
-  private static  Gebied    gebied;
+public class GebiedDtoTest {
   private static  GebiedDto gebiedDto;
 
   @BeforeClass
@@ -57,176 +52,127 @@ public class GebiedTest {
     // Voor de juiste decimal point.
     Locale.setDefault(new Locale("nl"));
 
-    gebied    = TestUtils.getGebied();
     gebiedDto = TestUtils.getGebiedDto();
   }
 
   @Test
   public void testCompareTo() {
-    var gelijk  = new Gebied(gebied);
-    var groter  = new Gebied();
-    var kleiner = new Gebied();
+    var gelijk  = new GebiedDto();
+    var groter  = new GebiedDto();
+    var kleiner = new GebiedDto();
 
-    groter.setGebiedId(gebied.getGebiedId() + 1);
-    kleiner.setGebiedId(gebied.getGebiedId() - 1);
+    gelijk.setGebiedId(gebiedDto.getGebiedId());
+    groter.setGebiedId(gebiedDto.getGebiedId() + 1);
+    kleiner.setGebiedId(gebiedDto.getGebiedId() - 1);
 
-    assertTrue(gebied.compareTo(groter) < 0);
-    assertEquals(0, gebied.compareTo(gelijk));
-    assertTrue(gebied.compareTo(kleiner) > 0);
+    assertTrue(gebiedDto.compareTo(groter) < 0);
+    assertEquals(0, gebiedDto.compareTo(gelijk));
+    assertTrue(gebiedDto.compareTo(kleiner) > 0);
   }
 
   @Test
   public void testEquals() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
 
-    assertEquals(gebied, gebied);
-    assertNotEquals(gebied, null);
-    assertNotEquals(gebied, NAAM);
-    assertNotEquals(gebied, instance);
+    assertEquals(gebiedDto, gebiedDto);
+    assertNotEquals(gebiedDto, null);
+    assertNotEquals(gebiedDto, NAAM);
+    assertNotEquals(gebiedDto, instance);
 
-    instance.setGebiedId(gebied.getGebiedId());
-    assertEquals(gebied, instance);
+    instance.setGebiedId(gebiedDto.getGebiedId());
+    assertEquals(gebiedDto, instance);
 
-    instance  = new Gebied(gebied);
-    assertEquals(gebied, instance);
-
-    instance  = new Gebied(gebiedDto);
-    assertEquals(gebied, instance);
-  }
-
-  @Test
-  public void testGetCoordinaten() {
-    assertEquals(COORDINATEN, gebied.getCoordinaten());
+    instance.setGebiedId(gebiedDto.getGebiedId() + 1);
+    assertNotEquals(gebiedDto, instance);
   }
 
   @Test
   public void testGetGebiedId() {
-    assertEquals(GEBIEDID, gebied.getGebiedId());
+    assertEquals(GEBIEDID, gebiedDto.getGebiedId());
   }
 
   @Test
   public void testGetLandId() {
-    assertEquals(LANDID, gebied.getLandId());
+    assertEquals(LANDID, gebiedDto.getLandId());
   }
 
   @Test
   public void testGetLatitude() {
-    assertEquals(LATITUDE, gebied.getLatitude());
+    assertEquals(LATITUDE, gebiedDto.getLatitude());
   }
 
   @Test
   public void testGetLatitudeGraden() {
-    assertEquals(LATITUDE_GRADEN, gebied.getLatitudeGraden());
+    assertEquals(LATITUDE_GRADEN, gebiedDto.getLatitudeGraden());
   }
 
   @Test
   public void testGetLatitudeMinuten() {
-    assertEquals(LATITUDE_MINUTEN, gebied.getLatitudeMinuten());
+    assertEquals(LATITUDE_MINUTEN, gebiedDto.getLatitudeMinuten());
   }
 
   @Test
   public void testGetLatitudeSeconden() {
-    assertEquals(LATITUDE_SECONDEN, gebied.getLatitudeSeconden());
+    assertEquals(LATITUDE_SECONDEN, gebiedDto.getLatitudeSeconden());
   }
 
   @Test
   public void testGetLongitude() {
-    assertEquals(LONGITUDE, gebied.getLongitude());
+    assertEquals(LONGITUDE, gebiedDto.getLongitude());
   }
 
   @Test
   public void testGetLongitudeGraden() {
-    assertEquals(LONGITUDE_GRADEN, gebied.getLongitudeGraden());
+    assertEquals(LONGITUDE_GRADEN, gebiedDto.getLongitudeGraden());
   }
 
   @Test
   public void testGetLongitudeMinuten() {
-    assertEquals(LONGITUDE_MINUTEN, gebied.getLongitudeMinuten());
+    assertEquals(LONGITUDE_MINUTEN, gebiedDto.getLongitudeMinuten());
   }
 
   @Test
   public void testGetLongitudeSeconden() {
-    assertEquals(LONGITUDE_SECONDEN, gebied.getLongitudeSeconden());
+    assertEquals(LONGITUDE_SECONDEN, gebiedDto.getLongitudeSeconden());
   }
 
   @Test
   public void testGetNaam() {
-    assertEquals(NAAM, gebied.getNaam());
+    assertEquals(NAAM, gebiedDto.getNaam());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(GEBIEDID_HASH, gebied.hashCode());
+    assertEquals(GEBIEDID_HASH, gebiedDto.hashCode());
   }
 
   @Test
   public void testNaamComparator() {
-    var groter  = new Gebied();
-    var kleiner = new Gebied();
+    var groter  = new GebiedDto();
+    var kleiner = new GebiedDto();
 
     groter.setNaam(NAAM_GR);
 
     kleiner.setNaam(NAAM_KL);
 
-    Set<Gebied> gebieden  = new TreeSet<>(new Gebied.NaamComparator());
+    Set<GebiedDto> gebieden  = new TreeSet<>(new GebiedDto.NaamComparator());
     gebieden.add(groter);
-    gebieden.add(gebied);
+    gebieden.add(gebiedDto);
     gebieden.add(kleiner);
 
-    var tabel = new Gebied[gebieden.size()];
+    var tabel = new GebiedDto[gebieden.size()];
     System.arraycopy(gebieden.toArray(), 0, tabel, 0, gebieden.size());
     assertEquals(kleiner.getNaam(), tabel[0].getNaam());
-    assertEquals(gebied.getNaam(), tabel[1].getNaam());
+    assertEquals(gebiedDto.getNaam(), tabel[1].getNaam());
     assertEquals(groter.getNaam(), tabel[2].getNaam());
   }
 
   @Test
-  public void testPersist() {
-    var parameter = new GebiedDto();
-    var instance  = new Gebied();
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getGebiedId(), parameter.getGebiedId());
-    assertEquals(instance.getLandId(), parameter.getLandId());
-    assertEquals(instance.getLatitude(), parameter.getLatitude());
-    assertEquals(instance.getLatitudeGraden(), parameter.getLatitudeGraden());
-    assertEquals(instance.getLatitudeMinuten(), parameter.getLatitudeMinuten());
-    assertEquals(instance.getLatitudeSeconden(),
-                 parameter.getLatitudeSeconden());
-    assertEquals(instance.getLongitude(), parameter.getLongitude());
-    assertEquals(instance.getLongitudeGraden(), parameter.getLongitudeGraden());
-    assertEquals(instance.getLongitudeMinuten(),
-                 parameter.getLongitudeMinuten());
-    assertEquals(instance.getLongitudeSeconden(),
-                 parameter.getLongitudeSeconden());
-    assertEquals(instance.getNaam(), parameter.getNaam());
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getGebiedId(), parameter.getGebiedId());
-    assertEquals(instance.getLandId(), parameter.getLandId());
-    assertEquals(instance.getLatitude(), parameter.getLatitude());
-    assertEquals(instance.getLatitudeGraden(), parameter.getLatitudeGraden());
-    assertEquals(instance.getLatitudeMinuten(), parameter.getLatitudeMinuten());
-    assertEquals(instance.getLatitudeSeconden(),
-                 parameter.getLatitudeSeconden());
-    assertEquals(instance.getLongitude(), parameter.getLongitude());
-    assertEquals(instance.getLongitudeGraden(), parameter.getLongitudeGraden());
-    assertEquals(instance.getLongitudeMinuten(),
-                 parameter.getLongitudeMinuten());
-    assertEquals(instance.getLongitudeSeconden(),
-                 parameter.getLongitudeSeconden());
-    assertEquals(instance.getNaam(), parameter.getNaam());
-  }
-
-  @Test
   public void testSetGebiedId() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(GEBIEDID, instance.getGebiedId());
     instance.setGebiedId(GEBIEDID);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertEquals(GEBIEDID, instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -242,11 +188,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLandId() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LANDID, instance.getLandId());
     instance.setLandId(LANDID);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(LANDID, instance.getLandId());
     assertNull(instance.getLatitude());
@@ -262,11 +207,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLatitude() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LATITUDE, instance.getLatitude());
     instance.setLatitude(LATITUDE);
 
-    assertTrue(DoosUtils.isNotBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertEquals(LATITUDE, instance.getLatitude());
@@ -282,11 +226,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLatitudeGraden() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LATITUDE_GRADEN, instance.getLatitudeGraden());
     instance.setLatitudeGraden(LATITUDE_GRADEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -302,11 +245,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLatitudeMinuten() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LATITUDE_MINUTEN, instance.getLatitudeMinuten());
     instance.setLatitudeMinuten(LATITUDE_MINUTEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -322,11 +264,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLatitudeSeconden() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LATITUDE_SECONDEN, instance.getLatitudeSeconden());
     instance.setLatitudeSeconden(LATITUDE_SECONDEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -342,11 +283,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLongitude() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LONGITUDE, instance.getLongitude());
     instance.setLongitude(LONGITUDE);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -362,11 +302,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLongitudeGraden() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LONGITUDE_GRADEN, instance.getLongitudeGraden());
     instance.setLongitudeGraden(LONGITUDE_GRADEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -382,11 +321,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLongitudeMinuten() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LONGITUDE_MINUTEN, instance.getLongitudeMinuten());
     instance.setLongitudeMinuten(LONGITUDE_MINUTEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -402,11 +340,10 @@ public class GebiedTest {
 
   @Test
   public void testSetLongitudeSeconden() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(LONGITUDE_SECONDEN, instance.getLongitudeSeconden());
     instance.setLongitudeSeconden(LONGITUDE_SECONDEN);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
@@ -422,11 +359,10 @@ public class GebiedTest {
 
   @Test
   public void testSetNaam() {
-    var instance  = new Gebied();
+    var instance  = new GebiedDto();
     assertNotEquals(NAAM, instance.getNaam());
     instance.setNaam(NAAM);
 
-    assertTrue(DoosUtils.isBlankOrNull(instance.getCoordinaten()));
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());

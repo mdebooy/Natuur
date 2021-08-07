@@ -34,12 +34,19 @@ import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.PARENTNAAM;
 import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANGNAAM;
+import static eu.debooy.natuur.TestConstants.RANGNAAM_KL;
+import static eu.debooy.natuur.TestConstants.TAAL;
+import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -80,6 +87,24 @@ public final class TestUtils {
     gebiedDto.setNaam(NAAM);
 
     return gebiedDto;
+  }
+
+  public static Map<String, RangnaamDto> getRangnamen() {
+    var                       rangnaamDto = new RangnaamDto();
+    Map<String, RangnaamDto>  rangnamen   = new HashMap<>();
+
+    rangnaamDto.setTaal(TAAL);
+    rangnaamDto.setRang(RANG);
+    rangnaamDto.setNaam(RANGNAAM);
+    rangnamen.put(TAAL, rangnaamDto);
+
+    rangnaamDto = new RangnaamDto();
+    rangnaamDto.setTaal(TAAL_KL);
+    rangnaamDto.setRang(RANG);
+    rangnaamDto.setNaam(RANGNAAM_KL);
+    rangnamen.put(TAAL_KL, rangnaamDto);
+
+    return rangnamen;
   }
 
   public static Taxon getTaxon() {

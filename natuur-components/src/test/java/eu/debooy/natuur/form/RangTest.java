@@ -18,12 +18,18 @@ package eu.debooy.natuur.form;
 
 import static eu.debooy.natuur.TestConstants.NIVEAU;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANGNAAM;
 import static eu.debooy.natuur.TestConstants.RANG_GR;
 import static eu.debooy.natuur.TestConstants.RANG_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_KL;
+import static eu.debooy.natuur.TestConstants.TAAL;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.RangDto;
+import java.util.Set;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,14 +51,16 @@ public class RangTest {
     rangDto = new RangDto();
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);
+    rangDto.setRangnamen(TestUtils.getRangnamen());
   }
 
   @Test
   public void testCompareTo() {
-    Rang  gelijk  = new Rang(rang);
-    Rang  groter  = new Rang();
+    var gelijk  = new Rang(rang);
+    var groter  = new Rang();
+    var kleiner = new Rang();
+
     groter.setRang(RANG_GR);
-    Rang  kleiner = new Rang();
     kleiner.setRang(RANG_KL);
 
     assertTrue(rang.compareTo(groter) < 0);
@@ -62,10 +70,11 @@ public class RangTest {
 
   @Test
   public void testEquals() {
-    Rang  object    = null;
-    Rang  instance  = new Rang();
+    var instance  = new Rang();
 
-    assertNotEquals(rang, object);
+    assertEquals(rang, rang);
+    assertNotEquals(rang, null);
+    assertNotEquals(rang, RANGNAAM);
     assertNotEquals(rang, instance);
 
     instance.setRang(rang.getRang());
@@ -76,6 +85,11 @@ public class RangTest {
 
     instance  = new Rang(rangDto);
     assertEquals(rang, instance);
+  }
+
+  @Test
+  public void testGetNaam() {
+    assertEquals(RANG, rang.getNaam());
   }
 
   @Test
@@ -94,9 +108,56 @@ public class RangTest {
   }
 
   @Test
+  public void testInit1() {
+    var instance  = new Rang(rangDto);
+
+    assertEquals(NIVEAU, instance.getNiveau());
+    assertEquals(RANG, instance.getRang());
+    assertEquals(RANG, instance.getNaam());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Rang(rangDto, TAAL);
+
+    assertEquals(NIVEAU, instance.getNiveau());
+    assertEquals(RANG, instance.getRang());
+    assertEquals(RANGNAAM, instance.getNaam());
+  }
+
+  @Test
+  public void testNiveauComparator() {
+    var groter  = new Rang();
+    var kleiner = new Rang();
+
+    groter.setNiveau(NIVEAU + 1);
+    groter.setRang(RANG_KL);
+
+    kleiner.setNiveau(NIVEAU - 1);
+    kleiner.setRang(RANG);
+
+    Set<Rang> rangen  = new TreeSet<>(new Rang.NiveauComparator());
+    rangen.add(groter);
+    rangen.add(rang);
+    rangen.add(kleiner);
+
+    var tabel = new Rang[rangen.size()];
+    System.arraycopy(rangen.toArray(), 0, tabel, 0, rangen.size());
+    assertEquals(kleiner.getNiveau(), tabel[0].getNiveau());
+    assertEquals(rang.getNiveau(), tabel[1].getNiveau());
+    assertEquals(groter.getNiveau(), tabel[2].getNiveau());
+  }
+
+  @Test
   public void testPersist() {
-    RangDto parameter = new RangDto();
-    Rang    instance  = new Rang();
+    var parameter = new RangDto();
+    var instance  = new Rang();
+
+    instance.persist(parameter);
+
+    assertEquals(instance.getNiveau(), parameter.getNiveau());
+    assertEquals(instance.getRang(), parameter.getRang());
+
     instance.persist(parameter);
 
     assertEquals(instance.getNiveau(), parameter.getNiveau());
@@ -105,19 +166,23 @@ public class RangTest {
 
   @Test
   public void testSetNiveau() {
-    Rang  instance  = new Rang();
+    var instance  = new Rang();
     assertNotEquals(NIVEAU, instance.getNiveau());
     instance.setNiveau(NIVEAU);
 
+    assertNull(instance.getNaam());
     assertEquals(NIVEAU, instance.getNiveau());
+    assertNull(instance.getRang());
   }
 
   @Test
   public void testSetRang() {
-    Rang  instance  = new Rang();
+    var instance  = new Rang();
     assertNotEquals(RANG, instance.getRang());
     instance.setRang(RANG);
 
+    assertEquals(RANG, instance.getNaam());
+    assertNull(instance.getNiveau());
     assertEquals(RANG, instance.getRang());
   }
 }

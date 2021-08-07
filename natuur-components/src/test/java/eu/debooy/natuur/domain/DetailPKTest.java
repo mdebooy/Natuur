@@ -16,10 +16,14 @@
  */
 package eu.debooy.natuur.domain;
 
+import static eu.debooy.natuur.TestConstants.DETAILPK_HASH;
+import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.PARENTID;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 
@@ -27,52 +31,79 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class DetailPKTest {
-  private static final int    HASHCODE  = -2147460291;
   private static final String TOSTRING  =
       "DetailPK (parentId=2, taxonId=9223372036854775797)";
 
-  @Test
-  public void testDetailPk() {
-    var detailPk  = new DetailPK();
+  private static  DetailPK  detailPk;
 
-    detailPk.setParentId(PARENTID);
-    detailPk.setTaxonId(TAXONID);
-
-    assertEquals("parentId", PARENTID, detailPk.getParentId());
-    assertEquals("taxonId", TAXONID, detailPk.getTaxonId());
-    assertEquals("toString()", TOSTRING, detailPk.toString());
+  @BeforeClass
+  public static void setUpClass() {
+    detailPk  = new DetailPK(PARENTID, TAXONID);
   }
 
   @Test
   public void testEquals() {
-    var detailPk  = new DetailPK();
-    detailPk.setParentId(PARENTID);
-    detailPk.setTaxonId(TAXONID);
-    assertEquals("== this", detailPk, detailPk);
+    var instance  = new DetailPK();
 
-    var gelijk    = new DetailPK();
-    gelijk.setParentId(PARENTID);
-    gelijk.setTaxonId(TAXONID);
-    assertEquals("equals1", gelijk, detailPk);
+    assertEquals(detailPk, detailPk);
+    assertNotEquals(detailPk, null);
+    assertNotEquals(detailPk, NAAM);
+    assertNotEquals(detailPk, instance);
+  }
 
-    gelijk.setParentId(PARENTID+1);
-    assertNotEquals("!equals1", gelijk, detailPk);
+  @Test
+  public void getParentId() {
+    assertEquals(PARENTID, detailPk.getParentId());
+  }
 
-    gelijk.setTaxonId(TAXONID+1);
-    assertNotEquals("!equals2", gelijk, detailPk);
-
-    gelijk.setParentId(PARENTID);
-    assertNotEquals("!equals3", gelijk, detailPk);
-
-    gelijk.setTaxonId(TAXONID);
-    assertEquals("equals2", gelijk, detailPk);
+  @Test
+  public void getTaxonId() {
+    assertEquals(TAXONID, detailPk.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    var detailPk  = new DetailPK();
-    detailPk.setParentId(PARENTID);
-    detailPk.setTaxonId(TAXONID);
-    assertEquals("HashCode", HASHCODE, detailPk.hashCode());
+    assertEquals(DETAILPK_HASH, detailPk.hashCode());
+  }
+
+  @Test
+  public void testInit1() {
+    var instance  = new DetailPK();
+
+    assertNull(instance.getParentId());
+    assertNull(instance.getTaxonId());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new DetailPK(PARENTID, TAXONID);
+
+    assertEquals(PARENTID, instance.getParentId());
+    assertEquals(TAXONID, instance.getTaxonId());
+  }
+
+  @Test
+  public void testSetParentId() {
+    var instance  = new DetailPK();
+    assertNotEquals(PARENTID, instance.getParentId());
+    instance.setParentId(PARENTID);
+
+    assertEquals(PARENTID, instance.getParentId());
+    assertNull(instance.getTaxonId());
+  }
+
+  @Test
+  public void testSetTaxonId() {
+    var instance  = new DetailPK();
+    assertNotEquals(TAXONID, instance.getTaxonId());
+    instance.setTaxonId(TAXONID);
+
+    assertNull(instance.getParentId());
+    assertEquals(TAXONID, instance.getTaxonId());
+  }
+
+  @Test
+  public void testToString() {
+    assertEquals(TOSTRING, detailPk.toString());
   }
 }
