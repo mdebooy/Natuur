@@ -17,6 +17,8 @@
 package eu.debooy.natuur.form;
 
 import static eu.debooy.natuur.TestConstants.NAAM;
+import static eu.debooy.natuur.TestConstants.NAAM_GR;
+import static eu.debooy.natuur.TestConstants.NAAM_KL;
 import static eu.debooy.natuur.TestConstants.RANG;
 import static eu.debooy.natuur.TestConstants.RANGNAAM_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_GR;
@@ -25,8 +27,11 @@ import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_GR;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import eu.debooy.natuur.domain.RangnaamDto;
+import java.util.Set;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,10 +59,10 @@ public class RangnaamTest {
 
   @Test
   public void testCompareTo() {
-    Rangnaam gelijk  = new Rangnaam(rangnaam);
-    Rangnaam groter  = new Rangnaam();
+    var gelijk  = new Rangnaam(rangnaam);
+    var groter  = new Rangnaam();
     groter.setRang(RANG_GR);
-    Rangnaam kleiner = new Rangnaam();
+    var kleiner = new Rangnaam();
     kleiner.setRang(RANG_KL);
 
     assertTrue(rangnaam.compareTo(groter) < 0);
@@ -76,10 +81,11 @@ public class RangnaamTest {
 
   @Test
   public void testEquals() {
-    Rangnaam object    = null;
-    Rangnaam instance  = new Rangnaam();
+    var instance  = new Rangnaam();
 
-    assertNotEquals(rangnaam, object);
+    assertEquals(rangnaam, rangnaam);
+    assertNotEquals(rangnaam, null);
+    assertNotEquals(rangnaam, NAAM);
     assertNotEquals(rangnaam, instance);
 
     instance.setRang(rangnaam.getRang());
@@ -114,9 +120,63 @@ public class RangnaamTest {
   }
 
   @Test
+  public void testInit1() {
+    var instance  = new Rangnaam();
+
+    assertNull(instance.getNaam());
+    assertNull(instance.getRang());
+    assertNull(instance.getTaal());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Rangnaam(rangnaam);
+
+    assertEquals(rangnaam.getNaam(), instance.getNaam());
+    assertEquals(rangnaam.getRang(), instance.getRang());
+    assertEquals(rangnaam.getTaal(), instance.getTaal());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Rangnaam(rangnaamDto);
+
+    assertEquals(rangnaamDto.getNaam(), instance.getNaam());
+    assertEquals(rangnaamDto.getRang(), instance.getRang());
+    assertEquals(rangnaamDto.getTaal(), instance.getTaal());
+  }
+
+  @Test
+  public void testNaamComparator() {
+    var groter  = new Rangnaam();
+    var kleiner = new Rangnaam();
+
+    groter.setNaam(NAAM_GR);
+    kleiner.setNaam(NAAM_KL);
+
+    Set<Rangnaam> rangnamen = new TreeSet<>(new Rangnaam.NaamComparator());
+    rangnamen.add(groter);
+    rangnamen.add(rangnaam);
+    rangnamen.add(kleiner);
+
+    var tabel = new Rangnaam[rangnamen.size()];
+    System.arraycopy(rangnamen.toArray(), 0, tabel, 0, rangnamen.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(rangnaam.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
   public void testPersist() {
-    RangnaamDto  parameter = new RangnaamDto();
-    Rangnaam     instance  = new Rangnaam();
+    var parameter = new RangnaamDto();
+    var instance  = new Rangnaam();
+
+    instance.persist(parameter);
+
+    assertEquals(instance.getNaam(), parameter.getNaam());
+    assertEquals(instance.getRang(), parameter.getRang());
+    assertEquals(instance.getTaal(), parameter.getTaal());
+
     instance.persist(parameter);
 
     assertEquals(instance.getNaam(), parameter.getNaam());
@@ -126,28 +186,34 @@ public class RangnaamTest {
 
   @Test
   public void testSetNaam() {
-    Rangnaam instance  = new Rangnaam();
+    var instance  = new Rangnaam();
     assertNotEquals(NAAM, instance.getNaam());
     instance.setNaam(NAAM);
 
     assertEquals(NAAM, instance.getNaam());
+    assertNull(instance.getRang());
+    assertNull(instance.getTaal());
   }
 
   @Test
   public void testSetRang() {
-    Rangnaam instance  = new Rangnaam();
+    var instance  = new Rangnaam();
     assertNotEquals(RANG, instance.getRang());
     instance.setRang(RANG);
 
+    assertNull(instance.getNaam());
     assertEquals(RANG, instance.getRang());
+    assertNull(instance.getTaal());
   }
 
   @Test
   public void testSetTaal() {
-    Rangnaam instance  = new Rangnaam();
+    var instance  = new Rangnaam();
     assertNotEquals(TAAL, instance.getTaal());
     instance.setTaal(TAAL);
 
+    assertNull(instance.getNaam());
+    assertNull(instance.getRang());
     assertEquals(TAAL, instance.getTaal());
   }
 }

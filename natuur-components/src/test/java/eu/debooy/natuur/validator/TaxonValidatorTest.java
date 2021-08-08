@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -45,6 +46,15 @@ public class TaxonValidatorTest {
                  .setMessage(PersistenceConstants.MAXLENGTH)
                  .setParams(new Object[]{"_I18N.label.latijnsenaam", 255})
                  .build();
+  private static final  Message ERR_UITGESTORVEN  =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_UITGESTORVEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.WRONGVALUE)
+                 .setParams(new Object[]{"_I18N.label.uitgestorven",
+                                         DoosConstants.WAAR,
+                                         DoosConstants.ONWAAR})
+                 .build();
   private static final  Message REQ_LATIJNSENAAM  =
       new Message.Builder()
                  .setAttribute(TaxonDto.COL_LATIJNSENAAM)
@@ -52,7 +62,14 @@ public class TaxonValidatorTest {
                  .setMessage(PersistenceConstants.REQUIRED)
                  .setParams(new Object[]{"_I18N.label.latijnsenaam"})
                  .build();
-  private static final  Message REQ_VOLGNUMER     =
+  private static final  Message REQ_UITGESTORVEN  =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_UITGESTORVEN)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(PersistenceConstants.REQUIRED)
+                 .setParams(new Object[]{"_I18N.label.uitgestorven"})
+                 .build();
+  private static final  Message REQ_VOLGNUMMER    =
       new Message.Builder()
                  .setAttribute(TaxonDto.COL_VOLGNUMMER)
                  .setSeverity(Message.ERROR)
@@ -64,7 +81,7 @@ public class TaxonValidatorTest {
     expResult.add(ERR_LATIJNSENAAM);
     expResult.add(ERR_OPMERKING);
     expResult.add(ERR_RANG);
-    expResult.add(REQ_VOLGNUMER);
+    expResult.add(REQ_VOLGNUMMER);
   }
 
   @Test
@@ -80,6 +97,30 @@ public class TaxonValidatorTest {
     setFoutenList(expResult);
 
     List<Message> result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteUitgestorven() {
+    Taxon         taxon     = new Taxon();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setLatijnsenaam(LATIJNSENAAM);
+    taxon.setOpmerking(OPMERKING);
+    taxon.setRang(RANG);
+    taxon.setUitgestorven("");
+
+    expResult.add(REQ_UITGESTORVEN);
+
+    List<Message> result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+
+    taxon.setUitgestorven("X");
+
+    expResult.clear();
+    expResult.add(ERR_UITGESTORVEN);
+
+    result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
@@ -134,6 +175,25 @@ public class TaxonValidatorTest {
     taxon.setRang(RANG);
 
     List<Message> result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerGoedeUitgestorven() {
+    Taxon         taxon     = new Taxon();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setLatijnsenaam(LATIJNSENAAM);
+    taxon.setOpmerking(OPMERKING);
+    taxon.setRang(RANG);
+    taxon.setUitgestorven(DoosConstants.WAAR);
+
+    List<Message> result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+
+    taxon.setUitgestorven(DoosConstants.ONWAAR);
+
+    result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 

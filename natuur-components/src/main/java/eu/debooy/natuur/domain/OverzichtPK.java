@@ -17,6 +17,7 @@
 package eu.debooy.natuur.domain;
 
 import java.io.Serializable;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
@@ -24,7 +25,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class OverzichtPK implements Serializable {
+public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private Long    parentId;
@@ -38,6 +39,14 @@ public class OverzichtPK implements Serializable {
     this.parentId   = parentId;
     this.parentRang = parentRang;
     this.rang       = rang;
+  }
+
+  @Override
+  public int compareTo(OverzichtPK overzichtPK) {
+    return new CompareToBuilder().append(parentRang, overzichtPK.parentRang)
+                                 .append(parentId, overzichtPK.parentId)
+                                 .append(rang, overzichtPK.rang)
+                                 .toComparison();
   }
 
   @Override

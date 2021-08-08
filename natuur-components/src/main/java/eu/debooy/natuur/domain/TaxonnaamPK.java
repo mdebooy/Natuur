@@ -40,9 +40,9 @@ public class TaxonnaamPK implements Comparable<TaxonnaamPK>, Serializable {
   }
 
   @Override
-  public int compareTo(TaxonnaamPK naamPK) {
-    return new CompareToBuilder().append(taxonId, naamPK.taxonId)
-                                 .append(taal, naamPK.taal)
+  public int compareTo(TaxonnaamPK taxonnaamPK) {
+    return new CompareToBuilder().append(taxonId, taxonnaamPK.taxonId)
+                                 .append(taal, taxonnaamPK.taal)
                                  .toComparison();
   }
 
@@ -55,9 +55,9 @@ public class TaxonnaamPK implements Comparable<TaxonnaamPK>, Serializable {
       return true;
     }
 
-    var naamPK  = (TaxonnaamPK) object;
-    return new EqualsBuilder().append(taxonId, naamPK.taxonId)
-                              .append(taal, naamPK.taal)
+    var taxonnaamPK = (TaxonnaamPK) object;
+    return new EqualsBuilder().append(taxonId, taxonnaamPK.taxonId)
+                              .append(taal, taxonnaamPK.taal)
                               .isEquals();
   }
 

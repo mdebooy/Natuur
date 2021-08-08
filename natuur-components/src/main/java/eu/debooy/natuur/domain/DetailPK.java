@@ -17,13 +17,14 @@
 package eu.debooy.natuur.domain;
 
 import java.io.Serializable;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * @author Marco de Booij
  */
-public class DetailPK  implements Serializable {
+public class DetailPK  implements Comparable<DetailPK>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   private Long  parentId;
@@ -35,6 +36,13 @@ public class DetailPK  implements Serializable {
     super();
     this.parentId = parentId;
     this.taxonId  = taxonId;
+  }
+
+  @Override
+  public int compareTo(DetailPK detailPK) {
+    return new CompareToBuilder().append(parentId, detailPK.parentId)
+                                 .append(taxonId, detailPK.taxonId)
+                                 .toComparison();
   }
 
   @Override

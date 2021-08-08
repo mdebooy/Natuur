@@ -16,24 +16,31 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosConstants;
 import static eu.debooy.doosutils.DoosConstants.ONWAAR;
 import static eu.debooy.doosutils.DoosConstants.WAAR;
 import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.NAAM;
+import static eu.debooy.natuur.TestConstants.NAAM_GR;
+import static eu.debooy.natuur.TestConstants.NAAM_KL;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.PARENTID;
 import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.PARENTNAAM;
 import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
+import java.util.Set;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -54,10 +61,11 @@ public class TaxonTest {
 
   @Test
   public void testCompareTo() {
-    Taxon gelijk  = new Taxon(taxon);
-    Taxon groter  = new Taxon();
+    var gelijk  = new Taxon(taxon);
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
     groter.setTaxonId(taxon.getTaxonId() + 1);
-    Taxon kleiner = new Taxon();
     kleiner.setTaxonId(taxon.getTaxonId() - 1);
 
     assertTrue(taxon.compareTo(groter) < 0);
@@ -67,10 +75,11 @@ public class TaxonTest {
 
   @Test
   public void testEquals() {
-    Taxon object    = null;
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
 
-    assertNotEquals(taxon, object);
+    assertEquals(taxon, taxon);
+    assertNotEquals(taxon, null);
+    assertNotEquals(taxon, NAAM);
     assertNotEquals(taxon, instance);
 
     instance.setTaxonId(taxon.getTaxonId());
@@ -139,9 +148,105 @@ public class TaxonTest {
   }
 
   @Test
+  public void testInit() {
+    var instance  = new Taxon();
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Taxon(taxon);
+
+    assertEquals(taxon.getLatijnsenaam(), instance.getLatijnsenaam());
+    assertEquals(taxon.getNaam(), instance.getNaam());
+    assertEquals(taxon.getOpmerking(), instance.getOpmerking());
+    assertEquals(taxon.getParentId(), instance.getParentId());
+    assertEquals(taxon.getParentLatijnsenaam(),
+                 instance.getParentLatijnsenaam());
+    assertEquals(taxon.getParentNaam(), instance.getParentNaam());
+    assertEquals(taxon.getParentVolgnummer(), instance.getParentVolgnummer());
+    assertEquals(taxon.getRang(), instance.getRang());
+    assertEquals(taxon.getRangnaam(), instance.getRangnaam());
+    assertEquals(taxon.getTaxonId(), instance.getTaxonId());
+    assertEquals(taxon.getUitgestorven(), instance.getUitgestorven());
+    assertEquals(taxon.getVolgnummer(), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Taxon(taxonDto);
+
+    assertEquals(taxonDto.getLatijnsenaam(), instance.getLatijnsenaam());
+    assertEquals(taxonDto.getLatijnsenaam(), instance.getNaam());
+    assertEquals(taxonDto.getOpmerking(), instance.getOpmerking());
+    assertEquals(taxonDto.getParentId(), instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertEquals(taxonDto.getRang(), instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
+    assertEquals(taxonDto.getUitgestorven(),
+                 instance.getUitgestorven().equals(DoosConstants.WAAR));
+    assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testInit4() {
+    var instance  = new Taxon(taxonDto, TAAL);
+
+    assertEquals(taxonDto.getLatijnsenaam(), instance.getLatijnsenaam());
+    assertEquals(taxonDto.getNaam(TAAL), instance.getNaam());
+    assertEquals(taxonDto.getOpmerking(), instance.getOpmerking());
+    assertEquals(taxonDto.getParentId(), instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertEquals(taxonDto.getRang(), instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
+    assertEquals(taxonDto.getUitgestorven(),
+                 instance.getUitgestorven().equals(DoosConstants.WAAR));
+    assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testNaamComparator() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setNaam(NAAM_GR);
+    kleiner.setNaam(NAAM_KL);
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.NaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(taxon.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
   public void testPersist() {
-    TaxonDto  parameter = new TaxonDto();
-    Taxon     instance  = new Taxon();
+    var parameter = new TaxonDto();
+    var instance  = new Taxon(taxon);
+
     instance.persist(parameter);
 
     assertEquals(instance.getLatijnsenaam(), parameter.getLatijnsenaam());
@@ -150,119 +255,297 @@ public class TaxonTest {
     assertEquals(instance.getRang(), parameter.getRang());
     assertEquals(instance.getTaxonId(), parameter.getTaxonId());
     assertEquals(instance.getVolgnummer(), parameter.getVolgnummer());
+    assertFalse(parameter.isUitgestorven());
+
+    parameter.setUitgestorven(true);
+    instance.persist(parameter);
+
+    assertEquals(instance.getLatijnsenaam(), parameter.getLatijnsenaam());
+    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
+    assertEquals(instance.getParentId(), parameter.getParentId());
+    assertEquals(instance.getRang(), parameter.getRang());
+    assertEquals(instance.getTaxonId(), parameter.getTaxonId());
+    assertEquals(instance.getVolgnummer(), parameter.getVolgnummer());
+    assertFalse(parameter.isUitgestorven());
   }
 
   @Test
   public void testSetLatijnsenaam() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(LATIJNSENAAM, instance.getLatijnsenaam());
     instance.setLatijnsenaam(LATIJNSENAAM);
 
     assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
+    assertEquals(LATIJNSENAAM, instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetNaam() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(NAAM, instance.getNaam());
     instance.setNaam(NAAM);
 
+    assertNull(instance.getLatijnsenaam());
+    assertEquals(NAAM, instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+
+    instance.setLatijnsenaam(LATIJNSENAAM);
+    assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
     assertEquals(NAAM, instance.getNaam());
   }
 
   @Test
   public void testSetOpmerking() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(OPMERKING, instance.getOpmerking());
     instance.setOpmerking(OPMERKING);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
     assertEquals(OPMERKING, instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetParentId() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(PARENTID, instance.getParentId());
     instance.setParentId(PARENTID);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
     assertEquals(PARENTID, instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetParentLatijnsenaam() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(PARENTLATIJNSENAAM,
                            instance.getParentLatijnsenaam());
     instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
     assertEquals(PARENTLATIJNSENAAM, instance.getParentLatijnsenaam());
+    assertEquals(PARENTLATIJNSENAAM, instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetParentNaam() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(PARENTNAAM, instance.getParentNaam());
     instance.setParentNaam(PARENTNAAM);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertEquals(PARENTNAAM, instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+
+    instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
+    assertEquals(PARENTLATIJNSENAAM, instance.getParentLatijnsenaam());
     assertEquals(PARENTNAAM, instance.getParentNaam());
   }
 
   @Test
   public void testSetParentVolgnummer() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(PARENTVOLGNUMMER, instance.getParentVolgnummer());
     instance.setParentVolgnummer(PARENTVOLGNUMMER);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
     assertEquals(PARENTVOLGNUMMER, instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetRang() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(RANG, instance.getRang());
     instance.setRang(RANG);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
     assertEquals(RANG, instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetTaxonId() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(TAXONID, instance.getTaxonId());
     instance.setTaxonId(TAXONID);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
     assertEquals(TAXONID, instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetUitgestorven() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertFalse("init ONWAAR", instance.isUitgestorven());
     assertEquals("init get ONWAAR", ONWAAR, instance.getUitgestorven());
 
     instance.setUitgestorven(WAAR);
     assertTrue("String WAAR", instance.isUitgestorven());
     assertEquals("String get WAAR", WAAR, instance.getUitgestorven());
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
 
     instance.setUitgestorven(ONWAAR);
     assertFalse("String ONWAAR", instance.isUitgestorven());
     assertEquals("String get ONWAAR", ONWAAR, instance.getUitgestorven());
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
 
     instance.setUitgestorven(true);
     assertTrue("boolean WAAR", instance.isUitgestorven());
     assertEquals("boolean get WAAR", WAAR, instance.getUitgestorven());
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
 
     instance.setUitgestorven(false);
     assertFalse("boolean ONWAAR", instance.isUitgestorven());
     assertEquals("boolean get ONWAAR", ONWAAR, instance.getUitgestorven());
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetVolgnummer() {
-    Taxon instance  = new Taxon();
+    var instance  = new Taxon();
     assertNotEquals(VOLGNUMMER, instance.getVolgnummer());
     instance.setVolgnummer(VOLGNUMMER);
 
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
     assertEquals(VOLGNUMMER, instance.getVolgnummer());
   }
 }

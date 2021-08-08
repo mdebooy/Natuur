@@ -23,6 +23,7 @@ import static eu.debooy.natuur.TestConstants.TAXONID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -34,36 +35,63 @@ public class DetailPKTest {
   private static final String TOSTRING  =
       "DetailPK (parentId=2, taxonId=9223372036854775797)";
 
-  private static  DetailPK  detailPk;
+  private static  DetailPK  detailPK;
 
   @BeforeClass
   public static void setUpClass() {
-    detailPk  = new DetailPK(PARENTID, TAXONID);
+    detailPK  = new DetailPK(PARENTID, TAXONID);
+  }
+
+  @Test
+  public void testCompareTo() {
+    var gelijk  = new DetailPK();
+    var groter  = new DetailPK();
+    var kleiner = new DetailPK();
+
+    gelijk.setParentId(detailPK.getParentId());
+    gelijk.setTaxonId(detailPK.getTaxonId());
+    groter.setParentId(detailPK.getParentId() + 1);
+    groter.setTaxonId(detailPK.getTaxonId());
+    kleiner.setParentId(detailPK.getParentId() - 1);
+    kleiner.setTaxonId(detailPK.getTaxonId());
+
+    assertTrue(detailPK.compareTo(groter) < 0);
+    assertEquals(0, detailPK.compareTo(gelijk));
+    assertTrue(detailPK.compareTo(kleiner) > 0);
+
+    groter.setParentId(detailPK.getParentId());
+    groter.setTaxonId(detailPK.getTaxonId() + 1);
+    kleiner.setParentId(detailPK.getParentId());
+    kleiner.setTaxonId(detailPK.getTaxonId() - 1);
+
+    assertTrue(detailPK.compareTo(groter) < 0);
+    assertEquals(0, detailPK.compareTo(gelijk));
+    assertTrue(detailPK.compareTo(kleiner) > 0);
   }
 
   @Test
   public void testEquals() {
     var instance  = new DetailPK();
 
-    assertEquals(detailPk, detailPk);
-    assertNotEquals(detailPk, null);
-    assertNotEquals(detailPk, NAAM);
-    assertNotEquals(detailPk, instance);
+    assertEquals(detailPK, detailPK);
+    assertNotEquals(detailPK, null);
+    assertNotEquals(detailPK, NAAM);
+    assertNotEquals(detailPK, instance);
   }
 
   @Test
   public void getParentId() {
-    assertEquals(PARENTID, detailPk.getParentId());
+    assertEquals(PARENTID, detailPK.getParentId());
   }
 
   @Test
   public void getTaxonId() {
-    assertEquals(TAXONID, detailPk.getTaxonId());
+    assertEquals(TAXONID, detailPK.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(DETAILPK_HASH, detailPk.hashCode());
+    assertEquals(DETAILPK_HASH, detailPK.hashCode());
   }
 
   @Test
@@ -104,6 +132,6 @@ public class DetailPKTest {
 
   @Test
   public void testToString() {
-    assertEquals(TOSTRING, detailPk.toString());
+    assertEquals(TOSTRING, detailPK.toString());
   }
 }

@@ -20,10 +20,15 @@ import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.OVERZICHTPK_HASH;
 import static eu.debooy.natuur.TestConstants.PARENTID;
 import static eu.debooy.natuur.TestConstants.PARENTRANG;
+import static eu.debooy.natuur.TestConstants.PARENTRANG_GR;
+import static eu.debooy.natuur.TestConstants.PARENTRANG_KL;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANG_GR;
+import static eu.debooy.natuur.TestConstants.RANG_KL;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -33,46 +38,87 @@ import org.junit.Test;
  */
 public class OverzichtPKTest {
   private static final String TOSTRING  =
-      "OverzichtPK (parentId=2, parentRang=pr, rang=ra)";
+      "OverzichtPK (parentId=2, parentRang=ge, rang=so)";
 
-  private static  OverzichtPK overzichtPk;
+  private static  OverzichtPK overzichtPK;
 
   @BeforeClass
   public static void setUpClass() {
-    overzichtPk = new OverzichtPK();
-    overzichtPk.setParentId(PARENTID);
-    overzichtPk.setParentRang(PARENTRANG);
-    overzichtPk.setRang(RANG);
+    overzichtPK = new OverzichtPK();
+    overzichtPK.setParentId(PARENTID);
+    overzichtPK.setParentRang(PARENTRANG);
+    overzichtPK.setRang(RANG);
+  }
+
+  @Test
+  public void testCompareTo() {
+    var gelijk  = new OverzichtPK();
+    var groter  = new OverzichtPK();
+    var kleiner = new OverzichtPK();
+
+    gelijk.setParentRang(overzichtPK.getParentRang());
+    gelijk.setParentId(overzichtPK.getParentId());
+    gelijk.setRang(overzichtPK.getRang());
+    groter.setParentRang(PARENTRANG_GR);
+    groter.setParentId(overzichtPK.getParentId());
+    groter.setRang(overzichtPK.getRang());
+    kleiner.setParentRang(PARENTRANG_KL);
+    kleiner.setParentId(overzichtPK.getParentId());
+    kleiner.setRang(overzichtPK.getRang());
+
+    assertTrue(overzichtPK.compareTo(groter) < 0);
+    assertEquals(0, overzichtPK.compareTo(gelijk));
+    assertTrue(overzichtPK.compareTo(kleiner) > 0);
+
+    groter.setParentRang(overzichtPK.getParentRang());
+    groter.setParentId(overzichtPK.getParentId() + 1);
+    groter.setRang(overzichtPK.getRang());
+    kleiner.setParentRang(overzichtPK.getParentRang());
+    kleiner.setParentId(overzichtPK.getParentId() - 1);
+    kleiner.setRang(overzichtPK.getRang());
+
+    assertTrue(overzichtPK.compareTo(groter) < 0);
+    assertEquals(0, overzichtPK.compareTo(gelijk));
+    assertTrue(overzichtPK.compareTo(kleiner) > 0);
+
+    groter.setParentId(overzichtPK.getParentId());
+    groter.setRang(RANG_GR);
+    kleiner.setParentId(overzichtPK.getParentId());
+    kleiner.setRang(RANG_KL);
+
+    assertTrue(overzichtPK.compareTo(groter) < 0);
+    assertEquals(0, overzichtPK.compareTo(gelijk));
+    assertTrue(overzichtPK.compareTo(kleiner) > 0);
   }
 
   @Test
   public void testEquals() {
     var instance  = new OverzichtPK();
 
-    assertEquals(overzichtPk, overzichtPk);
-    assertNotEquals(overzichtPk, null);
-    assertNotEquals(overzichtPk, NAAM);
-    assertNotEquals(overzichtPk, instance);
+    assertEquals(overzichtPK, overzichtPK);
+    assertNotEquals(overzichtPK, null);
+    assertNotEquals(overzichtPK, NAAM);
+    assertNotEquals(overzichtPK, instance);
   }
 
   @Test
   public void testGetParentId() {
-    assertEquals(PARENTID, overzichtPk.getParentId());
+    assertEquals(PARENTID, overzichtPK.getParentId());
   }
 
   @Test
   public void testGetParentRang() {
-    assertEquals(PARENTRANG, overzichtPk.getParentRang());
+    assertEquals(PARENTRANG, overzichtPK.getParentRang());
   }
 
   @Test
   public void testGetRang() {
-    assertEquals(RANG, overzichtPk.getRang());
+    assertEquals(RANG, overzichtPK.getRang());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(OVERZICHTPK_HASH, overzichtPk.hashCode());
+    assertEquals(OVERZICHTPK_HASH, overzichtPK.hashCode());
   }
 
   @Test
@@ -124,5 +170,10 @@ public class OverzichtPKTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentRang());
     assertEquals(RANG, instance.getRang());
+  }
+
+  @Test
+  public void testToString() {
+    assertEquals(TOSTRING, overzichtPK.toString());
   }
 }

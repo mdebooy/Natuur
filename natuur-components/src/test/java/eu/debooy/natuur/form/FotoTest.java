@@ -36,7 +36,9 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class FotoTest {
-  private static Foto foto;
+  private static  Foto    foto;
+  private static  FotoDto fotoDto;
+
 
   @BeforeClass
   public static void setUpClass() {
@@ -47,14 +49,24 @@ public class FotoTest {
     foto.setOpmerking(OPMERKING);
     foto.setTaxonSeq(TAXONSEQ);
     foto.setWaarnemingId(WAARNEMINGID);
+
+    fotoDto = new FotoDto();
+    fotoDto.setFotoBestand(FOTOBESTAND);
+    fotoDto.setFotoDetail(FOTODETAIL);
+    fotoDto.setFotoId(FOTOID);
+    fotoDto.setOpmerking(OPMERKING);
+    fotoDto.setTaxonSeq(TAXONSEQ);
+    fotoDto.setWaarnemingId(WAARNEMINGID);
+
   }
 
   @Test
   public void testCompareTo() {
     var gelijk  = new Foto(foto);
     var groter  = new Foto();
-    groter.setFotoId(foto.getFotoId() + 1);
     var kleiner = new Foto();
+
+    groter.setFotoId(foto.getFotoId() + 1);
     kleiner.setFotoId(foto.getFotoId() - 1);
 
     assertTrue(foto.compareTo(groter) < 0);
@@ -64,15 +76,7 @@ public class FotoTest {
 
   @Test
   public void testEquals() {
-    var   fotoDto   = new FotoDto();
     var   instance  = new Foto();
-
-    fotoDto.setFotoBestand(FOTOBESTAND);
-    fotoDto.setFotoDetail(FOTODETAIL);
-    fotoDto.setFotoId(FOTOID);
-    fotoDto.setOpmerking(OPMERKING);
-    fotoDto.setTaxonSeq(TAXONSEQ);
-    fotoDto.setWaarnemingId(WAARNEMINGID);
 
     assertEquals(foto, foto);
     assertNotEquals(foto, null);
@@ -125,14 +129,45 @@ public class FotoTest {
   }
 
   @Test
-  public void testInit() {
+  public void testInit1() {
+    var instance  = new Foto();
 
+    assertNull(instance.getFotoBestand());
+    assertNull(instance.getFotoDetail());
+    assertNull(instance.getFotoId());
+    assertNull(instance.getOpmerking());
+    assertEquals(Long.valueOf(0L), instance.getTaxonSeq());
+    assertNull(instance.getWaarnemingId());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Foto(foto);
+
+    assertEquals(foto.getFotoBestand(), instance.getFotoBestand());
+    assertEquals(foto.getFotoDetail(), instance.getFotoDetail());
+    assertEquals(foto.getFotoId(), instance.getFotoId());
+    assertEquals(foto.getOpmerking(), instance.getOpmerking());
+    assertEquals(foto.getTaxonSeq(), instance.getTaxonSeq());
+    assertEquals(foto.getWaarnemingId(), instance.getWaarnemingId());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Foto(fotoDto);
+
+    assertEquals(fotoDto.getFotoBestand(), instance.getFotoBestand());
+    assertEquals(fotoDto.getFotoDetail(), instance.getFotoDetail());
+    assertEquals(fotoDto.getFotoId(), instance.getFotoId());
+    assertEquals(fotoDto.getOpmerking(), instance.getOpmerking());
+    assertEquals(fotoDto.getTaxonSeq(), instance.getTaxonSeq());
+    assertEquals(fotoDto.getWaarnemingId(), instance.getWaarnemingId());
   }
 
   @Test
   public void testPersist() {
     var parameter = new FotoDto();
-    var instance  = new Foto();
+    var instance  = new Foto(foto);
     instance.persist(parameter);
 
     assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());

@@ -32,6 +32,7 @@ import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.PARENTID;
 import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.PARENTNAAM;
+import static eu.debooy.natuur.TestConstants.PARENTNAAM_KL;
 import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
 import static eu.debooy.natuur.TestConstants.RANG;
 import static eu.debooy.natuur.TestConstants.RANGNAAM;
@@ -39,10 +40,13 @@ import static eu.debooy.natuur.TestConstants.RANGNAAM_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
+import static eu.debooy.natuur.TestConstants.TAXONNAAM;
+import static eu.debooy.natuur.TestConstants.TAXONNAAM_KL;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import java.util.HashMap;
@@ -130,8 +134,45 @@ public final class TestUtils {
     taxonDto.setParentId(PARENTID);
     taxonDto.setRang(RANG);
     taxonDto.setTaxonId(TAXONID);
+    taxonDto.setTaxonnamen(getTaxonnamen());
     taxonDto.setVolgnummer(VOLGNUMMER);
 
     return taxonDto;
+  }
+
+  public static Map<String, TaxonnaamDto> getTaxonnamen() {
+    var                       taxonnaamDto  = new TaxonnaamDto();
+    Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
+
+    taxonnaamDto.setTaal(TAAL);
+    taxonnaamDto.setTaxonId(TAXONID);
+    taxonnaamDto.setNaam(TAXONNAAM);
+    taxonnamen.put(TAAL, taxonnaamDto);
+
+    taxonnaamDto = new TaxonnaamDto();
+    taxonnaamDto.setTaal(TAAL_KL);
+    taxonnaamDto.setTaxonId(TAXONID);
+    taxonnaamDto.setNaam(TAXONNAAM_KL);
+    taxonnamen.put(TAAL_KL, taxonnaamDto);
+
+    return taxonnamen;
+  }
+
+  public static Map<String, TaxonnaamDto> getTaxonParentnamen() {
+    var                       taxonnaamDto  = new TaxonnaamDto();
+    Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
+
+    taxonnaamDto.setTaal(TAAL);
+    taxonnaamDto.setTaxonId(PARENTID);
+    taxonnaamDto.setNaam(PARENTNAAM);
+    taxonnamen.put(TAAL, taxonnaamDto);
+
+    taxonnaamDto = new TaxonnaamDto();
+    taxonnaamDto.setTaal(TAAL_KL);
+    taxonnaamDto.setTaxonId(PARENTID);
+    taxonnaamDto.setNaam(PARENTNAAM_KL);
+    taxonnamen.put(TAAL_KL, taxonnaamDto);
+
+    return taxonnamen;
   }
 }
