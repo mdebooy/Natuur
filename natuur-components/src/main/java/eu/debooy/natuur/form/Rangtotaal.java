@@ -43,13 +43,7 @@ public class Rangtotaal
   public Rangtotaal() {}
 
   public Rangtotaal(OverzichtDto overzicht) {
-    latijnsenaam  = overzicht.getParentLatijnsenaam();
-    naam          = overzicht.getParentLatijnsenaam();
-    opFoto        = overzicht.getOpFoto();
-    taxonId       = overzicht.getParentId();
-    totaal        = overzicht.getTotaal();
-    volgnummer    = overzicht.getParentVolgnummer();
-    waargenomen   = overzicht.getWaargenomen();
+    this(overzicht, null);
   }
 
   public Rangtotaal(OverzichtDto overzicht, String taal) {
@@ -76,12 +70,12 @@ public class Rangtotaal
     waargenomen   = rangtotaal.getWaargenomen();
   }
 
-  public void addTotaal(Integer aantal) {
-    totaal      += aantal;
-  }
-
   public void addOpFoto(Integer aantal) {
     opFoto      += aantal;
+  }
+
+  public void addTotaal(Integer aantal) {
+    totaal      += aantal;
   }
 
   public void addWaargenomen(Integer aantal) {
@@ -120,6 +114,12 @@ public class Rangtotaal
   }
 
   public int getPctOpFoto() {
+    if (null == opFoto
+        || null == waargenomen
+        || waargenomen == 0) {
+      return 0;
+    }
+
     return Math.round(((float)opFoto/waargenomen)*100);
   }
 
