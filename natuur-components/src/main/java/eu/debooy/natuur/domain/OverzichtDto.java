@@ -175,4 +175,9 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
                                 .append(parentRang)
                                 .append(rang).toHashCode();
   }
+
+  @Transient
+  public boolean hasNaam(String taal) {
+    return parentnamen.containsKey(taal);
+  }
 }
