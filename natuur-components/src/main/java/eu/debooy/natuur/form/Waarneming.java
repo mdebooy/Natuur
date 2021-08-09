@@ -193,6 +193,11 @@ public class Waarneming extends Formulier
       taxon.persist(taxonDto);
       waarnemingDto.setTaxon(taxonDto);
     }
+    if (!new EqualsBuilder().append(waarnemingId,
+                                    waarnemingDto.getWaarnemingId())
+                            .isEquals()) {
+      waarnemingDto.setWaarnemingId(waarnemingId);
+    }
   }
 
   public void setAantal(Integer aantal) {
