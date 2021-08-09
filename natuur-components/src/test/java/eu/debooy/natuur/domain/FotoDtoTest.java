@@ -51,10 +51,11 @@ public class FotoDtoTest {
   @Test
   public void testCompareTo() {
     var gelijk  = new FotoDto();
-    gelijk.setFotoId(fotoDto.getFotoId());
     var groter  = new FotoDto();
-    groter.setFotoId(fotoDto.getFotoId() + 1);
     var kleiner = new FotoDto();
+
+    gelijk.setFotoId(fotoDto.getFotoId());
+    groter.setFotoId(fotoDto.getFotoId() + 1);
     kleiner.setFotoId(fotoDto.getFotoId() - 1);
 
     assertTrue(fotoDto.compareTo(groter) < 0);
@@ -73,6 +74,9 @@ public class FotoDtoTest {
 
     instance.setFotoId(fotoDto.getFotoId());
     assertEquals(fotoDto, instance);
+
+    instance.setFotoId(FOTOID - 1);
+    assertNotEquals(fotoDto, instance);
   }
 
   @Test

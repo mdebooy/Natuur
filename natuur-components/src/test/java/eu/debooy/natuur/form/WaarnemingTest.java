@@ -29,6 +29,8 @@ import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.Date;
+import java.util.Set;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -85,8 +87,29 @@ public class WaarnemingTest {
   }
 
   @Test
+  public void testDatumComparator() {
+    var groter  = new Waarneming();
+    var kleiner = new Waarneming();
+
+    groter.setDatum(new Date());
+    kleiner.setDatum(new Date(0));
+
+    Set<Waarneming>  waarnemingen  =
+        new TreeSet<>(new Waarneming.DatumComparator());
+    waarnemingen.add(groter);
+    waarnemingen.add(waarneming);
+    waarnemingen.add(kleiner);
+
+    var tabel = new Waarneming[waarnemingen.size()];
+    System.arraycopy(waarnemingen.toArray(), 0, tabel, 0, waarnemingen.size());
+    assertEquals(kleiner.getDatum(), tabel[0].getDatum());
+    assertEquals(waarneming.getDatum(), tabel[1].getDatum());
+    assertEquals(groter.getDatum(), tabel[2].getDatum());
+  }
+
+  @Test
   public void testEquals() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
 
     assertEquals(waarneming, waarneming);
     assertNotEquals(waarneming, null);
@@ -149,10 +172,8 @@ public class WaarnemingTest {
 
   @Test
   public void testPersist() {
-    WaarnemingDto parameter = new WaarnemingDto();
-    Waarneming    instance  = new Waarneming();
-    instance.setGebied(gebied);
-    instance.setTaxon(taxon);
+    var parameter = new WaarnemingDto();
+    var instance  = new Waarneming(waarneming);
     instance.persist(parameter);
 
     assertEquals(instance.getAantal(), parameter.getAantal());
@@ -174,7 +195,7 @@ public class WaarnemingTest {
 
   @Test
   public void testSetAantal() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNotEquals(AANTAL, instance.getAantal());
     instance.setAantal(AANTAL);
 
@@ -183,21 +204,19 @@ public class WaarnemingTest {
 
   @Test
   public void testSetDatum() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNotEquals(datum, instance.getDatum());
-    // Geen reference maar value?
-    Date        datum1    = datum;
-    instance.setDatum(datum1);
 
+    instance.setDatum(datum);
     assertEquals(datum, instance.getDatum());
 
+    // Geen reference maar value?
     Date  datum2  = instance.getDatum();
-    datum1  = new Date(0);
     assertEquals(datum2, instance.getDatum());
     assertEquals(datum, instance.getDatum());
-    datum2  = new Date(0);
+    datum2.setTime(0);
+    assertNotEquals(datum2, instance.getDatum());
     assertEquals(datum, instance.getDatum());
-    assertEquals(datum1, datum2);
 
     instance.setDatum(null);
     assertNull(instance.getDatum());
@@ -206,7 +225,7 @@ public class WaarnemingTest {
 
   @Test
   public void testSetGebied() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNull(instance.getGebied());
     instance.setGebied(gebied);
 
@@ -215,7 +234,7 @@ public class WaarnemingTest {
 
   @Test
   public void testSetOpmerking() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNotEquals(OPMERKING, instance.getOpmerking());
     instance.setOpmerking(OPMERKING);
 
@@ -224,7 +243,7 @@ public class WaarnemingTest {
 
   @Test
   public void testSetTaxon() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNull(instance.getTaxon());
     instance.setTaxon(taxon);
 
@@ -233,7 +252,7 @@ public class WaarnemingTest {
 
   @Test
   public void testSetWaarnemingId() {
-    Waarneming  instance  = new Waarneming();
+    var instance  = new Waarneming();
     assertNotEquals(WAARNEMINGID, instance.getWaarnemingId());
     instance.setWaarnemingId(WAARNEMINGID);
 

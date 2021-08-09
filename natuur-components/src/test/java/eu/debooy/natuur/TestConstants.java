@@ -39,6 +39,8 @@ public final class TestConstants {
   public static final int     GEBIEDID_HASH       = -2147483010;
   public static final Long    LANDID              = 4L;
   public static final String  LATIJNSENAAM        = "Phalacrocorax carbo";
+  public static final String  LATIJNSENAAM_GR     = "Rynchops flavirostris";
+  public static final String  LATIJNSENAAM_KL     = "Emberiza flaviventris";
   public static final String  LATITUDE            = "N";
   public static final Integer LATITUDE_GRADEN     = 30;
   public static final Integer LATITUDE_MINUTEN    = 31;
@@ -63,6 +65,7 @@ public final class TestConstants {
   public static final String  PARENTRANG_GR       = "oge";
   public static final String  PARENTRANG_KL       = "fa";
   public static final Integer PARENTVOLGNUMMER    = 5000;
+  public static final int     PCTOPFOTO           = 20;
   public static final String  RANG                = "so";
   public static final String  RANG_FOUT           = "xxxx";
   public static final String  RANG_GR             = "ta";
@@ -84,9 +87,10 @@ public final class TestConstants {
   public static final String  TAXONNAAM_KL        = "a_Great cormorant";
   public static final Long    TAXONSEQ            = 5L;
   public static final Integer TOTAAL              = 10;
-  public static final Integer VOLGNUMMER          = Integer.MIN_VALUE;
+  public static final Integer VOLGNUMMER          = Integer.MIN_VALUE + 8;
   public static final Long    WAARNEMINGID        = Long.MAX_VALUE - 11;
   public static final int     WAARNEMINGID_HASH   = -2147483008;
+  public static final Integer WAARGENOMEN         = 5;
 
   public static final Message ERR_OPMERKING =
       new Message.Builder()

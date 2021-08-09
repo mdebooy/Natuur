@@ -169,7 +169,7 @@ public class RangnaamTest {
   @Test
   public void testPersist() {
     var parameter = new RangnaamDto();
-    var instance  = new Rangnaam();
+    var instance  = new Rangnaam(rangnaam);
 
     instance.persist(parameter);
 

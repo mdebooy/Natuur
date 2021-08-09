@@ -33,7 +33,7 @@ import org.junit.Test;
  */
 public class DetailPKTest {
   private static final String TOSTRING  =
-      "DetailPK (parentId=2, taxonId=9223372036854775797)";
+      "DetailPK (parentId=" + PARENTID + ", taxonId=" + TAXONID + ")";
 
   private static  DetailPK  detailPK;
 
@@ -76,6 +76,12 @@ public class DetailPKTest {
     assertEquals(detailPK, detailPK);
     assertNotEquals(detailPK, null);
     assertNotEquals(detailPK, NAAM);
+    assertNotEquals(detailPK, instance);
+
+    instance  = new DetailPK(PARENTID, TAXONID);
+    assertEquals(detailPK, instance);
+
+    instance.setParentId(PARENTID - 1);
     assertNotEquals(detailPK, instance);
   }
 

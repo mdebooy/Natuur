@@ -105,16 +105,6 @@ public class Taxon
     volgnummer          = detailDto.getVolgnummer();
  }
 
-  public static class LatijnsenaamComparator
-      implements Comparator<Taxon>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    @Override
-    public int compare(Taxon taxon1, Taxon taxon2) {
-      return taxon1.latijnsenaam.compareTo(taxon2.latijnsenaam);
-    }
-  }
-
   public static class AlfabetischeComparator
       implements Comparator<Taxon>, Serializable {
     private static final  long  serialVersionUID  = 1L;
@@ -124,8 +114,18 @@ public class Taxon
       return new CompareToBuilder().append(taxonDto1.getParentNaam(),
                                            taxonDto2.getParentNaam())
                                    .append(taxonDto1.getNaam(),
-                                       taxonDto2.getNaam())
+                                           taxonDto2.getNaam())
                                    .toComparison();
+    }
+  }
+
+  public static class LatijnsenaamComparator
+      implements Comparator<Taxon>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(Taxon taxon1, Taxon taxon2) {
+      return taxon1.latijnsenaam.compareTo(taxon2.latijnsenaam);
     }
   }
 

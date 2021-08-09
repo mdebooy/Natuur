@@ -109,6 +109,24 @@ public class RangTest {
 
   @Test
   public void testInit1() {
+    var instance  = new Rang();
+
+    assertNull(instance.getNiveau());
+    assertNull(instance.getRang());
+    assertNull(instance.getNaam());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Rang(rang);
+
+    assertEquals(NIVEAU, instance.getNiveau());
+    assertEquals(RANG, instance.getRang());
+    assertEquals(RANG, instance.getNaam());
+  }
+
+  @Test
+  public void testInit3() {
     var instance  = new Rang(rangDto);
 
     assertEquals(NIVEAU, instance.getNiveau());
@@ -117,7 +135,7 @@ public class RangTest {
   }
 
   @Test
-  public void testInit2() {
+  public void testInit4() {
     var instance  = new Rang(rangDto, TAAL);
 
     assertEquals(NIVEAU, instance.getNiveau());
@@ -151,7 +169,7 @@ public class RangTest {
   @Test
   public void testPersist() {
     var parameter = new RangDto();
-    var instance  = new Rang();
+    var instance  = new Rang(rang);
 
     instance.persist(parameter);
 

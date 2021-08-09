@@ -17,12 +17,16 @@
 package eu.debooy.natuur.form;
 
 import static eu.debooy.natuur.TestConstants.NAAM;
+import static eu.debooy.natuur.TestConstants.NAAM_GR;
+import static eu.debooy.natuur.TestConstants.NAAM_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_GR;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM_HASH;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import java.util.Set;
+import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
@@ -74,10 +78,11 @@ public class TaxonnaamTest {
 
   @Test
   public void testEquals() {
-    Taxonnaam object    = null;
     Taxonnaam instance  = new Taxonnaam();
 
-    assertNotEquals(taxonnaam, object);
+    assertEquals(taxonnaam, taxonnaam);
+    assertNotEquals(taxonnaam, null);
+    assertNotEquals(taxonnaam, NAAM);
     assertNotEquals(taxonnaam, instance);
 
     instance.setTaal(taxonnaam.getTaal());
@@ -112,9 +117,36 @@ public class TaxonnaamTest {
   }
 
   @Test
+  public void testNaamComparator() {
+    var groter  = new Taxonnaam();
+    var kleiner = new Taxonnaam();
+
+    groter.setNaam(NAAM_GR);
+    kleiner.setNaam(NAAM_KL);
+
+    Set<Taxonnaam>  taxonnamen  = new TreeSet<>(new Taxonnaam.NaamComparator());
+    taxonnamen.add(groter);
+    taxonnamen.add(taxonnaam);
+    taxonnamen.add(kleiner);
+
+    var tabel = new Taxonnaam[taxonnamen.size()];
+    System.arraycopy(taxonnamen.toArray(), 0, tabel, 0, taxonnamen.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(taxonnaam.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
   public void testPersist() {
     TaxonnaamDto  parameter = new TaxonnaamDto();
-    Taxonnaam     instance  = new Taxonnaam();
+    Taxonnaam     instance  = new Taxonnaam(taxonnaam);
+
+    instance.persist(parameter);
+
+    assertEquals(instance.getNaam(), parameter.getNaam());
+    assertEquals(instance.getTaal(), parameter.getTaal());
+    assertEquals(instance.getTaxonId(), parameter.getTaxonId());
+
     instance.persist(parameter);
 
     assertEquals(instance.getNaam(), parameter.getNaam());

@@ -20,6 +20,8 @@ import eu.debooy.doosutils.DoosConstants;
 import static eu.debooy.doosutils.DoosConstants.ONWAAR;
 import static eu.debooy.doosutils.DoosConstants.WAAR;
 import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
+import static eu.debooy.natuur.TestConstants.LATIJNSENAAM_GR;
+import static eu.debooy.natuur.TestConstants.LATIJNSENAAM_KL;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.NAAM_GR;
 import static eu.debooy.natuur.TestConstants.NAAM_KL;
@@ -27,8 +29,11 @@ import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.PARENTID;
 import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
 import static eu.debooy.natuur.TestConstants.PARENTNAAM;
+import static eu.debooy.natuur.TestConstants.PARENTNAAM_GR;
+import static eu.debooy.natuur.TestConstants.PARENTNAAM_KL;
 import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
 import static eu.debooy.natuur.TestConstants.RANG;
+import static eu.debooy.natuur.TestConstants.RANGNAAM;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
@@ -57,6 +62,50 @@ public class TaxonTest {
   public static void setUpClass() {
     taxon     = TestUtils.getTaxon();
     taxonDto  = TestUtils.getTaxonDto();
+  }
+
+  @Test
+  public void testAlfabetischeComparator1() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setNaam(taxon.getNaam());
+    groter.setParentNaam(PARENTNAAM_GR);
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setParentNaam(PARENTNAAM_KL);
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.AlfabetischeComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getParentNaam(), tabel[0].getParentNaam());
+    assertEquals(taxon.getParentNaam(), tabel[1].getParentNaam());
+    assertEquals(groter.getParentNaam(), tabel[2].getParentNaam());
+  }
+
+  @Test
+  public void testAlfabetischeComparator2() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setNaam(NAAM_GR);
+    groter.setParentNaam(taxon.getParentNaam());
+    kleiner.setNaam(NAAM_KL);
+    kleiner.setParentNaam(taxon.getParentNaam());
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.AlfabetischeComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(taxon.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
   }
 
   @Test
@@ -223,11 +272,137 @@ public class TaxonTest {
   }
 
   @Test
-  public void testNaamComparator() {
+  public void testLatijnsenaamComparator() {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
+    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LatijnsenaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxon.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
+  }
+
+  @Test
+  public void testLijstComparator1() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setParentNaam(taxon.getParentNaam());
+    groter.setParentVolgnummer(taxon.getParentVolgnummer() + 1);
+    groter.setNaam(taxon.getNaam());
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setParentNaam(taxon.getParentNaam());
+    kleiner.setParentVolgnummer(taxon.getParentVolgnummer() - 1);
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getParentVolgnummer(), tabel[0].getParentVolgnummer());
+    assertEquals(taxon.getParentVolgnummer(), tabel[1].getParentVolgnummer());
+    assertEquals(groter.getParentVolgnummer(), tabel[2].getParentVolgnummer());
+  }
+
+  @Test
+  public void testLijstComparator2() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setParentNaam(PARENTNAAM_GR);
+    groter.setParentVolgnummer(taxon.getParentVolgnummer());
+    groter.setNaam(taxon.getNaam());
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setParentNaam(PARENTNAAM_KL);
+    kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getParentNaam(), tabel[0].getParentNaam());
+    assertEquals(taxon.getParentNaam(), tabel[1].getParentNaam());
+    assertEquals(groter.getParentNaam(), tabel[2].getParentNaam());
+  }
+
+  @Test
+  public void testLijstComparator3() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setParentNaam(taxon.getParentNaam());
+    groter.setParentVolgnummer(taxon.getParentVolgnummer());
+    groter.setNaam(taxon.getNaam());
+    groter.setVolgnummer(taxon.getVolgnummer() + 1);
+    kleiner.setParentNaam(taxon.getParentNaam());
+    kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
+    assertEquals(taxon.getVolgnummer(), tabel[1].getVolgnummer());
+    assertEquals(groter.getVolgnummer(), tabel[2].getVolgnummer());
+  }
+
+  @Test
+  public void testLijstComparator4() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setParentNaam(taxon.getParentNaam());
+    groter.setParentVolgnummer(taxon.getParentVolgnummer());
     groter.setNaam(NAAM_GR);
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setParentNaam(taxon.getParentNaam());
+    kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
+    kleiner.setNaam(NAAM_KL);
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(taxon.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
+  public void testNaamComparator1() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(taxon.getLatijnsenaam());
+    groter.setNaam(NAAM_GR);
+    kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
     kleiner.setNaam(NAAM_KL);
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.NaamComparator());
@@ -240,6 +415,28 @@ public class TaxonTest {
     assertEquals(kleiner.getNaam(), tabel[0].getNaam());
     assertEquals(taxon.getNaam(), tabel[1].getNaam());
     assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
+  public void testNaamComparator2() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setNaam(taxon.getNaam());
+    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setNaam(taxon.getNaam());
+
+    Set<Taxon>  taxa  = new TreeSet<>(new Taxon.NaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxon.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
   }
 
   @Test
@@ -439,6 +636,26 @@ public class TaxonTest {
   }
 
   @Test
+  public void testSetRangnaam() {
+    var instance  = new Taxon();
+    assertNotEquals(RANGNAAM, instance.getRangnaam());
+    instance.setRangnaam(RANGNAAM);
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertEquals(RANGNAAM, instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
   public void testSetTaxonId() {
     var instance  = new Taxon();
     assertNotEquals(TAXONID, instance.getTaxonId());
@@ -547,5 +764,126 @@ public class TaxonTest {
     assertNull(instance.getTaxonId());
     assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
     assertEquals(VOLGNUMMER, instance.getVolgnummer());
+  }
+
+  @Test
+  public void testVolgnummerLatijnsenaamComparator1() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(taxon.getLatijnsenaam());
+    groter.setVolgnummer(taxon.getVolgnummer() + 1);
+    kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
+
+    Set<Taxon>  taxa  =
+        new TreeSet<>(new Taxon.VolgnummerLatijnsenaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
+    assertEquals(taxon.getVolgnummer(), tabel[1].getVolgnummer());
+    assertEquals(groter.getVolgnummer(), tabel[2].getVolgnummer());
+  }
+
+  @Test
+  public void testVolgnummerLatijnsenaamComparator2() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  =
+        new TreeSet<>(new Taxon.VolgnummerLatijnsenaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxon.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
+  }
+
+  @Test
+  public void testVolgnummerNaamComparator1() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(taxon.getLatijnsenaam());
+    groter.setNaam(taxon.getNaam());
+    groter.setVolgnummer(taxon.getVolgnummer() + 1);
+    kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
+
+    Set<Taxon>  taxa  =
+        new TreeSet<>(new Taxon.VolgnummerNaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
+    assertEquals(taxon.getVolgnummer(), tabel[1].getVolgnummer());
+    assertEquals(groter.getVolgnummer(), tabel[2].getVolgnummer());
+  }
+
+  @Test
+  public void testVolgnummerNaamComparator2() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(taxon.getLatijnsenaam());
+    groter.setNaam(NAAM_GR);
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
+    kleiner.setNaam(NAAM_KL);
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  =
+        new TreeSet<>(new Taxon.VolgnummerNaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getNaam(), tabel[0].getNaam());
+    assertEquals(taxon.getNaam(), tabel[1].getNaam());
+    assertEquals(groter.getNaam(), tabel[2].getNaam());
+  }
+
+  @Test
+  public void testVolgnummerNaamComparator3() {
+    var groter  = new Taxon();
+    var kleiner = new Taxon();
+
+    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setNaam(taxon.getNaam());
+    groter.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setNaam(taxon.getNaam());
+    kleiner.setVolgnummer(taxon.getVolgnummer());
+
+    Set<Taxon>  taxa  =
+        new TreeSet<>(new Taxon.VolgnummerNaamComparator());
+    taxa.add(groter);
+    taxa.add(taxon);
+    taxa.add(kleiner);
+
+    var tabel = new Taxon[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxon.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
   }
 }

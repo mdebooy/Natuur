@@ -168,6 +168,7 @@ public class FotoTest {
   public void testPersist() {
     var parameter = new FotoDto();
     var instance  = new Foto(foto);
+
     instance.persist(parameter);
 
     assertEquals(instance.getFotoBestand(), parameter.getFotoBestand());

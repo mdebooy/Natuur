@@ -152,7 +152,6 @@ public class GebiedDtoTest {
     var kleiner = new GebiedDto();
 
     groter.setNaam(NAAM_GR);
-
     kleiner.setNaam(NAAM_KL);
 
     Set<GebiedDto> gebieden  = new TreeSet<>(new GebiedDto.NaamComparator());

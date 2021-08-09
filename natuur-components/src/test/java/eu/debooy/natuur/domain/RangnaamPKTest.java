@@ -36,7 +36,8 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class RangnaamPKTest {
-  private static final String TOSTRING  = "RangnaamPK (rang=so, taal=nl)";
+  private static final String TOSTRING  =
+      "RangnaamPK (rang=" + RANG + ", taal="+ TAAL + ")";
 
   private static  RangnaamPK rangnaamPK;
 
@@ -83,6 +84,9 @@ public class RangnaamPKTest {
 
     instance  = new RangnaamPK(RANG, TAAL);
     assertEquals(rangnaamPK, instance);
+
+    instance.setRang(RANG_KL);
+    assertNotEquals(rangnaamPK, instance);
   }
 
   @Test

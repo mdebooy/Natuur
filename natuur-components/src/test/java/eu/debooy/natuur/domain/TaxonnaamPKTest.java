@@ -35,7 +35,7 @@ import org.junit.Test;
  */
 public class TaxonnaamPKTest {
   private static final String TOSTRING  =
-      "TaxonnaamPK (taxonId=9223372036854775797, taal=nl)";
+      "TaxonnaamPK (taxonId=" + TAXONID + ", taal="+ TAAL + ")";
 
   private static  TaxonnaamPK taxonnaamPK;
 
@@ -78,6 +78,12 @@ public class TaxonnaamPKTest {
     assertEquals(taxonnaamPK, taxonnaamPK);
     assertNotEquals(taxonnaamPK, null);
     assertNotEquals(taxonnaamPK, NAAM);
+    assertNotEquals(taxonnaamPK, instance);
+
+    instance  = new TaxonnaamPK(TAXONID, TAAL);
+    assertEquals(taxonnaamPK, instance);
+
+    instance.setTaxonId(TAXONID - 1);
     assertNotEquals(taxonnaamPK, instance);
   }
 

@@ -26,7 +26,6 @@ import static eu.debooy.natuur.TestConstants.TAAL_GR;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM_HASH;
-import eu.debooy.natuur.domain.TaxonnaamDto;
 import java.util.Set;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;

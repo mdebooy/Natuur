@@ -38,7 +38,9 @@ import org.junit.Test;
  */
 public class OverzichtPKTest {
   private static final String TOSTRING  =
-      "OverzichtPK (parentId=2, parentRang=ge, rang=so)";
+      "OverzichtPK (parentId=" + PARENTID
+             + ", parentRang=" + PARENTRANG
+                   + ", rang=" + RANG + ")";
 
   private static  OverzichtPK overzichtPK;
 
@@ -98,6 +100,12 @@ public class OverzichtPKTest {
     assertEquals(overzichtPK, overzichtPK);
     assertNotEquals(overzichtPK, null);
     assertNotEquals(overzichtPK, NAAM);
+    assertNotEquals(overzichtPK, instance);
+
+    instance  = new OverzichtPK(PARENTID, PARENTRANG, RANG);
+    assertEquals(overzichtPK, instance);
+
+    instance.setParentId(PARENTID - 1);
     assertNotEquals(overzichtPK, instance);
   }
 

@@ -160,12 +160,66 @@ public class GebiedTest {
   }
 
   @Test
+  public void testInit1() {
+    var instance  = new Gebied();
+
+    assertNull(instance.getGebiedId());
+    assertEquals(Long.valueOf(0), instance.getLandId());
+    assertNull(instance.getLatitude());
+    assertNull(instance.getLatitudeGraden());
+    assertNull(instance.getLatitudeMinuten());
+    assertNull(instance.getLatitudeSeconden());
+    assertNull(instance.getLongitude());
+    assertNull(instance.getLongitudeGraden());
+    assertNull(instance.getLongitudeMinuten());
+    assertNull(instance.getLongitudeSeconden());
+    assertNull(instance.getNaam());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Gebied(gebied);
+
+    assertEquals(gebied.getGebiedId(), instance.getGebiedId());
+    assertEquals(gebied.getLandId(), instance.getLandId());
+    assertEquals(gebied.getLatitude(), instance.getLatitude());
+    assertEquals(gebied.getLatitudeGraden(), instance.getLatitudeGraden());
+    assertEquals(gebied.getLatitudeMinuten(), instance.getLatitudeMinuten());
+    assertEquals(gebied.getLatitudeSeconden(), instance.getLatitudeSeconden());
+    assertEquals(gebied.getLongitude(), instance.getLongitude());
+    assertEquals(gebied.getLongitudeGraden(), instance.getLongitudeGraden());
+    assertEquals(gebied.getLongitudeMinuten(), instance.getLongitudeMinuten());
+    assertEquals(gebied.getLongitudeSeconden(),
+                 instance.getLongitudeSeconden());
+    assertEquals(gebied.getNaam(), instance.getNaam());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Gebied(gebiedDto);
+
+    assertEquals(gebiedDto.getGebiedId(), instance.getGebiedId());
+    assertEquals(gebiedDto.getLandId(), instance.getLandId());
+    assertEquals(gebiedDto.getLatitude(), instance.getLatitude());
+    assertEquals(gebiedDto.getLatitudeGraden(), instance.getLatitudeGraden());
+    assertEquals(gebiedDto.getLatitudeMinuten(), instance.getLatitudeMinuten());
+    assertEquals(gebiedDto.getLatitudeSeconden(),
+                 instance.getLatitudeSeconden());
+    assertEquals(gebiedDto.getLongitude(), instance.getLongitude());
+    assertEquals(gebiedDto.getLongitudeGraden(), instance.getLongitudeGraden());
+    assertEquals(gebiedDto.getLongitudeMinuten(),
+                 instance.getLongitudeMinuten());
+    assertEquals(gebiedDto.getLongitudeSeconden(),
+                 instance.getLongitudeSeconden());
+    assertEquals(gebied.getNaam(), instance.getNaam());
+  }
+
+  @Test
   public void testNaamComparator() {
     var groter  = new Gebied();
     var kleiner = new Gebied();
 
     groter.setNaam(NAAM_GR);
-
     kleiner.setNaam(NAAM_KL);
 
     Set<Gebied> gebieden  = new TreeSet<>(new Gebied.NaamComparator());
@@ -183,7 +237,7 @@ public class GebiedTest {
   @Test
   public void testPersist() {
     var parameter = new GebiedDto();
-    var instance  = new Gebied();
+    var instance  = new Gebied(gebied);
 
     instance.persist(parameter);
 
