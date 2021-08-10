@@ -43,11 +43,11 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class WaarnemingTest {
-  private static Date           datum;
-  private static Gebied         gebied;
-  private static Taxon          taxon;
-  private static Waarneming     waarneming;
-  private static WaarnemingDto  waarnemingDto;
+  private static  Date          datum;
+  private static  Gebied        gebied;
+  private static  Taxon         taxon;
+  private static  Waarneming    waarneming;
+  private static  WaarnemingDto waarnemingDto;
 
   @BeforeClass
   public static void setUpClass() {
@@ -168,6 +168,57 @@ public class WaarnemingTest {
   @Test
   public void testHashCode() {
     assertEquals(WAARNEMINGID_HASH, waarneming.hashCode());
+  }
+
+  @Test
+  public void testInit1() {
+    var instance  = new Waarneming();
+
+    assertNull(instance.getAantal());
+    assertNull(instance.getDatum());
+    assertNull(instance.getGebied());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getTaxon());
+    assertNull(instance.getWaarnemingId());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Waarneming(waarneming);
+
+    assertEquals(waarneming.getAantal(), instance.getAantal());
+    assertEquals(waarneming.getDatum(), instance.getDatum());
+    assertEquals(waarneming.getGebied(), new Gebied(instance.getGebied()));
+    assertEquals(waarneming.getOpmerking(), instance.getOpmerking());
+    assertEquals(waarneming.getTaxon(), new Taxon(instance.getTaxon()));
+    assertEquals(waarneming.getWaarnemingId(), instance.getWaarnemingId());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Waarneming(waarneming);
+
+    instance.setGebied(null);
+    instance.setTaxon(null);
+
+    assertEquals(waarneming.getAantal(), instance.getAantal());
+    assertEquals(waarneming.getDatum(), instance.getDatum());
+    assertNull(instance.getGebied());
+    assertEquals(waarneming.getOpmerking(), instance.getOpmerking());
+    assertNull(instance.getTaxon());
+    assertEquals(waarneming.getWaarnemingId(), instance.getWaarnemingId());
+  }
+
+  @Test
+  public void testInit4() {
+    var instance  = new Waarneming(waarnemingDto);
+
+    assertEquals(waarnemingDto.getAantal(), instance.getAantal());
+    assertEquals(waarnemingDto.getDatum(), instance.getDatum());
+    assertEquals(new Gebied(waarnemingDto.getGebied()), instance.getGebied());
+    assertEquals(waarnemingDto.getOpmerking(), instance.getOpmerking());
+    assertEquals(new Taxon(waarnemingDto.getTaxon()), instance.getTaxon());
+    assertEquals(waarnemingDto.getWaarnemingId(), instance.getWaarnemingId());
   }
 
   @Test

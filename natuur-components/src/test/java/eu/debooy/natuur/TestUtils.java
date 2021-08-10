@@ -16,6 +16,9 @@
  */
 package eu.debooy.natuur;
 
+import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
+import static eu.debooy.natuur.TestConstants.FOTODETAIL;
+import static eu.debooy.natuur.TestConstants.FOTOID;
 import static eu.debooy.natuur.TestConstants.GEBIEDID;
 import static eu.debooy.natuur.TestConstants.LANDID;
 import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
@@ -42,7 +45,10 @@ import static eu.debooy.natuur.TestConstants.TAAL_KL;
 import static eu.debooy.natuur.TestConstants.TAXONID;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM;
 import static eu.debooy.natuur.TestConstants.TAXONNAAM_KL;
+import static eu.debooy.natuur.TestConstants.TAXONSEQ;
 import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
+import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
+import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -58,6 +64,30 @@ import java.util.Map;
  */
 public final class TestUtils {
   private TestUtils() {}
+
+  public static Map<Long, FotoDto> getFotos() {
+    var                 fotoDto = new FotoDto();
+    Map<Long, FotoDto>  fotos   = new HashMap<>();
+
+    fotoDto.setFotoBestand(FOTOBESTAND);
+    fotoDto.setFotoDetail(FOTODETAIL);
+    fotoDto.setFotoId(FOTOID);
+    fotoDto.setOpmerking(OPMERKING);
+    fotoDto.setTaxonSeq(TAXONSEQ);
+    fotoDto.setWaarnemingId(WAARNEMINGID);
+    fotos.put(TAXONSEQ, fotoDto);
+
+    fotoDto = new FotoDto();
+    fotoDto.setFotoBestand(FOTOBESTAND);
+    fotoDto.setFotoDetail(FOTODETAIL);
+    fotoDto.setFotoId(FOTOID + 1);
+    fotoDto.setOpmerking(OPMERKING);
+    fotoDto.setTaxonSeq(TAXONSEQ + 1);
+    fotoDto.setWaarnemingId(WAARNEMINGID);
+    fotos.put(TAXONSEQ + 1, fotoDto);
+
+    return fotos;
+  }
 
   public static Gebied getGebied() {
     Gebied  gebied  = new Gebied();

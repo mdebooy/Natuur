@@ -14,7 +14,7 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-package eu.debooy.natuur.form;
+package eu.debooy.natuur.domain;
 
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.NAAM_GR;
@@ -26,7 +26,6 @@ import static eu.debooy.natuur.TestConstants.RANG_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
 import static eu.debooy.natuur.TestConstants.TAAL_GR;
 import static eu.debooy.natuur.TestConstants.TAAL_KL;
-import eu.debooy.natuur.domain.RangnaamDto;
 import java.util.Set;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
@@ -36,21 +35,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-
 /**
  * @author Marco de Booij
  */
-public class RangnaamTest {
-  private static  Rangnaam    rangnaam;
+public class RangnaamDtoTest {
   private static  RangnaamDto rangnaamDto;
 
   @BeforeClass
   public static void setUpClass() {
-    rangnaam     = new Rangnaam();
-    rangnaam.setNaam(NAAM);
-    rangnaam.setRang(RANG);
-    rangnaam.setTaal(TAAL);
-
     rangnaamDto  = new RangnaamDto();
     rangnaamDto.setNaam(NAAM);
     rangnaamDto.setRang(RANG);
@@ -59,134 +51,87 @@ public class RangnaamTest {
 
   @Test
   public void testCompareTo() {
-    var gelijk  = new Rangnaam(rangnaam);
-    var groter  = new Rangnaam();
+    var gelijk  = new RangnaamDto();
+    var groter  = new RangnaamDto();
+    var kleiner = new RangnaamDto();
+
+    gelijk.setRang(RANG);
+    gelijk.setTaal(TAAL);
     groter.setRang(RANG_GR);
-    var kleiner = new Rangnaam();
     kleiner.setRang(RANG_KL);
 
-    assertTrue(rangnaam.compareTo(groter) < 0);
-    assertEquals(0, rangnaam.compareTo(gelijk));
-    assertTrue(rangnaam.compareTo(kleiner) > 0);
+    assertTrue(rangnaamDto.compareTo(groter) < 0);
+    assertEquals(0, rangnaamDto.compareTo(gelijk));
+    assertTrue(rangnaamDto.compareTo(kleiner) > 0);
 
     groter.setRang(RANG);
     groter.setTaal(TAAL_GR);
     kleiner.setRang(RANG);
     kleiner.setTaal(TAAL_KL);
 
-    assertTrue(rangnaam.compareTo(groter) < 0);
-    assertEquals(0, rangnaam.compareTo(gelijk));
-    assertTrue(rangnaam.compareTo(kleiner) > 0);
+    assertTrue(rangnaamDto.compareTo(groter) < 0);
+    assertEquals(0, rangnaamDto.compareTo(gelijk));
+    assertTrue(rangnaamDto.compareTo(kleiner) > 0);
   }
 
   @Test
   public void testEquals() {
-    var instance  = new Rangnaam();
+    var instance  = new RangnaamDto();
 
-    assertEquals(rangnaam, rangnaam);
-    assertNotEquals(rangnaam, null);
-    assertNotEquals(rangnaam, NAAM);
-    assertNotEquals(rangnaam, instance);
+    assertEquals(rangnaamDto, rangnaamDto);
+    assertNotEquals(rangnaamDto, null);
+    assertNotEquals(rangnaamDto, NAAM);
+    assertNotEquals(rangnaamDto, instance);
 
-    instance.setRang(rangnaam.getRang());
-    instance.setTaal(rangnaam.getTaal());
-    assertEquals(rangnaam, instance);
-
-    instance  = new Rangnaam(rangnaam);
-    assertEquals(rangnaam, instance);
-
-    instance  = new Rangnaam(rangnaamDto);
-    assertEquals(rangnaam, instance);
+    instance.setRang(rangnaamDto.getRang());
+    instance.setTaal(rangnaamDto.getTaal());
+    assertEquals(rangnaamDto, instance);
   }
 
   @Test
   public void testGetNaam() {
-    assertEquals(NAAM, rangnaam.getNaam());
+    assertEquals(NAAM, rangnaamDto.getNaam());
   }
 
   @Test
   public void testGetRang() {
-    assertEquals(RANG, rangnaam.getRang());
+    assertEquals(RANG, rangnaamDto.getRang());
   }
 
   @Test
   public void testGetTaal() {
-    assertEquals(TAAL, rangnaam.getTaal());
+    assertEquals(TAAL, rangnaamDto.getTaal());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(RANGNAAM_HASH, rangnaam.hashCode());
-  }
-
-  @Test
-  public void testInit1() {
-    var instance  = new Rangnaam();
-
-    assertNull(instance.getNaam());
-    assertNull(instance.getRang());
-    assertNull(instance.getTaal());
-  }
-
-  @Test
-  public void testInit2() {
-    var instance  = new Rangnaam(rangnaam);
-
-    assertEquals(rangnaam.getNaam(), instance.getNaam());
-    assertEquals(rangnaam.getRang(), instance.getRang());
-    assertEquals(rangnaam.getTaal(), instance.getTaal());
-  }
-
-  @Test
-  public void testInit3() {
-    var instance  = new Rangnaam(rangnaamDto);
-
-    assertEquals(rangnaamDto.getNaam(), instance.getNaam());
-    assertEquals(rangnaamDto.getRang(), instance.getRang());
-    assertEquals(rangnaamDto.getTaal(), instance.getTaal());
+    assertEquals(RANGNAAM_HASH, rangnaamDto.hashCode());
   }
 
   @Test
   public void testNaamComparator() {
-    var groter  = new Rangnaam();
-    var kleiner = new Rangnaam();
+    var groter  = new RangnaamDto();
+    var kleiner = new RangnaamDto();
 
     groter.setNaam(NAAM_GR);
     kleiner.setNaam(NAAM_KL);
 
-    Set<Rangnaam> rangnamen = new TreeSet<>(new Rangnaam.NaamComparator());
+    Set<RangnaamDto>  rangnamen =
+        new TreeSet<>(new RangnaamDto.NaamComparator());
     rangnamen.add(groter);
-    rangnamen.add(rangnaam);
+    rangnamen.add(rangnaamDto);
     rangnamen.add(kleiner);
 
-    var tabel = new Rangnaam[rangnamen.size()];
+    var tabel = new RangnaamDto[rangnamen.size()];
     System.arraycopy(rangnamen.toArray(), 0, tabel, 0, rangnamen.size());
     assertEquals(kleiner.getNaam(), tabel[0].getNaam());
-    assertEquals(rangnaam.getNaam(), tabel[1].getNaam());
+    assertEquals(rangnaamDto.getNaam(), tabel[1].getNaam());
     assertEquals(groter.getNaam(), tabel[2].getNaam());
   }
 
   @Test
-  public void testPersist() {
-    var parameter = new RangnaamDto();
-    var instance  = new Rangnaam(rangnaam);
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getNaam(), parameter.getNaam());
-    assertEquals(instance.getRang(), parameter.getRang());
-    assertEquals(instance.getTaal(), parameter.getTaal());
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getNaam(), parameter.getNaam());
-    assertEquals(instance.getRang(), parameter.getRang());
-    assertEquals(instance.getTaal(), parameter.getTaal());
-  }
-
-  @Test
   public void testSetNaam() {
-    var instance  = new Rangnaam();
+    var instance  = new RangnaamDto();
     assertNotEquals(NAAM, instance.getNaam());
     instance.setNaam(NAAM);
 
@@ -197,7 +142,7 @@ public class RangnaamTest {
 
   @Test
   public void testSetRang() {
-    var instance  = new Rangnaam();
+    var instance  = new RangnaamDto();
     assertNotEquals(RANG, instance.getRang());
     instance.setRang(RANG);
 
@@ -208,7 +153,7 @@ public class RangnaamTest {
 
   @Test
   public void testSetTaal() {
-    var instance  = new Rangnaam();
+    var instance  = new RangnaamDto();
     assertNotEquals(TAAL, instance.getTaal());
     instance.setTaal(TAAL);
 

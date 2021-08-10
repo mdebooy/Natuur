@@ -21,12 +21,9 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import static eu.debooy.natuur.TestConstants.LANDID;
 import static eu.debooy.natuur.TestConstants.LATITUDE;
-import static eu.debooy.natuur.TestConstants.LATITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_MINUTEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_SECONDEN;
+import static eu.debooy.natuur.TestConstants.LATITUDE2;
 import static eu.debooy.natuur.TestConstants.LONGITUDE;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
+import static eu.debooy.natuur.TestConstants.LONGITUDE2;
 import static eu.debooy.natuur.TestConstants.NAAM;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
@@ -182,6 +179,110 @@ public class GebiedValidatorTest {
   }
 
   @Test
+  public void testValideerFouteCoordinaten1() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLatitude(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten2() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLatitudeGraden(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten3() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLatitudeMinuten(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten4() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLatitudeSeconden(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten5() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLongitude(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten6() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLongitudeGraden(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten7() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLongitudeMinuten(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerFouteCoordinaten8() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLongitudeSeconden(null);
+
+    expResult.add(ERR_ONVOLLEDIG);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
   public void testValideerFouteGebied1() {
     Gebied        gebied    = getFoutGebied1();
     List<Message> expResult = new ArrayList<>();
@@ -204,43 +305,36 @@ public class GebiedValidatorTest {
   }
 
   @Test
-  public void testValideerFouteGebied3() {
+  public void testValideerGoedeCoordinaten1() {
     Gebied        gebied    = TestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLatitude(null);
-
-    expResult.add(ERR_ONVOLLEDIG);
+    gebied.setLatitudeGraden(null);
+    gebied.setLatitudeMinuten(null);
+    gebied.setLatitudeSeconden(null);
+    gebied.setLongitudeGraden(null);
+    gebied.setLongitudeMinuten(null);
+    gebied.setLongitudeSeconden(null);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());
+  }
 
-    gebied.setLatitude(LATITUDE);
+  @Test
+  public void testValideerGoedeCoordinaten2() {
+    Gebied        gebied    = TestUtils.getGebied();
+    List<Message> expResult = new ArrayList<>();
+
+    gebied.setLatitude(LATITUDE2);
     gebied.setLatitudeGraden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeGraden(LATITUDE_GRADEN);
     gebied.setLatitudeMinuten(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeMinuten(LATITUDE_MINUTEN);
     gebied.setLatitudeSeconden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebied.setLongitude(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitude(LONGITUDE);
+    gebied.setLongitude(LONGITUDE2);
     gebied.setLongitudeGraden(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitudeGraden(LONGITUDE_GRADEN);
     gebied.setLongitudeMinuten(null);
-    assertEquals(expResult.toString(), result.toString());
-
-    gebied.setLongitudeMinuten(LONGITUDE_MINUTEN);
     gebied.setLongitudeSeconden(null);
+
+    List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());
   }
 
@@ -254,7 +348,7 @@ public class GebiedValidatorTest {
   }
 
   @Test
-  public void testValideerGoedeGebied2() {
+  public void testValideerGoedGebied2() {
     Gebied        gebied    = new Gebied();
     List<Message> expResult = new ArrayList<>();
 

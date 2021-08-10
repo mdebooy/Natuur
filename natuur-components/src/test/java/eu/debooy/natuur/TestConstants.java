@@ -42,10 +42,12 @@ public final class TestConstants {
   public static final String  LATIJNSENAAM_GR     = "Rynchops flavirostris";
   public static final String  LATIJNSENAAM_KL     = "Emberiza flaviventris";
   public static final String  LATITUDE            = "N";
+  public static final String  LATITUDE2           = "S";
   public static final Integer LATITUDE_GRADEN     = 30;
   public static final Integer LATITUDE_MINUTEN    = 31;
   public static final Double  LATITUDE_SECONDEN   = 33.21;
   public static final String  LONGITUDE           = "E";
+  public static final String  LONGITUDE2          = "W";
   public static final Integer LONGITUDE_GRADEN    = 40;
   public static final Integer LONGITUDE_MINUTEN   = 41;
   public static final Double  LONGITUDE_SECONDEN  = 43.21;
