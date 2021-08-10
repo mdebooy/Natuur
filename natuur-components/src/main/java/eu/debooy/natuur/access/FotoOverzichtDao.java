@@ -19,6 +19,9 @@ package eu.debooy.natuur.access;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,5 +44,12 @@ public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
   @Override
   protected EntityManager getEntityManager() {
     return em;
+  }
+
+  public List<FotoOverzichtDto> getPerTaxon(Long taxonId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(FotoOverzichtDto.PAR_TAXONID, taxonId);
+
+    return namedQuery(FotoOverzichtDto.QRY_PERTAXON, params);
   }
 }

@@ -71,6 +71,11 @@ public class FotoService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<FotoOverzichtDto> fotosPerTaxon(Long taxonId) {
+    return fotoOverzichtDao.getPerTaxon(taxonId);
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<FotoOverzichtDto> fotoOverzicht() {
     return fotoOverzichtDao.getAll();
   }

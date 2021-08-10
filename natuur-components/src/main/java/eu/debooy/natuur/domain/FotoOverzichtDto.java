@@ -29,6 +29,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
@@ -46,9 +47,28 @@ import org.apache.openjpa.persistence.ReadOnly;
  */
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
+@NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId")
 public class FotoOverzichtDto
     extends Dto implements Comparable<FotoOverzichtDto> {
   private static final  long  serialVersionUID  = 1L;
+
+  public static final String  COL_DATUM               = "datum";
+  public static final String  COL_FOTOBESTAND         = "fotoBestand";
+  public static final String  COL_FOTODETAIL          = "fotoDetail";
+  public static final String  COL_FOTOID              = "fotoId";
+  public static final String  COL_GEBIED              = "gebied";
+  public static final String  COL_KLASSEID            = "klasseId";
+  public static final String  COL_KLASSELATIJNSENAAM  = "klasseLatijnsenaam";
+  public static final String  COL_KLASSEVOLGNUMMER    = "klasseVolgnummer";
+  public static final String  COL_LANDID              = "landId";
+  public static final String  COL_LATIJNSENAAM        = "latijnsenaam";
+  public static final String  COL_TAXONID             = "taxonId";
+  public static final String  COL_TAXONSEQ            = "taxonSeq";
+  public static final String  COL_VOLGNUMMER          = "volgnummer";
+
+  public static final String  PAR_TAXONID = "taxonId";
+
+  public static final String  QRY_PERTAXON  = "fotooverzichtPerTaxon";
 
   @ReadOnly
   @OrderColumn
