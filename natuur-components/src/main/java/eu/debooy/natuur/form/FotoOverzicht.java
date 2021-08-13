@@ -16,6 +16,8 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import java.util.Date;
@@ -146,6 +148,14 @@ public class FotoOverzicht {
 
   public String getNaam() {
     return naam;
+  }
+
+  public String getSorteerdatum() {
+    if (null == datum) {
+      return "";
+    }
+
+    return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
   }
 
   public Long getTaxonId() {

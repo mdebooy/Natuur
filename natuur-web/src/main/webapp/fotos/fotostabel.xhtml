@@ -9,6 +9,9 @@
       <col style="width:60px" />
       <col />
       <col />
+      <col />
+      <col />
+      <col />
     </colgroup>
     <thead>
       <tr>
@@ -28,7 +31,7 @@
           <td><em>#{foto.latijnsenaam}</em></td>
           <td>#{foto.gebied}</td>
           <td>#{foto.landnaam}</td>
-          <td>
+          <td class="text-center" data-order="#{foto.sorteerdatum}">
             <t:outputText value="#{foto.datum}">
               <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
             </t:outputText>
