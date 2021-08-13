@@ -213,6 +213,12 @@ public class RangController extends Natuur {
       return;
     }
 
+    if (getDetailAktie().getAktie() == PersistenceConstants.CREATE
+        && rangDto.hasRangnaam(rangnaam.getTaal())) {
+      addError(PersistenceConstants.DUPLICATE, rangnaam.getTaal());
+      return;
+    }
+
     try {
       rangnaamDto  = new RangnaamDto();
       rangnaam.persist(rangnaamDto);

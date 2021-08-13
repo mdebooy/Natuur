@@ -247,6 +247,12 @@ public class TaxonController extends Natuur {
       return;
     }
 
+    if (getDetailAktie().getAktie() == PersistenceConstants.CREATE
+        && taxonDto.hasTaxonnaam(taxonnaam.getTaal())) {
+      addError(PersistenceConstants.DUPLICATE, taxonnaam.getTaal());
+      return;
+    }
+
     try {
       taxonnaamDto  = new TaxonnaamDto();
       taxonnaam.persist(taxonnaamDto);
