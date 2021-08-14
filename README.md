@@ -48,7 +48,7 @@ natuur-web
 This is the application. Put the war-file in the `webapps` directory of Tomee. The first time that you use the application there will be no texts or parameters available. Load them through the right menu options. As soon as they are loaded they will be used by the application.
 
 Versions
--------
+--------
 
 2.1.x
 _____

@@ -146,15 +146,11 @@ public class FotoController extends Natuur {
     }
   }
 
-  public Foto getFoto() {
-    return foto;
-  }
-
-  public Collection<FotoOverzicht> getFotos() {
+  private List<FotoOverzicht> fotos(List<FotoOverzichtDto> fotosPerTaxon) {
     Map<Long, String>   landnamen = new HashMap<>();
     String              taal      = getGebruikersTaal();
     List<FotoOverzicht> overzicht = new ArrayList<>();
-    getFotoService().fotoOverzicht().forEach(rij -> {
+    fotosPerTaxon.forEach(rij -> {
       Long  landId  = rij.getLandId();
       landnamen.computeIfAbsent(landId,
                                 k -> getI18nLandnaam().getI18nLandnaam(landId,
@@ -163,6 +159,18 @@ public class FotoController extends Natuur {
     });
 
     return overzicht;
+  }
+
+  public Foto getFoto() {
+    return foto;
+  }
+
+  public Collection<FotoOverzicht> getFotos() {
+    return fotos(getFotoService().fotoOverzicht());
+  }
+
+  public List<FotoOverzicht> getTaxonFotos(Long taxonId) {
+    return fotos(getFotoService().fotosPerTaxon(taxonId));
   }
 
   public Waarneming getWaarneming() {
