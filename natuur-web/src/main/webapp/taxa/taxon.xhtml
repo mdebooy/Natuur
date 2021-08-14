@@ -106,6 +106,9 @@
           }
         } );
         $('.nav-tabs a[href="##{natuurTaxon.aktieveTab}"]').tab('show');
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+          $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
+        });
       } );
     </script>
   </ui:define>
