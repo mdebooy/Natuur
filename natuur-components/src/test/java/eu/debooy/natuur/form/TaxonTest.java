@@ -717,6 +717,14 @@ public class TaxonTest {
     assertNull(instance.getTaxonId());
     assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetUitgestorven2() {
+    var instance  = new Taxon();
+    instance.setUitgestorven(WAAR);
+    assertTrue(instance.isUitgestorven());
+    assertEquals(WAAR, instance.getUitgestorven());
 
     instance.setUitgestorven(ONWAAR);
     assertFalse(instance.isUitgestorven());
@@ -736,7 +744,7 @@ public class TaxonTest {
   }
 
   @Test
-  public void testSetUitgestorven2() {
+  public void testSetUitgestorven3() {
     var instance  = new Taxon();
     assertFalse(instance.isUitgestorven());
     assertEquals(ONWAAR, instance.getUitgestorven());
@@ -756,6 +764,14 @@ public class TaxonTest {
     assertNull(instance.getTaxonId());
     assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetUitgestorven4() {
+    var instance  = new Taxon();
+    instance.setUitgestorven(true);
+    assertTrue(instance.isUitgestorven());
+    assertEquals(WAAR, instance.getUitgestorven());
 
     instance.setUitgestorven(false);
     assertFalse(instance.isUitgestorven());
