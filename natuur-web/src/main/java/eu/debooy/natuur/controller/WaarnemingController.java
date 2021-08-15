@@ -30,6 +30,7 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import static eu.debooy.natuur.Natuur.TAXON_REDIRECT;
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
@@ -228,6 +229,15 @@ public class WaarnemingController extends Natuur {
     List<Message> messages  = FotoValidator.valideer(foto);
     if (!messages.isEmpty()) {
       addMessage(messages);
+      return;
+    }
+
+    FotoOverzichtDto  fotoOverzicht =
+        getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
+                                      foto.getTaxonSeq());
+    if (null != fotoOverzicht.getFotoId()
+            && !fotoOverzicht.getFotoId().equals(foto.getFotoId())) {
+      addError(PersistenceConstants.DUPLICATE, foto.getTaxonSeq());
       return;
     }
 

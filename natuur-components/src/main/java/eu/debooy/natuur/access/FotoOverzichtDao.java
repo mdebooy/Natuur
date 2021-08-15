@@ -52,4 +52,19 @@ public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
 
     return namedQuery(FotoOverzichtDto.QRY_PERTAXON, params);
   }
+
+  public FotoOverzichtDto getTaxonSeq(Long taxonId, Long taxonSeq) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(FotoOverzichtDto.PAR_TAXONID, taxonId);
+    params.put(FotoOverzichtDto.PAR_TAXONSEQ, taxonSeq);
+
+    List<FotoOverzichtDto>  fotos = namedQuery(FotoOverzichtDto.QRY_TAXONSEQ,
+                                               params);
+
+    if (fotos.isEmpty()) {
+      return new FotoOverzichtDto();
+    }
+
+    return fotos.get(0);
+  }
 }

@@ -48,6 +48,7 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
 @NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId")
+@NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
 public class FotoOverzichtDto
     extends Dto implements Comparable<FotoOverzichtDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -66,9 +67,11 @@ public class FotoOverzichtDto
   public static final String  COL_TAXONSEQ            = "taxonSeq";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
 
-  public static final String  PAR_TAXONID = "taxonId";
+  public static final String  PAR_TAXONID   = "taxonId";
+  public static final String  PAR_TAXONSEQ  = "taxonSeq";
 
   public static final String  QRY_PERTAXON  = "fotooverzichtPerTaxon";
+  public static final String  QRY_TAXONSEQ  = "fotooverzichtTaxonSeq";
 
   @ReadOnly
   @OrderColumn
