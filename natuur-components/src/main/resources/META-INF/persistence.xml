@@ -8,6 +8,7 @@
 
     <class>eu.debooy.natuur.domain.DetailDto</class>
     <class>eu.debooy.natuur.domain.FotoDto</class>
+    <class>eu.debooy.natuur.domain.FotoOverzichtDto</class>
     <class>eu.debooy.natuur.domain.GebiedDto</class>
     <class>eu.debooy.natuur.domain.OverzichtDto</class>
     <class>eu.debooy.natuur.domain.RangDto</class>
