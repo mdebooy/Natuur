@@ -242,7 +242,6 @@ public class WaarnemingController extends Natuur {
     }
 
     try {
-      fotoDto = new FotoDto();
       foto.persist(fotoDto);
       waarnemingDto.addFoto(fotoDto);
       getWaarnemingService().save(waarnemingDto);
