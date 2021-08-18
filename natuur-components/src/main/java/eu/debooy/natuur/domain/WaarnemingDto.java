@@ -93,12 +93,13 @@ public class WaarnemingDto
     if (null == fotoDto.getWaarnemingId()) {
       fotoDto.setWaarnemingId(waarnemingId);
     }
+
     // Voor het geval dat de taxonSeq is veranderd.
-    if (fotos.containsValue(fotoDto)) {
-      var aanwezig = fotos.entrySet()
-                          .stream()
-                          .filter(entry -> (entry.getValue().equals(fotoDto)))
-                          .findFirst();
+    var aanwezig = fotos.entrySet()
+                        .stream()
+                        .filter(entry -> (entry.getValue().equals(fotoDto)))
+                        .findFirst();
+    if (aanwezig.isPresent()) {
       fotos.remove(aanwezig.get().getKey());
     }
 
