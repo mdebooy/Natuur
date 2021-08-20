@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
@@ -77,12 +78,20 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<FotoOverzichtDto> fotosPerTaxon(Long taxonId) {
-    return fotoOverzichtDao.getPerTaxon(taxonId);
+    try {
+      return fotoOverzichtDao.getPerTaxon(taxonId);
+    } catch (ObjectNotFoundException e) {
+      return new ArrayList<>();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<FotoOverzichtDto> fotoOverzicht() {
-    return fotoOverzichtDao.getAll();
+    try {
+      return fotoOverzichtDao.getAll();
+    } catch (ObjectNotFoundException e) {
+      return new ArrayList<>();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
