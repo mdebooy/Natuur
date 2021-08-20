@@ -281,7 +281,7 @@ public class WaarnemingController extends Natuur {
     fotoDto = waarnemingDto.getFoto(taxonSeq);
     foto    = new Foto(fotoDto);
     setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel("natuur.titel.taxonnaam.update");
+    setDetailSubTitel("natuur.titel.foto.update");
     redirect(WNMFOTO_REDIRECT);
   }
 

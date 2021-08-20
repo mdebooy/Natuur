@@ -10,14 +10,14 @@
     <div class="row justify-content-center">
       <div class="col-10">
         <h:form class="form-horizontal" id="formFoto">
-          <t:div rendered="#{natuurWaarneming.aktie.readonly}">
+          <t:div rendered="#{natuurWaarneming.detailAktie.readonly}">
             <div class="col-10">
-              <h2 class="titel">#{natuurWaarneming.subTitel}</h2>
+              <h2 class="titel">#{natuurWaarneming.detailSubTitel}</h2>
             </div>
           </t:div>
-          <t:div rendered="#{!natuurWaarneming.aktie.readonly}">
+          <t:div rendered="#{!natuurWaarneming.detailAktie.readonly}">
             <div class="col-10">
-              <h2 class="titel">#{i18nTeksten.tekst(natuurWaarneming.subTitel)}</h2>
+              <h2 class="titel">#{i18nTeksten.tekst(natuurWaarneming.detailSubTitel)}</h2>
             </div>
             <div class="form-group form-group-sm row">
               <label for="taxon" class="col-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
