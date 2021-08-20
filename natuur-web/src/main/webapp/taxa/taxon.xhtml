@@ -125,11 +125,6 @@
                 <h2>#{natuurTaxon.taxon.naam}</h2>
               </t:div>
             </div>
-            <div class="col-2 text-right" >
-              <h:commandLink action="#{natuurTaxon.create(natuurTaxon.taxon.taxonId)}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
-            </div>
           </div>
 
           <t:div rendered="#{!natuurTaxon.aktie.readonly}">
@@ -191,6 +186,11 @@
               <div class="tab-content">
                 <div id="kinderenTab" class="tab-pane fade show active" role="tabpanel">
                   <d:spacer />
+                  <div class="col-12 text-left">
+                    <h:commandLink action="#{natuurTaxon.create(natuurTaxon.taxon.taxonId)}" rendered="#{natuurTaxon.aktie.wijzig}">
+                      <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+                    </h:commandLink>
+                  </div>
                   <ui:include src="taxatabel.xhtml">
                     <ui:param name="form" value="formTaxon" />
                     <ui:param name="lijst" value="#{natuurTaxon.getKinderen(natuurTaxon.taxon.taxonId)}" />
@@ -198,7 +198,7 @@
                 </div>
                 <div id="namenTab" class="tab-pane fade" role="tabpanel">
                   <d:spacer />
-                  <div class="col-12 text-right">
+                  <div class="col-12 text-left">
                     <h:commandLink action="#{natuurTaxon.createTaxonnaam}" rendered="#{natuurTaxon.aktie.wijzig}">
                       <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
                     </h:commandLink>
@@ -210,11 +210,10 @@
                 </div>
                 <div id="waarnemingenTab" class="tab-pane fade" role="tabpanel">
                   <d:spacer />
-                  <div class="col-12 text-right">
+                  <div class="col-12 text-left">
                     <h:commandLink action="#{natuurWaarneming.create(natuurTaxon.taxon.taxonId)}" rendered="#{natuurTaxon.aktie.wijzig}">
                       <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
                     </h:commandLink>
-                    <d:spacer />
                   </div>
                   <div>
                     <ui:include src="waarnemingtabel.xhtml">
