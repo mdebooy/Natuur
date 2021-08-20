@@ -25,7 +25,11 @@ Versies
 2.1.x
 _____
 
-Deze versie is een tussenversie die nodig is om naar de nieuwe databasestructuur over te gaan. Het geeft de mogelijkheid om elke `foto` aan de juiste `waarneming` te koppelen. Sla deze versie dus niet over om dataverlies te voorkomen.
+Deze versie is een tussenversie die nodig is om naar de nieuwe databasestructuur over te gaan. Het geeft de mogelijkheid om elke `foto` aan de juiste `waarneming` te koppelen. Sla deze versie dus niet over om dataverlies te voorkomen. In de script `UpdateFotos.sql` staan 2 update SQL's en 2 select SQL's. De tweede update SQL is de veiligste van de 2. Met de eerste kan een `foto` aan de verkeerde `waarneming` worden gekoppeld. Dit kan gebeuren als je niet alle `waarnemingen` die bij de `fotos` hebt ingevoerd.
+
+2.2.0
+_____
+Deze versie veranderd de structuur van de tabel `fotos`. De script `Natuur-Patch.sql` maakt een kopie met de naam `NATUUR.FOTOS_V2_1_1` aan voordat het overbodige kolommen verwijderd. Deze tabel kan worden verwijderd na controle date de `foto`'s aan een `waarneming` zijn gekoppeld.
 
 <hr />
 
@@ -53,5 +57,9 @@ Versions
 2.1.x
 _____
 
-This version is an intermediate version that is necessary to move to the new database structure. It gives you the possibility to connect every `foto` (picture) to the right `waarneming` (observation). Do not skip this version to prevent data loss.
+This version is an intermediate version that is necessary to move to the new database structure. It gives you the possibility to connect every `foto` (`picture`) to the right `waarneming` (`observation`). Do not skip this version to prevent data loss. In thee script `UpdateFotos.sql` you find 2 update SQL's and 2 select SQL's. The second update SQL is the safest of the 2. With the first one you can link a `picture` to a wrong `observation`. This can happen when you haven't registered all the `observations` of the `pictures`.
+
+2.2.0
+_____
+This version changes the structure of the `fotos` table. The script `Natuur-Patch.sql` makes a copy with the name `NATUUR.FOTOS_V2_1_1` before the obsolete columns are dropped. You can drop this table manually after you checked that all pictures are linked to an observation.
 
