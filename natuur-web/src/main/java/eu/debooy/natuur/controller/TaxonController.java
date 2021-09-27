@@ -150,7 +150,16 @@ public class TaxonController extends Natuur {
   }
 
   public Collection<Taxon> getKinderen(Long parentId) {
-    return getTaxonService().getKinderen(parentId, getGebruikersTaal());
+    Map<String, String> rangnamen = getRangnamen();
+    List<Taxon>         taxa      = new ArrayList<>();
+
+    getTaxonService().getKinderen(parentId, getGebruikersTaal())
+                     .forEach(rij -> {
+      rij.setRangnaam(rangnamen.get(rij.getRang()));
+      taxa.add(rij);
+    });
+
+    return taxa;
   }
 
   public Taxon getOuder() {
@@ -161,13 +170,20 @@ public class TaxonController extends Natuur {
     return ouderNiveau;
   }
 
-  public Collection<Taxon> getTaxa() {
+  private Map<String, String> getRangnamen() {
     Map<String, String> rangnamen = new HashMap<>();
-    List<Taxon>         taxa      = new ArrayList<>();
 
     getRangService().query(getGebruikersTaal())
                     .forEach(rij -> rangnamen.put(rij.getRang(),
                                                   rij.getNaam()));
+
+    return rangnamen;
+  }
+
+  public Collection<Taxon> getTaxa() {
+    Map<String, String> rangnamen = getRangnamen();
+    List<Taxon>         taxa      = new ArrayList<>();
+
     getTaxonService().query(getGebruikersTaal())
                      .forEach(rij -> {
       rij.setRangnaam(rangnamen.get(rij.getRang()));
