@@ -6,6 +6,7 @@
   <table class="table table-sm" id="taxaTabel" aria-describedby="taxaTabel">
     <colgroup>
       <col style="width:70px" />
+      <col style="width:90px" />
       <col />
       <col />
       <col />
@@ -13,6 +14,7 @@
     <thead>
       <tr>
         <th id="icoon"></th>
+        <th id="volgnummer">#{i18nTeksten.tekst('label.seq')}</th>
         <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
         <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
         <th id="rang">#{i18nTeksten.tekst('label.rang')}</th>
@@ -27,6 +29,7 @@
             <h:commandLink action="#{natuurTaxon.delete(taxon.taxonId)}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{taxon.naam}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>
           </td>
+          <td class="text-center">#{taxon.volgnummer}</td>
           <td>#{taxon.naam}</td>
           <td><em>#{taxon.latijnsenaam}</em></td>
           <td>#{taxon.rangnaam}</td>

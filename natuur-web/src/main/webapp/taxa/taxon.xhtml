@@ -9,8 +9,9 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         $('#taxaTabel').dataTable( {
-          "order": [[1, "asc"]],
+          "order": [[1, "asc"],[2, "asc"]],
           "columns": [{ "orderable": false },
+                      { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": false }],
