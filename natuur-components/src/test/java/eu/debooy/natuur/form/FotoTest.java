@@ -39,7 +39,6 @@ public class FotoTest {
   private static  Foto    foto;
   private static  FotoDto fotoDto;
 
-
   @BeforeClass
   public static void setUpClass() {
     foto    = new Foto();
