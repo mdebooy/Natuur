@@ -119,6 +119,13 @@ public class GebiedController extends Natuur {
     return items;
   }
 
+  public void retrieve(Long gebiedId) {
+    gebied  = new Gebied(getGebiedService().gebied(gebiedId));
+    setAktie(PersistenceConstants.RETRIEVE);
+    setSubTitel(gebied.getNaam());
+    redirect(GEBIED_REDIRECT);
+  }
+
   public void save() {
     List<Message> messages  = GebiedValidator.valideer(gebied);
     if (!messages.isEmpty()) {

@@ -163,7 +163,9 @@ public class WaarnemingController extends Natuur {
     List<Waarneming>  resultaat;
 
     try {
-      resultaat = getWaarnemingService().getGebiedWaarnemingen(gebiedId);
+      resultaat =
+          getWaarnemingService().getGebiedWaarnemingen(gebiedId,
+                                                       getGebruikersTaal());
     } catch (Exception e) {
       addError(DoosConstants.NOI18N, e.getClass());
       resultaat = new ArrayList<>();

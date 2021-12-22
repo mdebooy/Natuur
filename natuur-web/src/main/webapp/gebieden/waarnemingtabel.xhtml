@@ -1,0 +1,41 @@
+<ui:composition
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+    xmlns:ui="http://java.sun.com/jsf/facelets">
+  <table class="table table-sm" id="waarnemingenTabel" aria-describedby="waarnemingenTabel">
+    <colgroup>
+      <col style="width:120px" />
+      <col style="width:60px" />
+      <col />
+      <col />
+      <col style="width:40px" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th id="datum">#{i18nTeksten.tekst('label.datum')}</th>
+        <th id="aantal">#{i18nTeksten.tekst('label.aantal')}</th>
+        <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
+        <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
+        <th id="icoon"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <t:dataList var="waarneming" value="#{lijst}" rowIndexVar="idx">
+        <tr>
+          <td class="text-center" data-order="#{waarneming.sorteerdatum}">
+            <t:outputText value="#{waarneming.datum}">
+              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
+            </t:outputText></td>
+          <td class="text-right">#{waarneming.aantal}</td>
+          <td>#{waarneming.taxon.naam}</td>
+          <td><em>#{waarneming.taxon.latijnsenaam}</em></td>
+          <td>
+            <h:commandLink action="#" disabled="true" rendered="#{!empty waarneming.opmerking}"><img src="/common/images/16x16/status/dialog-information.svg" alt="#{img.info}" title="#{waarneming.opmerking}" /></h:commandLink>
+          </td>
+        </tr>
+      </t:dataList>
+    </tbody>
+  </table>
+</ui:composition>

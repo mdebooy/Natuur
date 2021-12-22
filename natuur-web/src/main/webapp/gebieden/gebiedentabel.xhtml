@@ -5,7 +5,7 @@
     xmlns:ui="http://java.sun.com/jsf/facelets">
   <table class="table table-sm" id="gebiedenTabel" aria-describedby="gebiedenTabel">
     <colgroup>
-      <col style="width:50px" />
+      <col style="width:70px" />
       <col />
       <col />
     </colgroup>
@@ -21,6 +21,7 @@
       <t:dataList var="gebied" value="#{lijst}" rowIndexVar="idx">
         <tr>
           <td>
+            <h:commandLink action="#{natuurGebied.retrieve(gebied.gebiedId)}"><img src="/common/images/16x16/mimetypes/text-x-generic.png" alt="#{i18nTeksten.tekst('img.bekijken')}" title="#{i18nTeksten.tekst('img.bekijken')}" /></h:commandLink>
             <h:commandLink action="#{natuurGebied.update(gebied.gebiedId)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
             <h:commandLink action="#{natuurGebied.delete(gebied.gebiedId, gebied.naam)}" class="lnkDelete" id="lnkDelete" />
             <h:commandLink onclick="confirmatie(this, '#{gebied.naam}');return false;"><img src="/common/images/16x16/places/user-trash.png" alt="#{i18nTeksten.tekst('img.verwijderen')}" title="#{i18nTeksten.tekst('img.verwijderen')}" /></h:commandLink>

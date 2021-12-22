@@ -56,12 +56,12 @@ public class WaarnemingService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId) {
+  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId, String taal) {
     List<Waarneming>  waarnemingen  = new ArrayList<>();
 
     try {
       waarnemingDao.getPerGebied(gebiedId)
-                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+                   .forEach(rij -> waarnemingen.add(new Waarneming(rij, taal)));
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
