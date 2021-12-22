@@ -159,6 +159,19 @@ public class WaarnemingController extends Natuur {
     return items;
   }
 
+  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId) {
+    List<Waarneming>  resultaat;
+
+    try {
+      resultaat = getWaarnemingService().getGebiedWaarnemingen(gebiedId);
+    } catch (Exception e) {
+      addError(DoosConstants.NOI18N, e.getClass());
+      resultaat = new ArrayList<>();
+    }
+
+    return resultaat;
+  }
+
   public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
     List<Waarneming>  resultaat;
 

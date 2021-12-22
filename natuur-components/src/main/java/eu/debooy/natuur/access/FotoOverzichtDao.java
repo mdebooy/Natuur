@@ -46,6 +46,13 @@ public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
     return em;
   }
 
+  public List<FotoOverzichtDto> getPerGebied(Long gebiedId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(FotoOverzichtDto.PAR_GEBIEDID, gebiedId);
+
+    return namedQuery(FotoOverzichtDto.QRY_PERGEBIED, params);
+  }
+
   public List<FotoOverzichtDto> getPerTaxon(Long taxonId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(FotoOverzichtDto.PAR_TAXONID, taxonId);

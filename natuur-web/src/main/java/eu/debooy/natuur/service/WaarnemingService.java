@@ -56,6 +56,20 @@ public class WaarnemingService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId) {
+    List<Waarneming>  waarnemingen  = new ArrayList<>();
+
+    try {
+      waarnemingDao.getPerGebied(gebiedId)
+                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return waarnemingen;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
     List<Waarneming>  waarnemingen  = new ArrayList<>();
 

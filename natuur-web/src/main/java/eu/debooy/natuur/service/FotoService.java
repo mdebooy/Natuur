@@ -77,6 +77,15 @@ public class FotoService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<FotoOverzichtDto> fotosPerGebied(Long gebiedId) {
+    try {
+      return fotoOverzichtDao.getPerGebied(gebiedId);
+    } catch (ObjectNotFoundException e) {
+      return new ArrayList<>();
+    }
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<FotoOverzichtDto> fotosPerTaxon(Long taxonId) {
     try {
       return fotoOverzichtDao.getPerTaxon(taxonId);

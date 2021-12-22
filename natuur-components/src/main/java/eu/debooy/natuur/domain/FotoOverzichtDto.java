@@ -47,6 +47,7 @@ import org.apache.openjpa.persistence.ReadOnly;
  */
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
+@NamedQuery(name="fotooverzichtPerGebied", query="select f from FotoOverzichtDto f where f.gebiedId=:gebiedId")
 @NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId")
 @NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
 public class FotoOverzichtDto
@@ -69,7 +70,9 @@ public class FotoOverzichtDto
 
   public static final String  PAR_TAXONID   = "taxonId";
   public static final String  PAR_TAXONSEQ  = "taxonSeq";
+  public static final String  PAR_GEBIEDID  = "gebiedId";
 
+  public static final String  QRY_PERGEBIED = "fotooverzichtPerGebied";
   public static final String  QRY_PERTAXON  = "fotooverzichtPerTaxon";
   public static final String  QRY_TAXONSEQ  = "fotooverzichtTaxonSeq";
 
@@ -90,6 +93,9 @@ public class FotoOverzichtDto
   @ReadOnly
   @Column(name="GEBIED")
   private String  gebied;
+  @ReadOnly
+  @Column(name="GEBIED_ID")
+  private Long    gebiedId;
   @ReadOnly
   @Column(name="KLASSE_ID")
   private Long    klasseId;
@@ -185,16 +191,16 @@ public class FotoOverzichtDto
     return fotoDetail;
   }
 
-  public Map<String, TaxonnaamDto> getKlassenamen() {
-    return klassenamen;
-  }
-
   public Long getFotoId() {
     return fotoId;
   }
 
   public String getGebied() {
     return gebied;
+  }
+
+  public Long getGebiedId() {
+    return gebiedId;
   }
 
   public Long getKlasseId() {
@@ -216,6 +222,10 @@ public class FotoOverzichtDto
 
   public Long getKlasseVolgnummer() {
     return klasseVolgnummer;
+  }
+
+  public Map<String, TaxonnaamDto> getKlassenamen() {
+    return klassenamen;
   }
 
   public Long getLandId() {

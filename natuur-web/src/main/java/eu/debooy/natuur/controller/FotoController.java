@@ -169,6 +169,10 @@ public class FotoController extends Natuur {
     return fotos(getFotoService().fotoOverzicht());
   }
 
+  public List<FotoOverzicht> getGebiedFotos(Long gebiedId) {
+    return fotos(getFotoService().fotosPerGebied(gebiedId));
+  }
+
   public List<FotoOverzicht> getTaxonFotos(Long taxonId) {
     return fotos(getFotoService().fotosPerTaxon(taxonId));
   }
