@@ -258,19 +258,19 @@ public class WaarnemingController extends Natuur {
 
     try {
       foto.persist(fotoDto);
+      getFotoService().save(fotoDto);
       waarnemingDto.addFoto(fotoDto);
-      getWaarnemingService().save(waarnemingDto);
       switch (getDetailAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        addInfo(PersistenceConstants.CREATED, "'" + foto.getTaxonSeq()+ "'");
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, "'" + foto.getTaxonSeq() + "'");
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT,
-                 getDetailAktie().getAktie()) ;
-        break;
+        case PersistenceConstants.CREATE:
+          addInfo(PersistenceConstants.CREATED, "'" + foto.getTaxonSeq()+ "'");
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, "'" + foto.getTaxonSeq() + "'");
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT,
+                   getDetailAktie().getAktie()) ;
+          break;
       }
       redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {
