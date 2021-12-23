@@ -142,7 +142,13 @@
             </div>
           </div>
 
-          <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
+          <h:commandLink action="#{natuurGebied.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuurGebied.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <d:cancel href="#{natuur.path}/gebieden/gebieden.xhtml" aktie="#{natuurGebied.aktie}"/>
+
+          <t:div rendered="#{!natuurGebied.aktie.nieuw}">
+            <hr />
+
             <div class="row" />
             <div>
               <ul class="nav nav-tabs" data-tabs="tabs">
@@ -171,10 +177,6 @@
               </div>
             </div>
           </t:div>
-
-          <h:commandLink action="#{natuurGebied.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurGebied.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/gebieden/gebieden.xhtml" aktie="#{natuurGebied.aktie}"/>
         </h:form>
       </div>
     </div>

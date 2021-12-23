@@ -86,23 +86,26 @@
           <h:commandLink action="#{natuurWaarneming.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurWaarneming.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
           <d:cancel href="#{natuur.path}/taxa/taxon.xhtml" aktie="#{natuurWaarneming.aktie}"/>
 
-          <d:spacer />
-          <hr />
-          <div class="row titel">
-            <div class="col-10">
-              <h2>#{i18nTeksten.tekst('natuur.titel.fotos')}</h2>
-            </div>
-            <div class="col-2 text-right" >
-              <h:commandLink action="#{natuurWaarneming.createFoto()}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
-            </div>
-          </div>
 
-          <ui:include src="fotostabel.xhtml">
-            <ui:param name="form" value="formWaarneming" />
-            <ui:param name="lijst" value="#{natuurWaarneming.fotos}" />
-          </ui:include>
+          <t:div rendered="#{!natuurWaarneming.aktie.nieuw}">
+            <hr />
+
+            <div class="row titel">
+              <div class="col-10">
+                <h2>#{i18nTeksten.tekst('natuur.titel.fotos')}</h2>
+              </div>
+              <div class="col-2 text-right" >
+                <h:commandLink action="#{natuurWaarneming.createFoto()}">
+                  <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
+                </h:commandLink>
+              </div>
+            </div>
+
+            <ui:include src="fotostabel.xhtml">
+              <ui:param name="form" value="formWaarneming" />
+              <ui:param name="lijst" value="#{natuurWaarneming.fotos}" />
+            </ui:include>
+          </t:div>
         </h:form>
       </div>
     </div>

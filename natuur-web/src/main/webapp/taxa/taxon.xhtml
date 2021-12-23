@@ -175,8 +175,13 @@
             </div>
           </div>
 
+          <h:commandLink action="#{natuurTaxon.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
+          <h:commandLink action="#{natuurTaxon.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
+          <d:cancel href="#{natuur.path}/taxa/taxa.xhtml" aktie="#{natuurTaxon.aktie}"/>
+
           <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
-            <div class="row" />
+            <hr />
+
             <div>
               <ul class="nav nav-tabs" data-tabs="tabs">
                 <li class="nav-item"><a class="nav-link active" href="#kinderenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.kinderen')}</a></li>
@@ -235,10 +240,6 @@
               </div>
             </div>
           </t:div>
-
-          <h:commandLink action="#{natuurTaxon.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurTaxon.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/taxa/taxa.xhtml" aktie="#{natuurTaxon.aktie}"/>
         </h:form>
       </div>
     </div>
