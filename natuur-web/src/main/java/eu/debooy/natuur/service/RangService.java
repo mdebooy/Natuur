@@ -91,10 +91,10 @@ public class RangService {
     try {
       rangDto = rangDao.getByPrimaryKey(rang);
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(RangDto.COL_RANG)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(RangDto.COL_RANG)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
@@ -105,16 +105,16 @@ public class RangService {
   @Path("/rangnaam/{rang}/{taal}")
   public Response getRangnaam(@PathParam(RangDto.COL_RANG) String rang,
                               @PathParam(RangnaamDto.COL_TAAL) String taal) {
-    RangnaamPK  sleutel   = new RangnaamPK(rang, taal);
+    var         sleutel   = new RangnaamPK(rang, taal);
     RangnaamDto rangnaam;
 
     try {
       rangnaam = rangnaamDao.getByPrimaryKey(sleutel);
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(TaxonnaamDto.COL_TAAL)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(TaxonnaamDto.COL_TAAL)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
@@ -128,10 +128,10 @@ public class RangService {
     try {
       rangen  = rangDao.getVanaf(niveau);
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(RangDto.COL_NIVEAU)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(RangDto.COL_NIVEAU)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
@@ -180,7 +180,7 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
-    RangDto dto = new RangDto();
+    var dto = new RangDto();
     rang.persist(dto);
 
     rangDao.create(dto);

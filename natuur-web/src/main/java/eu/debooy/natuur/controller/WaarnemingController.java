@@ -326,7 +326,7 @@ public class WaarnemingController extends Natuur {
                                        rij.getNaam(),
                                        rij.getLatijnsenaam()}));
 
-    HttpServletResponse response  =
+    var response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
                                           .getExternalContext().getResponse();
     try {

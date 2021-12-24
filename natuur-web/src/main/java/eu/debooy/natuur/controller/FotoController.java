@@ -29,7 +29,6 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
-import eu.debooy.natuur.domain.FotoOverzichtDto.LijstComparator;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.FotoOverzicht;
 import eu.debooy.natuur.form.Waarneming;
@@ -115,10 +114,9 @@ public class FotoController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.fotolijst"));
 
-    String                taal            = getGebruikersTaal();
-    Map<Long, String>     landnamen       = new HashMap<>();
-    LijstComparator       lijstComparator =
-        new FotoOverzichtDto.LijstComparator();
+    var               taal            = getGebruikersTaal();
+    Map<Long, String> landnamen       = new HashMap<>();
+    var               lijstComparator = new FotoOverzichtDto.LijstComparator();
     lijstComparator.setTaal(taal);
     Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
     rijen.addAll(getFotoService().fotoOverzicht());
@@ -135,7 +133,7 @@ public class FotoController extends Natuur {
                                        rij.getGebied()});
     });
 
-    HttpServletResponse response  =
+    var response  =
         (HttpServletResponse) FacesContext.getCurrentInstance()
                                           .getExternalContext().getResponse();
     try {
@@ -148,7 +146,7 @@ public class FotoController extends Natuur {
 
   private List<FotoOverzicht> fotos(List<FotoOverzichtDto> fotosPerTaxon) {
     Map<Long, String>   landnamen = new HashMap<>();
-    String              taal      = getGebruikersTaal();
+    var                 taal      = getGebruikersTaal();
     List<FotoOverzicht> overzicht = new ArrayList<>();
     fotosPerTaxon.forEach(rij -> {
       Long  landId  = rij.getLandId();
@@ -200,17 +198,16 @@ public class FotoController extends Natuur {
       return;
     }
 
-    String  melding = foto.getTaxonSeq().toString();
     try {
       foto.persist(fotoDto);
       getFotoService().save(fotoDto);
       switch (getAktie().getAktie()) {
       case PersistenceConstants.CREATE:
         foto.setFotoId(fotoDto.getFotoId());
-        addInfo(PersistenceConstants.CREATED, melding);
+        addInfo(PersistenceConstants.CREATED, foto.getTaxonSeq().toString());
         break;
       case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, melding);
+        addInfo(PersistenceConstants.UPDATED, foto.getTaxonSeq().toString());
         break;
       default:
         addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
@@ -218,9 +215,9 @@ public class FotoController extends Natuur {
       }
       redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, melding);
+      addError(PersistenceConstants.DUPLICATE, foto.getTaxonSeq().toString());
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, melding);
+      addError(PersistenceConstants.NOTFOUND, foto.getTaxonSeq().toString());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);

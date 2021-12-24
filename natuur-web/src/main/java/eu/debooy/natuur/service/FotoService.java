@@ -105,7 +105,7 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Foto> query() {
-    List<Foto>    fotos = new ArrayList<>();
+    List<Foto>  fotos = new ArrayList<>();
 
     fotoDao.getAll().forEach(rij -> fotos.add(new Foto(rij)));
 
@@ -114,7 +114,7 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Foto> query(String taal) {
-    List<Foto>    fotos = new ArrayList<>();
+    List<Foto>  fotos = new ArrayList<>();
 
     fotoDao.getAll().forEach(rij -> fotos.add(new Foto(rij)));
 
@@ -123,7 +123,7 @@ public class FotoService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Foto foto) {
-    FotoDto  dto = new FotoDto();
+    var dto = new FotoDto();
     foto.persist(dto);
 
     save(dto);

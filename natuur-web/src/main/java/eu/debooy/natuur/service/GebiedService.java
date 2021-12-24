@@ -77,7 +77,7 @@ public class GebiedService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Gebied gebied) {
-    GebiedDto  dto = new GebiedDto();
+    var dto = new GebiedDto();
     gebied.persist(dto);
 
     if (null == gebied.getGebiedId()) {

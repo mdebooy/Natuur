@@ -140,9 +140,9 @@ public class RangController extends Natuur {
 
     getOverzichtService().getTotalenVoorRang(rang.getRang())
                          .forEach(rij -> {
-      Long  taxonId = rij.getParentId();
+      var taxonId = rij.getParentId();
       if (totalen.containsKey(taxonId)) {
-        Rangtotaal  rangtotaal  = totalen.get(taxonId);
+        var rangtotaal  = totalen.get(taxonId);
         rangtotaal.addOpFoto(rij.getOpFoto());
         rangtotaal.addTotaal(rij.getTotaal());
         rangtotaal.addWaargenomen(rij.getWaargenomen());

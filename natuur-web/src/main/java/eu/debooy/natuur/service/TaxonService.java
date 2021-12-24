@@ -157,10 +157,10 @@ public class TaxonService {
     try {
       taxon = taxonDao.getTaxon(taxonId);
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(TaxonDto.COL_TAXONID)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(TaxonDto.COL_TAXONID)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
@@ -171,16 +171,16 @@ public class TaxonService {
   @Path("/taxonnaam/{taxonId}/{taal}")
   public Response getTaxonnaam(@PathParam(TaxonDto.COL_TAXONID) Long taxonId,
                                @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
-    TaxonnaamPK   sleutel   = new TaxonnaamPK(taxonId, taal);
+    var           sleutel   = new TaxonnaamPK(taxonId, taal);
     TaxonnaamDto  taxonnaam;
 
     try {
       taxonnaam = taxonnaamDao.getByPrimaryKey(sleutel);
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(TaxonnaamDto.COL_TAAL)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(TaxonnaamDto.COL_TAAL)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
@@ -219,22 +219,22 @@ public class TaxonService {
   @Path("/ddlb/ouders/{rang}/{taal}")
   public Response selectOuders(@PathParam(TaxonDto.COL_RANG) String rang,
                                @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
-    Long                    niveau;
+    Long  niveau;
 
     try {
       niveau  = rangDao.getByPrimaryKey(rang).getNiveau();
     } catch (ObjectNotFoundException e) {
-      Message message = new Message.Builder()
-                                   .setAttribute(TaxonDto.COL_RANG)
-                                   .setMessage(PersistenceConstants.NOTFOUND)
-                                   .setSeverity(Message.ERROR).build();
+      var message = new Message.Builder()
+                               .setAttribute(TaxonDto.COL_RANG)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
 
-    Map<String, String>     items   = new LinkedHashMap<>();
-    TaxonDto.NaamComparator comp    = new TaxonDto.NaamComparator();
+    Map<String, String> items = new LinkedHashMap<>();
+    var                 comp  = new TaxonDto.NaamComparator();
     comp.setTaal(taal);
-    Set<TaxonDto>           rijen   = new TreeSet<>(comp);
+    Set<TaxonDto>       rijen = new TreeSet<>(comp);
     rijen.addAll(taxonDao.getOuders(niveau));
     // Waarom zo?
     rijen.forEach(rij ->  items.put(" " + rij.getTaxonId(),

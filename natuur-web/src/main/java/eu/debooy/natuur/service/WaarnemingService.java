@@ -113,7 +113,7 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Waarneming waarneming) {
-    WaarnemingDto dto = new WaarnemingDto();
+    var dto = new WaarnemingDto();
 
     waarneming.persist(dto);
 
