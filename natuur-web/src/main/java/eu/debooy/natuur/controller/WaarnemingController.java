@@ -241,18 +241,22 @@ public class WaarnemingController extends Natuur {
   }
 
   public void saveFoto() {
-    List<Message> messages  = FotoValidator.valideer(foto);
-    if (!messages.isEmpty()) {
-      addMessage(messages);
-      return;
-    }
-
+    List<Message>     messages      = FotoValidator.valideer(foto);
     FotoOverzichtDto  fotoOverzicht =
         getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
                                       foto.getTaxonSeq());
     if (null != fotoOverzicht.getFotoId()
             && !fotoOverzicht.getFotoId().equals(foto.getFotoId())) {
-      addError(PersistenceConstants.DUPLICATE, foto.getTaxonSeq());
+          messages.add(new Message.Builder()
+                            .setAttribute(FotoDto.COL_TAXONSEQ)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.DUPLICATE)
+                            .setParams(new Object[]{foto.getTaxonSeq()})
+                            .build());
+    }
+
+    if (!messages.isEmpty()) {
+      addMessage(messages);
       return;
     }
 
