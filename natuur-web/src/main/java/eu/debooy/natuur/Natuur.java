@@ -56,26 +56,31 @@ public class Natuur extends DoosBean {
   @EJB
   private transient II18nLandnaam i18nLandnaam;
 
-  public static final String  ADMIN_ROLE            = "natuur-admin";
-  public static final String  APPLICATIE_NAAM       = "Natuur";
-  public static final String  FOTO_REDIRECT         = "/fotos/foto.xhtml";
-  public static final String  FOTOS_REDIRECT        = "/fotos/fotos.xhtml";
-  public static final String  GEBIED_REDIRECT       = "/gebieden/gebied.xhtml";
-  public static final String  GEBIEDEN_REDIRECT     =
+  protected static final  String  ADMIN_ROLE            = "natuur-admin";
+  protected static final  String  APPLICATIE_NAAM       = "Natuur";
+  protected static final  String  FOTO_REDIRECT         = "/fotos/foto.xhtml";
+  protected static final  String  FOTOS_REDIRECT        = "/fotos/fotos.xhtml";
+  protected static final  String  GEBIED_REDIRECT       =
+      "/gebieden/gebied.xhtml";
+  protected static final  String  GEBIEDEN_REDIRECT     =
       "/gebieden/gebieden.xhtml";
-  public static final String  RANG_REDIRECT         = "/rangen/rang.xhtml";
-  public static final String  RANGEN_REDIRECT       = "/rangen/rangen.xhtml";
-  public static final String  RANGNAAM_REDIRECT     = "/rangen/rangnaam.xhtml";
-  public static final String  RANG_TOTALEN_REDIRECT = "/rangen/totalen.xhtml";
-  public static final String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
-  public static final String  TAXONNAAM_REDIRECT    = "/taxa/taxonnaam.xhtml";
-  public static final String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
-  public static final String  USER_ROLE             = "natuur-user";
-  public static final String  WAARNEMING_REDIRECT   =
+  protected static final  String  RANG_REDIRECT         = "/rangen/rang.xhtml";
+  protected static final  String  RANGEN_REDIRECT       =
+      "/rangen/rangen.xhtml";
+  protected static final  String  RANGNAAM_REDIRECT     =
+      "/rangen/rangnaam.xhtml";
+  protected static final  String  RANG_TOTALEN_REDIRECT =
+      "/rangen/totalen.xhtml";
+  protected static final  String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
+  protected static final  String  TAXONNAAM_REDIRECT    =
+      "/taxa/taxonnaam.xhtml";
+  protected static final  String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
+  protected static final  String  USER_ROLE             = "natuur-user";
+  protected static final  String  WAARNEMING_REDIRECT   =
       "/waarnemingen/waarneming.xhtml";
-  public static final String  WAARNEMINGEN_REDIRECT =
+  protected static final  String  WAARNEMINGEN_REDIRECT =
       "/waarnemingen/waarnemingen.xhtml";
-  public static final String  WNMFOTO_REDIRECT      =
+  protected static final  String  WNMFOTO_REDIRECT      =
       "/waarnemingen/foto.xhtml";
 
   public Natuur() {

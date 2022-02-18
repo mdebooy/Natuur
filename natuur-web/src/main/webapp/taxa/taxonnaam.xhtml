@@ -15,7 +15,7 @@
           <div class="form-group form-group-sm row">
             <label for="taal" class="col-2 control-label">#{i18nTeksten.tekst('label.taal')}</label>
             <div class="col-9">
-              <d:listbox id="rang" value="#{natuurTaxon.taxonnaam.taal}" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurTaxon.taxonnaam.taal)}" />
+              <d:listbox id="taal" value="#{natuurTaxon.taxonnaam.taal}" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurTaxon.taxonnaam.taal)}" />
             </div>
           </div>
           <div class="form-group form-group-sm row">

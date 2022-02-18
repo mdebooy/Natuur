@@ -232,18 +232,18 @@ public class TaxonController extends Natuur {
       bepaalOuder(taxon.getParentId());
       String  naam  = taxon.getNaam();
       switch (getAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        taxon.setTaxonId(taxonDto.getTaxonId());
-        addInfo(PersistenceConstants.CREATED, naam);
-        setAktie(PersistenceConstants.UPDATE);
-        setSubTitel("natuur.titel.taxon.update");
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, naam);
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-        break;
+        case PersistenceConstants.CREATE:
+          taxon.setTaxonId(taxonDto.getTaxonId());
+          addInfo(PersistenceConstants.CREATED, naam);
+          setAktie(PersistenceConstants.UPDATE);
+          setSubTitel("natuur.titel.taxon.update");
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, naam);
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
+          break;
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxon.getLatijnsenaam());
@@ -278,16 +278,16 @@ public class TaxonController extends Natuur {
       }
       getTaxonService().save(taxonDto);
       switch (getDetailAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        addInfo(PersistenceConstants.CREATED, "'" + taxonnaam.getTaal() + "'");
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, "'" + taxonnaam.getTaal() + "'");
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT,
-                 getDetailAktie().getAktie()) ;
-        break;
+        case PersistenceConstants.CREATE:
+          addInfo(PersistenceConstants.CREATED, "'" + taxonnaam.getTaal() + "'");
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, "'" + taxonnaam.getTaal() + "'");
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT,
+                   getDetailAktie().getAktie()) ;
+          break;
       }
       redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
