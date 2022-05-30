@@ -47,7 +47,7 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
 
   public static final String  PAR_WAARNEMINGID  = "waarnemingId";
 
-  public static final String  QRY_WAARNEMINGID  = "fotosPerWaarneming";
+  public static final String  QRY_PERWAARNEMING = "fotosPerWaarneming";
 
   @Column(name="FOTO_BESTAND", length=255)
   private String    fotoBestand;

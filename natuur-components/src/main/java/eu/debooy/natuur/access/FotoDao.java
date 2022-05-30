@@ -50,6 +50,6 @@ public class FotoDao extends Dao<FotoDto> {
     Map<String, Object> params  = new HashMap<>();
     params.put(FotoDto.PAR_WAARNEMINGID, waarnemingId);
 
-    return namedQuery(FotoDto.QRY_WAARNEMINGID, params);
+    return namedQuery(FotoDto.QRY_PERWAARNEMING, params);
   }
 }
