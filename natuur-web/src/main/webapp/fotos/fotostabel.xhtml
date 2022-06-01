@@ -15,27 +15,27 @@
     </colgroup>
     <thead>
       <tr>
+        <th id="seq">#{i18nTeksten.tekst('label.datum')}</th>
         <th id="seq">#{i18nTeksten.tekst('label.seq')}</th>
         <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
         <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
         <th id="gebied">#{i18nTeksten.tekst('label.gebied')}</th>
         <th id="land">#{i18nTeksten.tekst('label.land')}</th>
-        <th id="seq">#{i18nTeksten.tekst('label.datum')}</th>
       </tr>
     </thead>
     <tbody>
       <t:dataList var="foto" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <td class="text-right">#{foto.taxonSeq}</td>
-          <td>#{foto.naam}</td>
-          <td><em>#{foto.latijnsenaam}</em></td>
-          <td>#{foto.gebied}</td>
-          <td>#{foto.landnaam}</td>
           <td class="text-center" data-order="#{foto.sorteerdatum}">
             <t:outputText value="#{foto.datum}">
               <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
             </t:outputText>
           </td>
+          <td class="text-right">#{foto.taxonSeq}</td>
+          <td>#{foto.naam}</td>
+          <td><em>#{foto.latijnsenaam}</em></td>
+          <td>#{foto.gebied}</td>
+          <td>#{foto.landnaam}</td>
         </tr>
       </t:dataList>
     </tbody>
