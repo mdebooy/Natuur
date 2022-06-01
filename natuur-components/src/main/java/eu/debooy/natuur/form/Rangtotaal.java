@@ -35,6 +35,7 @@ public class Rangtotaal
   private String  latijnsenaam;
   private String  naam;
   private Integer opFoto;
+  private String  rang;
   private Long    taxonId;
   private Integer totaal;
   private Integer volgnummer;
@@ -54,6 +55,7 @@ public class Rangtotaal
       naam        = overzicht.getParentLatijnsenaam();
     }
     opFoto        = overzicht.getOpFoto();
+    rang          = overzicht.getParentRang();
     taxonId       = overzicht.getParentId();
     totaal        = overzicht.getTotaal();
     volgnummer    = overzicht.getParentVolgnummer();
@@ -64,6 +66,7 @@ public class Rangtotaal
     latijnsenaam  = rangtotaal.getLatijnsenaam();
     naam          = rangtotaal.getNaam();
     opFoto        = rangtotaal.getOpFoto();
+    rang          = rangtotaal.getRang();
     taxonId       = rangtotaal.getTaxonId();
     totaal        = rangtotaal.getTotaal();
     volgnummer    = rangtotaal.getVolgnummer();
@@ -113,6 +116,10 @@ public class Rangtotaal
     return opFoto;
   }
 
+  public String getRang() {
+    return rang;
+  }
+
   public int getPctOpFoto() {
     if (null == opFoto
         || null == waargenomen
@@ -154,6 +161,10 @@ public class Rangtotaal
 
   public void setOpFoto(Integer opFoto) {
     this.opFoto       = opFoto;
+  }
+
+  public void setRang(String rang) {
+    this.rang         = rang;
   }
 
   public void setTaxonId(Long taxonId) {

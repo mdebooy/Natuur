@@ -354,7 +354,7 @@ COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_GRADEN          IS 'De longitude. Gr
 COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_MINUTEN         IS 'De longitude. Minuten deel.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.LONGITUDE_SECONDEN        IS 'De longitude. Seconden deel.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.NAAM                      IS 'De naam van het gebied.';
-COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat alle waarnemingen waar nog geen foto van is.';
+COMMENT ON VIEW   NATUUR.GEEN_FOTO                          IS 'Deze view bevat alle (onder)soorten, met een waarneming, waar geen foto van is.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG              IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                 IS 'De sleutel van de taxon.';

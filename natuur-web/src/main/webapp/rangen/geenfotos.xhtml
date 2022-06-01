@@ -1,0 +1,56 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#geenfotosTabel').dataTable( {
+          "order": [[0, "asc"],[1, "asc"]],
+          "columns": [{ "orderable": true },
+                      { "orderable": true },
+                      { "orderable": true }],
+          "pagingType": "full_numbers",
+          "pageLength": #{properties.appValue('natuur.pagelength')},
+          "lengthChange": false,
+          "stateSave": true,
+          "language": {
+            "paginate": {
+              "first": #{properties.appValue('natuur.pager.first')},
+              "last": #{properties.appValue('natuur.pager.last')},
+              "next": #{properties.appValue('natuur.pager.next')},
+              "previous": #{properties.appValue('natuur.pager.previous')}
+            },
+            "search": "#{i18nTeksten.tekst('pager.search')}",
+            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
+            "info": "#{i18nTeksten.tekst('pager.info')}",
+            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
+            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
+          }
+        });
+      });
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="row justify-content-center">
+      <div class="col-8">
+        <h:form id="formGeenFotos">
+          <div class="row titel">
+            <div class="col-10">
+              <h2>#{natuurRang.detailSubTitel}</h2>
+            </div>
+          </div>
+
+          <ui:include src="geenfotostabel.xhtml">
+            <ui:param name="form" value="formGeenFotos" />
+            <ui:param name="lijst" value="#{natuurRang.geenFotos}" />
+          </ui:include>
+
+          <a class="btn btn-secondary btn-sm" href="#{natuur.path}/rangen/totalen.xhtml">#{i18nTeksten.tekst('button.back')}</a>
+        </h:form>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>

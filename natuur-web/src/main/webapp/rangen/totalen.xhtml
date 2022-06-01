@@ -8,8 +8,9 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         $('#totalenTabel').dataTable( {
-          "order": [[0, "asc"]],
-          "columns": [{ "orderable": true },
+          "order": [[1, "asc"]],
+          "columns": [{ "orderable": false },
+                      { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
                       { "orderable": true },
@@ -40,10 +41,15 @@
     <div class="row justify-content-center">
       <div class="col-10">
         <h:form id="formRangen">
-          <h2 class="titel">#{natuurRang.subTitel}</h2>
+          <div class="row titel">
+            <div class="col-10">
+              <h2>#{natuurRang.subTitel}</h2>
+            </div>
+          </div>
 
           <table class="table table-sm" id="totalenTabel" aria-describedby="totalenTabel">
             <colgroup>
+              <col style="width:25px" />
               <col />
               <col />
               <col style="width:80px" />
@@ -53,6 +59,7 @@
             </colgroup>
             <thead>
               <tr>
+                <th id="icoon"></th>
                 <th id="naam">#{i18nTeksten.tekst('label.naam')}</th>
                 <th id="latijnsenaam">#{i18nTeksten.tekst('label.latijnsenaam')}</th>
                 <th id="soorten">#{i18nTeksten.tekst('label.aantalsoorten')}</th>
@@ -64,6 +71,9 @@
             <tbody>
               <t:dataList var="totaal" value="#{natuurRang.rangtotalen}" rowIndexVar="idx">
                 <tr>
+                  <td>
+                    <h:commandLink action="#{natuurRang.retrieveGeenFotos(totaal.taxonId)}"><img src="/common/images/16x16/doos/NoCamera.png" alt="#{i18nTeksten.tekst('img.geenfotos')}" title="#{i18nTeksten.tekst('img.geenfotos')}" /></h:commandLink>
+                  </td>
                   <td>#{totaal.naam}</td>
                   <td>#{totaal.latijnsenaam}</td>
                   <td class="text-right">#{totaal.totaal}</td>

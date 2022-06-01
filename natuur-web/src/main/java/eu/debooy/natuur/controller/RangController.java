@@ -25,6 +25,7 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.domain.RangnaamDto;
+import eu.debooy.natuur.form.GeenFoto;
 import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Rangnaam;
 import eu.debooy.natuur.form.Rangtotaal;
@@ -56,6 +57,8 @@ public class RangController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(RangController.class);
 
+  private String      geenFotoRang;
+  private Long        geenFotoTaxon;
   private Rang        rang;
   private RangDto     rangDto;
   private Rangnaam    rangnaam;
@@ -110,6 +113,15 @@ public class RangController extends Natuur {
       return;
     }
     addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
+  }
+
+  public String getGeenFotoRang() {
+    return geenFotoRang;
+  }
+
+  public Collection<GeenFoto> getGeenFotos() {
+    return getGeenFotoService().getGeenFotosVoorTaxon(geenFotoTaxon,
+                                                      getGebruikersTaal());
   }
 
   public Rang getRang() {
@@ -172,6 +184,16 @@ public class RangController extends Natuur {
     setSubTitel(MessageFormat.format(getTekst("natuur.titel.rang.totalen"),
                                      getRangtekst(rang)));
     redirect(RANG_TOTALEN_REDIRECT);
+  }
+
+  public void retrieveGeenFotos(Long taxonId) {
+    var geenFoto  = getTaxonService().taxon(taxonId);
+    geenFotoRang  = geenFoto.getRang();
+    geenFotoTaxon = geenFoto.getTaxonId();
+    setAktie(PersistenceConstants.RETRIEVE);
+    setDetailSubTitel(MessageFormat.format(getTekst("natuur.titel.geenfotos"),
+                                        geenFoto.getNaam(getGebruikersTaal())));
+    redirect(GEENFOTOS_REDIRECT);
   }
 
   public void save() {

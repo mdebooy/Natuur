@@ -21,6 +21,7 @@ import eu.debooy.doosutils.service.JNDI;
 import eu.debooy.natuur.service.DetailService;
 import eu.debooy.natuur.service.FotoService;
 import eu.debooy.natuur.service.GebiedService;
+import eu.debooy.natuur.service.GeenFotoService;
 import eu.debooy.natuur.service.OverzichtService;
 import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.TaxonService;
@@ -47,6 +48,7 @@ public class Natuur extends DoosBean {
   private transient DetailService     detailService;
   private transient FotoService       fotoService;
   private transient GebiedService     gebiedService;
+  private transient GeenFotoService   geenFotoService;
   private transient OverzichtService  overzichtService;
   private transient RangService       rangService;
   private transient TaxonnaamService  taxonnaamService;
@@ -64,6 +66,8 @@ public class Natuur extends DoosBean {
       "/gebieden/gebied.xhtml";
   protected static final  String  GEBIEDEN_REDIRECT     =
       "/gebieden/gebieden.xhtml";
+  protected static final  String  GEENFOTOS_REDIRECT    =
+      "/rangen/geenfotos.xhtml";
   protected static final  String  RANG_REDIRECT         = "/rangen/rang.xhtml";
   protected static final  String  RANGEN_REDIRECT       =
       "/rangen/rangen.xhtml";
@@ -128,6 +132,15 @@ public class Natuur extends DoosBean {
     }
 
     return gebiedService;
+  }
+
+  protected GeenFotoService getGeenFotoService() {
+    if (null == geenFotoService) {
+      geenFotoService = (GeenFotoService)
+          new JNDI.JNDINaam().metBean(GeenFotoService.class).locate();
+    }
+
+    return geenFotoService;
   }
 
   protected II18nLandnaam getI18nLandnaam() {
