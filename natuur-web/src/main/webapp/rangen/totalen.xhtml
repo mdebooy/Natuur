@@ -72,7 +72,7 @@
               <t:dataList var="totaal" value="#{natuurRang.rangtotalen}" rowIndexVar="idx">
                 <tr>
                   <td>
-                    <h:commandLink action="#{natuurRang.retrieveGeenFotos(totaal.taxonId)}"><img src="/common/images/16x16/doos/NoCamera.png" alt="#{i18nTeksten.tekst('img.geenfotos')}" title="#{i18nTeksten.tekst('img.geenfotos')}" /></h:commandLink>
+                    <h:commandLink action="#{natuurRang.retrieveGeenFotos(totaal.taxonId)}" rendered="#{totaal.waargenomen!=totaal.opFoto}"><img src="/common/images/16x16/doos/NoCamera.png" alt="#{i18nTeksten.tekst('img.geenfotos')}" title="#{i18nTeksten.tekst('img.geenfotos')}" /></h:commandLink>
                   </td>
                   <td>#{totaal.naam}</td>
                   <td>#{totaal.latijnsenaam}</td>
