@@ -29,7 +29,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
-public class NatuurValidator {
+public abstract class NatuurValidator {
   protected static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(gebiedId)) {
       fouten.add(new Message.Builder()
