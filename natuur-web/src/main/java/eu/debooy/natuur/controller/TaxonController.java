@@ -19,7 +19,6 @@ package eu.debooy.natuur.controller;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
-import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
@@ -89,11 +88,11 @@ public class TaxonController extends Natuur {
   }
 
   public void create(Long parentId) {
-    aktieveTab  = KINDEREN_TAB;
-    taxon       = new Taxon();
-    taxonDto    = new TaxonDto();
-    String  ouderRang = getTaxonService().taxon(parentId).getRang();
-    ouderNiveau = getRangService().rang(ouderRang).getNiveau();
+    aktieveTab    = KINDEREN_TAB;
+    taxon         = new Taxon();
+    taxonDto      = new TaxonDto();
+    var ouderRang = getTaxonService().taxon(parentId).getRang();
+    ouderNiveau   = getRangService().rang(ouderRang).getNiveau();
     taxon.setParentId(parentId);
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.taxon.create");
@@ -117,32 +116,28 @@ public class TaxonController extends Natuur {
       taxonDto  = getTaxonService().taxon(taxonId);
       naam      = taxonDto.getNaam(getGebruikersTaal());
       getTaxonService().delete(taxonId);
+      addInfo(PersistenceConstants.DELETED, naam);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonId);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, naam);
   }
 
   public void deleteTaxonnaam(String taal) {
     try {
       taxonDto.removeTaxonnaam(taal);
       getTaxonService().save(taxonDto);
+      addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taal);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
   }
 
   public String getAktieveTab() {
@@ -150,8 +145,8 @@ public class TaxonController extends Natuur {
   }
 
   public Collection<Taxon> getKinderen(Long parentId) {
-    Map<String, String> rangnamen = getRangnamen();
-    List<Taxon>         taxa      = new ArrayList<>();
+    var         rangnamen = getRangnamen();
+    List<Taxon> taxa      = new ArrayList<>();
 
     getTaxonService().getKinderen(parentId, getGebruikersTaal())
                      .forEach(rij -> {
@@ -181,8 +176,8 @@ public class TaxonController extends Natuur {
   }
 
   public Collection<Taxon> getTaxa() {
-    Map<String, String> rangnamen = getRangnamen();
-    List<Taxon>         taxa      = new ArrayList<>();
+    var         rangnamen = getRangnamen();
+    List<Taxon> taxa      = new ArrayList<>();
 
     getTaxonService().query(getGebruikersTaal())
                      .forEach(rij -> {
@@ -203,6 +198,7 @@ public class TaxonController extends Natuur {
 
   public Collection<Taxonnaam> getTaxonnamen() {
     Collection<Taxonnaam> taxonnamen  = new HashSet<>();
+
     taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
 
     return taxonnamen;
@@ -219,7 +215,7 @@ public class TaxonController extends Natuur {
   }
 
   public void save() {
-    List<Message> messages  = TaxonValidator.valideer(taxon);
+    var messages  = TaxonValidator.valideer(taxon);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
@@ -228,9 +224,9 @@ public class TaxonController extends Natuur {
     try {
       taxon.persist(taxonDto);
       getTaxonService().save(taxonDto);
-      aktieveTab    = KINDEREN_TAB;
+      aktieveTab  = KINDEREN_TAB;
       bepaalOuder(taxon.getParentId());
-      String  naam  = taxon.getNaam();
+      var naam    = taxon.getNaam();
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           taxon.setTaxonId(taxonDto.getTaxonId());
@@ -257,7 +253,7 @@ public class TaxonController extends Natuur {
   }
 
   public void saveTaxonnaam() {
-    List<Message> messages  = TaxonnaamValidator.valideer(taxonnaam);
+    var messages  = TaxonnaamValidator.valideer(taxonnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;

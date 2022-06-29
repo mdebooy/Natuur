@@ -29,9 +29,6 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
-import eu.debooy.natuur.domain.FotoOverzichtDto;
-import eu.debooy.natuur.domain.GebiedDto;
-import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
@@ -70,9 +67,9 @@ public class WaarnemingController extends Natuur {
   private WaarnemingDto waarnemingDto;
 
   public void create(Long taxonId) {
-    GebiedDto gebied  = getGebiedService().gebied(
-        Long.valueOf(getParameter("natuur.default.gebiedid")));
-    TaxonDto  taxon   = getTaxonService().taxon(taxonId);
+    var gebied  = getGebiedService().gebied(
+            Long.valueOf(getParameter("natuur.default.gebiedid")));
+    var taxon   = getTaxonService().taxon(taxonId);
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setTaxon(taxon);
     waarnemingDto.setDatum(new Date());
@@ -101,33 +98,29 @@ public class WaarnemingController extends Natuur {
       waarneming =
           new Waarneming(getWaarnemingService().waarneming(waarnemingId));
       getWaarnemingService().delete(waarnemingId);
+      addInfo(PersistenceConstants.DELETED,
+              Datum.fromDate(waarneming.getDatum()));
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED,
-            Datum.fromDate(waarneming.getDatum()));
   }
 
   public void deleteFoto(Long taxonSeq) {
     try {
       waarnemingDto.removeFoto(taxonSeq);
       getWaarnemingService().save(waarnemingDto);
+      addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonSeq);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
   }
 
   public String formateerDatum(Date datum) {
@@ -204,28 +197,28 @@ public class WaarnemingController extends Natuur {
   }
 
   public void save() {
-    List<Message> messages  = WaarnemingValidator.valideer(waarneming);
+    var messages  = WaarnemingValidator.valideer(waarneming);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    String  melding = formateerDatum(waarneming.getDatum()) + " "
-                      + waarneming.getTaxon().getNaam();
+    var melding = formateerDatum(waarneming.getDatum()) + " "
+                    + waarneming.getTaxon().getNaam();
     try {
       waarneming.persist(waarnemingDto);
       getWaarnemingService().save(waarnemingDto);
       switch (getAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        waarneming.setWaarnemingId(waarnemingDto.getWaarnemingId());
-        addInfo(PersistenceConstants.CREATED, melding);
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, melding);
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-        break;
+        case PersistenceConstants.CREATE:
+          waarneming.setWaarnemingId(waarnemingDto.getWaarnemingId());
+          addInfo(PersistenceConstants.CREATED, melding);
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, melding);
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
+          break;
       }
       redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
@@ -240,10 +233,10 @@ public class WaarnemingController extends Natuur {
   }
 
   public void saveFoto() {
-    List<Message>     messages      = FotoValidator.valideer(foto);
-    FotoOverzichtDto  fotoOverzicht =
-        getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
-                                      foto.getTaxonSeq());
+    var messages      = FotoValidator.valideer(foto);
+    var fotoOverzicht =
+            getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
+                                          foto.getTaxonSeq());
     if (null != fotoOverzicht.getFotoId()
             && !fotoOverzicht.getFotoId().equals(foto.getFotoId())) {
           messages.add(new Message.Builder()

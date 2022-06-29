@@ -18,7 +18,6 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
-import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
@@ -28,8 +27,6 @@ import eu.debooy.natuur.validator.GebiedValidator;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -60,16 +57,14 @@ public class GebiedController extends Natuur {
   public void delete(Long gebiedId, String naam) {
     try {
       getGebiedService().delete(gebiedId);
+      addInfo(PersistenceConstants.DELETED, naam);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, naam);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, naam);
   }
 
   public String gebied(Long gebiedId) {
@@ -86,25 +81,27 @@ public class GebiedController extends Natuur {
 
   public Collection<SelectItem> getSelectGebieden() {
     List<SelectItem>  items = new LinkedList<>();
-    Set<Gebied>       rijen = new TreeSet<>(new Gebied.NaamComparator());
-    rijen.addAll(getGebiedService().query());
-    rijen.forEach(rij -> items.add(new SelectItem(rij, rij.getNaam())));
+
+    getGebiedService().query()
+                      .forEach(rij ->
+      items.add(new SelectItem(rij, rij.getNaam())));
 
     return items;
   }
 
   public Collection<SelectItem> getSelectGebiedenId() {
     List<SelectItem>  items = new LinkedList<>();
-    Set<Gebied>       rijen = new TreeSet<>(new Gebied.NaamComparator());
-    rijen.addAll(getGebiedService().query());
-    rijen.forEach(rij -> items.add(new SelectItem(rij.getGebiedId(),
-                                                  rij.getNaam())));
+
+    getGebiedService().query()
+                      .forEach(rij ->
+      items.add(new SelectItem(rij.getGebiedId(), rij.getNaam())));
 
     return items;
   }
 
   public Collection<SelectItem> getLatitudes() {
     List<SelectItem>  items = new LinkedList<>();
+
     items.add(new SelectItem("N", getTekst("windstreek.N")));
     items.add(new SelectItem("S", getTekst("windstreek.S")));
 
@@ -113,6 +110,7 @@ public class GebiedController extends Natuur {
 
   public Collection<SelectItem> getLongitudes() {
     List<SelectItem>  items = new LinkedList<>();
+
     items.add(new SelectItem("E", getTekst("windstreek.E")));
     items.add(new SelectItem("W", getTekst("windstreek.W")));
 
@@ -127,7 +125,7 @@ public class GebiedController extends Natuur {
   }
 
   public void save() {
-    List<Message> messages  = GebiedValidator.valideer(gebied);
+    var messages  = GebiedValidator.valideer(gebied);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
@@ -136,15 +134,15 @@ public class GebiedController extends Natuur {
     try {
       getGebiedService().save(gebied);
       switch (getAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        addInfo(PersistenceConstants.CREATED, gebied.getNaam());
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-        break;
+        case PersistenceConstants.CREATE:
+          addInfo(PersistenceConstants.CREATED, gebied.getNaam());
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
+          break;
       }
       redirect(GEBIEDEN_REDIRECT);
     } catch (DuplicateObjectException e) {

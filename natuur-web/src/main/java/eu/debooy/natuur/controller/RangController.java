@@ -18,7 +18,6 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
-import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
@@ -38,8 +37,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -87,32 +84,28 @@ public class RangController extends Natuur {
   public void delete(String rang) {
     try {
       getRangService().delete(rang);
+      addInfo(PersistenceConstants.DELETED, getRangtekst(rang));
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, rang);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, getRangtekst(rang));
   }
 
   public void deleteRangnaam(String taal) {
     try {
       rangDto.removeRangnaam(taal);
       getRangService().save(rangDto);
+      addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taal);
-      return;
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
-      return;
     }
-    addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
   }
 
   public String getGeenFotoRang() {
@@ -138,6 +131,7 @@ public class RangController extends Natuur {
 
   public Collection<Rangnaam> getRangnamen() {
     Collection<Rangnaam>  rangnamen = new HashSet<>();
+
     rangDto.getRangnamen().forEach(rij -> rangnamen.add(new Rangnaam(rij)));
 
     return rangnamen;
@@ -169,10 +163,10 @@ public class RangController extends Natuur {
 
   public List<SelectItem> getSelectRangen() {
     List<SelectItem>  items = new LinkedList<>();
-    Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
-    rijen.addAll(getRangService().query());
-    rijen.forEach(rij ->  items.add(new SelectItem(rij.getRang(),
-                                    getRangtekst(rij.getRang()))));
+
+    getRangService().query()
+                    .forEach(rij ->  items.add(new SelectItem(rij.getRang(),
+                                               getRangtekst(rij.getRang()))));
 
     return items;
   }
@@ -197,7 +191,7 @@ public class RangController extends Natuur {
   }
 
   public void save() {
-    List<Message> messages  = RangValidator.valideer(rang);
+    var messages  = RangValidator.valideer(rang);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
@@ -206,15 +200,15 @@ public class RangController extends Natuur {
     try {
       getRangService().save(rang);
       switch (getAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        addInfo(PersistenceConstants.CREATED, "'" + rang.getRang() + "'");
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
-        break;
+        case PersistenceConstants.CREATE:
+          addInfo(PersistenceConstants.CREATED, "'" + rang.getRang() + "'");
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
+          break;
       }
       redirect(RANGEN_REDIRECT);
     } catch (DuplicateObjectException e) {
@@ -229,7 +223,7 @@ public class RangController extends Natuur {
   }
 
   public void saveRangnaam() {
-    List<Message> messages  = RangnaamValidator.valideer(rangnaam);
+    var messages  = RangnaamValidator.valideer(rangnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
@@ -247,16 +241,16 @@ public class RangController extends Natuur {
       rangDto.addNaam(rangnaamDto);
       getRangService().save(rangDto);
       switch (getDetailAktie().getAktie()) {
-      case PersistenceConstants.CREATE:
-        addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
-        break;
-      case PersistenceConstants.UPDATE:
-        addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
-        break;
-      default:
-        addError(ComponentsConstants.WRONGREDIRECT,
-                 getDetailAktie().getAktie());
-        break;
+        case PersistenceConstants.CREATE:
+          addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
+          break;
+        case PersistenceConstants.UPDATE:
+          addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT,
+                   getDetailAktie().getAktie());
+          break;
       }
       redirect(RANG_REDIRECT);
     } catch (DuplicateObjectException e) {
@@ -272,10 +266,10 @@ public class RangController extends Natuur {
 
   public List<SelectItem> selectRangen(Long niveau) {
     List<SelectItem>  items = new LinkedList<>();
-    Set<Rang>         rijen = new TreeSet<>(new Rang.NiveauComparator());
-    rijen.addAll(getRangService().query(niveau));
-    rijen.forEach(rij ->  items.add(new SelectItem(rij.getRang(),
-                                    getRangtekst(rij.getRang()))));
+
+    getRangService().query(niveau)
+                    .forEach(rij ->  items.add(new SelectItem(rij.getRang(),
+                                               getRangtekst(rij.getRang()))));
 
     return items;
   }
