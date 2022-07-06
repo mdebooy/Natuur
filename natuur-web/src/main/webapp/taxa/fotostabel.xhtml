@@ -27,7 +27,7 @@
           <td>#{foto.landnaam}</td>
           <td class="text-center" data-order="#{foto.sorteerdatum}">
             <t:outputText value="#{foto.datum}">
-              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
+              <f:convertDateTime pattern="#{i18nTeksten.tekst('kalender.datum.formaat')}" timeZone="#{gebruiker.timeZone}" />
             </t:outputText>
           </td>
         </tr>

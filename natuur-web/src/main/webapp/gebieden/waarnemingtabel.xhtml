@@ -26,7 +26,7 @@
         <tr>
           <td class="text-center" data-order="#{waarneming.sorteerdatum}">
             <t:outputText value="#{waarneming.datum}">
-              <f:convertDateTime pattern="dd/MM/yyyy" timeZone="#{gebruiker.timeZone}" />
+              <f:convertDateTime pattern="#{i18nTeksten.tekst('kalender.datum.formaat')}" timeZone="#{gebruiker.timeZone}" />
             </t:outputText></td>
           <td class="text-right">#{waarneming.aantal}</td>
           <td>#{waarneming.taxon.naam}</td>

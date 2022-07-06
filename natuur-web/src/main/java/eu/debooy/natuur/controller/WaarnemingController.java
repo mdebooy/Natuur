@@ -99,7 +99,7 @@ public class WaarnemingController extends Natuur {
           new Waarneming(getWaarnemingService().waarneming(waarnemingId));
       getWaarnemingService().delete(waarnemingId);
       addInfo(PersistenceConstants.DELETED,
-              Datum.fromDate(waarneming.getDatum()));
+              formateerDatum(waarneming.getDatum()));
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
     } catch (DoosRuntimeException e) {
@@ -124,7 +124,7 @@ public class WaarnemingController extends Natuur {
   }
 
   public String formateerDatum(Date datum) {
-    return Datum.fromDate(datum);
+    return Datum.fromDate(datum, getTekst("kalender.datum.formaat"));
   }
 
   public Foto getFoto() {
