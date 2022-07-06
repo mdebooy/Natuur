@@ -80,14 +80,14 @@ public final class GebiedValidator extends NatuurValidator {
   private static int valideerLatitude(String latitude, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(latitude)) {
       return 1;
-    } else {
-      if (!("N".equals(latitude) || "S".equals(latitude))) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LATITUDE)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.latitude")
-                              .build());
-      }
+    }
+
+    if (!("N".equals(latitude) || "S".equals(latitude))) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LATITUDE)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.latitude")
+                            .build());
     }
 
     return 0;
@@ -97,14 +97,14 @@ public final class GebiedValidator extends NatuurValidator {
                                             List<Message> fouten) {
     if (null == latitudeGraden) {
       return 1;
-    } else {
-      if (latitudeGraden < 0 || latitudeGraden > 90) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LATITUDEGRADEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.latitude.graden")
-                              .build());
-      }
+    }
+
+    if (latitudeGraden < 0 || latitudeGraden > 90) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LATITUDEGRADEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.latitude.graden")
+                            .build());
     }
 
     return 0;
@@ -114,14 +114,14 @@ public final class GebiedValidator extends NatuurValidator {
                                              List<Message> fouten) {
     if (null == latitudeMinuten) {
       return 1;
-    } else {
-      if (latitudeMinuten < 0 || latitudeMinuten > 59) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LATITUDEMINUTEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.latitude.minuten")
-                              .build());
-      }
+    }
+
+    if (latitudeMinuten < 0 || latitudeMinuten > 59) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LATITUDEMINUTEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.latitude.minuten")
+                            .build());
     }
 
     return 0;
@@ -131,14 +131,14 @@ public final class GebiedValidator extends NatuurValidator {
                                               List<Message> fouten) {
     if (null == latitudeSeconden) {
       return 1;
-    } else {
-      if (!(latitudeSeconden >= 0 && latitudeSeconden < 60)) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LATITUDESECONDEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.latitude.seconden")
-                              .build());
-      }
+    }
+
+    if (!(latitudeSeconden >= 0 && latitudeSeconden < 60)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LATITUDESECONDEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.latitude.seconden")
+                            .build());
     }
 
     return 0;
@@ -148,14 +148,14 @@ public final class GebiedValidator extends NatuurValidator {
                                        List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(longitude)) {
       return 1;
-    } else {
-      if (!("E".equals(longitude) || "W".equals(longitude))) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LONGITUDE)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.longitude")
-                              .build());
-      }
+    }
+
+    if (!("E".equals(longitude) || "W".equals(longitude))) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LONGITUDE)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.longitude")
+                            .build());
     }
 
     return 0;
@@ -165,14 +165,14 @@ public final class GebiedValidator extends NatuurValidator {
                                              List<Message> fouten) {
     if (null == longitudeGraden) {
       return 1;
-    } else {
-      if (longitudeGraden < 0 || longitudeGraden > 180) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LONGITUDEGRADEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.longitude.graden")
-                              .build());
-      }
+    }
+
+    if (longitudeGraden < 0 || longitudeGraden > 180) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LONGITUDEGRADEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.longitude.graden")
+                            .build());
     }
 
     return 0;
@@ -182,14 +182,14 @@ public final class GebiedValidator extends NatuurValidator {
                                              List<Message> fouten) {
     if (null == longitudeMinuten) {
       return 1;
-    } else {
-      if (longitudeMinuten < 0 || longitudeMinuten > 59) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LONGITUDEMINUTEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.longitude.minuten")
-                              .build());
-      }
+    }
+
+    if (longitudeMinuten < 0 || longitudeMinuten > 59) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LONGITUDEMINUTEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.longitude.minuten")
+                            .build());
     }
 
     return 0;
@@ -199,14 +199,14 @@ public final class GebiedValidator extends NatuurValidator {
                                               List<Message> fouten) {
     if (null == longitudeSeconden) {
       return 1;
-    } else {
-      if (!(longitudeSeconden >= 0 && longitudeSeconden < 60)) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(GebiedDto.COL_LONGITUDESECONDEN)
-                              .setSeverity(Message.ERROR)
-                              .setMessage("error.longitude.seconden")
-                              .build());
-      }
+    }
+
+    if (!(longitudeSeconden >= 0 && longitudeSeconden < 60)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(GebiedDto.COL_LONGITUDESECONDEN)
+                            .setSeverity(Message.ERROR)
+                            .setMessage("error.longitude.seconden")
+                            .build());
     }
 
     return 0;
@@ -220,15 +220,16 @@ public final class GebiedValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.gebied"})
                             .build());
-    } else {
-      if (naam.length() > 255) {
+      return;
+    }
+
+    if (naam.length() > 255) {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_NAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
                             .setParams(new Object[]{"_I18N.label.gebied", 255})
                             .build());
-      }
     }
   }
 }

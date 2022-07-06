@@ -78,7 +78,10 @@ public final class WaarnemingValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.datum"})
                             .build());
-    } else if (datum.after(new Date())) {
+      return;
+    }
+
+    if (datum.after(new Date())) {
       fouten.add(new Message.Builder()
                             .setAttribute(WaarnemingDto.COL_DATUM)
                             .setSeverity(Message.ERROR)

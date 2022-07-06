@@ -61,6 +61,7 @@ public final class TaxonValidator extends NatuurValidator {
                             .build());
       return;
     }
+
     if (latijnsenaam.length() > 255) {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
@@ -83,6 +84,7 @@ public final class TaxonValidator extends NatuurValidator {
                             .build());
       return;
     }
+
     if (!uitgestorven.equals(DoosConstants.WAAR)
         && !uitgestorven.equals(DoosConstants.ONWAAR)) {
       fouten.add(new Message.Builder()

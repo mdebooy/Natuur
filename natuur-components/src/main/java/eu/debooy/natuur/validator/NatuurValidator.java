@@ -43,7 +43,7 @@ public abstract class NatuurValidator {
 
   protected static void valideerOpmerking(String opmerking,
                                         List<Message> fouten) {
-    if (opmerking.length() > 2000) {
+    if (DoosUtils.nullToEmpty(opmerking).length() > 2000) {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_OPMERKING)
                             .setSeverity(Message.ERROR)
@@ -62,7 +62,10 @@ public abstract class NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.rang"})
                             .build());
-    } else if (rang.length() > 3) {
+      return;
+    }
+
+    if (rang.length() > 3) {
       fouten.add(new Message.Builder()
                             .setAttribute(RangDto.COL_RANG)
                             .setSeverity(Message.ERROR)

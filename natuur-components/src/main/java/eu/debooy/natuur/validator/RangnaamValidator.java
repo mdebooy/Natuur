@@ -53,15 +53,16 @@ public class RangnaamValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.naam"})
                             .build());
-    } else {
-      if (naam.length() > 255) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangnaamDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.naam", 255})
-                            .build());
-      }
+      return;
+    }
+
+    if (naam.length() > 255) {
+    fouten.add(new Message.Builder()
+                          .setAttribute(RangnaamDto.COL_NAAM)
+                          .setSeverity(Message.ERROR)
+                          .setMessage(PersistenceConstants.MAXLENGTH)
+                          .setParams(new Object[]{"_I18N.label.naam", 255})
+                          .build());
     }
   }
 
@@ -73,15 +74,16 @@ public class RangnaamValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.taal"})
                             .build());
-    } else {
-      if (taal.length() != 2) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangnaamDto.COL_TAAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FIXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.taal", 2})
-                            .build());
-      }
+      return;
+    }
+
+    if (taal.length() != 2) {
+    fouten.add(new Message.Builder()
+                          .setAttribute(RangnaamDto.COL_TAAL)
+                          .setSeverity(Message.ERROR)
+                          .setMessage(PersistenceConstants.FIXLENGTH)
+                          .setParams(new Object[]{"_I18N.label.taal", 2})
+                          .build());
     }
   }
 }

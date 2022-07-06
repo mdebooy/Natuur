@@ -52,7 +52,10 @@ public final class RangValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.REQUIRED)
                             .setParams(new Object[]{"_I18N.label.niveau"})
                             .build());
-    } else if (niveau <= 0) {
+      return;
+    }
+
+    if (niveau <= 0) {
       fouten.add(new Message.Builder()
                             .setAttribute(RangDto.COL_NIVEAU)
                             .setSeverity(Message.ERROR)
