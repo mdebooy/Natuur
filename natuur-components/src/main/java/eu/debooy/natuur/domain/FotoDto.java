@@ -50,19 +50,19 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
   public static final String  QRY_PERWAARNEMING = "fotosPerWaarneming";
 
   @Column(name="FOTO_BESTAND", length=255)
-  private String    fotoBestand;
+  private String  fotoBestand;
   @Column(name="FOTO_DETAIL", length=20)
-  private String    fotoDetail;
+  private String  fotoDetail;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="FOTO_ID", nullable=false)
-  private Long      fotoId;
+  private Long    fotoId;
   @Column(name="OPMERKING", length=2000)
-  private String    opmerking;
+  private String  opmerking;
   @Column(name="TAXON_SEQ", nullable=false)
-  private Long      taxonSeq    = Long.valueOf("0");
+  private Long    taxonSeq    = Long.valueOf("0");
   @Column(name="WAARNEMING_ID", nullable=false)
-  private Long      waarnemingId;
+  private Long    waarnemingId;
 
   @Override
   public int compareTo(FotoDto fotoDto) {
