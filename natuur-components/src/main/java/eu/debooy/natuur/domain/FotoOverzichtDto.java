@@ -64,6 +64,7 @@ public class FotoOverzichtDto
   public static final String  COL_KLASSEVOLGNUMMER    = "klasseVolgnummer";
   public static final String  COL_LANDID              = "landId";
   public static final String  COL_LATIJNSENAAM        = "latijnsenaam";
+  public static final String  COL_OPMERKING           = "opmerking";
   public static final String  COL_TAXONID             = "taxonId";
   public static final String  COL_TAXONSEQ            = "taxonSeq";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
@@ -111,6 +112,9 @@ public class FotoOverzichtDto
   @ReadOnly
   @Column(name="LATIJNSENAAM")
   private String  latijnsenaam;
+  @ReadOnly
+  @Column(name="OPMERKING")
+  private String  opmerking;
   @ReadOnly
   @Column(name="TAXON_ID")
   private Long    taxonId;
@@ -243,6 +247,10 @@ public class FotoOverzichtDto
     } else {
       return latijnsenaam;
     }
+  }
+
+  public String getOpmerking() {
+    return opmerking;
   }
 
   public Long getTaxonId() {
