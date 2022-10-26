@@ -9,7 +9,7 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var info = #{i18nTeksten.tekst('img.info')};
+        var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         var tabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen',
