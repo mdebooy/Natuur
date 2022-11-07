@@ -48,6 +48,9 @@
   <security-role>
     <role-name>natuur-user</role-name>
   </security-role>
+  <security-role>
+    <role-name>natuur-view</role-name>
+  </security-role>
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>Natuur</web-resource-name>
@@ -57,6 +60,7 @@
     <auth-constraint>
       <role-name>natuur-admin</role-name>
       <role-name>natuur-user</role-name>
+      <role-name>natuur-view</role-name>
     </auth-constraint>
     <user-data-constraint>
       <description>Geen encryptie nodig.</description>
