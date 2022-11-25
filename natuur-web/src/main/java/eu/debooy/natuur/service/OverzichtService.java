@@ -19,8 +19,10 @@ package eu.debooy.natuur.service;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.OverzichtDao;
 import eu.debooy.natuur.domain.OverzichtDto;
-import java.util.ArrayList;
-import java.util.List;
+import eu.debooy.natuur.domain.RangnaamDto;
+import eu.debooy.natuur.form.Rangtotaal;
+import java.util.HashMap;
+import java.util.Map;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -28,6 +30,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +46,9 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("natuurOverzichtService")
+@Path("/overzicht")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 @Lock(LockType.WRITE)
 public class OverzichtService {
   private static final  Logger  LOGGER  =
@@ -49,16 +61,31 @@ public class OverzichtService {
     LOGGER.debug("init OverzichtService");
   }
 
+  @GET
+  @Path("/{rang}/{taal}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<OverzichtDto> getTotalenVoorRang(String rang) {
-    List<OverzichtDto> overzicht = new ArrayList<>();
+  public Response getTotalenVoorRang(
+                      @PathParam(OverzichtDto.COL_RANG) String rang,
+                      @PathParam(RangnaamDto.COL_TAAL) String taal) {
+    Map<Long, Rangtotaal> totalen = new HashMap<>();
 
     try {
-      overzicht.addAll(overzichtDao.getOverzichtRang(rang));
+      overzichtDao.getOverzichtRang(rang).forEach(rij -> {
+        var taxonId = rij.getParentId();
+        if (totalen.containsKey(taxonId)) {
+          var rangtotaal  = totalen.get(taxonId);
+          rangtotaal.addOpFoto(rij.getOpFoto());
+          rangtotaal.addTotaal(rij.getTotaal());
+          rangtotaal.addWaargenomen(rij.getWaargenomen());
+          totalen.put(taxonId, rangtotaal);
+        } else {
+          totalen.put(taxonId, new Rangtotaal(rij, taal));
+        }
+      });
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      // Er wordt nu gewoon een lege Map gegeven.
     }
 
-    return overzicht;
+    return Response.ok().entity(totalen.values()).build();
   }
 }

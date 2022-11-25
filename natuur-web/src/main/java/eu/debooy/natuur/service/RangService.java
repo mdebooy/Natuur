@@ -80,12 +80,14 @@ public class RangService {
   }
 
   @GET
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRangen() {
     return Response.ok().entity(rangDao.getAll()).build();
   }
 
   @GET
   @Path("/{rang}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRang(@PathParam(RangDto.COL_RANG) String rang) {
     RangDto rangDto;
     try {
@@ -103,6 +105,7 @@ public class RangService {
 
   @GET
   @Path("/rangnaam/{rang}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRangnaam(@PathParam(RangDto.COL_RANG) String rang,
                               @PathParam(RangnaamDto.COL_TAAL) String taal) {
     var         sleutel   = new RangnaamPK(rang, taal);
@@ -123,6 +126,7 @@ public class RangService {
 
   @GET
   @Path("/vanaf/{niveau}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getVanafRang(@PathParam(RangDto.COL_NIVEAU) Long niveau) {
     List<RangDto> rangen;
     try {
@@ -180,6 +184,7 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
+    LOGGER.debug("save " + rang.toString());
     var dto = new RangDto();
     rang.persist(dto);
 
@@ -188,7 +193,9 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(RangDto rang) {
-    rangDao.update(rang);
+    LOGGER.debug("save " + rang.toString());
+    RangDto dto = rangDao.update(rang);
+    LOGGER.debug("updt " + dto.toString());
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

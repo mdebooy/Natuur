@@ -1,6 +1,7 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
   xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
@@ -35,17 +36,23 @@
             { data: 'niveau', title: '#{i18nTeksten.tekst('label.niveau')}', width: '50px', class: 'has-text-centered' },
             { data: 'rang', title: '', width: '50px', class: 'has-text-centered' },
             { data: null, title: '#{i18nTeksten.tekst('label.rang')}', render: function ( data, type, row ) {
-              var naam = data.rangnamen.findIndex(i => i.taal === taal);
-              if (naam < 0) {
-                return data.rang;
-              }
-              return data.rangnamen[naam].naam;
+                var naam = data.rangnamen.findIndex(i => i.taal === taal);
+                if (naam < 0) {
+                  return data.rang;
+                }
+                return data.rangnamen[naam].naam;
               }
             }
           ]
         });
         $( '#rangenTabel tbody').on('click', 'tr', function() {
-          alert(tabel.row(this).data().rang);
+          if (tabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formRangen:link");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', tabel.row(this).data().rang);
+          jsfCommandLink.setAttribute('onclick', param);
+          jsfCommandLink.click();
         } );
       });
 //]]>
@@ -55,18 +62,12 @@
     <div class="columns is-centered content">
       <div class="column is-6">
         <h:form id="formRangen">
-          <div class="columns titel">
-            <div class="column is-10">
-              <h2>#{i18nTeksten.tekst('natuur.titel.rangen')}</h2>
-            </div>
-            <div class="column is-2 has-text-right" >
-              <h:commandLink action="#{natuurRang.create}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
-            </div>
-          </div>
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.rangen')}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurRang}" rendered="#{natuurRang.user}" />
 
-          <table class="table is-striped is-narrow is-hoverable" id="rangenTabel" aria-describedby="rangenTabel" />
+          <table id="rangenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangenTabel" />
+          <h:commandLink id="link" action="#{natuurRang.retrieve}" style="display:none">
+            <f:param name="rang" value="XX" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

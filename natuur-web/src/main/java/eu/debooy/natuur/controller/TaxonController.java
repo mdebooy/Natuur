@@ -39,6 +39,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -144,19 +146,6 @@ public class TaxonController extends Natuur {
     return aktieveTab;
   }
 
-  public Collection<Taxon> getKinderen(Long parentId) {
-    var         rangnamen = getRangnamen();
-    List<Taxon> taxa      = new ArrayList<>();
-
-    getTaxonService().getKinderen(parentId, getGebruikersTaal())
-                     .forEach(rij -> {
-      rij.setRangnaam(rangnamen.get(rij.getRang()));
-      taxa.add(rij);
-    });
-
-    return taxa;
-  }
-
   public Taxon getOuder() {
     return ouder;
   }
@@ -202,6 +191,21 @@ public class TaxonController extends Natuur {
     taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
 
     return taxonnamen;
+  }
+
+  public void retrieve() {
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                             .get("taxonId"));
+
+    aktieveTab  = KINDEREN_TAB;
+    taxonDto    = getTaxonService().taxon(taxonId);
+    taxon       = new Taxon(taxonDto, getGebruikersTaal());
+    bepaalOuder(taxon.getParentId());
+    setAktie(PersistenceConstants.RETRIEVE);
+    setSubTitel(taxon.getNaam());
+    redirect(TAXON_REDIRECT);
   }
 
   public void retrieve(Long taxonId) {

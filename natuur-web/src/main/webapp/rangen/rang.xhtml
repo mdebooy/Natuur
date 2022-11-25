@@ -1,83 +1,168 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
   xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:t="http://myfaces.apache.org/tomahawk"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
+//<![CDATA[
       $(document).ready(function() {
-        $("#formWaarneming\\:datum").datepicker({dayNamesMin: [ "zo", "ma", "di", "wo", "do", "vr", "za" ],
-                                                 monthNames: [ "januari", "februari", "maart", "april", "mei", "juni", "juli", "augustus", "september", "oktober", "november", "december" ]});
-        $('#rangnamenTabel').dataTable( {
-          "order": [[1, "asc"]],
-          "columns": [{ "orderable": false },
-                      { "orderable": true },
-                      { "orderable": true }],
-          "pagingType": "full_numbers",
-          "pageLength": #{properties.appValue('natuur.pagelength')},
-          "lengthChange": false,
-          "stateSave": true,
-          "language": {
-            "paginate": {
-              "first": #{properties.appValue('natuur.pager.first')},
-              "last": #{properties.appValue('natuur.pager.last')},
-              "next": #{properties.appValue('natuur.pager.next')},
-              "previous": #{properties.appValue('natuur.pager.previous')}
+        var rang = '#{natuurRang.rang.rang}';
+        var taal = '#{gebruiker.locale.language}';
+        var tabel = $('#rangnamenTabel').DataTable( {
+          data: #{natuurRang.rangnamen},
+          order: [[1, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')-5},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: #{properties.appValue('natuur.pager.first')},
+              last: #{properties.appValue('natuur.pager.last')},
+              next: #{properties.appValue('natuur.pager.next')},
+              previous: #{properties.appValue('natuur.pager.previous')}
             },
-            "search": "#{i18nTeksten.tekst('pager.search')}",
-            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-            "info": "#{i18nTeksten.tekst('pager.info')}",
-            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-          }
+            search: "#{i18nTeksten.tekst('pager.search')}",
+            zeroRecords: "#{i18nTeksten.tekst('pager.zero.records')}",
+            loadingRecords: "#{i18nTeksten.tekst('pager.loading')}",
+            info: "#{i18nTeksten.tekst('pager.info')}",
+            infoEmpty: "#{i18nTeksten.tekst('pager.info.empty')}",
+            infoFiltered: "#{i18nTeksten.tekst('pager.info.filtered')}"
+          },
+          columns: [
+            { data: 'taal', visible: false },
+            { data: null, title: '#{i18nTeksten.tekst('label.taal')}', width: '50px', class: 'has-text-centered', orderData: 0, render: function ( data, type, row ) {
+                return taalvlag(data.taal);
+              }
+            },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
+          ]
         } );
+        var subtabel = $('#totalenTabel').DataTable( {
+          ajax: { url: '/natuur/overzicht/#{natuurRang.rang.rang}/#{gebruiker.locale.language}',
+                  dataSrc: '' },
+          order: [[0, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')-5},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: #{properties.appValue('natuur.pager.first')},
+              last: #{properties.appValue('natuur.pager.last')},
+              next: #{properties.appValue('natuur.pager.next')},
+              previous: #{properties.appValue('natuur.pager.previous')}
+            },
+            search: "#{i18nTeksten.tekst('pager.search')}",
+            zeroRecords: "#{i18nTeksten.tekst('pager.zero.records')}",
+            loadingRecords: "#{i18nTeksten.tekst('pager.loading')}",
+            info: "#{i18nTeksten.tekst('pager.info')}",
+            infoEmpty: "#{i18nTeksten.tekst('pager.info.empty')}",
+            infoFiltered: "#{i18nTeksten.tekst('pager.info.filtered')}"
+          },
+          columns: [
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
+            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}' },
+            { data: 'totaal', title: '#{i18nTeksten.tekst('label.aantalsoorten')}', width: '50px', class: 'has-text-right' },
+            { data: 'waargenomen', title: '#{i18nTeksten.tekst('label.aantalwaarnemingen')}', width: '50px', class: 'has-text-right' },
+            { data: 'opFoto', title: '#{i18nTeksten.tekst('label.opfoto')}', width: '50px', class: 'has-text-right' },
+            { data: null, title: '%', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                return data.pctOpFoto+'%';
+              }
+            }]
+        } );
+        $( '#rangnamenTabel tbody').on('click', 'tr', function() {
+          if (tabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formRang:link");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', tabel.row(this).data().taal);
+          jsfCommandLink.setAttribute('onclick', param);
+          jsfCommandLink.click();
+        } );
+        $( '#totalenTabel tbody').on('click', 'tr', function() {
+          if (subtabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formRang:detailLink");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', subtabel.row(this).data().taxonId);
+          jsfCommandLink.setAttribute('onclick', param);
+          jsfCommandLink.click();
+        } );
+        document.getElementById('totalenTabel').style.width = '100%';
       } );
+//]]>
     </script>
   </ui:define>
   <ui:define name="body">
-    <div class="row justify-content-center">
-      <div class="col-8">
-        <h:form class="form-horizontal" id="formRang">
-          <div class="row titel">
-            <div class="col-10">
-              <h2 class="titel">#{i18nTeksten.tekst(natuurRang.subTitel)}</h2>
-            </div>
-            <div class="col-2 text-right" >
-              <h:commandLink action="#{natuurRang.createRangnaam}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="rang" class="col-2 control-label">#{i18nTeksten.tekst('label.rang')}</label>
-            <div class="col-1">
-              <t:inputText id="rang" styleClass="form-control form-control-sm" value="#{natuurRang.rang.rang}" maxlength="3" size="3" readonly="#{!natuurRang.aktie.nieuw}" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="niveau" class="col-2 control-label">#{i18nTeksten.tekst('label.niveau')}</label>
-            <div class="col-1">
-              <t:inputText id="niveau" styleClass="form-control form-control-sm" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" readonly="#{natuurRang.aktie.readonly}" />
-            </div>
-          </div>
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formRang">
+          <d:titel titel="#{i18nTeksten.tekst(natuurRang.subTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurRang}" action="createRangnaam" rendered="#{natuurRang.aktie.wijzig}" />
 
-          <h:commandLink action="#{natuurRang.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurRang.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurRang.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurRang.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-        <d:cancel href="#{natuur.path}/rangen/rangen.xhtml" aktie="#{natuurRang.aktie}"/>
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.rang')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="rang" styleClass="input required" value="#{natuurRang.rang.rang}" maxlength="3" size="3" readonly="#{!natuurRang.aktie.nieuw}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.niveau')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="niveau" styleClass="input required" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" readonly="#{natuurRang.aktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-          <d:spacer />
-          <d:spacer />
-          <ui:include src="rangnamentabel.xhtml">
-            <ui:param name="form" value="formRang" />
-            <ui:param name="lijst" value="#{natuurRang.rangnamen}" />
-          </ui:include>
+              <d:crudbuttonbar bean="#{natuurRang}" form="formRang" returnto="#{natuur.path}/rangen/rangen.xhtml" tekst="#{natuurRang.rang.naam}" />
+
+              <t:div rendered="#{!natuurRang.aktie.nieuw}">
+                <d:spacer />
+                <div id="rangTabs" class="tabs is-boxed">
+                  <ul>
+                    <li class="tab-link is-active" onclick="switchTab(event, 'tabNamen')"><a>Namen</a></li>
+                    <li class="tab-link" onclick="switchTab(event, 'tabTotalen')"><a>Totalen</a></li>
+                  </ul>
+                </div>
+                <div class="tabs-details titel">
+                  <div id="tabNamen" class="tab-detail">
+                    <table id="rangnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangnamenTabel" style="width: 100%" />
+                    <h:commandLink id="link" action="#{natuurRang.retrieveDetail}" class="is-hidden">
+                      <f:param name="taal" value="XX" />
+                    </h:commandLink>
+                  </div>
+                  <div id="tabTotalen" class="tab-detail is-hidden">
+                    <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" style="width: 100%" />
+                    <h:commandLink id="detailLink" action="#{natuurRang.retrieveGeenFotos}" class="is-hidden">
+                      <f:param name="taxonId" value="XX" />
+                    </h:commandLink>
+                  </div>
+                </div>
+              </t:div>
+            </div>
+          </div>
         </h:form>
       </div>
     </div>
   </ui:define>
   <ui:define name="modal">
-    <d:confirmatie confirmatietitel="#{i18nTeksten.tekst('natuur.titel.rangnaam.delete')}" />
+    <d:confirmatie titel="#{i18nTeksten.tekst('natuur.titel.rang.delete')}" />
   </ui:define>
 </ui:composition>

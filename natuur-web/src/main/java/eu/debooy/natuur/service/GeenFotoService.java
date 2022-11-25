@@ -18,7 +18,8 @@ package eu.debooy.natuur.service;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.GeenFotoDao;
-import eu.debooy.natuur.form.GeenFoto;
+import eu.debooy.natuur.domain.GeenFotoDto;
+import eu.debooy.natuur.domain.RangDto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Lock;
@@ -28,6 +29,13 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,43 +45,50 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("natuurGeenFotoService")
+@Path("/geenfotos")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 @Lock(LockType.WRITE)
 public class GeenFotoService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(GeenFotoService.class);
 
   @Inject
-  private GeenFotoDao geenfotoDao;
+  private GeenFotoDao geenFotoDao;
 
   public GeenFotoService() {
     LOGGER.debug("init GeenFotoService");
   }
 
+  @GET
+  @Path("/rang/{rang}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<GeenFoto> getGeenFotosVoorRang(String rang, String taal) {
-    List<GeenFoto>  geenFotos = new ArrayList<>();
+  public Response getGeenFotosVoorRang(
+                      @PathParam(RangDto.COL_RANG) String rang) {
+    List<GeenFotoDto> geenFotos  = new ArrayList<>();
 
     try {
-      geenfotoDao.getGeenFotoRang(rang)
-                 .forEach(rij -> geenFotos.add(new GeenFoto(rij, taal)));
+      geenFotos = geenFotoDao.getGeenFotoRang(rang);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return geenFotos;
+    return Response.ok().entity(geenFotos).build();
   }
 
+  @GET
+  @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<GeenFoto> getGeenFotosVoorTaxon(Long taxonId, String taal) {
-    List<GeenFoto>  geenFotos = new ArrayList<>();
+  public Response getGeenFotosVoorTaxon(
+                      @PathParam(GeenFotoDto.COL_TAXONID) Long taxonId) {
+    List<GeenFotoDto> geenFotos  = new ArrayList<>();
 
     try {
-      geenfotoDao.getGeenFotoTaxon(taxonId)
-                 .forEach(rij -> geenFotos.add(new GeenFoto(rij, taal)));
+      geenFotos = geenFotoDao.getGeenFotoTaxon(taxonId);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return geenFotos;
+    return Response.ok().entity(geenFotos).build();
   }
 }

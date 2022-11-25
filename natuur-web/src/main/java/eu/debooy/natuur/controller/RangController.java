@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.Aktie;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -24,22 +25,19 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.domain.RangnaamDto;
-import eu.debooy.natuur.form.GeenFoto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Rangnaam;
-import eu.debooy.natuur.form.Rangtotaal;
 import eu.debooy.natuur.validator.RangValidator;
 import eu.debooy.natuur.validator.RangnaamValidator;
-import java.text.MessageFormat;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,8 +52,9 @@ public class RangController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(RangController.class);
 
-  private String      geenFotoRang;
-  private Long        geenFotoTaxon;
+  private final Aktie       geenFotoAktie = new Aktie();
+
+  private TaxonDto    geenFotos;
   private Rang        rang;
   private RangDto     rangDto;
   private Rangnaam    rangnaam;
@@ -81,10 +80,13 @@ public class RangController extends Natuur {
     redirect(RANGNAAM_REDIRECT);
   }
 
-  public void delete(String rang) {
+  public void delete() {
     try {
-      getRangService().delete(rang);
-      addInfo(PersistenceConstants.DELETED, getRangtekst(rang));
+      getRangService().delete(rang.getRang());
+      addInfo(PersistenceConstants.DELETED, this.rang.getNaam());
+      rang    = new Rang();
+      rangDto = new RangDto();
+      redirect(RANGEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, rang);
     } catch (DoosRuntimeException e) {
@@ -94,11 +96,13 @@ public class RangController extends Natuur {
     }
   }
 
-  public void deleteRangnaam(String taal) {
+  public void deleteDetail() {
+    var taal  = rangnaam.getTaal();
     try {
       rangDto.removeRangnaam(taal);
       getRangService().save(rangDto);
       addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
+      redirect(RANG_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taal);
     } catch (DoosRuntimeException e) {
@@ -108,57 +112,37 @@ public class RangController extends Natuur {
     }
   }
 
-  public String getGeenFotoRang() {
-    return geenFotoRang;
+  public Aktie getGeenFotosAktie() {
+    return geenFotoAktie;
   }
 
-  public Collection<GeenFoto> getGeenFotos() {
-    return getGeenFotoService().getGeenFotosVoorTaxon(geenFotoTaxon,
-                                                      getGebruikersTaal());
+  public Long getGeenFotosTaxonId() {
+    return geenFotos.getTaxonId();
+  }
+
+  public String getGeenFotosTitel() {
+    return getTekst("natuur.titel.geenfotos",
+                    geenFotos.getNaam(getGebruikersTaal()));
   }
 
   public Rang getRang() {
     return rang;
   }
 
-  public Collection<Rang> getRangen() {
-    return getRangService().query(getGebruikersTaal());
-  }
-
   public Rangnaam getRangnaam() {
     return rangnaam;
   }
 
-  public Collection<Rangnaam> getRangnamen() {
-    Collection<Rangnaam>  rangnamen = new HashSet<>();
+  public JSONArray getRangnamen() {
+    JSONArray rangnamen = new JSONArray();
 
-    rangDto.getRangnamen().forEach(rij -> rangnamen.add(new Rangnaam(rij)));
+    rangDto.getRangnamen().forEach(rij -> rangnamen.add(rij.toJSON()));
 
     return rangnamen;
   }
 
   public String getRangtekst(String rang) {
     return getRangService().rang(rang).getNaam(getGebruikersTaal());
-  }
-
-  public Collection<Rangtotaal> getRangtotalen() {
-    Map<Long, Rangtotaal> totalen = new HashMap<>();
-
-    getOverzichtService().getTotalenVoorRang(rang.getRang())
-                         .forEach(rij -> {
-      var taxonId = rij.getParentId();
-      if (totalen.containsKey(taxonId)) {
-        var rangtotaal  = totalen.get(taxonId);
-        rangtotaal.addOpFoto(rij.getOpFoto());
-        rangtotaal.addTotaal(rij.getTotaal());
-        rangtotaal.addWaargenomen(rij.getWaargenomen());
-        totalen.put(taxonId, rangtotaal);
-      } else {
-        totalen.put(taxonId, new Rangtotaal(rij, getGebruikersTaal()));
-      }
-    });
-
-    return totalen.values();
   }
 
   public List<SelectItem> getSelectRangen() {
@@ -171,22 +155,36 @@ public class RangController extends Natuur {
     return items;
   }
 
-  public void retrieve(String rang) {
-    rangDto   = getRangService().rang(rang);
-    this.rang = new Rang(rangDto);
+  public void retrieve() {
+    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
+    rangDto = getRangService().rang(ec.getRequestParameterMap().get("rang"));
+    rang    = new Rang(rangDto, getGebruikersTaal());
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(MessageFormat.format(getTekst("natuur.titel.rang.totalen"),
-                                     getRangtekst(rang)));
-    redirect(RANG_TOTALEN_REDIRECT);
+    setSubTitel("natuur.titel.rang.retrieve");
+
+    redirect(RANG_REDIRECT);
   }
 
-  public void retrieveGeenFotos(Long taxonId) {
-    var geenFoto  = getTaxonService().taxon(taxonId);
-    geenFotoRang  = geenFoto.getRang();
-    geenFotoTaxon = geenFoto.getTaxonId();
-    setAktie(PersistenceConstants.RETRIEVE);
-    setDetailSubTitel(MessageFormat.format(getTekst("natuur.titel.geenfotos"),
-                                        geenFoto.getNaam(getGebruikersTaal())));
+  public void retrieveDetail() {
+    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
+    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap().get("taal"));
+    rangnaam     = new Rangnaam(rangnaamDto);
+    setDetailAktie(PersistenceConstants.RETRIEVE);
+    setDetailSubTitel("natuur.titel.rangnaam.retrieve");
+
+    redirect(RANGNAAM_REDIRECT);
+  }
+
+  public void retrieveGeenFotos() {
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                             .get("taxonId"));
+
+    geenFotos = getTaxonService().taxon(taxonId);
+
     redirect(GEENFOTOS_REDIRECT);
   }
 
@@ -198,19 +196,22 @@ public class RangController extends Natuur {
     }
 
     try {
-      getRangService().save(rang);
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
+          getRangService().save(rang);
           addInfo(PersistenceConstants.CREATED, "'" + rang.getRang() + "'");
+          rangDto = getRangService().rang(rang.getRang());
+          update();
           break;
         case PersistenceConstants.UPDATE:
+          rang.persist(rangDto);
+          getRangService().save(rangDto);
           addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
           break;
       }
-      redirect(RANGEN_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, rang.getRang());
     } catch (ObjectNotFoundException e) {
@@ -222,7 +223,7 @@ public class RangController extends Natuur {
     }
   }
 
-  public void saveRangnaam() {
+  public void saveDetail() {
     var messages  = RangnaamValidator.valideer(rangnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -274,19 +275,13 @@ public class RangController extends Natuur {
     return items;
   }
 
-  public void update(String rang) {
-    rangDto   = getRangService().rang(rang);
-    this.rang = new Rang(rangDto, getGebruikersTaal());
+  public void update() {
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.rang.update");
-    redirect(RANG_REDIRECT);
   }
 
-  public void updateRangnaam(String taal) {
-    rangnaamDto  = rangDto.getRangnaam(taal);
-    rangnaam     = new Rangnaam(rangnaamDto);
+  public void updateDetail() {
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.rangnaam.update");
-    redirect(RANGNAAM_REDIRECT);
   }
 }

@@ -80,6 +80,7 @@ public class Natuur extends DoosBean {
       "/taxa/taxonnaam.xhtml";
   protected static final  String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
   protected static final  String  USER_ROLE             = "natuur-user";
+  protected static final  String  VIEW_ROLE             = "natuur-view";
   protected static final  String  WAARNEMING_REDIRECT   =
       "/waarnemingen/waarneming.xhtml";
   protected static final  String  WAARNEMINGEN_REDIRECT =
@@ -92,6 +93,7 @@ public class Natuur extends DoosBean {
     setAdminRole(getExternalContext().isUserInRole(ADMIN_ROLE));
     setApplicatieNaam(APPLICATIE_NAAM);
     setUserRole(getExternalContext().isUserInRole(USER_ROLE));
+    setViewRole(getExternalContext().isUserInRole(VIEW_ROLE));
     setPath(getExternalContext().getRequestContextPath());
     if (isAdministrator()) {
       addMenuitem("Dropdown.admin", "menu.administratie");
@@ -100,11 +102,13 @@ public class Natuur extends DoosBean {
       addDropdownmenuitem(DD_ADMIN, APP_PARAMS_REDIRECT,
           "menu.applicatieparameters");
     }
-    addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
-    addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
-    addMenuitem(TAXA_REDIRECT,          "menu.taxa");
-    addMenuitem(WAARNEMINGEN_REDIRECT,  "menu.waarnemingen");
-    addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
+    if (isUser() || isView()) {
+      addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
+      addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
+      addMenuitem(TAXA_REDIRECT,          "menu.taxa");
+      addMenuitem(WAARNEMINGEN_REDIRECT,  "menu.waarnemingen");
+      addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
+    }
   }
 
   protected DetailService getDetailService() {
