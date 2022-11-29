@@ -158,7 +158,8 @@ public class RangController extends Natuur {
   public void retrieve() {
     ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 
-    rangDto = getRangService().rang(ec.getRequestParameterMap().get("rang"));
+    rangDto = getRangService().rang(ec.getRequestParameterMap()
+                                      .get(RangDto.COL_RANG));
     rang    = new Rang(rangDto, getGebruikersTaal());
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel("natuur.titel.rang.retrieve");
@@ -169,7 +170,8 @@ public class RangController extends Natuur {
   public void retrieveDetail() {
     ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
 
-    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap().get("taal"));
+    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
+                                         .get(RangnaamDto.COL_TAAL));
     rangnaam     = new Rangnaam(rangnaamDto);
     setDetailAktie(PersistenceConstants.RETRIEVE);
     setDetailSubTitel("natuur.titel.rangnaam.retrieve");
@@ -181,7 +183,7 @@ public class RangController extends Natuur {
     ExternalContext ec      = FacesContext.getCurrentInstance()
                                           .getExternalContext();
     Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
-                                             .get("taxonId"));
+                                             .get(TaxonDto.COL_TAXONID));
 
     geenFotos = getTaxonService().taxon(taxonId);
 

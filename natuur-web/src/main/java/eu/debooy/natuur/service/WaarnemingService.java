@@ -20,10 +20,11 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.WaarnemingDao;
+import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
 import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -67,42 +68,39 @@ public class WaarnemingService {
     waarnemingDao.delete(waarnemingDao.getByPrimaryKey(waarnemingId));
   }
 
+  @GET
+  @Path("/gebied/{gebiedId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId, String taal) {
-    List<Waarneming>  waarnemingen  = new ArrayList<>();
-
+  public Response getGebiedWaarnemingen(
+                      @PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId) {
     try {
-      waarnemingDao.getPerGebied(gebiedId)
-                   .forEach(rij -> waarnemingen.add(new Waarneming(rij, taal)));
+      return Response.ok().entity(waarnemingDao.getPerGebied(gebiedId)).build();
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      return Response.ok().entity(new ArrayList<>()).build();
     }
-
-    return waarnemingen;
   }
 
+  @GET
+  @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
-    List<Waarneming>  waarnemingen  = new ArrayList<>();
-
+  public Response getTaxonWaarnemingen(
+                      @PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
     try {
-      waarnemingDao.getPerTaxon(taxonId)
-                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+      return Response.ok().entity(waarnemingDao.getPerTaxon(taxonId)).build();
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      return Response.ok().entity(new ArrayList<>()).build();
     }
-
-    return waarnemingen;
   }
 
   @GET
   @Path("/{waarnemingId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getWaarneming(
       @PathParam(WaarnemingDto.COL_WAARNEMINGID) Long waarnemingId) {
-    WaarnemingDto waarneming;
-
     try {
-      waarneming  = waarnemingDao.getByPrimaryKey(waarnemingId);
+      return Response.ok()
+                     .entity(waarnemingDao.getByPrimaryKey(waarnemingId))
+                                          .build();
     } catch (ObjectNotFoundException e) {
       var message = new Message.Builder()
                                .setAttribute(WaarnemingDto.COL_WAARNEMINGID)
@@ -110,41 +108,16 @@ public class WaarnemingService {
                                .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
-
-    return Response.ok().entity(waarneming).build();
   }
 
   @GET
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getWaarnemingen() {
-    return Response.ok().entity(waarnemingDao.getAll()).build();
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> query() {
-    List<Waarneming>      waarnemingen  = new ArrayList<>();
-
     try {
-      waarnemingDao.getAll()
-                   .forEach(rij -> waarnemingen.add(new Waarneming(rij)));
+      return Response.ok().entity(waarnemingDao.getAll()).build();
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      return Response.ok().entity(new ArrayList<>()).build();
     }
-
-    return waarnemingen;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Waarneming> query(String taal) {
-    List<Waarneming>  waarnemingen  = new ArrayList<>();
-
-    try {
-      waarnemingDao.getAll()
-                   .forEach(rij -> waarnemingen.add(new Waarneming(rij, taal)));
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return waarnemingen;
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -167,24 +140,12 @@ public class WaarnemingService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public WaarnemingDto waarneming(Long waarnemingId) {
-    WaarnemingDto resultaat =
-        waarnemingDao.getByPrimaryKey(waarnemingId);
+    WaarnemingDto resultaat = waarnemingDao.getByPrimaryKey(waarnemingId);
 
     if (null == resultaat) {
       return new WaarnemingDto();
     }
 
     return resultaat;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<WaarnemingDto> waarnemingOverzicht() {
-    try {
-      return waarnemingDao.getAll();
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return new ArrayList<>();
   }
 }

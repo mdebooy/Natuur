@@ -11,7 +11,7 @@
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#waarnemingenTabel').DataTable( {
+        var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen',
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
@@ -34,12 +34,18 @@
             infoFiltered: "#{i18nTeksten.tekst('pager.info.filtered')}"
           },
           columns: [
-            { data: 'datum', width: '50px', visible: false,  searchable: false},
+            { data: 'datum', visible: false,  searchable: false },
             { data: null, title: '#{i18nTeksten.tekst('label.datum')}', orderData: 0, render: function ( data, type, row ) {
                 return formatDatum(data.datum, taal);
               }
             },
-            { data: 'aantalFotos', title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right' },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                if (data.hasOwnProperty('aantal')) {
+                  return data.aantal;
+                }
+                return '';
+              }
+            },
             { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
                 return getTaxonnaam(data.taxon, taal);
               }
@@ -77,7 +83,7 @@
             </div>
           </div>
 
-          <table class="table is-striped is-narrow is-hoverable" id="waarnemingenTabel" aria-describedby="waarnemngenTabel" />
+          <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemngenTabel" />
         </h:form>
       </div>
     </div>

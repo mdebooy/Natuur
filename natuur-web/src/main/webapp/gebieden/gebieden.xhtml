@@ -1,6 +1,7 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
   xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
@@ -9,7 +10,7 @@
 //<![CDATA[
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#gebiedenTabel').DataTable( {
+        var gebiedenTabel = $('#gebiedenTabel').DataTable( {
           ajax: { url: '/natuur/gebieden',
                   dataSrc: '' },
           order: [[2, 'asc']],
@@ -44,7 +45,13 @@
           ]
         } );
         $( '#gebiedenTabel tbody').on('click', 'tr', function() {
-          alert(tabel.row(this).data().naam);
+          if (gebiedenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formGebieden:link");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', gebiedenTabel.row(this).data().gebiedId);
+          jsfCommandLink.setAttribute('onclick', param);
+          jsfCommandLink.click();
         } );
       } );
 //]]>
@@ -53,7 +60,7 @@
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
-        <h:form id="formRangen">
+        <h:form id="formGebieden">
           <div class="columns titel">
             <div class="column is-10">
               <h2>#{i18nTeksten.tekst('natuur.titel.gebieden')}</h2>
@@ -66,6 +73,9 @@
           </div>
 
           <table class="table is-striped is-narrow is-hoverable" id="gebiedenTabel" aria-describedby="gebiedenTabel" />
+          <h:commandLink id="link" action="#{natuurGebied.retrieve}" style="display:none">
+            <f:param name="gebiedId" value="XX" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

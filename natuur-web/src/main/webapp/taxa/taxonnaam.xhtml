@@ -6,30 +6,46 @@
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="body">
-    <div class="row justify-content-center">
-      <div class="col-10">
-        <h:form class="form-horizontal" id="formTaxonnaam">
-          <div class="col-10">
-            <h2>#{i18nTeksten.tekst(natuurTaxon.detailSubTitel)}</h2>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="taal" class="col-2 control-label">#{i18nTeksten.tekst('label.taal')}</label>
-            <div class="col-9">
-              <d:listbox id="taal" value="#{natuurTaxon.taxonnaam.taal}" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurTaxon.taxonnaam.taal)}" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="naam" class="col-2 control-label">#{i18nTeksten.tekst('label.naam')}</label>
-            <div class="col-9">
-              <t:inputText id="naam" styleClass="form-control form-control-sm" value="#{natuurTaxon.taxonnaam.naam}" maxlength="255" size="100" readonly="#{natuurTaxon.detailAktie.readonly}" />
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formTaxonnaam">
+          <d:titel titel="#{i18nTeksten.tekst(natuurTaxon.detailSubTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurTaxon}" action="createTaxonnaam" />
+
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.taal')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:listbox id="taal" value="#{natuurTaxon.taxonnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurTaxon.taxonnaam.taal)}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.naam')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="naam" styleClass="input required" value="#{natuurTaxon.taxonnaam.naam}" maxlength="255" size="100" readonly="#{natuurTaxon.detailAktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
 
-          <h:commandLink action="#{natuurTaxon.saveTaxonnaam}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.detailAktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurTaxon.saveTaxonnaam}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurTaxon.detailAktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/taxa/taxon.xhtml" aktie="#{natuurTaxon.detailAktie}"/>
+          <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxonnaam" detail="true" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurTaxon.taxonnaam.naam}" />
         </h:form>
       </div>
     </div>
+  </ui:define>
+  <ui:define name="modal">
+    <d:confirmatie titel="#{i18nTeksten.tekst('natuur.titel.taxonnaam.delete')}" />
   </ui:define>
 </ui:composition>

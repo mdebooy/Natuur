@@ -118,7 +118,7 @@ public class TaxonValidatorTest {
     taxon.setUitgestorven("X");
 
     expResult.clear();
-    expResult.add(ERR_UITGESTORVEN);
+    expResult.add(REQ_UITGESTORVEN);
 
     result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());

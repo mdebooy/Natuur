@@ -8,177 +8,253 @@
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
+//<![CDATA[
       $(document).ready(function() {
-        $('#waarnemingenTabel').dataTable( {
-            "order": [[0, "asc"], [2, "asc"]],
-            "columns": [{ "orderable": true },
-                        { "orderable": true },
-                        { "orderable": true },
-                        { "orderable": true },
-                        { "orderable": false }],
-            "pagingType": "full_numbers",
-            "pageLength": #{properties.appValue('natuur.pagelength')},
-            "lengthChange": false,
-            "stateSave": true,
-            "language": {
-              "paginate": {
-                "first": #{properties.appValue('natuur.pager.first')},
-                "last": #{properties.appValue('natuur.pager.last')},
-                "next": #{properties.appValue('natuur.pager.next')},
-                "previous": #{properties.appValue('natuur.pager.previous')}
-              },
-              "search": "#{i18nTeksten.tekst('pager.search')}",
-              "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-              "info": "#{i18nTeksten.tekst('pager.info')}",
-              "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-              "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-            }
-        } );
-        $('#fotosTabel').dataTable( {
-          "order": [[1, "asc"], [0, "asc"]],
-          "columns": [{ "orderable": true },
-                      { "orderable": true },
-                      { "orderable": true },
-                      { "orderable": true }],
-          "pagingType": "full_numbers",
-          "pageLength": #{properties.appValue('natuur.pagelength')},
-          "lengthChange": false,
-          "stateSave": true,
-          "language": {
-            "paginate": {
-              "first": #{properties.appValue('natuur.pager.first')},
-              "last": #{properties.appValue('natuur.pager.last')},
-              "next": #{properties.appValue('natuur.pager.next')},
-              "previous": #{properties.appValue('natuur.pager.previous')}
+        var info = '#{i18nTeksten.tekst('img.info')}';
+        var taal = '#{gebruiker.locale.language}';
+         $('#waarnemingenTabel').DataTable( {
+          ajax: { url: '/natuur/waarnemingen/gebied/#{natuurGebied.gebied.gebiedId}',
+                  dataSrc: '' },
+          order: [[1, 'desc'], [3, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: #{properties.appValue('natuur.pager.first')},
+              last: #{properties.appValue('natuur.pager.last')},
+              next: #{properties.appValue('natuur.pager.next')},
+              previous: #{properties.appValue('natuur.pager.previous')}
             },
-            "search": "#{i18nTeksten.tekst('pager.search')}",
-            "zeroRecords": "#{i18nTeksten.tekst('pager.zero.records')}",
-            "info": "#{i18nTeksten.tekst('pager.info')}",
-            "infoEmpty": "#{i18nTeksten.tekst('pager.info.empty')}",
-            "infoFiltered": "#{i18nTeksten.tekst('pager.info.filtered')}"
-          }
+            search: "#{i18nTeksten.tekst('pager.search')}",
+            zeroRecords: "#{i18nTeksten.tekst('pager.zero.records')}",
+            loadingRecords: "#{i18nTeksten.tekst('pager.loading')}",
+            info: "#{i18nTeksten.tekst('pager.info')}",
+            infoEmpty: "#{i18nTeksten.tekst('pager.info.empty')}",
+            infoFiltered: "#{i18nTeksten.tekst('pager.info.filtered')}"
+          },
+          columns: [
+            { data: 'datum', visible: false,  searchable: false },
+            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', width: '50px', orderData: 0, render: function ( data, type, row ) {
+                return formatDatum(data.datum, taal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                if (data.hasOwnProperty('aantal')) {
+                  return data.aantal;
+                }
+                return '';
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
+                return getTaxonnaam(data.taxon, taal);
+              }
+            },
+            { data: 'taxon.latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('opmerking')) {
+                  return '<img src="/common/images/16x16/status/dialog-information.svg" alt="'+info+'" title="'+data.opmerking+'" />';
+                }
+                return '';
+              }
+            }
+          ]
         } );
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-          $($.fn.dataTable.tables(true)).DataTable().columns.adjust();
-        });
+        $('#fotosTabel').DataTable( {
+          ajax: { url: '/natuur/fotos/gebied/#{natuurGebied.gebied.gebiedId}',
+                  dataSrc: '' },
+          order: [[1, "desc"],[3, "asc"],[2, "asc"]],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: #{properties.appValue('natuur.pager.first')},
+              last: #{properties.appValue('natuur.pager.last')},
+              next: #{properties.appValue('natuur.pager.next')},
+              previous: #{properties.appValue('natuur.pager.previous')}
+            },
+            search: "#{i18nTeksten.tekst('pager.search')}",
+            zeroRecords: "#{i18nTeksten.tekst('pager.zero.records')}",
+            loadingRecords: "#{i18nTeksten.tekst('pager.loading')}",
+            info: "#{i18nTeksten.tekst('pager.info')}",
+            infoEmpty: "#{i18nTeksten.tekst('pager.info.empty')}",
+            infoFiltered: "#{i18nTeksten.tekst('pager.info.filtered')}"
+          },
+          columns: [
+            { data: 'datum', visible: false,  searchable: false},
+            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', width: '50px', orderData: 0, render: function ( data, type, row ) {
+                return formatDatum(data.datum, taal);
+              }
+            },
+            { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
+            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
+                if (data.taxonnamen.hasOwnProperty(taal)) {
+                  return data.taxonnamen[taal].naam;
+                }
+                return data.latijnsenaam;
+              }
+            },
+            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
+                if (data.hasOwnProperty('fotoDetail')) {
+                  return data.fotoDetail;
+                }
+                return '';
+              }
+            },
+            { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('opmerking')) {
+                  return '<img src="/common/images/16x16/status/dialog-information.svg" alt="'+info+'" title="'+data.opmerking+'" />';
+                }
+                return '';
+              }
+            }
+          ]
+        } );
+        initTabs();
       } );
+//]]>
     </script>
   </ui:define>
   <ui:define name="body">
-    <div class="row justify-content-center">
-      <div class="col-10">
-        <h:form class="form-horizontal" id="formGebied">
-          <div class="row titel">
-            <div class="col-10">
-              <t:div rendered="#{!natuurGebied.aktie.readonly}">
-                <h2>#{i18nTeksten.tekst(natuurGebied.subTitel)}</h2>
-              </t:div>
-              <t:div rendered="#{natuurGebied.aktie.readonly}">
-                <h2>#{natuurGebied.subTitel}</h2>
-              </t:div>
-            </div>
-          </div>
-
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formGebied">
           <t:div rendered="#{!natuurGebied.aktie.readonly}">
-            <div class="form-group form-group-sm row">
-              <label for="naam" class="col-2 col-form-label col-form-label-sm">#{i18nTeksten.tekst('label.gebied')}</label>
-              <div class="col-10">
-                <t:inputText id="naam" styleClass="form-control form-control-sm" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" />
-              </div>
-            </div>
+            <d:titel titel="#{i18nTeksten.tekst(natuurGebied.subTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurGebied}" />
           </t:div>
-          <div class="form-group form-group-sm row">
-            <label for="landId" class="col-2 col-form-label col-form-label-sm">#{i18nTeksten.tekst('label.land')}</label>
-            <div class="col-10">
-              <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="latitude" class="col-2 col-form-label col-form-label-sm">#{i18nTeksten.tekst('label.latitude')}</label>
-            <div class="input-group input-group-sm col-6">
-              <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.gebied.latitude}" />
-              <t:inputText id="latitudeGraden" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.latitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="#0" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text input-group-text-sm">°</span>
-              </div>
-              <t:inputText id="latitudeMinuten" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.latitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="#0" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text">'</span>
-              </div>
-              <t:inputText id="latitudeSeconden" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.latitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="#0.000" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text">"</span>
-              </div>
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="longitude" class="col-2 col-form-label col-form-label-sm">#{i18nTeksten.tekst('label.longitude')}</label>
-            <div class="input-group input-group-sm col-6">
-              <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.gebied.longitude}" />
-              <t:inputText id="longitudeGraden" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.longitudeGraden}" maxlength="3" size="3" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="##0" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text">°</span>
-              </div>
-              <t:inputText id="longitudeMinuten" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.longitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="#0" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text">'</span>
-              </div>
-              <t:inputText id="longitudeSeconden" styleClass="form-control form-control-sm text-right" value="#{natuurGebied.gebied.longitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
-                <f:convertNumber type="number" pattern="#0.000" />
-              </t:inputText>
-              <div class="input-group-append">
-                <span class="input-group-text">"</span>
-              </div>
-            </div>
-          </div>
+          <t:div rendered="#{natuurGebied.aktie.readonly}">
+            <d:titel titel="#{natuurGebied.gebied.naam}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurGebied}" />
+          </t:div>
 
-          <h:commandLink action="#{natuurGebied.save}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurGebied.save}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurGebied.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/gebieden/gebieden.xhtml" aktie="#{natuurGebied.aktie}"/>
-
-          <t:div rendered="#{!natuurGebied.aktie.nieuw}">
-            <hr />
-
-            <div class="row" />
-            <div>
-              <ul class="nav nav-tabs" data-tabs="tabs">
-                <li class="nav-item"><a class="nav-link active" href="#waarnemingenTab" data-toggle="tab">#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
-                <li class="nav-item"><a class="nav-link" href="#fotosTab" data-toggle="tab">#{i18nTeksten.tekst('tab.fotos')}</a></li>
-              </ul>
-              <div class="tab-content">
-                <div id="waarnemingenTab" class="tab-pane fade show active" role="tabpanel">
-                  <d:spacer />
-                  <div>
-                    <ui:include src="waarnemingtabel.xhtml">
-                      <ui:param name="form" value="formGebied" />
-                      <ui:param name="lijst" value="#{natuurWaarneming.getGebiedWaarnemingen(natuurGebied.gebied.gebiedId)}" />
-                    </ui:include>
+          <div class="columns is-centered">
+            <div class="column">
+              <t:div class="field is-horizontal" rendered="#{!natuurGebied.aktie.readonly}">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.gebied')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="naam" styleClass="input required" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" />
+                    </div>
                   </div>
                 </div>
-                <div id="fotosTab" class="tab-pane fade" role="tabpanel">
-                  <d:spacer />
-                  <div>
-                    <ui:include src="fotostabel.xhtml">
-                      <ui:param name="form" value="formGebied" />
-                      <ui:param name="lijst" value="#{natuurFoto.getGebiedFotos(natuurGebied.gebied.gebiedId)}" />
-                    </ui:include>
+              </t:div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.land')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:listbox id="landId" required="true" value="#{natuurGebied.gebied.landId}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
+                    </div>
                   </div>
                 </div>
               </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.latitude')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.gebied.latitude}" />
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="latitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">°</span>
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="latitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">'</span>
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="latitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0.000" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">"</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.longitude')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.gebied.longitude}" />
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="longitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">°</span>
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="longitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">'</span>
+                    </div>
+                  </div>
+                  <div class="field has-addons">
+                    <t:inputText id="longitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
+                      <f:convertNumber type="number" pattern="#0.000" />
+                    </t:inputText>
+                    <div class="control">
+                      <span class="button is-static">"</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <d:crudbuttonbar bean="#{natuurGebied}" form="formGebied" returnto="#{natuur.path}/gebieden/gebieden.xhtml" tekst="#{natuurGebied.gebied.naam}" />
+
+              <t:div rendered="#{!natuurGebied.aktie.nieuw}">
+                <d:spacer />
+                <div id="rangTabs" class="tabs is-boxed">
+                  <ul>
+                    <li class="tab-link is-active" onclick="switchTab(event, 'tabWaarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
+                    <li class="tab-link" onclick="switchTab(event, 'tabFotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
+                  </ul>
+                </div>
+                <div class="tabs-details titel">
+                  <div id="tabWaarnemingen" class="tab-detail">
+                    <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemingenTabel" />
+                  </div>
+                  <div id="tabFotos" class="tab-detail is-hidden">
+                    <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
+                  </div>
+                </div>
+              </t:div>
             </div>
-          </t:div>
+          </div>
         </h:form>
       </div>
     </div>
+  </ui:define>
+  <ui:define name="modal">
+    <d:confirmatie titel="#{i18nTeksten.tekst('natuur.titel.gebied.delete')}" />
   </ui:define>
 </ui:composition>

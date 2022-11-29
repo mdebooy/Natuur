@@ -21,6 +21,8 @@ import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Foto;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +36,7 @@ import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -85,6 +88,31 @@ public class FotoService {
     return fotoOverzichtDao.getTaxonSeq(taxonId, taxonSeq);
   }
 
+  @GET
+  @Path("/gebied/{gebiedId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotosGebied(
+                      @PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId) {
+    try {
+      return Response.ok()
+                     .entity(fotoOverzichtDao.getPerGebied(gebiedId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/taxon/{taxonId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotosTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
+    try {
+      return Response.ok()
+                     .entity(fotoOverzichtDao.getPerTaxon(taxonId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<FotoOverzichtDto> fotosPerGebied(Long gebiedId) {
     try {
@@ -113,6 +141,7 @@ public class FotoService {
   }
 
   @GET
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getFotos() {
     return Response.ok().entity(fotoOverzichtDao.getAll()).build();
   }

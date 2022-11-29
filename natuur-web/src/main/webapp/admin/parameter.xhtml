@@ -19,16 +19,16 @@
                 <t:inputText id="waarde" styleClass="form-control form-control-sm" value="#{natuurAppParam.waarde}" maxlength="255" size="100" />
               </t:div>
               <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
-                <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" readonly="false" />
+                <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" readonly="false" textvalue="" />
               </t:div>
               <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
-                <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebiedenId}" readonly="false" />
+                <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebiedenId}" readonly="false" textvalue="" />
               </t:div>
             </div>
           </div>
 
           <h:commandLink action="#{natuurAppParam.save}" id="modify" styleClass="btn btn-sm btn-outline-primary">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/admin/parameters.xhtml" aktie="#{natuurAppParam.aktie}"/>
+          <d:cancel returnto="#{natuur.path}/admin/parameters.xhtml" aktie="#{natuurAppParam.aktie}"/>
         </h:form>
       </div>
     </div>

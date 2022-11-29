@@ -68,7 +68,7 @@
 
           <h:commandLink action="#{natuurWaarneming.saveFoto}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurWaarneming.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
           <h:commandLink action="#{natuurWaarneming.saveFoto}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurWaarneming.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel href="#{natuur.path}/waarnemingen/waarneming.xhtml" aktie="#{natuurWaarneming.aktie}" />
+          <d:cancel returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" aktie="#{natuurWaarneming.aktie}" />
         </h:form>
       </div>
     </div>

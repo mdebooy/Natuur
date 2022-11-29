@@ -1,6 +1,7 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
   xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
@@ -45,7 +46,13 @@
           ]
         } );
         $( '#taxaTabel tbody').on('click', 'tr', function() {
-          alert(tabel.row(this).data().taxonId);
+          if (tabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formTaxa:link");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', tabel.row(this).data().taxonId);
+          jsfCommandLink.setAttribute('onclick', param);
+          jsfCommandLink.click();
         } );
       } );
 //]]>
@@ -66,7 +73,10 @@
             </div>
           </div>
 
-          <table class="table is-striped is-narrow is-hoverable" id="taxaTabel" aria-describedby="taxaTabel" />
+          <table id="taxaTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="taxaTabel" />
+          <h:commandLink id="link" action="#{natuurTaxon.retrieve}" style="display:none">
+            <f:param name="taxonId" value="XX" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

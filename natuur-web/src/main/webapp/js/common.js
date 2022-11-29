@@ -17,6 +17,7 @@
 
 var landen = {};
 var rangen = {};
+var windstreken = {};
 
 function getCoordinaten(gebied) {
   if (gebied.hasOwnProperty('latitude')) {

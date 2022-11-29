@@ -210,7 +210,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -288,7 +288,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
     assertNotEquals(taxonDto.getUitgestorven(),
-                    instance.getUitgestorven().equals(DoosConstants.WAAR));
+                    instance.getUitgestorven());
     assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
   }
 
@@ -503,7 +503,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -523,7 +523,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
 
     instance.setLatijnsenaam(LATIJNSENAAM);
@@ -547,7 +547,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -567,7 +567,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -588,7 +588,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -608,7 +608,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
 
     instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
@@ -632,7 +632,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -652,7 +652,7 @@ public class TaxonTest {
     assertEquals(RANG, instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -672,7 +672,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertEquals(RANGNAAM, instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -692,7 +692,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertEquals(TAXONID, instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -700,11 +700,11 @@ public class TaxonTest {
   public void testSetUitgestorven1() {
     var instance  = new Taxon();
     assertFalse(instance.isUitgestorven());
-    assertEquals(ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
 
     instance.setUitgestorven(WAAR);
     assertTrue(instance.isUitgestorven());
-    assertEquals(WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
     assertNull(instance.getOpmerking());
@@ -715,7 +715,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -724,11 +724,11 @@ public class TaxonTest {
     var instance  = new Taxon();
     instance.setUitgestorven(WAAR);
     assertTrue(instance.isUitgestorven());
-    assertEquals(WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
 
     instance.setUitgestorven(ONWAAR);
     assertFalse(instance.isUitgestorven());
-    assertEquals(ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
     assertNull(instance.getOpmerking());
@@ -739,7 +739,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -747,11 +747,11 @@ public class TaxonTest {
   public void testSetUitgestorven3() {
     var instance  = new Taxon();
     assertFalse(instance.isUitgestorven());
-    assertEquals(ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
 
     instance.setUitgestorven(true);
     assertTrue(instance.isUitgestorven());
-    assertEquals(WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
     assertNull(instance.getOpmerking());
@@ -762,7 +762,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -771,11 +771,11 @@ public class TaxonTest {
     var instance  = new Taxon();
     instance.setUitgestorven(true);
     assertTrue(instance.isUitgestorven());
-    assertEquals(WAAR, instance.getUitgestorven());
+    assertTrue(instance.getUitgestorven());
 
     instance.setUitgestorven(false);
     assertFalse(instance.isUitgestorven());
-    assertEquals(ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
     assertNull(instance.getOpmerking());
@@ -786,7 +786,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(Integer.valueOf(0), instance.getVolgnummer());
   }
 
@@ -806,7 +806,7 @@ public class TaxonTest {
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
-    assertEquals(DoosConstants.ONWAAR, instance.getUitgestorven());
+    assertFalse(instance.getUitgestorven());
     assertEquals(VOLGNUMMER, instance.getVolgnummer());
   }
 

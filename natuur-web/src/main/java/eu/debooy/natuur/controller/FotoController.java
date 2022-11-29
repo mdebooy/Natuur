@@ -69,8 +69,6 @@ public class FotoController extends Natuur {
   }
 
   public void create(Long waarnemingId) {
-    waarneming  =
-        new Waarneming(getWaarnemingService().waarneming(waarnemingId));
     foto        = new Foto();
     foto.setWaarnemingId(waarnemingId);
     fotoDto     = new FotoDto();
@@ -177,9 +175,6 @@ public class FotoController extends Natuur {
   public void retrieve(Long fotoId) {
     fotoDto     = getFotoService().foto(fotoId);
     foto        = new Foto(fotoDto);
-    waarneming  =
-        new Waarneming(getWaarnemingService()
-                .waarneming(fotoDto.getWaarnemingId()));
 
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel("natuur.titel.foto.retrieve");
@@ -224,8 +219,8 @@ public class FotoController extends Natuur {
     fotoDto       = getFotoService().foto(fotoId);
     foto          = new Foto(fotoDto);
     if (DoosUtils.isNotBlankOrNull(foto.getWaarnemingId())) {
-      waarneming  = new Waarneming(getWaarnemingService()
-                            .waarneming(foto.getWaarnemingId()));
+//      waarneming  = new Waarneming(getWaarnemingService()
+//                            .waarneming(foto.getWaarnemingId()));
     } else {
       waarneming  = new Waarneming();
     }

@@ -10,7 +10,7 @@
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#fotosTabel').dataTable( {
+        var tabel = $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos',
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
@@ -86,7 +86,7 @@
             </div>
           </div>
 
-          <table class="table is-striped is-narrow is-hoverable" id="fotosTabel" aria-describedby="fotosTabel" />
+          <table class="table is-striped is-narrow" id="fotosTabel" aria-describedby="fotosTabel" />
         </h:form>
       </div>
     </div>

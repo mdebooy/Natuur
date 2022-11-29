@@ -16,11 +16,8 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Comparator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -31,7 +28,6 @@ import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.json.simple.JSONObject;
 
 
 /**
@@ -121,47 +117,5 @@ public class RangnaamDto extends Dto implements Comparable<RangnaamDto> {
 
   public void setTaal(String taal) {
     this.taal = taal;
-  }
-
-  public JSONObject toJSON() {
-    var     json      = new JSONObject();
-    String  attribute;
-    Object  waarde;
-
-    for (var method : DoosUtils.findGetters(this.getClass().getMethods())) {
-      if ((!method.getName().startsWith(PersistenceConstants.GET)
-              && !method.getName().startsWith(PersistenceConstants.IS))
-              || method.getName().equals("getClass")) {
-        continue;
-      }
-
-      if (method.getName().startsWith(PersistenceConstants.GET)) {
-        attribute = method.getName().substring(3);
-      } else {
-        attribute = method.getName().substring(2);
-      }
-
-      try {
-        attribute = attribute.substring(0, 1).toLowerCase()
-                + attribute.substring(1);
-        waarde = method.invoke(this);
-        if (DoosUtils.isNotBlankOrNull(waarde)) {
-          if (waarde instanceof Dto) {
-            // Geef enkel de naam van de andere DTO.
-          } else {
-            json.put(attribute, waarde);
-          }
-        }
-      } catch (IllegalAccessException | IllegalArgumentException
-              | InvocationTargetException e) {
-        var logger  = getLogger();
-        if (null != logger) {
-          logger.error("toJSON {}: {}", e.getClass().getName(),
-                                        e.getLocalizedMessage());
-        }
-      }
-    }
-
-    return json;
   }
 }

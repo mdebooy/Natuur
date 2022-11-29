@@ -22,12 +22,15 @@ import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.GebiedValidator;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import org.slf4j.Logger;
@@ -54,12 +57,14 @@ public class GebiedController extends Natuur {
     redirect(GEBIED_REDIRECT);
   }
 
-  public void delete(Long gebiedId, String naam) {
+  public void delete() {
     try {
-      getGebiedService().delete(gebiedId);
-      addInfo(PersistenceConstants.DELETED, naam);
+      getGebiedService().delete(gebied.getGebiedId());
+      addInfo(PersistenceConstants.DELETED, gebied.getNaam());
+      gebied  = new Gebied();
+      redirect(GEBIEDEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, naam);
+      addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -67,16 +72,8 @@ public class GebiedController extends Natuur {
     }
   }
 
-  public String gebied(Long gebiedId) {
-    return getGebiedService().gebied(gebiedId).getNaam();
-  }
-
   public Gebied getGebied() {
     return gebied;
-  }
-
-  public Collection<Gebied> getGebieden() {
-    return getGebiedService().query();
   }
 
   public Collection<SelectItem> getSelectGebieden() {
@@ -117,7 +114,12 @@ public class GebiedController extends Natuur {
     return items;
   }
 
-  public void retrieve(Long gebiedId) {
+  public void retrieve() {
+    ExternalContext ec        = FacesContext.getCurrentInstance()
+                                            .getExternalContext();
+    Long            gebiedId  = Long.valueOf(ec.getRequestParameterMap()
+                                               .get(GebiedDto.COL_GEBIEDID));
+
     gebied  = new Gebied(getGebiedService().gebied(gebiedId));
     setAktie(PersistenceConstants.RETRIEVE);
     setSubTitel(gebied.getNaam());
@@ -136,6 +138,7 @@ public class GebiedController extends Natuur {
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           addInfo(PersistenceConstants.CREATED, gebied.getNaam());
+          update();
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
@@ -144,7 +147,6 @@ public class GebiedController extends Natuur {
           addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
           break;
       }
-      redirect(GEBIEDEN_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, gebied.getNaam());
     } catch (ObjectNotFoundException e) {
@@ -156,10 +158,8 @@ public class GebiedController extends Natuur {
     }
   }
 
-  public void update(Long gebiedId) {
-    gebied  = new Gebied(getGebiedService().gebied(gebiedId));
+  public void update() {
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.gebied.update");
-    redirect(GEBIED_REDIRECT);
   }
 }

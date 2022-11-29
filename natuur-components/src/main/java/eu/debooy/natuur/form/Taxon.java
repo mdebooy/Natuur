@@ -17,8 +17,6 @@
 package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.DoosConstants;
-import static eu.debooy.doosutils.DoosConstants.ONWAAR;
-import static eu.debooy.doosutils.DoosConstants.WAAR;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.DetailDto;
@@ -47,7 +45,7 @@ public class Taxon
   private String              rang;
   private String              rangnaam;
   private Long                taxonId;
-  private String              uitgestorven        = DoosConstants.ONWAAR;
+  private Boolean             uitgestorven        = Boolean.FALSE;
   private Integer             volgnummer          = 0;
 
   public Taxon() {}
@@ -79,8 +77,7 @@ public class Taxon
     parentId      = taxonDto.getParentId();
     rang          = taxonDto.getRang();
     taxonId       = taxonDto.getTaxonId();
-    uitgestorven  = taxonDto.getUitgestorven() ? DoosConstants.WAAR
-                                               : DoosConstants.ONWAAR;
+    uitgestorven  = taxonDto.getUitgestorven();
     volgnummer    = taxonDto.getVolgnummer();
   }
 
@@ -100,8 +97,7 @@ public class Taxon
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
     taxonId             = detailDto.getTaxonId();
-    uitgestorven        = detailDto.getUitgestorven() ? DoosConstants.WAAR
-                                                      : DoosConstants.ONWAAR;
+    uitgestorven        = detailDto.getUitgestorven();
     volgnummer          = detailDto.getVolgnummer();
  }
 
@@ -258,7 +254,7 @@ public class Taxon
     return taxonId;
   }
 
-  public String getUitgestorven() {
+  public Boolean getUitgestorven() {
     return uitgestorven;
   }
 
@@ -272,7 +268,7 @@ public class Taxon
   }
 
   public boolean isUitgestorven() {
-    return DoosConstants.WAAR.equals(getUitgestorven());
+    return getUitgestorven();
   }
 
   public void persist(TaxonDto parameter) {
@@ -296,10 +292,8 @@ public class Taxon
                                     parameter.getTaxonId()).isEquals()) {
       parameter.setTaxonId(this.taxonId);
     }
-    boolean vlag  = DoosConstants.WAAR.equals(uitgestorven);
-    if (!new EqualsBuilder().append(vlag, parameter.getUitgestorven())
-                                                   .isEquals()) {
-      parameter.setUitgestorven(vlag);
+    if (!this.uitgestorven.equals(parameter.getUitgestorven())) {
+      parameter.setUitgestorven(this.uitgestorven);
     }
     if (!new EqualsBuilder().append(this.volgnummer,
                                     parameter.getVolgnummer()).isEquals()) {
@@ -348,11 +342,16 @@ public class Taxon
   }
 
   public void setUitgestorven(String uitgestorven) {
-    this.uitgestorven       = uitgestorven;
+    if (uitgestorven.equals(DoosConstants.WAAR)
+            || uitgestorven.equals(DoosConstants.ONWAAR)) {
+      this.uitgestorven = uitgestorven.equals(DoosConstants.WAAR);
+    } else {
+      this.uitgestorven = null;
+    }
   }
 
   public void setUitgestorven(boolean uitgestorven) {
-    this.uitgestorven       = (uitgestorven ? WAAR : ONWAAR);
+    this.uitgestorven       = uitgestorven;
   }
 
   public void setVolgnummer(Integer volgnummer) {

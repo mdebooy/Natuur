@@ -29,13 +29,8 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.natuur.validator.TaxonnaamValidator;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
@@ -43,6 +38,7 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +62,6 @@ public class TaxonController extends Natuur {
   private Taxon         taxon;
   private TaxonDto      taxonDto;
   private Taxonnaam     taxonnaam;
-  private TaxonnaamDto  taxonnaamDto;
 
   public void bepaalOuder(Long parentId) {
     if (null == parentId) {
@@ -105,22 +100,18 @@ public class TaxonController extends Natuur {
     aktieveTab    = NAMEN_TAB;
     taxonnaam     = new Taxonnaam();
     taxonnaam.setTaal(getGebruikersTaal());
-    taxonnaamDto  = new TaxonnaamDto();
-    taxonnaamDto.setTaal(getGebruikersTaal());
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel("natuur.titel.taxonnaam.create");
     redirect(TAXONNAAM_REDIRECT);
   }
 
-  public void delete(Long taxonId) {
-    String  naam;
+  public void delete() {
     try {
-      taxonDto  = getTaxonService().taxon(taxonId);
-      naam      = taxonDto.getNaam(getGebruikersTaal());
-      getTaxonService().delete(taxonId);
-      addInfo(PersistenceConstants.DELETED, naam);
+      getTaxonService().delete(taxon.getTaxonId());
+      addInfo(PersistenceConstants.DELETED, taxon.getNaam());
+      redirect(TAXA_REDIRECT);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, taxonId);
+      addError(PersistenceConstants.NOTFOUND, taxon.getTaxonId());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -128,13 +119,14 @@ public class TaxonController extends Natuur {
     }
   }
 
-  public void deleteTaxonnaam(String taal) {
+  public void deleteDetail() {
     try {
-      taxonDto.removeTaxonnaam(taal);
+      taxonDto.removeTaxonnaam(taxonnaam.getTaal());
       getTaxonService().save(taxonDto);
-      addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
+      addInfo(PersistenceConstants.DELETED, "'" + taxonnaam.getTaal() + "'");
+      redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, taal);
+      addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -154,29 +146,6 @@ public class TaxonController extends Natuur {
     return ouderNiveau;
   }
 
-  private Map<String, String> getRangnamen() {
-    Map<String, String> rangnamen = new HashMap<>();
-
-    getRangService().query(getGebruikersTaal())
-                    .forEach(rij -> rangnamen.put(rij.getRang(),
-                                                  rij.getNaam()));
-
-    return rangnamen;
-  }
-
-  public Collection<Taxon> getTaxa() {
-    var         rangnamen = getRangnamen();
-    List<Taxon> taxa      = new ArrayList<>();
-
-    getTaxonService().query(getGebruikersTaal())
-                     .forEach(rij -> {
-      rij.setRangnaam(rangnamen.get(rij.getRang()));
-      taxa.add(rij);
-    });
-
-    return taxa;
-  }
-
   public Taxon getTaxon() {
     return taxon;
   }
@@ -185,10 +154,10 @@ public class TaxonController extends Natuur {
     return taxonnaam;
   }
 
-  public Collection<Taxonnaam> getTaxonnamen() {
-    Collection<Taxonnaam> taxonnamen  = new HashSet<>();
+  public JSONArray getTaxonnamen() {
+    JSONArray taxonnamen  = new JSONArray();
 
-    taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
+    taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(rij.toJSON()));
 
     return taxonnamen;
   }
@@ -197,7 +166,7 @@ public class TaxonController extends Natuur {
     ExternalContext ec      = FacesContext.getCurrentInstance()
                                           .getExternalContext();
     Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
-                                             .get("taxonId"));
+                                             .get(TaxonDto.COL_TAXONID));
 
     aktieveTab  = KINDEREN_TAB;
     taxonDto    = getTaxonService().taxon(taxonId);
@@ -208,14 +177,18 @@ public class TaxonController extends Natuur {
     redirect(TAXON_REDIRECT);
   }
 
-  public void retrieve(Long taxonId) {
-    aktieveTab  = KINDEREN_TAB;
-    taxonDto    = getTaxonService().taxon(taxonId);
-    taxon       = new Taxon(taxonDto, getGebruikersTaal());
-    bepaalOuder(taxon.getParentId());
-    setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(taxon.getNaam());
-    redirect(TAXON_REDIRECT);
+  public void retrieveDetail() {
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+
+    aktieveTab  = NAMEN_TAB;
+    taxonnaam   =
+        new Taxonnaam(taxonDto.getTaxonnaam(ec.getRequestParameterMap()
+                                              .get(TaxonnaamDto.COL_TAAL)));
+    setDetailAktie(PersistenceConstants.RETRIEVE);
+    setDetailSubTitel("natuur.titel.taxonnaam.retrieve");
+
+    redirect(TAXONNAAM_REDIRECT);
   }
 
   public void save() {
@@ -256,7 +229,7 @@ public class TaxonController extends Natuur {
     }
   }
 
-  public void saveTaxonnaam() {
+  public void saveDetail() {
     var messages  = TaxonnaamValidator.valideer(taxonnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -270,7 +243,7 @@ public class TaxonController extends Natuur {
     }
 
     try {
-      taxonnaamDto  = new TaxonnaamDto();
+      var taxonnaamDto  = new TaxonnaamDto();
       taxonnaam.persist(taxonnaamDto);
       taxonDto.addNaam(taxonnaamDto);
       if (getGebruikersTaal().equals(taxonnaam.getTaal())) {
@@ -279,10 +252,12 @@ public class TaxonController extends Natuur {
       getTaxonService().save(taxonDto);
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
-          addInfo(PersistenceConstants.CREATED, "'" + taxonnaam.getTaal() + "'");
+          addInfo(PersistenceConstants.CREATED,
+                  "'" + taxonnaam.getTaal() + "'");
           break;
         case PersistenceConstants.UPDATE:
-          addInfo(PersistenceConstants.UPDATED, "'" + taxonnaam.getTaal() + "'");
+          addInfo(PersistenceConstants.UPDATED,
+                  "'" + taxonnaam.getTaal() + "'");
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT,
@@ -319,22 +294,15 @@ public class TaxonController extends Natuur {
     return items;
   }
 
-  public void update(Long taxonId) {
+  public void update() {
     aktieveTab  = KINDEREN_TAB;
-    taxonDto    = getTaxonService().taxon(taxonId);
-    taxon       = new Taxon(taxonDto, getGebruikersTaal());
-    bepaalOuder(taxon.getParentId());
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.taxon.update");
-    redirect(TAXON_REDIRECT);
   }
 
-  public void updateTaxonnaam(String taal) {
+  public void updateDetail() {
     aktieveTab    = NAMEN_TAB;
-    taxonnaamDto  = taxonDto.getTaxonnaam(taal);
-    taxonnaam     = new Taxonnaam(taxonnaamDto);
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.taxonnaam.update");
-    redirect(TAXONNAAM_REDIRECT);
   }
 }

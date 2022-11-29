@@ -20,7 +20,6 @@ import eu.debooy.doos.component.Export;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.Datum;
-import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -36,17 +35,18 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
 import eu.debooy.natuur.validator.WaarnemingValidator;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
+import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -95,8 +95,6 @@ public class WaarnemingController extends Natuur {
 
   public void delete(Long waarnemingId) {
     try {
-      waarneming =
-          new Waarneming(getWaarnemingService().waarneming(waarnemingId));
       getWaarnemingService().delete(waarnemingId);
       addInfo(PersistenceConstants.DELETED,
               formateerDatum(waarneming.getDatum()));
@@ -131,10 +129,10 @@ public class WaarnemingController extends Natuur {
     return foto;
   }
 
-  public List<Foto> getFotos() {
-    List<Foto>  fotos = new ArrayList<>();
+  public JSONArray getFotos() {
+    JSONArray fotos = new JSONArray();
 
-    waarnemingDto.getFotos().forEach(rij -> fotos.add(new Foto(rij)));
+    waarnemingDto.getFotos().forEach(rij -> fotos.add(rij.toJSON()));
 
     return fotos;
   }
@@ -151,49 +149,22 @@ public class WaarnemingController extends Natuur {
     return items;
   }
 
-  public List<Waarneming> getGebiedWaarnemingen(Long gebiedId) {
-    List<Waarneming>  resultaat;
-
-    try {
-      resultaat =
-          getWaarnemingService().getGebiedWaarnemingen(gebiedId,
-                                                       getGebruikersTaal());
-    } catch (Exception e) {
-      addError(DoosConstants.NOI18N, e.getClass());
-      resultaat = new ArrayList<>();
-    }
-
-    return resultaat;
-  }
-
-  public List<Waarneming> getTaxonWaarnemingen(Long taxonId) {
-    List<Waarneming>  resultaat;
-
-    try {
-      resultaat = getWaarnemingService().getTaxonWaarnemingen(taxonId);
-    } catch (Exception e) {
-      addError(DoosConstants.NOI18N, e.getClass());
-      resultaat = new ArrayList<>();
-    }
-
-    return resultaat;
-  }
-
   public Waarneming getWaarneming() {
     return waarneming;
   }
 
-  public List<Waarneming> getWaarnemingen() {
-    List<Waarneming>  resultaat;
+  public void retrieve() {
+    ExternalContext ec            =
+        FacesContext.getCurrentInstance().getExternalContext();
+    Long            waarnemingId  =
+        Long.valueOf(ec.getRequestParameterMap()
+                       .get(WaarnemingDto.COL_WAARNEMINGID));
 
-    try {
-      resultaat = getWaarnemingService().query(getGebruikersTaal());
-    } catch (Exception e) {
-      addError(DoosConstants.NOI18N, e.getClass());
-      resultaat = new ArrayList<>();
-    }
-
-    return resultaat;
+    waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
+    waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+    setAktie(PersistenceConstants.RETRIEVE);
+    setSubTitel("natuur.titel.waarneming.retrieve");
+    redirect(WAARNEMING_REDIRECT);
   }
 
   public void save() {
@@ -204,7 +175,7 @@ public class WaarnemingController extends Natuur {
     }
 
     var melding = formateerDatum(waarneming.getDatum()) + " "
-                    + waarneming.getTaxon().getNaam();
+                    + waarneming.getGebied().getNaam();
     try {
       waarneming.persist(waarnemingDto);
       getWaarnemingService().save(waarnemingDto);
@@ -280,20 +251,14 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void update(Long waarnemingId) {
-    waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
-    waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+  public void update() {
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.waarneming.update");
-    redirect(WAARNEMING_REDIRECT);
   }
 
-  public void updateFoto(Long taxonSeq) {
-    fotoDto = waarnemingDto.getFoto(taxonSeq);
-    foto    = new Foto(fotoDto);
+  public void updateDetail() {
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.foto.update");
-    redirect(WNMFOTO_REDIRECT);
   }
 
   public void waarnemingenlijst() {

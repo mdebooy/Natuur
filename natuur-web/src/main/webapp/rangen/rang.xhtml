@@ -10,9 +10,7 @@
     <script type="text/javascript" charset="utf-8">
 //<![CDATA[
       $(document).ready(function() {
-        var rang = '#{natuurRang.rang.rang}';
-        var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#rangnamenTabel').DataTable( {
+        var rangnamenTabel = $('#rangnamenTabel').DataTable( {
           data: #{natuurRang.rangnamen},
           order: [[1, 'asc']],
           pagingType: 'full_numbers',
@@ -42,7 +40,7 @@
             { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
           ]
         } );
-        var subtabel = $('#totalenTabel').DataTable( {
+        var totalenTabel = $('#totalenTabel').DataTable( {
           ajax: { url: '/natuur/overzicht/#{natuurRang.rang.rang}/#{gebruiker.locale.language}',
                   dataSrc: '' },
           order: [[0, 'asc']],
@@ -76,24 +74,27 @@
             }]
         } );
         $( '#rangnamenTabel tbody').on('click', 'tr', function() {
-          if (tabel.row(this).data() === undefined) {
+          if (rangnamenTabel.row(this).data() === undefined) {
             return;
           }
-          var jsfCommandLink = document.getElementById("formRang:link");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', tabel.row(this).data().taal);
+          var jsfCommandLink = document.getElementById("formRang:linkRangnaam");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', rangnamenTabel.row(this).data().taal);
           jsfCommandLink.setAttribute('onclick', param);
           jsfCommandLink.click();
         } );
         $( '#totalenTabel tbody').on('click', 'tr', function() {
-          if (subtabel.row(this).data() === undefined) {
+          if (totalenTabel.row(this).data() === undefined) {
             return;
           }
-          var jsfCommandLink = document.getElementById("formRang:detailLink");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', subtabel.row(this).data().taxonId);
+          var jsfCommandLink = document.getElementById("formRang:linkTotaal");
+          var param = jsfCommandLink.getAttribute('onclick').replace('XX', totalenTabel.row(this).data().taxonId);
           jsfCommandLink.setAttribute('onclick', param);
           jsfCommandLink.click();
         } );
-        document.getElementById('totalenTabel').style.width = '100%';
+        if (#{!natuurRang.aktie.nieuw}) {
+          document.getElementById('totalenTabel').style.width = '100%';
+        }
+        initTabs();
       } );
 //]]>
     </script>
@@ -137,20 +138,20 @@
                 <d:spacer />
                 <div id="rangTabs" class="tabs is-boxed">
                   <ul>
-                    <li class="tab-link is-active" onclick="switchTab(event, 'tabNamen')"><a>Namen</a></li>
-                    <li class="tab-link" onclick="switchTab(event, 'tabTotalen')"><a>Totalen</a></li>
+                    <li class="tab-link is-active" onclick="switchTab(event, 'tabNamen')"><a>#{i18nTeksten.tekst('tab.namen')}</a></li>
+                    <li class="tab-link" onclick="switchTab(event, 'tabTotalen')"><a>#{i18nTeksten.tekst('tab.totalen')}</a></li>
                   </ul>
                 </div>
                 <div class="tabs-details titel">
                   <div id="tabNamen" class="tab-detail">
-                    <table id="rangnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangnamenTabel" style="width: 100%" />
-                    <h:commandLink id="link" action="#{natuurRang.retrieveDetail}" class="is-hidden">
+                    <table id="rangnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangnamenTabel" />
+                    <h:commandLink id="linkRangnaam" action="#{natuurRang.retrieveNaam}" class="is-hidden">
                       <f:param name="taal" value="XX" />
                     </h:commandLink>
                   </div>
                   <div id="tabTotalen" class="tab-detail is-hidden">
-                    <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" style="width: 100%" />
-                    <h:commandLink id="detailLink" action="#{natuurRang.retrieveGeenFotos}" class="is-hidden">
+                    <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" />
+                    <h:commandLink id="linkTotaal" action="#{natuurRang.retrieveGeenFotos}" class="is-hidden">
                       <f:param name="taxonId" value="XX" />
                     </h:commandLink>
                   </div>

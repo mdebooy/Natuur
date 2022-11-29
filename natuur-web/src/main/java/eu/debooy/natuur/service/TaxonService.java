@@ -79,32 +79,18 @@ public class TaxonService {
     taxonDao.delete(taxonDao.getByPrimaryKey(taxonId));
   }
 
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxon> getKinderen(Long parentId) {
-    List<Taxon>       kinderen  = new ArrayList<>();
+  @GET
+  @Path("/kinderen/{parentId}")
+  public Response getKinderen(@PathParam(TaxonDto.COL_PARENTID) Long parentId) {
+    List<TaxonDto>  kinderen  = new ArrayList<>();
 
     try {
-      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-      rijen.forEach(taxonDto -> kinderen.add(new Taxon(taxonDto)));
+      kinderen  = taxonDao.getKinderen(parentId);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return kinderen;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxon> getKinderen(Long parentId, String taal) {
-    List<Taxon>       kinderen  = new ArrayList<>();
-
-    try {
-      List<TaxonDto>  rijen     = taxonDao.getKinderen(parentId);
-      rijen.forEach(rij -> kinderen.add(new Taxon(rij, taal)));
-    } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
-    }
-
-    return kinderen;
+    return Response.ok().entity(kinderen).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -146,7 +132,15 @@ public class TaxonService {
 
   @GET
   public Response getTaxa() {
-    return Response.ok().entity(taxonDao.getAll()).build();
+    List<TaxonDto>  taxa  = new ArrayList<>();
+
+    try {
+      taxa = taxonDao.getAll();
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return Response.ok().entity(taxa).build();
   }
 
   @GET
@@ -189,7 +183,7 @@ public class TaxonService {
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> query() {
-    List<Taxon>     taxa  = new ArrayList<>();
+    List<Taxon> taxa  = new ArrayList<>();
 
     taxonDao.getAll().forEach(rij -> taxa.add(new Taxon(rij)));
 
