@@ -10,7 +10,7 @@
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#fotosTabel').DataTable( {
+        $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos',
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
@@ -68,25 +68,22 @@
             }
           ]
         } );
+        if (#{natuurFoto.user}) {
+          addPdfButton('fotosTabel', 'formFotos', '#{i18nTeksten.tekst('img.PDF')}');
+        }
       } );
     </script>
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-12">
-        <h:form id="formRangen">
-          <div class="columns titel">
-            <div class="column is-10">
-              <h2>#{i18nTeksten.tekst('natuur.titel.fotos')}</h2>
-            </div>
-            <div class="column is-2 has-text-right" >
-              <h:commandLink action="#{natuurFoto.fotolijst}">
-                <f:setPropertyActionListener target="#{natuurFoto.type}" value="PDF" /><img src="/common/images/32x32/apps/evince.png" alt="#{i18nTeksten.tekst('img.PDF')}" title="#{i18nTeksten.tekst('img.PDF')}" />
-              </h:commandLink>
-            </div>
-          </div>
+        <h:form id="formFotos">
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.fotos')}" />
 
-          <table class="table is-striped is-narrow" id="fotosTabel" aria-describedby="fotosTabel" />
+          <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
+          <h:commandLink id="pdfFotos" class="is-hidden" action="#{natuurFoto.fotolijst}">
+            <f:setPropertyActionListener target="#{natuurFoto.type}" value="PDF" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

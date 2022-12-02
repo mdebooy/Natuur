@@ -28,6 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
@@ -66,7 +67,23 @@ public class WaarnemingController extends Natuur {
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
 
-  public void create(Long taxonId) {
+  public void create() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
+      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+      return;
+    }
+
+    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                             .get(TaxonDto.COL_TAXONID));
+
     var gebied  = getGebiedService().gebied(
             Long.valueOf(getParameter("natuur.default.gebiedid")));
     var taxon   = getTaxonService().taxon(taxonId);
@@ -84,6 +101,11 @@ public class WaarnemingController extends Natuur {
   }
 
   public void createFoto() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     foto    = new Foto();
     fotoDto = new FotoDto();
     foto.setWaarnemingId(waarneming.getWaarnemingId());
@@ -93,7 +115,13 @@ public class WaarnemingController extends Natuur {
     redirect(WNMFOTO_REDIRECT);
   }
 
-  public void delete(Long waarnemingId) {
+  public void delete() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    Long waarnemingId = waarneming.getWaarnemingId();
     try {
       getWaarnemingService().delete(waarnemingId);
       addInfo(PersistenceConstants.DELETED,
@@ -107,7 +135,13 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void deleteFoto(Long taxonSeq) {
+  public void deleteFoto() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    Long taxonSeq = foto.getTaxonSeq();
     try {
       waarnemingDto.removeFoto(taxonSeq);
       getWaarnemingService().save(waarnemingDto);
@@ -154,8 +188,21 @@ public class WaarnemingController extends Natuur {
   }
 
   public void retrieve() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec            =
         FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap()
+           .containsKey(WaarnemingDto.COL_WAARNEMINGID)) {
+      addError(ComponentsConstants.GEENPARAMETER,
+               WaarnemingDto.COL_WAARNEMINGID);
+      return;
+    }
+
     Long            waarnemingId  =
         Long.valueOf(ec.getRequestParameterMap()
                        .get(WaarnemingDto.COL_WAARNEMINGID));
@@ -252,16 +299,31 @@ public class WaarnemingController extends Natuur {
   }
 
   public void update() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.waarneming.update");
   }
 
   public void updateDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.foto.update");
   }
 
   public void waarnemingenlijst() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var exportData  = new ExportData();
 
     exportData.addMetadata("application", getApplicatieNaam());

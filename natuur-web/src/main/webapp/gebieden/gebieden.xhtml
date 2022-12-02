@@ -7,7 +7,6 @@
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var gebiedenTabel = $('#gebiedenTabel').DataTable( {
@@ -48,34 +47,28 @@
           if (gebiedenTabel.row(this).data() === undefined) {
             return;
           }
-          var jsfCommandLink = document.getElementById("formGebieden:link");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', gebiedenTabel.row(this).data().gebiedId);
-          jsfCommandLink.setAttribute('onclick', param);
+          var jsfCommandLink = document.getElementById('formGebieden:linkGebied');
+          alterParam(jsfCommandLink, gebiedenTabel.row(this).data().gebiedId);
           jsfCommandLink.click();
         } );
+        if (#{natuurGebied.user}) {
+          var imgTekst = '#{i18nTeksten.tekst('img.nieuw')}';
+          addInsertButton('gebiedenTabel', 'formGebieden', imgTekst);
+        }
       } );
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formGebieden">
-          <div class="columns titel">
-            <div class="column is-10">
-              <h2>#{i18nTeksten.tekst('natuur.titel.gebieden')}</h2>
-            </div>
-            <div class="column is-2 has-text-right" >
-              <h:commandLink action="#{natuurGebied.create}">
-                <img src="/common/images/32x32/actions/document-new.png" alt="#{i18nTeksten.tekst('img.nieuw')}" title="#{i18nTeksten.tekst('img.nieuw')}" />
-              </h:commandLink>
-            </div>
-          </div>
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.gebieden')}" />
 
-          <table class="table is-striped is-narrow is-hoverable" id="gebiedenTabel" aria-describedby="gebiedenTabel" />
-          <h:commandLink id="link" action="#{natuurGebied.retrieve}" style="display:none">
+          <table id="gebiedenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="gebiedenTabel" />
+          <h:commandLink id="linkGebied" action="#{natuurGebied.retrieve}" style="display:none">
             <f:param name="gebiedId" value="XX" />
           </h:commandLink>
+          <h:commandLink id="addGebieden" class="is-hidden" action="#{natuurGebied.create}" />
         </h:form>
       </div>
     </div>

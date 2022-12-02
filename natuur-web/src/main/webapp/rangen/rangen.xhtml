@@ -10,7 +10,7 @@
 //<![CDATA[
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
-        var tabel = $('#rangenTabel').DataTable( {
+        var rangenTabel = $('#rangenTabel').DataTable( {
           ajax: { url: '/natuur/rangen',
                   dataSrc: '' },
           order: [[0, 'asc']],
@@ -44,16 +44,19 @@
               }
             }
           ]
-        });
+        } );
         $( '#rangenTabel tbody').on('click', 'tr', function() {
-          if (tabel.row(this).data() === undefined) {
+          if (rangenTabel.row(this).data() === undefined) {
             return;
           }
-          var jsfCommandLink = document.getElementById("formRangen:link");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', tabel.row(this).data().rang);
-          jsfCommandLink.setAttribute('onclick', param);
+          var jsfCommandLink = document.getElementById('formRangen:linkRang');
+          alterParam(jsfCommandLink, rangenTabel.row(this).data().rang);
           jsfCommandLink.click();
         } );
+        if (#{natuurRang.user}) {
+          var imgTekst = '#{i18nTeksten.tekst('img.nieuw')}';
+          addInsertButton('rangenTabel', 'formRangen', imgTekst);
+        }
       });
 //]]>
     </script>
@@ -62,12 +65,13 @@
     <div class="columns is-centered content">
       <div class="column is-6">
         <h:form id="formRangen">
-          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.rangen')}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurRang}" rendered="#{natuurRang.user}" />
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.rangen')}" />
 
           <table id="rangenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangenTabel" />
-          <h:commandLink id="link" action="#{natuurRang.retrieve}" style="display:none">
+          <h:commandLink id="linkRang" class="is-hidden" action="#{natuurRang.retrieve}">
             <f:param name="rang" value="XX" />
           </h:commandLink>
+          <h:commandLink id="addRangen" class="is-hidden" action="#{natuurRang.create}" />
         </h:form>
       </div>
     </div>

@@ -50,6 +50,11 @@ public class GebiedController extends Natuur {
   private Gebied  gebied;
 
   public void create() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     gebied  = new Gebied();
     gebied.setLandId(Long.parseLong(getParameter("natuur.default.landid")));
     setAktie(PersistenceConstants.CREATE);
@@ -58,6 +63,11 @@ public class GebiedController extends Natuur {
   }
 
   public void delete() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     try {
       getGebiedService().delete(gebied.getGebiedId());
       addInfo(PersistenceConstants.DELETED, gebied.getNaam());
@@ -115,8 +125,19 @@ public class GebiedController extends Natuur {
   }
 
   public void retrieve() {
+    if (!isUser() && isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec        = FacesContext.getCurrentInstance()
                                             .getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(GebiedDto.COL_GEBIEDID)) {
+      addError(ComponentsConstants.GEENPARAMETER, GebiedDto.COL_GEBIEDID);
+      return;
+    }
+
     Long            gebiedId  = Long.valueOf(ec.getRequestParameterMap()
                                                .get(GebiedDto.COL_GEBIEDID));
 
@@ -127,6 +148,11 @@ public class GebiedController extends Natuur {
   }
 
   public void save() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = GebiedValidator.valideer(gebied);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -159,6 +185,11 @@ public class GebiedController extends Natuur {
   }
 
   public void update() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.gebied.update");
   }

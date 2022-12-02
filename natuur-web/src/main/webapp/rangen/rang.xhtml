@@ -8,7 +8,6 @@
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var rangnamenTabel = $('#rangnamenTabel').DataTable( {
           data: #{natuurRang.rangnamen},
@@ -78,8 +77,7 @@
             return;
           }
           var jsfCommandLink = document.getElementById("formRang:linkRangnaam");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', rangnamenTabel.row(this).data().taal);
-          jsfCommandLink.setAttribute('onclick', param);
+          alterParam(jsfCommandLink, rangnamenTabel.row(this).data().taal);
           jsfCommandLink.click();
         } );
         $( '#totalenTabel tbody').on('click', 'tr', function() {
@@ -87,23 +85,24 @@
             return;
           }
           var jsfCommandLink = document.getElementById("formRang:linkTotaal");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', totalenTabel.row(this).data().taxonId);
-          jsfCommandLink.setAttribute('onclick', param);
+          alterParam(jsfCommandLink, totalenTabel.row(this).data().taxonId);
           jsfCommandLink.click();
         } );
         if (#{!natuurRang.aktie.nieuw}) {
           document.getElementById('totalenTabel').style.width = '100%';
         }
+        if (#{natuurRang.aktie.wijzig and natuurRang.user}) {
+          addInsertButton('rangnamenTabel', 'formRang', '#{i18nTeksten.tekst('img.nieuw')}');
+        }
         initTabs();
       } );
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formRang">
-          <d:titel titel="#{i18nTeksten.tekst(natuurRang.subTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurRang}" action="createRangnaam" rendered="#{natuurRang.aktie.wijzig}" />
+          <d:titel titel="#{i18nTeksten.tekst(natuurRang.subTitel)}" />
 
           <div class="columns is-centered">
             <div class="column">
@@ -145,13 +144,14 @@
                 <div class="tabs-details titel">
                   <div id="tabNamen" class="tab-detail">
                     <table id="rangnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangnamenTabel" />
-                    <h:commandLink id="linkRangnaam" action="#{natuurRang.retrieveNaam}" class="is-hidden">
+                    <h:commandLink id="linkRangnaam" class="is-hidden" action="#{natuurRang.retrieveNaam}">
                       <f:param name="taal" value="XX" />
                     </h:commandLink>
+                    <h:commandLink id="addRangnamen" class="is-hidden" action="#{natuurRang.createRangnaam}" />
                   </div>
                   <div id="tabTotalen" class="tab-detail is-hidden">
                     <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" />
-                    <h:commandLink id="linkTotaal" action="#{natuurRang.retrieveGeenFotos}" class="is-hidden">
+                    <h:commandLink id="linkTotaal" class="is-hidden" action="#{natuurRang.retrieveGeenFotos}">
                       <f:param name="taxonId" value="XX" />
                     </h:commandLink>
                   </div>

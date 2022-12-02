@@ -61,6 +61,11 @@ public class RangController extends Natuur {
   private RangnaamDto rangnaamDto;
 
   public void create() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     rang    = new Rang();
     rangDto = new RangDto();
     setAktie(PersistenceConstants.CREATE);
@@ -69,6 +74,11 @@ public class RangController extends Natuur {
   }
 
   public void createRangnaam() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     rangnaam    = new Rangnaam();
     rangnaam.setTaal(getGebruikersTaal());
     rangnaam.setRang(rang.getRang());
@@ -81,6 +91,11 @@ public class RangController extends Natuur {
   }
 
   public void delete() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     try {
       getRangService().delete(rang.getRang());
       addInfo(PersistenceConstants.DELETED, this.rang.getNaam());
@@ -97,6 +112,11 @@ public class RangController extends Natuur {
   }
 
   public void deleteDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var taal  = rangnaam.getTaal();
     try {
       rangDto.removeRangnaam(taal);
@@ -156,7 +176,17 @@ public class RangController extends Natuur {
   }
 
   public void retrieve() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(RangDto.COL_RANG)) {
+      addError(ComponentsConstants.GEENPARAMETER, RangDto.COL_RANG);
+      return;
+    }
 
     rangDto = getRangService().rang(ec.getRequestParameterMap()
                                       .get(RangDto.COL_RANG));
@@ -167,8 +197,40 @@ public class RangController extends Natuur {
     redirect(RANG_REDIRECT);
   }
 
-  public void retrieveDetail() {
+  public void retrieveGeenFotos() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
+      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+      return;
+    }
+
+    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                             .get(TaxonDto.COL_TAXONID));
+
+    geenFotos = getTaxonService().taxon(taxonId);
+
+    redirect(GEENFOTOS_REDIRECT);
+  }
+
+  public void retrieveNaam() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(RangnaamDto.COL_TAAL)) {
+      addError(ComponentsConstants.GEENPARAMETER, RangnaamDto.COL_TAAL);
+      return;
+    }
 
     rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
                                          .get(RangnaamDto.COL_TAAL));
@@ -179,18 +241,12 @@ public class RangController extends Natuur {
     redirect(RANGNAAM_REDIRECT);
   }
 
-  public void retrieveGeenFotos() {
-    ExternalContext ec      = FacesContext.getCurrentInstance()
-                                          .getExternalContext();
-    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
-                                             .get(TaxonDto.COL_TAXONID));
-
-    geenFotos = getTaxonService().taxon(taxonId);
-
-    redirect(GEENFOTOS_REDIRECT);
-  }
-
   public void save() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = RangValidator.valideer(rang);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -226,6 +282,11 @@ public class RangController extends Natuur {
   }
 
   public void saveDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = RangnaamValidator.valideer(rangnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -278,11 +339,21 @@ public class RangController extends Natuur {
   }
 
   public void update() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.rang.update");
   }
 
   public void updateDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.rangnaam.update");
   }

@@ -75,28 +75,36 @@ public class TaxonController extends Natuur {
   }
 
   public void create() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    ExternalContext ec      = FacesContext.getCurrentInstance()
+                                          .getExternalContext();
+
     aktieveTab  = KINDEREN_TAB;
     taxon       = new Taxon();
     taxonDto    = new TaxonDto();
-    ouderNiveau = Long.valueOf(0);
+    if (ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
+      var parentId  = Long.valueOf(ec.getRequestParameterMap()
+                                     .get(TaxonDto.COL_TAXONID));
+      var ouderRang = getTaxonService().taxon(parentId).getRang();
+      ouderNiveau   = getRangService().rang(ouderRang).getNiveau();
+    } else {
+      ouderNiveau = Long.valueOf(0);
+    }
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.taxon.create");
     redirect(TAXON_REDIRECT);
   }
 
-  public void create(Long parentId) {
-    aktieveTab    = KINDEREN_TAB;
-    taxon         = new Taxon();
-    taxonDto      = new TaxonDto();
-    var ouderRang = getTaxonService().taxon(parentId).getRang();
-    ouderNiveau   = getRangService().rang(ouderRang).getNiveau();
-    taxon.setParentId(parentId);
-    setAktie(PersistenceConstants.CREATE);
-    setSubTitel("natuur.titel.taxon.create");
-    redirect(TAXON_REDIRECT);
-  }
+  public void createDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
 
-  public void createTaxonnaam() {
     aktieveTab    = NAMEN_TAB;
     taxonnaam     = new Taxonnaam();
     taxonnaam.setTaal(getGebruikersTaal());
@@ -106,6 +114,11 @@ public class TaxonController extends Natuur {
   }
 
   public void delete() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     try {
       getTaxonService().delete(taxon.getTaxonId());
       addInfo(PersistenceConstants.DELETED, taxon.getNaam());
@@ -120,6 +133,11 @@ public class TaxonController extends Natuur {
   }
 
   public void deleteDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     try {
       taxonDto.removeTaxonnaam(taxonnaam.getTaal());
       getTaxonService().save(taxonDto);
@@ -163,8 +181,19 @@ public class TaxonController extends Natuur {
   }
 
   public void retrieve() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec      = FacesContext.getCurrentInstance()
                                           .getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
+      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+      return;
+    }
+
     Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
                                              .get(TaxonDto.COL_TAXONID));
 
@@ -178,8 +207,18 @@ public class TaxonController extends Natuur {
   }
 
   public void retrieveDetail() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     ExternalContext ec      = FacesContext.getCurrentInstance()
                                           .getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(TaxonnaamDto.COL_TAAL)) {
+      addError(ComponentsConstants.GEENPARAMETER, TaxonnaamDto.COL_TAAL);
+      return;
+    }
 
     aktieveTab  = NAMEN_TAB;
     taxonnaam   =
@@ -192,6 +231,11 @@ public class TaxonController extends Natuur {
   }
 
   public void save() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = TaxonValidator.valideer(taxon);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -230,6 +274,11 @@ public class TaxonController extends Natuur {
   }
 
   public void saveDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = TaxonnaamValidator.valideer(taxonnaam);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -295,12 +344,22 @@ public class TaxonController extends Natuur {
   }
 
   public void update() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     aktieveTab  = KINDEREN_TAB;
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.taxon.update");
   }
 
   public void updateDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     aktieveTab    = NAMEN_TAB;
     setDetailAktie(PersistenceConstants.UPDATE);
     setDetailSubTitel("natuur.titel.taxonnaam.update");
