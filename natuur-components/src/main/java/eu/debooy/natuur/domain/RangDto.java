@@ -57,10 +57,10 @@ public class RangDto extends Dto implements Comparable<RangDto> {
 
   public static final String  QRY_VANAF = "rangenVanaf";
 
-  @Column(name="NIVEAU", nullable=false, updatable=false)
+  @Column(name="NIVEAU", nullable=false)
   private Long    niveau;
   @Id
-  @Column(name="RANG", length=3, nullable=false)
+  @Column(name="RANG", length=3, nullable=false, updatable=false)
   private String  rang;
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=RangnaamDto.class, orphanRemoval=true)
