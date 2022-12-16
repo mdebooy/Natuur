@@ -9,7 +9,7 @@
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formTaxonnaam">
-          <d:titel titel="#{i18nTeksten.tekst(natuurTaxon.detailSubTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurTaxon}" action="createTaxonnaam" />
+          <d:titel titel="#{i18nTeksten.tekst(natuurTaxon.detailSubTitel)}" />
 
           <div class="columns is-centered">
             <div class="column">
@@ -40,7 +40,7 @@
             </div>
           </div>
 
-          <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxonnaam" detail="true" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurTaxon.taxonnaam.naam}" />
+          <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxonnaam" detail="detail" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurTaxon.taxonnaam.naam}" />
         </h:form>
       </div>
     </div>

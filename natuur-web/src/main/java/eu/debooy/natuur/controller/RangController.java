@@ -73,7 +73,7 @@ public class RangController extends Natuur {
     redirect(RANG_REDIRECT);
   }
 
-  public void createRangnaam() {
+  public void createDetail() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
@@ -197,6 +197,28 @@ public class RangController extends Natuur {
     redirect(RANG_REDIRECT);
   }
 
+  public void retrieveDetail() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(RangnaamDto.COL_TAAL)) {
+      addError(ComponentsConstants.GEENPARAMETER, RangnaamDto.COL_TAAL);
+      return;
+    }
+
+    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
+                                         .get(RangnaamDto.COL_TAAL));
+    rangnaam     = new Rangnaam(rangnaamDto);
+    setDetailAktie(PersistenceConstants.RETRIEVE);
+    setDetailSubTitel("natuur.titel.rangnaam.retrieve");
+
+    redirect(RANGNAAM_REDIRECT);
+  }
+
   public void retrieveGeenFotos() {
     if (!isUser() && !isView()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -217,28 +239,6 @@ public class RangController extends Natuur {
     geenFotos = getTaxonService().taxon(taxonId);
 
     redirect(GEENFOTOS_REDIRECT);
-  }
-
-  public void retrieveNaam() {
-    if (!isUser() && !isView()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
-
-    if (!ec.getRequestParameterMap().containsKey(RangnaamDto.COL_TAAL)) {
-      addError(ComponentsConstants.GEENPARAMETER, RangnaamDto.COL_TAAL);
-      return;
-    }
-
-    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
-                                         .get(RangnaamDto.COL_TAAL));
-    rangnaam     = new Rangnaam(rangnaamDto);
-    setDetailAktie(PersistenceConstants.RETRIEVE);
-    setDetailSubTitel("natuur.titel.rangnaam.retrieve");
-
-    redirect(RANGNAAM_REDIRECT);
   }
 
   public void save() {

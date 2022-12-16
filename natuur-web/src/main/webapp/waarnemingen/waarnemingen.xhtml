@@ -65,7 +65,7 @@
             }
           ]
         } );
-        if (#{natuurRang.user}) {
+        if (#{natuurWaarneming.user or natuurWaarneming.view}) {
           addPdfButton('waarnemingenTabel', 'formWaarnemingen', '#{i18nTeksten.tekst('img.PDF')}');
         }
       } );

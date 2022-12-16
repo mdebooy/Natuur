@@ -68,7 +68,7 @@
             }
           ]
         } );
-        if (#{natuurFoto.user}) {
+        if (#{natuurFoto.user or natuurFoto.view}) {
           addPdfButton('fotosTabel', 'formFotos', '#{i18nTeksten.tekst('img.PDF')}');
         }
       } );

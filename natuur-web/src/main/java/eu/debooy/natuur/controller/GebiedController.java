@@ -125,7 +125,7 @@ public class GebiedController extends Natuur {
   }
 
   public void retrieve() {
-    if (!isUser() && isView()) {
+    if (!isUser() && !isView()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }

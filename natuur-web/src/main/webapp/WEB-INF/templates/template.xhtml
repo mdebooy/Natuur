@@ -4,46 +4,46 @@
    xmlns:d="http://java.debooy.eu/jsf/facelets"
    xmlns:h="http://java.sun.com/jsf/html"
   xmlns:ui="http://java.sun.com/jsf/facelets">
-<h:head>
-  <ui:param name="applicatienaam" value="#{natuur.applicatieNaam}" />
-  <ui:param name="path"           value="#{natuur.path}" />
-  <title>#{applicatienaam} - #{i18nTeksten.tekst('natuur.titel')}</title>
-  <meta charset="utf-8" />
-  <meta http-equiv="X-UA-Compatible"  content="IE=edge" />
-  <meta name="viewport"               content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" type="text/css" media="all" href="/common/css/jquery.dataTables.min.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="/common/css/jquery-ui-1.12.1.min.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="#{properties.appValue('natuur.stylesheet')}" />
-  <script src="/common/js/jquery-3.5.1.min.js"></script>
-  <script src="/common/js/jquery.dataTables.min.js"></script>
-  <script src="/common/js/jquery-ui-1.12.1.min.js"></script>
-  <script src="/common/js/dOOS.js"></script>
-  <script src="#{path}/js/common.js"></script>
-  <link rel="shortcut icon" href="#{path}/favicon.ico" />
-  <ui:insert name="head" />
-</h:head>
-<h:body>
-  <div id="container">
-    <div id="menu" class="row">
-      <d:menu bean="#{natuur}" applicatienaam="#{applicatienaam}" path="#{path}" logo="" />
-    </div>
-    <div id="content" class="row">
-      <div class="container">
-        <ui:insert name="body" />
-        <d:messages />
+  <h:head>
+    <ui:param name="applicatienaam" value="#{natuur.applicatieNaam}" />
+    <ui:param name="path"           value="#{natuur.path}" />
+    <title>#{applicatienaam} - #{i18nTeksten.tekst('natuur.titel')}</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible"  content="IE=edge" />
+    <meta name="viewport"               content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="all" href="/common/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="/common/css/jquery-ui-1.12.1.min.css" />
+    <link rel="stylesheet" type="text/css" media="all" href="#{properties.appValue('natuur.stylesheet')}" />
+    <script src="/common/js/jquery-3.5.1.min.js"></script>
+    <script src="/common/js/jquery.dataTables.min.js"></script>
+    <script src="/common/js/jquery-ui-1.12.1.min.js"></script>
+    <script src="/common/js/dOOS.js"></script>
+    <script src="#{path}/js/common.js"></script>
+    <link rel="shortcut icon" href="#{path}/favicon.ico" />
+    <ui:insert name="head" />
+  </h:head>
+  <h:body>
+    <div id="container">
+      <div id="menu" class="row">
+        <d:menu bean="#{natuur}" applicatienaam="#{applicatienaam}" path="#{path}" logo="" />
       </div>
-    </div>
-    <div id="footer" class="row">
-      <div class="container">
-        <div class="is-12 has-text-right footer">
-          <d:footer />
+      <div id="content" class="row">
+        <div class="container">
+          <ui:insert name="body" />
+          <d:messages />
         </div>
       </div>
+      <div id="footer" class="row">
+        <div class="container">
+          <div class="is-12 has-text-right footer">
+            <d:footer />
+          </div>
+        </div>
+      </div>
+      <div id="modal" class="row">
+        <ui:insert name="modal" />
+      </div>
     </div>
-    <div id="modal" class="row">
-      <ui:insert name="modal" />
-    </div>
-  </div>
-  <script src="/common/js/Bulma.js"></script>
-</h:body>
+    <script src="/common/js/Bulma.js"></script>
+  </h:body>
 </html>

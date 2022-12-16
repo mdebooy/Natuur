@@ -215,27 +215,10 @@
     <div class="columns is-centered content">
       <div class="column is-10">
         <h:form id="formTaxon">
-          <t:div rendered="#{!natuurTaxon.aktie.readonly}">
-            <d:titel titel="#{i18nTeksten.tekst(natuurTaxon.subTitel)}" />
-          </t:div>
-          <t:div rendered="#{natuurTaxon.aktie.readonly}">
-            <d:titel titel="#{natuurTaxon.taxon.naam}" />
-          </t:div>
+          <d:titel titel="#{natuurTaxon.subTitel}" />
 
           <div class="columns is-centered">
             <div class="column">
-              <t:div class="field is-horizontal" rendered="#{!natuurTaxon.aktie.readonly}">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.naam')}</label>
-                </div>
-                <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="naam" styleClass="input" value="#{natuurTaxon.taxon.naam}" maxlength="255" size="100" readonly="true" />
-                    </div>
-                  </div>
-                </div>
-              </t:div>
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
                   <label class="label">#{i18nTeksten.tekst('label.volgnummer')}</label>

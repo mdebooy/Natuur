@@ -124,10 +124,10 @@
       <div class="column is-8">
         <h:form id="formGebied">
           <t:div rendered="#{!natuurGebied.aktie.readonly}">
-            <d:titel titel="#{i18nTeksten.tekst(natuurGebied.subTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurGebied}" />
+            <d:titel titel="#{i18nTeksten.tekst(natuurGebied.subTitel)}" />
           </t:div>
           <t:div rendered="#{natuurGebied.aktie.readonly}">
-            <d:titel titel="#{natuurGebied.gebied.naam}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurGebied}" />
+            <d:titel titel="#{natuurGebied.gebied.naam}" />
           </t:div>
 
           <div class="columns is-centered">

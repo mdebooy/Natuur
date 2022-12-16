@@ -64,31 +64,31 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
   public static final String  QRY_OVERZICHTRANG = "overzichtRang";
 
   @ReadOnly
-  @Column(name="OP_FOTO", insertable= false, updatable=false)
+  @Column(name="OP_FOTO", insertable=false, updatable=false)
   private Integer   opFoto;
   @Id
   @ReadOnly
-  @Column(name="PARENT_ID", insertable= false, updatable=false)
+  @Column(name="PARENT_ID", insertable=false, updatable=false)
   private Long      parentId;
   @ReadOnly
-  @Column(name="PARENT_LATIJNSENAAM", length=255, insertable= false, updatable=false)
+  @Column(name="PARENT_LATIJNSENAAM", length=255, insertable=false, updatable=false)
   private String    parentLatijnsenaam;
   @Id
   @ReadOnly
-  @Column(name="PARENT_RANG", length=3, insertable= false, updatable=false)
+  @Column(name="PARENT_RANG", length=3, insertable=false, updatable=false)
   private String    parentRang;
   @ReadOnly
-  @Column(name="PARENT_VOLGNUMMER", insertable= false, updatable=false)
+  @Column(name="PARENT_VOLGNUMMER", insertable=false, updatable=false)
   private Integer   parentVolgnummer;
   @Id
   @ReadOnly
-  @Column(name="RANG", length=3, insertable= false, updatable=false)
+  @Column(name="RANG", length=3, insertable=false, updatable=false)
   private String    rang;
   @ReadOnly
-  @Column(name="TOTAAL", insertable= false, updatable=false)
+  @Column(name="TOTAAL", insertable=false, updatable=false)
   private Integer   totaal;
   @ReadOnly
-  @Column(name="WAARGENOMEN", insertable= false, updatable=false)
+  @Column(name="WAARGENOMEN", insertable=false, updatable=false)
   private Integer   waargenomen;
 
   @ReadOnly

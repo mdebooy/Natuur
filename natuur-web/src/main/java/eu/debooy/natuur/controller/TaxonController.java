@@ -95,7 +95,7 @@ public class TaxonController extends Natuur {
       ouderNiveau = Long.valueOf(0);
     }
     setAktie(PersistenceConstants.CREATE);
-    setSubTitel("natuur.titel.taxon.create");
+    setSubTitel(getTekst("natuur.titel.taxon.create"));
     redirect(TAXON_REDIRECT);
   }
 
@@ -253,7 +253,7 @@ public class TaxonController extends Natuur {
           taxon.setTaxonId(taxonDto.getTaxonId());
           addInfo(PersistenceConstants.CREATED, naam);
           setAktie(PersistenceConstants.UPDATE);
-          setSubTitel("natuur.titel.taxon.update");
+          setSubTitel(getTekst("natuur.titel.taxon.update", naam));
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, naam);
@@ -297,6 +297,7 @@ public class TaxonController extends Natuur {
       taxonDto.addNaam(taxonnaamDto);
       if (getGebruikersTaal().equals(taxonnaam.getTaal())) {
         taxon.setNaam(taxonnaam.getNaam());
+        setSubTitel(getTekst("natuur.titel.taxon.update", taxonnaam.getNaam()));
       }
       getTaxonService().save(taxonDto);
       switch (getDetailAktie().getAktie()) {
@@ -351,7 +352,7 @@ public class TaxonController extends Natuur {
 
     aktieveTab  = KINDEREN_TAB;
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel("natuur.titel.taxon.update");
+    setSubTitel(getTekst("natuur.titel.taxon.update", taxon.getNaam()));
   }
 
   public void updateDetail() {

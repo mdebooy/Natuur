@@ -29,13 +29,9 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.form.Foto;
-import eu.debooy.natuur.form.FotoOverzicht;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
@@ -60,6 +56,11 @@ public class FotoController extends Natuur {
   private Waarneming  waarneming;
 
   public void create() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     foto        = new Foto();
     fotoDto     = new FotoDto();
     waarneming  = new Waarneming();
@@ -69,6 +70,11 @@ public class FotoController extends Natuur {
   }
 
   public void create(Long waarnemingId) {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     foto        = new Foto();
     foto.setWaarnemingId(waarnemingId);
     fotoDto     = new FotoDto();
@@ -79,6 +85,11 @@ public class FotoController extends Natuur {
   }
 
   public void delete(Long fotoId) {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     try {
       fotoDto = getFotoService().foto(fotoId);
       getFotoService().delete(fotoId);
@@ -93,6 +104,11 @@ public class FotoController extends Natuur {
   }
 
   public void fotolijst() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var exportData  = new ExportData();
 
     exportData.addMetadata("application", getApplicatieNaam());
@@ -137,35 +153,8 @@ public class FotoController extends Natuur {
     }
   }
 
-  private List<FotoOverzicht> fotos(List<FotoOverzichtDto> fotosPerTaxon) {
-    Map<Long, String>   landnamen = new HashMap<>();
-    var                 taal      = getGebruikersTaal();
-    List<FotoOverzicht> overzicht = new ArrayList<>();
-    fotosPerTaxon.forEach(rij -> {
-      Long  landId  = rij.getLandId();
-      landnamen.computeIfAbsent(landId,
-                                k -> getI18nLandnaam().getI18nLandnaam(landId,
-                                                                       taal));
-      overzicht.add(new FotoOverzicht(rij, taal, landnamen.get(landId)));
-    });
-
-    return overzicht;
-  }
-
   public Foto getFoto() {
     return foto;
-  }
-
-  public Collection<FotoOverzicht> getFotos() {
-    return fotos(getFotoService().fotoOverzicht());
-  }
-
-  public List<FotoOverzicht> getGebiedFotos(Long gebiedId) {
-    return fotos(getFotoService().fotosPerGebied(gebiedId));
-  }
-
-  public List<FotoOverzicht> getTaxonFotos(Long taxonId) {
-    return fotos(getFotoService().fotosPerTaxon(taxonId));
   }
 
   public Waarneming getWaarneming() {
@@ -173,6 +162,11 @@ public class FotoController extends Natuur {
   }
 
   public void retrieve(Long fotoId) {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     fotoDto     = getFotoService().foto(fotoId);
     foto        = new Foto(fotoDto);
 
@@ -182,6 +176,11 @@ public class FotoController extends Natuur {
   }
 
   public void save() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = FotoValidator.valideer(foto);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -216,6 +215,11 @@ public class FotoController extends Natuur {
   }
 
   public void update(Long fotoId) {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     fotoDto       = getFotoService().foto(fotoId);
     foto          = new Foto(fotoDto);
     if (DoosUtils.isNotBlankOrNull(foto.getWaarnemingId())) {

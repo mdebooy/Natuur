@@ -9,7 +9,7 @@
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formRangnaam">
-          <d:titel titel="#{i18nTeksten.tekst(natuurRang.detailSubTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurRang}" action="createRangnaam" />
+          <d:titel titel="#{i18nTeksten.tekst(natuurRang.detailSubTitel)}" />
 
           <div class="columns is-centered">
             <div class="column">
@@ -52,7 +52,7 @@
             </div>
           </div>
 
-          <d:crudbuttonbar bean="#{natuurRang}" form="formRangnaam" detail="true" returnto="#{natuur.path}/rangen/rang.xhtml" tekst="#{natuurRang.rangnaam.naam}" />
+          <d:crudbuttonbar bean="#{natuurRang}" form="formRangnaam" detail="detail" returnto="#{natuur.path}/rangen/rang.xhtml" tekst="#{natuurRang.rangnaam.naam}" />
         </h:form>
       </div>
     </div>

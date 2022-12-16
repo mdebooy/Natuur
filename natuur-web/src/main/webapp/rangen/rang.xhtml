@@ -144,10 +144,10 @@
                 <div class="tabs-details titel">
                   <div id="tabNamen" class="tab-detail">
                     <table id="rangnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="rangnamenTabel" />
-                    <h:commandLink id="linkRangnaam" class="is-hidden" action="#{natuurRang.retrieveNaam}">
+                    <h:commandLink id="linkRangnaam" class="is-hidden" action="#{natuurRang.retrieveDetail}">
                       <f:param name="taal" value="XX" />
                     </h:commandLink>
-                    <h:commandLink id="addRangnamen" class="is-hidden" action="#{natuurRang.createRangnaam}" />
+                    <h:commandLink id="addRangnamen" class="is-hidden" action="#{natuurRang.createDetail}" />
                   </div>
                   <div id="tabTotalen" class="tab-detail is-hidden">
                     <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" />
