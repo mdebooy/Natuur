@@ -184,7 +184,7 @@
           jsfCommandLink.click();
         } );
         $( '#taxonnamenTabel tbody').on('click', 'tr', function() {
-          if (taxonnamenTabel.row(this).data() === undefined || !natuurTaxon.user) {
+          if (taxonnamenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkTaxonnaam');
