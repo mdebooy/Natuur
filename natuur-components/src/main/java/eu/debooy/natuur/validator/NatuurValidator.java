@@ -29,6 +29,7 @@ import java.util.List;
 /**
  * @author Marco de Booij
  */
+@SuppressWarnings("java:S1118")
 public abstract class NatuurValidator {
   protected static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(gebiedId)) {

@@ -76,6 +76,7 @@ public class Foto
     return new EqualsBuilder().append(fotoId, foto.fotoId).isEquals();
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getFotoBestand() {
     return fotoBestand;
   }
@@ -132,6 +133,7 @@ public class Foto
     }
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void setFotoBestand(String fotoBestand) {
     this.fotoBestand  = fotoBestand;
   }

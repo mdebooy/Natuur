@@ -98,6 +98,7 @@ public class FotoOverzicht {
                               .isEquals();
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Date getDatum() {
     return new Date(datum.getTime());
   }
@@ -142,6 +143,7 @@ public class FotoOverzicht {
     return landnaam;
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getLatijnsenaam() {
     return latijnsenaam;
   }

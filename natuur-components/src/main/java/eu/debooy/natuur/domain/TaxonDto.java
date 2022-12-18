@@ -220,6 +220,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
                               .isEquals();
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getLatijnsenaam() {
     return latijnsenaam;
   }

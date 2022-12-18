@@ -105,6 +105,7 @@ public class Gebied
     return new EqualsBuilder().append(gebiedId, gebied.gebiedId).isEquals();
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getCoordinaten() {
     var coordinaten = new StringBuilder();
 
@@ -227,6 +228,7 @@ public class Gebied
     }
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void setGebiedId(Long gebiedId) {
     this.gebiedId = gebiedId;
   }
