@@ -184,7 +184,7 @@
           jsfCommandLink.click();
         } );
         $( '#taxonnamenTabel tbody').on('click', 'tr', function() {
-          if (taxonnamenTabel.row(this).data() === undefined) {
+          if (taxonnamenTabel.row(this).data() === undefined || !natuurTaxon.user) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkTaxonnaam');
@@ -316,7 +316,7 @@
                     </h:commandLink>
                   </div>
                   <div id="tabNamen" class="tab-detail is-hidden">
-                    <table id="taxonnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="taxonnamenTabel" />
+                    <table id="taxonnamenTabel" class="table is-striped is-narrow #{natuurTaxon.user ? 'is-hoverable' : ''}" aria-describedby="taxonnamenTabel" />
                     <h:commandLink id="linkTaxonnaam" class="is-hidden" action="#{natuurTaxon.retrieveDetail}">
                       <f:param name="taal" value="XX" />
                     </h:commandLink>
