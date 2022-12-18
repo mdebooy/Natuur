@@ -1,15 +1,15 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:h="http://java.sun.com/jsf/html"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:ui="http://java.sun.com/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         $('#parametersTabel').dataTable( {
           "order": [[1, "asc"]],
-          "columns": [{ "orderable": false, "visible": #{natuur.administrator} },
-                      { "orderable": true },
+          "columns": [{ "orderable": true },
                       { "orderable": false }],
           "pagingType": "full_numbers",
           "pageLength": #{properties.appValue('natuur.pagelength')},
@@ -33,10 +33,10 @@
     </script>
   </ui:define>
   <ui:define name="body">
-    <div class="row justify-content-center">
-      <div class="col-10">
+    <div class="columns is-centered content">
+      <div class="column is-10">
         <h:form id="formParameters">
-          <h2 class="titel">#{i18nTeksten.tekst('titel.applicatie.parameters')}</h2>
+          <d:titel titel="#{i18nTeksten.tekst('titel.applicatie.parameters')}" />
 
           <ui:include src="parameterstabel.xhtml">
             <ui:param name="form" value="formParameters" />

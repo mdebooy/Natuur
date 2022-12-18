@@ -3,15 +3,13 @@
   xmlns:h="http://java.sun.com/jsf/html"
   xmlns:t="http://myfaces.apache.org/tomahawk"
  xmlns:ui="http://java.sun.com/jsf/facelets">
-  <table class="table table-sm" id="parametersTabel" aria-describedby="parametersTabel">
+  <table id="parametersTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="parametersTabel">
     <colgroup>
-      <col style="width:20px" />
       <col />
       <col />
     </colgroup>
     <thead>
       <tr>
-        <th id="icoon"></th>
         <th id="parameter">#{i18nTeksten.tekst('label.parameter')}</th>
         <th id="waarde">#{i18nTeksten.tekst('label.waarde')}</th>
       </tr>
@@ -19,9 +17,6 @@
     <tbody>
       <t:dataList var="parameter" value="#{lijst}" rowIndexVar="idx">
         <tr>
-          <td>
-            <h:commandLink action="#{natuurAppParam.update(parameter.sleutel)}"><img src="/common/images/16x16/actions/edit-paste.png" alt="#{i18nTeksten.tekst('img.wijzigen')}" title="#{i18nTeksten.tekst('img.wijzigen')}" /></h:commandLink>
-          </td>
           <td>#{i18nTeksten.tekst(parameter.parameter)}</td>
           <td>
             <t:div rendered="#{parameter.sleutel!='natuur.default.gebiedid' and parameter.sleutel!='natuur.default.landid'}">
