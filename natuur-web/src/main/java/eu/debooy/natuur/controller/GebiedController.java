@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -130,16 +129,15 @@ public class GebiedController extends Natuur {
       return;
     }
 
-    ExternalContext ec        = FacesContext.getCurrentInstance()
-                                            .getExternalContext();
+    var ec        = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(GebiedDto.COL_GEBIEDID)) {
       addError(ComponentsConstants.GEENPARAMETER, GebiedDto.COL_GEBIEDID);
       return;
     }
 
-    Long            gebiedId  = Long.valueOf(ec.getRequestParameterMap()
-                                               .get(GebiedDto.COL_GEBIEDID));
+    var gebiedId  = Long.valueOf(ec.getRequestParameterMap()
+                                   .get(GebiedDto.COL_GEBIEDID));
 
     gebied  = new Gebied(getGebiedService().gebied(gebiedId));
     setAktie(PersistenceConstants.RETRIEVE);

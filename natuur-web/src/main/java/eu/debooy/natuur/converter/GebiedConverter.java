@@ -27,6 +27,7 @@ import javax.faces.convert.Converter;
 /**
  * @author Marco de Booij
  */
+@SuppressWarnings("java:S3740")
 public class GebiedConverter implements Converter {
   @Override
   public Object getAsObject(FacesContext facesContext,

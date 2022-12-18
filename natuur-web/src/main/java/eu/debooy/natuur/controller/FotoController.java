@@ -223,8 +223,8 @@ public class FotoController extends Natuur {
     fotoDto       = getFotoService().foto(fotoId);
     foto          = new Foto(fotoDto);
     if (DoosUtils.isNotBlankOrNull(foto.getWaarnemingId())) {
-//      waarneming  = new Waarneming(getWaarnemingService()
-//                            .waarneming(foto.getWaarnemingId()));
+      waarneming  = new Waarneming(getWaarnemingService()
+                            .waarneming(foto.getWaarnemingId()));
     } else {
       waarneming  = new Waarneming();
     }

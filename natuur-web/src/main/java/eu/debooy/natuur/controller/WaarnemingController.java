@@ -42,7 +42,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -73,20 +72,19 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    ExternalContext ec      = FacesContext.getCurrentInstance()
-                                          .getExternalContext();
+    var   ec      = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
       addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
       return;
     }
 
-    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
-                                             .get(TaxonDto.COL_TAXONID));
+    Long  taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                   .get(TaxonDto.COL_TAXONID));
 
-    var gebied  = getGebiedService().gebied(
-            Long.valueOf(getParameter("natuur.default.gebiedid")));
-    var taxon   = getTaxonService().taxon(taxonId);
+    var   gebied  = getGebiedService().gebied(
+              Long.valueOf(getParameter("natuur.default.gebiedid")));
+    var   taxon   = getTaxonService().taxon(taxonId);
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setTaxon(taxon);
     waarnemingDto.setDatum(new Date());
@@ -121,7 +119,7 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    Long waarnemingId = waarneming.getWaarnemingId();
+    var waarnemingId = waarneming.getWaarnemingId();
     try {
       getWaarnemingService().delete(waarnemingId);
       addInfo(PersistenceConstants.DELETED,
@@ -141,7 +139,7 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    Long taxonSeq = foto.getTaxonSeq();
+    var taxonSeq = foto.getTaxonSeq();
     try {
       waarnemingDto.removeFoto(taxonSeq);
       getWaarnemingService().save(waarnemingDto);
@@ -164,7 +162,7 @@ public class WaarnemingController extends Natuur {
   }
 
   public JSONArray getFotos() {
-    JSONArray fotos = new JSONArray();
+    var fotos = new JSONArray();
 
     waarnemingDto.getFotos().forEach(rij -> fotos.add(rij.toJSON()));
 
@@ -193,8 +191,7 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    ExternalContext ec            =
-        FacesContext.getCurrentInstance().getExternalContext();
+    var ec            = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap()
            .containsKey(WaarnemingDto.COL_WAARNEMINGID)) {
@@ -203,7 +200,7 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    Long            waarnemingId  =
+    var waarnemingId  =
         Long.valueOf(ec.getRequestParameterMap()
                        .get(WaarnemingDto.COL_WAARNEMINGID));
 
@@ -298,6 +295,7 @@ public class WaarnemingController extends Natuur {
     }
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);

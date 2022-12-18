@@ -33,7 +33,6 @@ import eu.debooy.natuur.validator.RangnaamValidator;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
@@ -154,7 +153,7 @@ public class RangController extends Natuur {
   }
 
   public JSONArray getRangnamen() {
-    JSONArray rangnamen = new JSONArray();
+    var rangnamen = new JSONArray();
 
     rangDto.getRangnamen().forEach(rij -> rangnamen.add(rij.toJSON()));
 
@@ -181,7 +180,7 @@ public class RangController extends Natuur {
       return;
     }
 
-    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+    var ec  = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(RangDto.COL_RANG)) {
       addError(ComponentsConstants.GEENPARAMETER, RangDto.COL_RANG);
@@ -198,12 +197,12 @@ public class RangController extends Natuur {
   }
 
   public void retrieveDetail() {
-    if (!isUser() && !isView()) {
+    if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }
 
-    ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
+    var ec  = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(RangnaamDto.COL_TAAL)) {
       addError(ComponentsConstants.GEENPARAMETER, RangnaamDto.COL_TAAL);
@@ -213,8 +212,8 @@ public class RangController extends Natuur {
     rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
                                          .get(RangnaamDto.COL_TAAL));
     rangnaam     = new Rangnaam(rangnaamDto);
-    setDetailAktie(PersistenceConstants.RETRIEVE);
-    setDetailSubTitel("natuur.titel.rangnaam.retrieve");
+    setDetailAktie(PersistenceConstants.UPDATE);
+    setDetailSubTitel("natuur.titel.rangnaam.update");
 
     redirect(RANGNAAM_REDIRECT);
   }
@@ -225,16 +224,15 @@ public class RangController extends Natuur {
       return;
     }
 
-    ExternalContext ec      = FacesContext.getCurrentInstance()
-                                          .getExternalContext();
+    var ec      = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
       addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
       return;
     }
 
-    Long            taxonId = Long.valueOf(ec.getRequestParameterMap()
-                                             .get(TaxonDto.COL_TAXONID));
+    var taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                 .get(TaxonDto.COL_TAXONID));
 
     geenFotos = getTaxonService().taxon(taxonId);
 
@@ -338,6 +336,7 @@ public class RangController extends Natuur {
     return items;
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -346,15 +345,5 @@ public class RangController extends Natuur {
 
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel("natuur.titel.rang.update");
-  }
-
-  public void updateDetail() {
-    if (!isUser()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel("natuur.titel.rangnaam.update");
   }
 }
