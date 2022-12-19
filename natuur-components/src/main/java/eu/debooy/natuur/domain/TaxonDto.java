@@ -19,6 +19,7 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.domain.Dto;
+import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import java.io.Serializable;
@@ -194,9 +195,19 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {
-    if (null == taxonnaamDto.getTaxonId()) {
+    if (null == taxonnaamDto.getTaxonId()
+        && null != taxonId) {
       taxonnaamDto.setTaxonId(taxonId);
     }
+    if (!new EqualsBuilder().append(taxonId, taxonnaamDto.getTaxonId())
+                            .isEquals()) {
+      var message = new StringBuilder().append("TaxonId taxonnaam (")
+                                       .append(taxonnaamDto.getTaxonId())
+                                       .append(") komt niet overeen met ")
+                                       .append(taxonId).toString();
+      throw new IllegalArgumentException(DoosLayer.PERSISTENCE, message);
+    }
+
     taxonnamen.put(taxonnaamDto.getTaal(), taxonnaamDto);
   }
 
@@ -309,18 +320,19 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId = taxonId;
+    if (!new EqualsBuilder().append(this.taxonId, taxonId).isEquals()) {
+      this.taxonId = taxonId;
+      taxonnamen.values().forEach(taxonnaam -> taxonnaam.setTaxonId(taxonId));
+    }
   }
 
   public void setTaxonnamen(Collection<TaxonnaamDto> taxonnamen) {
     this.taxonnamen.clear();
-    taxonnamen.forEach(taxonnaam -> this.taxonnamen.put(taxonnaam.getTaal(),
-                                                        taxonnaam));
+    taxonnamen.forEach(taxonnaam -> addNaam(taxonnaam));
   }
 
   public void setTaxonnamen(Map<String, TaxonnaamDto> taxonnamen) {
-    this.taxonnamen.clear();
-    this.taxonnamen.putAll(taxonnamen);
+    setTaxonnamen(taxonnamen.values());
   }
 
   public void setUitgestorven(boolean uitgestorven) {
