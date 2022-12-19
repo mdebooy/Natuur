@@ -16,6 +16,9 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.PersistenceConstants;
+import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.GebiedDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
@@ -31,6 +34,7 @@ import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -73,6 +77,24 @@ public class GebiedService {
     }
 
     return resultaat;
+  }
+
+  @GET
+  @Path("/{gebiedId}")
+  public Response getGebied(@PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId) {
+    GebiedDto gebied;
+
+    try {
+      gebied  = gebiedDao.getByPrimaryKey(gebiedId);
+    } catch (ObjectNotFoundException e) {
+      var message = new Message.Builder()
+                               .setAttribute(GebiedDto.COL_GEBIEDID)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+
+    return Response.ok().entity(gebied).build();
   }
 
   @GET
