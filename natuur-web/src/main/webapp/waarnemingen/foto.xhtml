@@ -7,68 +7,101 @@
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="body">
-    <div class="row justify-content-center">
-      <div class="col-10">
-        <h:form class="form-horizontal" id="formFoto">
-          <t:div rendered="#{natuurWaarneming.detailAktie.readonly}">
-            <div class="col-10">
-              <h2 class="titel">#{natuurWaarneming.detailSubTitel}</h2>
-            </div>
-          </t:div>
-          <t:div rendered="#{!natuurWaarneming.detailAktie.readonly}">
-            <div class="col-10">
-              <h2 class="titel">#{i18nTeksten.tekst(natuurWaarneming.detailSubTitel)}</h2>
-            </div>
-            <div class="form-group form-group-sm row">
-              <label for="taxon" class="col-2 control-label">#{i18nTeksten.tekst('label.soort')}</label>
-              <div class="col-5">
-                <t:inputText id="taxon" styleClass="form-control form-control-sm" value="#{natuurWaarneming.waarneming.taxon.naam}"
-                             maxlength="255" size="100" readonly="true" />
-              </div>
-              <div class="col-5"></div>
-            </div>
-          </t:div>
-          <div class="form-group form-group-sm row">
-            <label for="datum" class="col-2 control-label">#{i18nTeksten.tekst('label.gezien.op')}</label>
-            <div class="col-2">
-              <d:datum id="datum" value="#{natuurWaarneming.waarneming.datum}" readonly="true" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="gebied" class="col-2 control-label">#{i18nTeksten.tekst('label.gebied')}</label>
-            <div class="col-5">
-              <t:inputText id="gebied" styleClass="form-control form-control-sm" value="#{natuurWaarneming.waarneming.gebied.naam}"
-                           maxlength="255" size="100" readonly="true" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="taxonSeq" class="col-2 control-label">#{i18nTeksten.tekst('label.seq')}</label>
-            <div class="col-9">
-              <t:inputText id="taxonSeq" styleClass="form-control form-control-sm" value="#{natuurWaarneming.foto.taxonSeq}" maxlength="3" size="3" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="opmerking" class="col-2 control-label">#{i18nTeksten.tekst('label.opmerking')}</label>
-            <div class="col-10">
-              <t:inputTextarea id="opmerking" styleClass="form-control form-control-sm" value="#{natuurWaarneming.foto.opmerking}" readonly="#{natuurWaarneming.aktie.readonly}" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="fotoDetail" class="col-2 control-label">#{i18nTeksten.tekst('label.fotodetail')}</label>
-            <div class="col-10">
-              <t:inputText id="fotoDetail" styleClass="form-control form-control-sm" value="#{natuurWaarneming.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurWaarneming.aktie.readonly}" />
-            </div>
-          </div>
-          <div class="form-group form-group-sm row">
-            <label for="fotoBestand" class="col-2 control-label">#{i18nTeksten.tekst('label.fotobestand')}</label>
-            <div class="col-10">
-              <t:inputText id="fotoBestand" styleClass="form-control form-control-sm" value="#{natuurWaarneming.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurWaarneming.aktie.readonly}" />
-            </div>
-          </div>
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formFoto">
+          <d:titel titel="#{i18nTeksten.tekst(natuurWaarneming.detailSubTitel)}" />
 
-          <h:commandLink action="#{natuurWaarneming.saveFoto}" id="create" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurWaarneming.aktie.nieuw}">#{i18nTeksten.tekst('button.create')}</h:commandLink>
-          <h:commandLink action="#{natuurWaarneming.saveFoto}" id="modify" styleClass="btn btn-sm btn-outline-primary" rendered="#{natuurWaarneming.aktie.wijzig}">#{i18nTeksten.tekst('button.save')}</h:commandLink>
-          <d:cancel returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" aktie="#{natuurWaarneming.aktie}" />
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.soort')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="taxon" styleClass="input required" value="#{natuurWaarneming.waarneming.taxon.naam}" maxlength="255" size="100" readonly="true" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.gezien.op')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:datum id="datum" value="#{natuurWaarneming.waarneming.datum}" required="true" readonly="true" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.gebied')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="gebied" styleClass="input required" value="#{natuurWaarneming.waarneming.gebied.naam}" maxlength="255" size="100" readonly="true" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.seq')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="taxonSeq" styleClass="input required" value="#{natuurWaarneming.foto.taxonSeq}" maxlength="3" size="3" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.fotodetail')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="fotodetail" styleClass="input" value="#{natuurWaarneming.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.fotobestand')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputText id="fotobestand" styleClass="input" value="#{natuurWaarneming.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">#{i18nTeksten.tekst('label.opmerking')}</label>
+                </div>
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <t:inputTextarea id="opmerking" styleClass="input" value="#{natuurWaarneming.foto.opmerking}" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formFoto" returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" detail="detail" tekst="#{natuurWaarneming.foto.taxonSeq} - #{natuurWaarneming.foto.fotoBestand}" />
+            </div>
+          </div>
         </h:form>
       </div>
     </div>

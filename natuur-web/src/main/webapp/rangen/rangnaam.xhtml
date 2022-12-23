@@ -14,21 +14,13 @@
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.rang')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.rang')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="rang" styleClass="input required" value="#{natuurRang.rang.rang}" maxlength="3" size="3" readonly="true" />
-                    </div>
-                  </div>
+                  <d:inputText id="rang" value="#{natuurRang.rang.rang}" maxlength="3" size="3" required="true" readonly="true" />
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.taal')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.taal')}" />
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
@@ -38,15 +30,9 @@
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.naam')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.naam')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="naam" styleClass="input required" value="#{natuurRang.rangnaam.naam}" maxlength="255" size="100" readonly="#{natuurRang.detailAktie.readonly}" />
-                    </div>
-                  </div>
+                  <d:inputText id="naam" value="#{natuurRang.rangnaam.naam}" maxlength="255" size="100" required="true" readonly="#{natuurRang.detailAktie.readonly}" />
                 </div>
               </div>
             </div>

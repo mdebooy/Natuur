@@ -302,7 +302,7 @@ public class TaxonController extends Natuur {
       taxonDto.addNaam(taxonnaamDto);
       if (getGebruikersTaal().equals(taxonnaam.getTaal())) {
         taxon.setNaam(taxonnaam.getNaam());
-        setSubTitel(getTekst(DTIT_UPDATE, taxonnaam.getNaam()));
+        setSubTitel(getTekst(TIT_UPDATE, taxonnaam.getNaam()));
       }
       getTaxonService().save(taxonDto);
       switch (getDetailAktie().getAktie()) {

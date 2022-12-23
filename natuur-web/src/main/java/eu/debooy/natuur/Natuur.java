@@ -60,7 +60,8 @@ public class Natuur extends DoosBean {
 
   protected static final  String  ADMIN_ROLE            = "natuur-admin";
   protected static final  String  APPLICATIE_NAAM       = "Natuur";
-  protected static final  String  FOTO_REDIRECT         = "/fotos/foto.xhtml";
+  protected static final  String  FOTO_REDIRECT         =
+      "/waarnemingen/foto.xhtml";
   protected static final  String  FOTOS_REDIRECT        = "/fotos/fotos.xhtml";
   protected static final  String  GEBIED_REDIRECT       =
       "/gebieden/gebied.xhtml";

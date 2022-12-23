@@ -16,7 +16,7 @@
                   dataSrc: '' },
           order: [[0, 'asc'], [2, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -50,7 +50,7 @@
           data: #{natuurTaxon.taxonnamen},
           order: [[1, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')-5},
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -81,7 +81,7 @@
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -130,7 +130,7 @@
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -220,52 +220,28 @@
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.volgnummer')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.volgnummer')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="volgnummer" styleClass="input required" value="#{natuurTaxon.taxon.volgnummer}" maxlength="10" size="10" readonly="#{natuurTaxon.aktie.readonly}" />
-                    </div>
-                  </div>
-                  <div class="field-label is-normal">
-                    <label class="label">#{i18nTeksten.tekst('label.uitgestorven')}</label>
-                  </div>
+                  <d:inputText id="volgnummer" value="#{natuurTaxon.taxon.volgnummer}" maxlength="10" size="10" required="true" readonly="#{natuurTaxon.aktie.readonly}" />
+                  <d:label label="#{i18nTeksten.tekst('label.uitgestorven')}" />
                   <div class="field-body is-normal">
-                    <div class="field">
-                      <div class="checkbox">
-                        <t:selectBooleanCheckbox id="uitgestorven" value="#{natuurTaxon.taxon.uitgestorven}" disabled="#{natuurTaxon.aktie.readonly}" />
-                      </div>
-                    </div>
+                    <d:selectBooleanCheckbox id="uitgestorven" value="#{natuurTaxon.taxon.uitgestorven}" disabled="#{natuurTaxon.aktie.readonly}" />
                   </div>
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.latijnsenaam')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.latijnsenaam')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="latijnsenaam" styleClass="input required" value="#{natuurTaxon.taxon.latijnsenaam}" maxlength="255" size="100" readonly="#{natuurTaxon.aktie.readonly}" />
-                    </div>
-                  </div>
+                  <d:inputText id="latijnsenaam" value="#{natuurTaxon.taxon.latijnsenaam}" maxlength="255" size="100" required="true" readonly="#{natuurTaxon.aktie.readonly}" />
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.rang')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.rang')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" required="true" readonly="#{natuurTaxon.aktie.readonly}" fullwidth="true" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurRang.getRangtekst(natuurTaxon.taxon.rang)}" />
-                    </div>
+                  <div class="field has-addons">
+                    <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" fullwidth="true" required="true" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurRang.getRangtekst(natuurTaxon.taxon.rang)}" />
                   </div>
-                  <div class="field-label is-normal">
-                    <label class="label">#{i18nTeksten.tekst('label.ouder')}</label>
-                  </div>
+                  <d:label label="#{i18nTeksten.tekst('label.ouder')}" />
                   <div class="field-body is-normal">
                     <div class="field has-addons">
                       <div class="control is-expanded">
@@ -281,15 +257,9 @@
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.opmerking')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.opmerking')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputTextarea id="opmerking" styleClass="input" value="#{natuurTaxon.taxon.opmerking}" readonly="#{natuurTaxon.aktie.readonly}" />
-                    </div>
-                  </div>
+                  <d:inputTextarea id="opmerking" value="#{natuurTaxon.taxon.opmerking}" readonly="#{natuurTaxon.aktie.readonly}" />
                 </div>
               </div>
 

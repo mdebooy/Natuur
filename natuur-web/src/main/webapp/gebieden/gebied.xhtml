@@ -17,7 +17,7 @@
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -66,7 +66,7 @@
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')}-5,
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -133,33 +133,23 @@
           <div class="columns is-centered">
             <div class="column">
               <t:div class="field is-horizontal" rendered="#{!natuurGebied.aktie.readonly}">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.gebied')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.gebied')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="naam" styleClass="input required" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" />
-                    </div>
-                  </div>
+                  <d:inputText id="naam" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" required="true" />
                 </div>
               </t:div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.land')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.land')}" />
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:listbox id="landId" required="true" value="#{natuurGebied.gebied.landId}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
+                      <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
                     </div>
                   </div>
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.latitude')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.latitude')}" />
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
@@ -193,9 +183,7 @@
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.longitude')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.longitude')}" />
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">

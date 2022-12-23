@@ -13,7 +13,7 @@
           data: #{natuurRang.rangnamen},
           order: [[1, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')-5},
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -44,7 +44,7 @@
                   dataSrc: '' },
           order: [[0, 'asc']],
           pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength')-5},
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
           stateSave: true,
           language: {
@@ -107,27 +107,15 @@
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.rang')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.rang')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="rang" styleClass="input required" value="#{natuurRang.rang.rang}" maxlength="3" size="3" readonly="#{!natuurRang.aktie.nieuw}" />
-                    </div>
-                  </div>
+                  <d:inputText id="rang" value="#{natuurRang.rang.rang}" maxlength="3" size="3" required="true" readonly="#{!natuurRang.aktie.nieuw}" />
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.niveau')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.niveau')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="niveau" styleClass="input required" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" readonly="#{natuurRang.aktie.readonly}" />
-                    </div>
-                  </div>
+                  <d:inputText id="niveau" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" required="true" readonly="#{natuurRang.aktie.readonly}" />
                 </div>
               </div>
 

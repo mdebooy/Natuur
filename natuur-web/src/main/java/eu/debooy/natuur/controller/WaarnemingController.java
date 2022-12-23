@@ -98,7 +98,7 @@ public class WaarnemingController extends Natuur {
     redirect(WAARNEMING_REDIRECT);
   }
 
-  public void createFoto() {
+  public void createDetail() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
@@ -133,7 +133,7 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void deleteFoto() {
+  public void deleteDetail() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
@@ -211,6 +211,31 @@ public class WaarnemingController extends Natuur {
     redirect(WAARNEMING_REDIRECT);
   }
 
+  public void retrieveDetail() {
+    if (!isUser() && !isView()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap()
+           .containsKey(FotoDto.COL_FOTOID)) {
+      addError(ComponentsConstants.GEENPARAMETER, FotoDto.COL_FOTOID);
+      return;
+    }
+
+    var fotoId  =
+        Long.valueOf(ec.getRequestParameterMap()
+                       .get(FotoDto.COL_FOTOID));
+
+    fotoDto = getFotoService().foto(fotoId);
+    foto    = new Foto(fotoDto);
+    setDetailAktie(PersistenceConstants.RETRIEVE);
+    setDetailSubTitel("natuur.titel.foto.retrieve");
+    redirect(FOTO_REDIRECT);
+  }
+
   public void save() {
     var messages  = WaarnemingValidator.valideer(waarneming);
     if (!messages.isEmpty()) {
@@ -247,7 +272,7 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void saveFoto() {
+  public void saveDetail() {
     var messages      = FotoValidator.valideer(foto);
     var fotoOverzicht =
             getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),

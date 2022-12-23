@@ -72,6 +72,11 @@
           jsfCommandLink.setAttribute('onclick', param);
           jsfCommandLink.click();
         } );
+        if (#{natuurWaarneming.aktie.wijzig and natuurWaarneming.user}) {
+          var imgTekst = '#{i18nTeksten.tekst('img.nieuw')}';
+          alterParam(document.getElementById('formWaarneming:addFotos'), #{natuurWaarneming.waarneming.waarnemingId});
+          addInsertButton('fotosTabel', 'formWaarneming', imgTekst);
+        }
       } );
 //]]>
     </script>
@@ -80,66 +85,40 @@
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formWaarneming">
-          <d:titel titel="#{i18nTeksten.tekst(natuurWaarneming.subTitel)}" imgtitle="#{i18nTeksten.tekst('img.nieuw')}" bean="#{natuurWaarneming}" rendered="#{natuurWaarneming.aktie.wijzig}" />
+          <d:titel titel="#{i18nTeksten.tekst(natuurWaarneming.subTitel)}" />
 
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.soort')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.soort')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputText id="taxon" styleClass="input required" value="#{natuurWaarneming.waarneming.taxon.naam}" maxlength="255" size="100" readonly="true" />
-                    </div>
-                  </div>
+                  <d:inputText id="taxon" value="#{natuurWaarneming.waarneming.taxon.naam}" maxlength="255" size="100" required="true" readonly="true" />
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.gezien.op')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.gezien.op')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:datum id="datum" value="#{natuurWaarneming.waarneming.datum}" required="true" readonly="#{natuurWaarneming.aktie.readonly}" />
-                    </div>
-                  </div>
-                  <div class="field-label is-normal">
-                    <label class="label">#{i18nTeksten.tekst('label.aantal')}</label>
-                  </div>
+                  <d:datum id="datum" value="#{natuurWaarneming.waarneming.datum}" required="true" readonly="#{natuurWaarneming.aktie.readonly}" />
+                  <d:label label="#{i18nTeksten.tekst('label.aantal')}" />
                   <div class="field-body is-normal">
-                    <div class="field">
-                      <div class="control">
-                        <t:inputText id="aantal" styleClass="input" value="#{natuurWaarneming.waarneming.aantal}" maxlength="3" size="3" readonly="#{natuurWaarneming.aktie.readonly}" />
-                      </div>
+                    <d:inputText id="aantal" value="#{natuurWaarneming.waarneming.aantal}" maxlength="3" size="3" readonly="#{natuurWaarneming.aktie.readonly}" />
+                  </div>
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.gebied')}" />
+                <div class="field-body is-normal">
+                  <div class="field">
+                    <div class="control">
+                      <d:listbox id="gebiedId" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" fullwidth="true" required="true" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
                     </div>
                   </div>
                 </div>
               </div>
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.gebied')}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst('label.opmerking')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="gebiedId" required="true" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" fullwidth="true" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst('label.opmerking')}</label>
-                </div>
-                <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:inputTextarea id="opmerking" styleClass="input" value="#{natuurWaarneming.waarneming.opmerking}" readonly="#{natuurWaarneming.aktie.readonly}" />
-                    </div>
-                  </div>
+                  <d:inputTextarea id="opmerking" value="#{natuurWaarneming.waarneming.opmerking}" readonly="#{natuurWaarneming.aktie.readonly}" />
                 </div>
               </div>
 
@@ -150,8 +129,11 @@
                 <div id="tabFotos" class="tab-detail">
                   <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
                 </div>
-                <h:commandLink id="linkWaarneming" action="#{natuurWaarneming.retrieve}" style="display:none">
+                <h:commandLink id="linkFoto" action="#{natuurWaarneming.retrieveDetail}" style="display:none">
                   <f:param name="fotoId" value="XX" />
+                </h:commandLink>
+                <h:commandLink id="addFotos" class="is-hidden" action="#{natuurWaarneming.createDetail}">
+                  <f:param name="waarnemingId" value="XX" />
                 </h:commandLink>
               </t:div>
             </div>
