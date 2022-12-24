@@ -35,6 +35,19 @@ function getCoordinaten(gebied) {
   }
 }
 
+function getGebied(gebiedId) {
+  var gebied = {};
+  $.ajax({ url: '/natuur/gebieden/'+gebiedId,
+           dataType: 'json',
+           async: false,
+           success:  function(data) {
+             gebied = data;
+           }
+  });
+
+  return gebied;
+}
+
 function getLandnaam(landId, taal) {
   var landnamen = [];
   if (landen.hasOwnProperty(landId)) {
