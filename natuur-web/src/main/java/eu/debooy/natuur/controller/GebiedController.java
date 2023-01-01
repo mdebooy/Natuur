@@ -17,6 +17,8 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
@@ -55,7 +57,7 @@ public class GebiedController extends Natuur {
     }
 
     gebied  = new Gebied();
-    gebied.setLandId(Long.parseLong(getParameter("natuur.default.landid")));
+    gebied.setLandId(Long.valueOf(getParameter("natuur.default.landid")));
     setAktie(PersistenceConstants.CREATE);
     setSubTitel("natuur.titel.gebied.create");
     redirect(GEBIED_REDIRECT);
@@ -108,6 +110,7 @@ public class GebiedController extends Natuur {
   public Collection<SelectItem> getLatitudes() {
     List<SelectItem>  items = new LinkedList<>();
 
+    items.add(new SelectItem("", ""));
     items.add(new SelectItem("N", getTekst("windstreek.N")));
     items.add(new SelectItem("S", getTekst("windstreek.S")));
 
@@ -117,10 +120,19 @@ public class GebiedController extends Natuur {
   public Collection<SelectItem> getLongitudes() {
     List<SelectItem>  items = new LinkedList<>();
 
+    items.add(new SelectItem("", ""));
     items.add(new SelectItem("E", getTekst("windstreek.E")));
     items.add(new SelectItem("W", getTekst("windstreek.W")));
 
     return items;
+  }
+
+  public String getWindstreek(String windstreek) {
+    if (DoosUtils.isBlankOrNull(windstreek)) {
+      return "";
+    }
+
+    return DoosUtils.nullToValue(getTekst("windstreek."+windstreek), "");
   }
 
   public void retrieve() {
@@ -141,7 +153,7 @@ public class GebiedController extends Natuur {
 
     gebied  = new Gebied(getGebiedService().gebied(gebiedId));
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(gebied.getNaam());
+    setSubTitel("natuur.titel.gebied.retrieve");
     redirect(GEBIED_REDIRECT);
   }
 
@@ -180,6 +192,7 @@ public class GebiedController extends Natuur {
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
+    addInfo(DoosConstants.NOI18N, gebied.toString());
   }
 
   public void update() {

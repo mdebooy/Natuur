@@ -20,19 +20,27 @@ var rangen = {};
 var windstreken = {};
 
 function getCoordinaten(gebied) {
+  var coordinaten = '';
   if (gebied.hasOwnProperty('latitude')) {
-    return gebied.latitude + ' '
-            + String(gebied.latitudeGraden).padStart(3, '0') + ' '
+    coordinaten += gebied.latitude;
+  }
+  if (gebied.hasOwnProperty('latitudeGraden')) {
+    coordinaten += ' '
+            + String(gebied.latitudeGraden).padStart(2, '0') + ' '
             + String(gebied.latitudeMinuten).padStart(2, '0') + ' '
-            + String(gebied.latitudeSeconden.toFixed(3)).padStart(7, '0')
-            + ' - '
-            + gebied.longitude + ' '
+            + String(gebied.latitudeSeconden.toFixed(3)).padStart(7, '0');
+  }
+  if (gebied.hasOwnProperty('longitude')) {
+    coordinaten += ' - ' + gebied.longitude;
+  }
+  if (gebied.hasOwnProperty('longitudeGraden')) {
+    coordinaten += ' '
             + String(gebied.longitudeGraden).padStart(3, '0') + ' '
             + String(gebied.longitudeMinuten).padStart(2, '0') + ' '
             + String(gebied.longitudeSeconden.toFixed(3)).padStart(7, '0');
-  } else {
-    return '';
   }
+
+  return coordinaten;
 }
 
 function getGebied(gebiedId) {

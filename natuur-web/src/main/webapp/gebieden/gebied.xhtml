@@ -123,21 +123,16 @@
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formGebied">
-          <t:div rendered="#{!natuurGebied.aktie.readonly}">
-            <d:titel titel="#{i18nTeksten.tekst(natuurGebied.subTitel)}" />
-          </t:div>
-          <t:div rendered="#{natuurGebied.aktie.readonly}">
-            <d:titel titel="#{natuurGebied.gebied.naam}" />
-          </t:div>
+          <d:titel titel="#{i18nTeksten.tekst(natuurGebied.subTitel)}" />
 
           <div class="columns is-centered">
             <div class="column">
-              <t:div class="field is-horizontal" rendered="#{!natuurGebied.aktie.readonly}">
+              <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.gebied')}" />
                 <div class="field-body is-normal">
                   <d:inputText id="naam" value="#{natuurGebied.gebied.naam}" maxlength="255" size="100" required="true" />
                 </div>
-              </t:div>
+              </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.land')}" />
                 <div class="field-body is-normal">
@@ -153,7 +148,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.gebied.latitude}" />
+                      <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.latitude)}" />
                     </div>
                   </div>
                   <div class="field has-addons">
@@ -187,7 +182,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.gebied.longitude}" />
+                      <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.longitude)}" />
                     </div>
                   </div>
                   <div class="field has-addons">
