@@ -2,7 +2,6 @@
      xmlns="http://www.w3.org/1999/xhtml"
    xmlns:c="http://java.sun.com/jsp/jstl/core"
    xmlns:d="http://java.debooy.eu/jsf/facelets"
-   xmlns:f="http://java.sun.com/jsf/core"
    xmlns:h="http://java.sun.com/jsf/html"
    xmlns:t="http://myfaces.apache.org/tomahawk"
   xmlns:ui="http://java.sun.com/jsf/facelets"
@@ -37,7 +36,7 @@
               </div>
 
               <div class="field is-grouped">
-                <c:if test="${natuurAppParam.administrator}">
+                <c:if test="${natuur.administrator}">
                   <p class="control">
                     <h:commandLink id="save" action="#{natuurAppParam.save}" styleClass="button is-primary">#{i18nTeksten.tekst('button.save')}</h:commandLink>
                   </p>

@@ -144,6 +144,7 @@ public class WaarnemingController extends Natuur {
       waarnemingDto.removeFoto(taxonSeq);
       getWaarnemingService().save(waarnemingDto);
       addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
+      redirect(WAARNEMING_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonSeq);
     } catch (DoosRuntimeException e) {
