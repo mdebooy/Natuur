@@ -79,9 +79,8 @@ public class TaxonService {
     taxonDao.delete(taxonDao.getByPrimaryKey(taxonId));
   }
 
-  @GET
-  @Path("/kinderen/{parentId}")
-  public Response getKinderen(@PathParam(TaxonDto.COL_PARENTID) Long parentId) {
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<TaxonDto> getKinderen(Long parentId) {
     List<TaxonDto>  kinderen  = new ArrayList<>();
 
     try {
@@ -90,7 +89,7 @@ public class TaxonService {
       // Er wordt nu gewoon een lege ArrayList gegeven.
     }
 
-    return Response.ok().entity(kinderen).build();
+    return kinderen;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -179,6 +178,21 @@ public class TaxonService {
     }
 
     return Response.ok().entity(taxonnaam).build();
+  }
+
+  @GET
+  @Path("/kinderen/{parentId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response kinderen(@PathParam(TaxonDto.COL_PARENTID) Long parentId) {
+    List<TaxonDto>  kinderen  = new ArrayList<>();
+
+    try {
+      kinderen  = taxonDao.getKinderen(parentId);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return Response.ok().entity(kinderen).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

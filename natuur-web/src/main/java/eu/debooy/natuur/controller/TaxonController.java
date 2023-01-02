@@ -52,17 +52,14 @@ public class TaxonController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(TaxonController.class);
 
-  private static final  String  DTIT_CREATE       =
-      "natuur.titel.taxonnaam.create";
-  private static final  String  DTIT_UPDATE       =
-      "natuur.titel.taxonnaam.update";
-  private static final  String  TIT_CREATE        =
-      "natuur.titel.taxon.create";
-  private static final  String  TIT_UPDATE        =
-      "natuur.titel.taxon.update";
+  private static final  String  DTIT_CREATE = "natuur.titel.taxonnaam.create";
+  private static final  String  DTIT_UPDATE = "natuur.titel.taxonnaam.update";
+  private static final  String  HERBENOEMD  = "natuur.latijnsenamen.herbenoemd";
+  private static final  String  TIT_CREATE  = "natuur.titel.taxon.create";
+  private static final  String  TIT_UPDATE  = "natuur.titel.taxon.update";
 
-  private static final  String  KINDEREN_TAB      = "kinderenTab";
-  private static final  String  NAMEN_TAB         = "namenTab";
+  private static final  String  KINDEREN_TAB  = "kinderenTab";
+  private static final  String  NAMEN_TAB     = "namenTab";
 
   private String        aktieveTab;
   private Taxon         ouder;
@@ -98,6 +95,7 @@ public class TaxonController extends Natuur {
                                      .get(TaxonDto.COL_TAXONID));
       var ouderRang = getTaxonService().taxon(parentId).getRang();
       ouderNiveau   = getRangService().rang(ouderRang).getNiveau();
+      taxon.setParentId(parentId);
     } else {
       ouderNiveau = Long.valueOf(0);
     }
@@ -248,6 +246,7 @@ public class TaxonController extends Natuur {
     }
 
     try {
+      var latijnsenaam  = taxonDto.getLatijnsenaam();
       taxon.persist(taxonDto);
       getTaxonService().save(taxonDto);
       aktieveTab  = KINDEREN_TAB;
@@ -262,6 +261,14 @@ public class TaxonController extends Natuur {
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, naam);
+          if (!latijnsenaam.equals(taxonDto.getLatijnsenaam())) {
+            var gewijzigd = wijzigKinderen(latijnsenaam,
+                                           taxonDto.getLatijnsenaam(),
+                                           taxonDto.getTaxonId());
+            if (gewijzigd > 0) {
+              addInfo(HERBENOEMD, gewijzigd);
+            }
+          }
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
@@ -358,5 +365,32 @@ public class TaxonController extends Natuur {
     aktieveTab  = KINDEREN_TAB;
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
+  }
+
+  private int wijzigKinderen(String oud, String nieuw, Long parentId) {
+    var gewijzigd = 0;
+    var kinderen  = getTaxonService().getKinderen(parentId);
+
+    for (var kind : kinderen) {
+      var latijnsenaam  = kind.getLatijnsenaam();
+      if (latijnsenaam.startsWith(oud+" ")) {
+        var nieuweLatijsenaam = latijnsenaam.replaceFirst(oud, nieuw);
+        kind.setLatijnsenaam(nieuweLatijsenaam);
+        try {
+          getTaxonService().save(kind);
+          gewijzigd++;
+        } catch (DuplicateObjectException e) {
+          addError(PersistenceConstants.DUPLICATE, kind.getLatijnsenaam());
+        } catch (DoosRuntimeException e) {
+          LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                     e.getLocalizedMessage()), e);
+          generateExceptionMessage(e);
+        }
+        gewijzigd += wijzigKinderen(latijnsenaam, nieuweLatijsenaam,
+                     kind.getTaxonId());
+      }
+    }
+
+    return gewijzigd;
   }
 }
