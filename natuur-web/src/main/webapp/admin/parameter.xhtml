@@ -15,23 +15,17 @@
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <div class="field-label is-normal">
-                  <label class="label">#{i18nTeksten.tekst(natuurAppParam.parameter)}</label>
-                </div>
+                <d:label label="#{i18nTeksten.tekst(natuurAppParam.parameter)}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <t:div rendered="#{natuurAppParam.sleutel!='natuur.default.landid' and natuurAppParam.sleutel!='natuur.default.gebiedid'}">
-                        <t:inputText id="waarde" styleClass="input required" value="#{natuurAppParam.waarde}" maxlength="255" size="100" />
-                      </t:div>
-                      <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
-                        <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" required="true" readonly="false" textvalue="" />
-                      </t:div>
-                      <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
-                        <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebiedenId}" required="true" readonly="false" textvalue="" />
-                      </t:div>
-                    </div>
-                  </div>
+                  <t:div rendered="#{natuurAppParam.sleutel!='natuur.default.landid' and natuurAppParam.sleutel!='natuur.default.gebiedid'}">
+                    <d:inputText id="waarde" value="#{natuurAppParam.waarde}" required="true" maxlength="255" size="100" />
+                  </t:div>
+                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
+                    <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" required="true" textvalue="" />
+                  </t:div>
+                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
+                    <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebiedenId}" required="true" textvalue="" />
+                  </t:div>
                 </div>
               </div>
 

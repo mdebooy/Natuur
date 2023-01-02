@@ -238,14 +238,12 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.rang')}" />
                 <div class="field-body is-normal">
-                  <div class="field has-addons">
-                    <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" fullwidth="true" required="true" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurRang.getRangtekst(natuurTaxon.taxon.rang)}" />
-                  </div>
+                  <d:listbox id="rang" value="#{natuurTaxon.taxon.rang}" readonly="#{natuurTaxon.aktie.readonly}" fullwidth="true" required="true" items="#{natuurRang.selectRangen(natuurTaxon.ouderNiveau)}" textvalue="#{natuurRang.getRangtekst(natuurTaxon.taxon.rang)}" />
                   <d:label label="#{i18nTeksten.tekst('label.ouder')}" />
                   <div class="field-body is-normal">
                     <div class="field has-addons">
                       <div class="control is-expanded">
-                        <d:listbox id="parentId" value="#{natuurTaxon.taxon.parentId}" readonly="#{natuurTaxon.aktie.readonly}" items="#{natuurTaxon.selectOuders(natuurTaxon.taxon.rang)}" textvalue="#{natuurTaxon.ouder.naam}" />
+                        <d:listbox id="parentId" value="#{natuurTaxon.taxon.parentId}" items="#{natuurTaxon.selectOuders(natuurTaxon.taxon.rang)}" textvalue="#{natuurTaxon.ouder.naam}" type="simpel" readonly="#{natuurTaxon.aktie.readonly}" />
                       </div>
                       <div class="control">
                         <h:commandLink id="parent" action="#{natuurTaxon.retrieve}" styleClass="button" rendered="#{!natuurTaxon.aktie.nieuw and !empty natuurTaxon.taxon.parentId}">#{i18nTeksten.tekst('label.ouder')}

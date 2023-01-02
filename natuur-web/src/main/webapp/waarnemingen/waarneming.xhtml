@@ -108,11 +108,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.gebied')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="gebiedId" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" fullwidth="true" required="true" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
-                    </div>
-                  </div>
+                  <d:listbox id="gebiedId" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" fullwidth="true" required="true" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
                 </div>
               </div>
               <div class="field is-horizontal">

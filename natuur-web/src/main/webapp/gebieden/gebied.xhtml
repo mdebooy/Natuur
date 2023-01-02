@@ -136,21 +136,13 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.land')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
-                    </div>
-                  </div>
+                  <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{i18nLandnaam.selectLandnamen()}" textvalue="#{i18nLandnaam.landnaam(natuurGebied.gebied.landId)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.latitude')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.latitude)}" />
-                    </div>
-                  </div>
+                  <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.latitude)}" />
                   <div class="field has-addons">
                     <t:inputText id="latitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
                       <f:convertNumber type="number" pattern="#0" />
@@ -180,11 +172,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.longitude')}" />
                 <div class="field-body is-normal">
-                  <div class="field">
-                    <div class="control">
-                      <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.longitude)}" />
-                    </div>
-                  </div>
+                  <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.longitude)}" />
                   <div class="field has-addons">
                     <t:inputText id="longitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
                       <f:convertNumber type="number" pattern="#0" />
