@@ -48,6 +48,10 @@ public class GebiedController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(GebiedController.class);
 
+  private static final  String  TIT_CREATE    = "natuur.titel.gebied.create";
+  private static final  String  TIT_RETRIEVE  = "natuur.titel.gebied.retrieve";
+  private static final  String  TIT_UPDATE    = "natuur.titel.gebied.update";
+
   private Gebied  gebied;
 
   public void create() {
@@ -59,7 +63,7 @@ public class GebiedController extends Natuur {
     gebied  = new Gebied();
     gebied.setLandId(Long.valueOf(getParameter("natuur.default.landid")));
     setAktie(PersistenceConstants.CREATE);
-    setSubTitel("natuur.titel.gebied.create");
+    setSubTitel(getTekst(TIT_CREATE));
     redirect(GEBIED_REDIRECT);
   }
 
@@ -153,7 +157,7 @@ public class GebiedController extends Natuur {
 
     gebied  = new Gebied(getGebiedService().gebied(gebiedId));
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel("natuur.titel.gebied.retrieve");
+    setSubTitel(getTekst(TIT_RETRIEVE));
     redirect(GEBIED_REDIRECT);
   }
 
@@ -202,6 +206,6 @@ public class GebiedController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel("natuur.titel.gebied.update");
+    setSubTitel(getTekst(TIT_UPDATE));
   }
 }

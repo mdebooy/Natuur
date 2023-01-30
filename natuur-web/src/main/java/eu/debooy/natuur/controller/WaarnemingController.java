@@ -61,6 +61,16 @@ public class WaarnemingController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(WaarnemingController.class);
 
+  private static final  String  DTIT_CREATE   = "natuur.titel.foto.create";
+  private static final  String  DTIT_RETRIEVE = "natuur.titel.foto.retrieve";
+  private static final  String  DTIT_UPDATE   = "natuur.titel.foto.update";
+  private static final  String  TIT_CREATE    =
+      "natuur.titel.waarneming.create";
+  private static final  String  TIT_RETRIEVE  =
+      "natuur.titel.waarneming.retrieve";
+  private static final  String  TIT_UPDATE    =
+      "natuur.titel.waarneming.update";
+
   private Foto          foto;
   private FotoDto       fotoDto;
   private Waarneming    waarneming;
@@ -94,7 +104,7 @@ public class WaarnemingController extends Natuur {
     waarneming.setGebied(new Gebied(gebied));
     waarneming.setTaxon(new Taxon(taxon, getGebruikersTaal()));
     setAktie(PersistenceConstants.CREATE);
-    setSubTitel("natuur.titel.waarneming.create");
+    setSubTitel(getTekst(TIT_CREATE));
     redirect(WAARNEMING_REDIRECT);
   }
 
@@ -109,7 +119,7 @@ public class WaarnemingController extends Natuur {
     foto.setWaarnemingId(waarneming.getWaarnemingId());
     fotoDto.setWaarnemingId(waarnemingDto.getWaarnemingId());
     setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel("natuur.titel.foto.create");
+    setDetailSubTitel(getTekst(DTIT_CREATE));
     redirect(WNMFOTO_REDIRECT);
   }
 
@@ -208,7 +218,7 @@ public class WaarnemingController extends Natuur {
     waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
     waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel("natuur.titel.waarneming.retrieve");
+    setSubTitel(getTekst(TIT_RETRIEVE));
     redirect(WAARNEMING_REDIRECT);
   }
 
@@ -233,7 +243,7 @@ public class WaarnemingController extends Natuur {
     fotoDto = getFotoService().foto(fotoId);
     foto    = new Foto(fotoDto);
     setDetailAktie(PersistenceConstants.RETRIEVE);
-    setDetailSubTitel("natuur.titel.foto.retrieve");
+    setDetailSubTitel(getTekst(DTIT_RETRIEVE));
     redirect(FOTO_REDIRECT);
   }
 
@@ -329,7 +339,7 @@ public class WaarnemingController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel("natuur.titel.waarneming.update");
+    setSubTitel(getTekst(TIT_UPDATE));
   }
 
   public void updateDetail() {
@@ -339,7 +349,7 @@ public class WaarnemingController extends Natuur {
     }
 
     setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel("natuur.titel.foto.update");
+    setDetailSubTitel(getTekst(DTIT_UPDATE));
   }
 
   public void waarnemingenlijst() {

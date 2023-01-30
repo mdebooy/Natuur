@@ -51,6 +51,14 @@ public class RangController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(RangController.class);
 
+  private static final  String  DTIT_CREATE   = "natuur.titel.taxonnaam.create";
+  private static final  String  DTIT_RETRIEVE =
+      "natuur.titel.taxonnaam.retrieve";
+  private static final  String  TIT_CREATE    = "natuur.titel.rang.create";
+  private static final  String  TIT_GEENFOTOS = "natuur.titel.geenfotos";
+  private static final  String  TIT_RETRIEVE  = "natuur.titel.rang.retrieve";
+  private static final  String  TIT_UPDATE    = "natuur.titel.rang.update";
+
   private final Aktie       geenFotoAktie = new Aktie();
 
   private TaxonDto    geenFotos;
@@ -68,7 +76,7 @@ public class RangController extends Natuur {
     rang    = new Rang();
     rangDto = new RangDto();
     setAktie(PersistenceConstants.CREATE);
-    setSubTitel("natuur.titel.rang.create");
+    setSubTitel(getTekst(TIT_CREATE));
     redirect(RANG_REDIRECT);
   }
 
@@ -85,7 +93,7 @@ public class RangController extends Natuur {
     rangnaamDto.setTaal(getGebruikersTaal());
     rangnaamDto.setRang(rangDto.getRang());
     setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel("natuur.titel.rangnaam.create");
+    setDetailSubTitel(getTekst(DTIT_CREATE));
     redirect(RANGNAAM_REDIRECT);
   }
 
@@ -140,8 +148,7 @@ public class RangController extends Natuur {
   }
 
   public String getGeenFotosTitel() {
-    return getTekst("natuur.titel.geenfotos",
-                    geenFotos.getNaam(getGebruikersTaal()));
+    return getTekst(TIT_GEENFOTOS, geenFotos.getNaam(getGebruikersTaal()));
   }
 
   public Rang getRang() {
@@ -191,7 +198,7 @@ public class RangController extends Natuur {
                                       .get(RangDto.COL_RANG));
     rang    = new Rang(rangDto, getGebruikersTaal());
     setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel("natuur.titel.rang.retrieve");
+    setSubTitel(getTekst(TIT_RETRIEVE));
 
     redirect(RANG_REDIRECT);
   }
@@ -213,7 +220,7 @@ public class RangController extends Natuur {
                                          .get(RangnaamDto.COL_TAAL));
     rangnaam     = new Rangnaam(rangnaamDto);
     setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel("natuur.titel.rangnaam.update");
+    setDetailSubTitel(getTekst(DTIT_RETRIEVE));
 
     redirect(RANGNAAM_REDIRECT);
   }
@@ -344,6 +351,6 @@ public class RangController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel("natuur.titel.rang.update");
+    setSubTitel(getTekst(TIT_UPDATE));
   }
 }

@@ -61,6 +61,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam")
 @NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind order by t.rang, t.volgnummer")
 @NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
+@NamedQuery(name="taxonTalen", query="select distinct t.taal from natuur.taxonnamen t")
 public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -80,6 +81,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  QRY_LATIJNSENAAM  = "taxonLatijnsenaam";
   public static final String  QRY_OUDERS        = "taxonOuders";
   public static final String  QRY_SOORT         = "taxonSoort";
+  public static final String  QRY_TALEN         = "taxonTalen";
 
   @Column(name="LATIJNSENAAM", length=255, nullable=false)
   private String    latijnsenaam;
