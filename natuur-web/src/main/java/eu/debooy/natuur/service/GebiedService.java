@@ -81,11 +81,10 @@ public class GebiedService {
 
   @GET
   @Path("/{gebiedId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getGebied(@PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId) {
-    GebiedDto gebied;
-
     try {
-      gebied  = gebiedDao.getByPrimaryKey(gebiedId);
+      return Response.ok().entity(gebiedDao.getByPrimaryKey(gebiedId)).build();
     } catch (ObjectNotFoundException e) {
       var message = new Message.Builder()
                                .setAttribute(GebiedDto.COL_GEBIEDID)
@@ -93,20 +92,28 @@ public class GebiedService {
                                .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
-
-    return Response.ok().entity(gebied).build();
   }
 
   @GET
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getGebieden() {
-    return Response.ok().entity(gebiedDao.getAll()).build();
+    try {
+      return Response.ok().entity(gebiedDao.getAll()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Gebied> query() {
     List<Gebied>    gebieden  = new ArrayList<>();
-    List<GebiedDto> rijen     = gebiedDao.getAll();
-    rijen.forEach(rij -> gebieden.add(new Gebied(rij)));
+
+    try {
+      List<GebiedDto> rijen   = gebiedDao.getAll();
+      rijen.forEach(rij -> gebieden.add(new Gebied(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return gebieden;
   }

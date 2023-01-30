@@ -108,11 +108,9 @@ public class RangService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRangnaam(@PathParam(RangDto.COL_RANG) String rang,
                               @PathParam(RangnaamDto.COL_TAAL) String taal) {
-    var         sleutel   = new RangnaamPK(rang, taal);
-    RangnaamDto rangnaam;
-
     try {
-      rangnaam = rangnaamDao.getByPrimaryKey(sleutel);
+      var sleutel = new RangnaamPK(rang, taal);
+      return Response.ok().entity(rangnaamDao.getByPrimaryKey(sleutel)).build();
     } catch (ObjectNotFoundException e) {
       var message = new Message.Builder()
                                .setAttribute(TaxonnaamDto.COL_TAAL)
@@ -120,17 +118,14 @@ public class RangService {
                                .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
-
-    return Response.ok().entity(rangnaam).build();
   }
 
   @GET
   @Path("/vanaf/{niveau}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getVanafRang(@PathParam(RangDto.COL_NIVEAU) Long niveau) {
-    List<RangDto> rangen;
     try {
-      rangen  = rangDao.getVanaf(niveau);
+      return Response.ok().entity(rangDao.getVanaf(niveau)).build();
     } catch (ObjectNotFoundException e) {
       var message = new Message.Builder()
                                .setAttribute(RangDto.COL_NIVEAU)
@@ -138,8 +133,6 @@ public class RangService {
                                .setSeverity(Message.ERROR).build();
       return Response.status(400).entity(message).build();
     }
-
-    return Response.ok().entity(rangen).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -193,9 +186,7 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(RangDto rang) {
-    LOGGER.debug("save " + rang.toString());
-    RangDto dto = rangDao.update(rang);
-    LOGGER.debug("updt " + dto.toString());
+    rangDao.update(rang);
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

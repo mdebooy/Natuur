@@ -21,7 +21,6 @@ import eu.debooy.natuur.access.GeenFotoDao;
 import eu.debooy.natuur.domain.GeenFotoDto;
 import eu.debooy.natuur.domain.RangDto;
 import java.util.ArrayList;
-import java.util.List;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -65,15 +64,11 @@ public class GeenFotoService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getGeenFotosVoorRang(
                       @PathParam(RangDto.COL_RANG) String rang) {
-    List<GeenFotoDto> geenFotos  = new ArrayList<>();
-
     try {
-      geenFotos = geenFotoDao.getGeenFotoRang(rang);
+      return Response.ok().entity(geenFotoDao.getGeenFotoRang(rang)).build();
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      return Response.ok().entity(new ArrayList<>()).build();
     }
-
-    return Response.ok().entity(geenFotos).build();
   }
 
   @GET
@@ -81,14 +76,11 @@ public class GeenFotoService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getGeenFotosVoorTaxon(
                       @PathParam(GeenFotoDto.COL_TAXONID) Long taxonId) {
-    List<GeenFotoDto> geenFotos  = new ArrayList<>();
-
     try {
-      geenFotos = geenFotoDao.getGeenFotoTaxon(taxonId);
+      return Response.ok().entity(geenFotoDao.getGeenFotoTaxon(taxonId))
+                     .build();
     } catch (ObjectNotFoundException e) {
-      // Er wordt nu gewoon een lege ArrayList gegeven.
+      return Response.ok().entity(new ArrayList<>()).build();
     }
-
-    return Response.ok().entity(geenFotos).build();
   }
 }
