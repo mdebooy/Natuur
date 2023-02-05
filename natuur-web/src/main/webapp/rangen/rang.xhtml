@@ -63,7 +63,10 @@
           },
           columns: [
             { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
-            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            },
             { data: 'totaal', title: '#{i18nTeksten.tekst('label.aantalsoorten')}', width: '50px', class: 'has-text-right' },
             { data: 'waargenomen', title: '#{i18nTeksten.tekst('label.aantalwaarnemingen')}', width: '50px', class: 'has-text-right' },
             { data: 'opFoto', title: '#{i18nTeksten.tekst('label.opfoto')}', width: '50px', class: 'has-text-right' },
@@ -125,19 +128,19 @@
                 <d:spacer />
                 <div id="rangTabs" class="tabs is-boxed">
                   <ul>
-                    <li class="tab-link is-active" onclick="switchTab(event, 'tabNamen')"><a>#{i18nTeksten.tekst('tab.namen')}</a></li>
-                    <li class="tab-link" onclick="switchTab(event, 'tabTotalen')"><a>#{i18nTeksten.tekst('tab.totalen')}</a></li>
+                    <li id="tabNamen" class="tab-link is-active" onclick="switchToTab('Namen')"><a>#{i18nTeksten.tekst('tab.namen')}</a></li>
+                    <li id="tabTotalen" class="tab-link" onclick="switchToTab('Totalen')"><a>#{i18nTeksten.tekst('tab.totalen')}</a></li>
                   </ul>
                 </div>
                 <div class="tabs-details titel">
-                  <div id="tabNamen" class="tab-detail">
+                  <div id="conNamen" class="tab-detail">
                     <table id="rangnamenTabel" class="table is-striped is-narrow #{natuurRang.user ? 'is-hoverable' : ''}" aria-describedby="rangnamenTabel" />
                     <h:commandLink id="linkRangnaam" class="is-hidden" action="#{natuurRang.retrieveDetail}">
                       <f:param name="taal" value="XX" />
                     </h:commandLink>
                     <h:commandLink id="addRangnamen" class="is-hidden" action="#{natuurRang.createDetail}" />
                   </div>
-                  <div id="tabTotalen" class="tab-detail is-hidden">
+                  <div id="conTotalen" class="tab-detail is-hidden">
                     <table id="totalenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="totalenTabel" />
                     <h:commandLink id="linkTotaal" class="is-hidden" action="#{natuurRang.retrieveGeenFotos}">
                       <f:param name="taxonId" value="XX" />

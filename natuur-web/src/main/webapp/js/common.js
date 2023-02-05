@@ -17,6 +17,8 @@
 
 var landen = {};
 var rangen = {};
+var regios = {};
+var statussen = {};
 var windstreken = {};
 
 function getCoordinaten(gebied) {
@@ -79,6 +81,13 @@ function getLandnaam(landId, taal) {
   return landnamen[naam].landnaam;
 }
 
+function getLatijnsenaam(latijnsenaam, uitgestorven=false) {
+  if (uitgestorven) {
+    return latijnsenaam + ' †';
+  }
+  return latijnsenaam;
+}
+
 function getRangnaam(rang, taal) {
   var rangnamen = [];
   if (rangen.hasOwnProperty(rang)) {
@@ -100,6 +109,44 @@ function getRangnaam(rang, taal) {
   }
 
   return rangnamen[naam].naam;
+}
+
+function getRegionaam(regioId) {
+  if (!regios.hasOwnProperty(regioId)) {
+    $.ajax({ url: '/sedes/regios/'+regioId,
+             dataType: 'json',
+             async: false,
+             success:  function(data) {
+               regios[regioId] = data;
+             }
+    });
+  }
+
+  return regios[regioId].regio;
+}
+
+function getStatus(status, taal) {
+  var teksten = [];
+  if (statussen.hasOwnProperty(status)) {
+    teksten = statussen[status].teksten;
+  } else {
+    $.ajax({ url: '/doos/i18nCodes/natuur.taxon.status.'+status,
+             dataType: 'json',
+             async: false,
+             success:  function(data) {
+               statussen[status] = data;
+               teksten = data.teksten;
+             }
+    });
+  }
+
+  var naam = teksten.findIndex(i => i.taalKode === taal);
+  if (naam < 0) {
+    return status;
+  }
+
+
+  return teksten[naam].tekst;
 }
 
 function getTaxonnaam(taxon, taal) {

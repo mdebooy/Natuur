@@ -1,0 +1,39 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="body">
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formRangnaam">
+          <d:titel titel="#{natuurRegiolijst.detailSubTitel}" />
+
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.taxon')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="taxonId" value="#{natuurRegiolijst.regiolijstTaxon.taxonId}" fullwidth="true" readonly="#{!natuurRegiolijst.detailAktie.nieuw}" required="true" items="#{natuurTaxon.selectSoorten()}" textvalue="#{natuurRegiolijst.regiolijstTaxon.taxon.naam}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.status')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="status" value="#{natuurRegiolijst.regiolijstTaxon.status}" fullwidth="true" required="true" items="#{natuurRegiolijst.statussen}" textvalue="#{natuurRegiolijst.status(natuurRegiolijst.regiolijstTaxon.status)}" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <d:crudbuttonbar bean="#{natuurRegiolijst}" form="formRegiolijstTaxon" detail="detail" returnto="#{natuur.path}/regiolijsten/regiolijst.xhtml" tekst="#{natuurRegiolijst.regiolijstTaxon.taxon.naam}" />
+        </h:form>
+      </div>
+    </div>
+  </ui:define>
+  <ui:define name="modal">
+    <d:confirmatie titel="#{i18nTeksten.tekst('natuur.titel.regiolijsttaxon.delete')}" />
+  </ui:define>
+</ui:composition>

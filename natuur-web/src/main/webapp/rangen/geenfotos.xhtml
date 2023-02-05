@@ -37,7 +37,10 @@
                 return getTaxonnaam(data.taxon, taal);
               }
             },
-            { data: 'taxon.latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}'}
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            }
           ]
         });
       });

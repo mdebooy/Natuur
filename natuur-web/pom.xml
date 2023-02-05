@@ -21,6 +21,10 @@
       <artifactId>doosutils-components</artifactId>
     </dependency>
     <dependency>
+      <groupId>eu.debooy.doosutils</groupId>
+      <artifactId>doosutils-file</artifactId>
+    </dependency>
+    <dependency>
       <groupId>eu.debooy.natuur</groupId>
       <artifactId>natuur-components</artifactId>
       <version>${project.version}</version>

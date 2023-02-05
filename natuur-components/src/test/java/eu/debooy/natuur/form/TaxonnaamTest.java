@@ -58,6 +58,7 @@ public class TaxonnaamTest {
   public void testCompareTo() {
     Taxonnaam gelijk  = new Taxonnaam(taxonnaam);
     Taxonnaam groter  = new Taxonnaam();
+
     groter.setTaxonId(taxonnaam.getTaxonId() + 1);
     Taxonnaam kleiner = new Taxonnaam();
     kleiner.setTaxonId(taxonnaam.getTaxonId() - 1);

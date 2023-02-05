@@ -37,7 +37,10 @@
                 return getTaxonnaam(data, taal);
               }
             },
-            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            },
             { data: null, title: '#{i18nTeksten.tekst('label.rang')}', render: function ( data, type, row ) {
                 return getRangnaam(data.rang, taal);
               }

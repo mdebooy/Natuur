@@ -8,11 +8,10 @@
  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
-        if (! #{natuurWaarneming.aktie.readonly}) {
+        if (#{!natuurWaarneming.aktie.readonly}) {
           $("#formWaarneming\\:datum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
                                                    monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
                                                    dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
@@ -78,7 +77,6 @@
           addInsertButton('fotosTabel', 'formWaarneming', imgTekst);
         }
       } );
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">

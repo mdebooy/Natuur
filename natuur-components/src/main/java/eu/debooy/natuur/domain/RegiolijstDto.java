@@ -1,7 +1,7 @@
-/*
+/**
  * Copyright (c) 2023 Marco de Booij
  *
- * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
+ * Licensed under the EUPL, Version 1.1 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
  * you may not use this work except in compliance with the Licence. You may
  * obtain a copy of the Licence at:
@@ -14,13 +14,14 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
+package eu.debooy.natuur.domain;
 
-package eu.debooy.natuur.form;
-
-import eu.debooy.doosutils.form.Formulier;
-import eu.debooy.natuur.domain.RegiolijstDto;
-import java.io.Serializable;
+import eu.debooy.doosutils.domain.Dto;
 import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -29,39 +30,43 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class Regiolijst extends Formulier
-    implements Comparable<Regiolijst>, Serializable {
+@Entity
+@Table(name="REGIOLIJSTEN", schema="NATUUR")
+public class RegiolijstDto
+    extends Dto implements Comparable<RegiolijstDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_DATUM         = "datum";
+  public static final String  COL_OMSCHRIJVING  = "omschrijving";
+  public static final String  COL_REGIOID       = "regioId";
+
+  @Column(name="DATUM", nullable=false)
   private Date    datum;
+  @Column(name="OMSCHRIJVING", length=2000)
   private String  omschrijving;
+  @Id
+  @Column(name="REGIO_ID", nullable=false)
   private Long    regioId;
 
-  public Regiolijst() {}
-
-  public Regiolijst(RegiolijstDto regiolijst) {
-    datum         = regiolijst.getDatum();
-    omschrijving  = regiolijst.getOmschrijving();
-    regioId       = regiolijst.getRegioId();
-  }
-
   @Override
-  public int compareTo(Regiolijst regiolijst) {
-    return new CompareToBuilder().append(regioId, regiolijst.regioId)
+  public int compareTo(RegiolijstDto regiolijstDto) {
+    return new CompareToBuilder().append(regioId, regiolijstDto.regioId)
                                  .toComparison();
   }
 
   @Override
   public boolean equals(Object object) {
-    if (!(object instanceof Regiolijst)) {
+    if (!(object instanceof RegiolijstDto)) {
       return false;
     }
     if (object == this) {
       return true;
     }
 
-    var regiolijst  = (Regiolijst) object;
-    return new EqualsBuilder().append(regioId, regiolijst.regioId).isEquals();
+    var regiolijstDto = (RegiolijstDto) object;
+
+    return new EqualsBuilder().append(regioId,
+                                      regiolijstDto.regioId).isEquals();
   }
 
   public Date getDatum() {
@@ -85,36 +90,23 @@ public class Regiolijst extends Formulier
     return new HashCodeBuilder().append(regioId).toHashCode();
   }
 
-  public void persist(RegiolijstDto regiolijstDto) {
-    if (!new EqualsBuilder().append(datum,
-                                    regiolijstDto.getDatum()).isEquals()) {
-      regiolijstDto.setDatum(datum);
-    }
-    if (!new EqualsBuilder().append(omschrijving,
-                                    regiolijstDto.getOmschrijving())
-                            .isEquals()) {
-      regiolijstDto.setOmschrijving(omschrijving);
-    }
-    if (!new EqualsBuilder().append(regioId,
-                                    regiolijstDto.getRegioId()).isEquals()) {
-      regiolijstDto.setRegioId(regioId);
-    }
-  }
-
   public void setDatum(Date datum) {
     if (null == datum) {
-      this.datum      = null;
+      this.datum        = null;
     } else {
-      this.datum      = new Date(datum.getTime());
+      this.datum        = new Date(datum.getTime());
     }
   }
 
   public void setOmschrijving(String omschrijving) {
-    this.omschrijving = omschrijving;
+    if (null == omschrijving) {
+      this.omschrijving = null;
+    } else {
+      this.omschrijving = omschrijving;
+    }
   }
 
   public void setRegioId(Long regioId) {
-    this.regioId      = regioId;
+    this.regioId        = regioId;
   }
-
 }

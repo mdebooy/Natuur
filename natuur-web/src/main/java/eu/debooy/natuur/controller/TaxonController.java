@@ -147,6 +147,10 @@ public class TaxonController extends Natuur {
       taxonDto.removeTaxonnaam(taxonnaam.getTaal());
       getTaxonService().save(taxonDto);
       addInfo(PersistenceConstants.DELETED, "'" + taxonnaam.getTaal() + "'");
+      if (getGebruikersTaal().equals(taxonnaam.getTaal())) {
+        taxon.setNaam(null);
+        setSubTitel(getTekst(TIT_UPDATE, taxonnaam.getNaam()));
+      }
       redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
@@ -256,8 +260,7 @@ public class TaxonController extends Natuur {
         case PersistenceConstants.CREATE:
           taxon.setTaxonId(taxonDto.getTaxonId());
           addInfo(PersistenceConstants.CREATED, naam);
-          setAktie(PersistenceConstants.UPDATE);
-          setSubTitel(getTekst(TIT_UPDATE, naam));
+          update();
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, naam);
@@ -351,6 +354,18 @@ public class TaxonController extends Natuur {
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
                                rij.getNaam(getGebruikersTaal()) + " ("
+                                + rij.getLatijnsenaam() + ")")));
+
+    return items;
+  }
+
+  public List<SelectItem> selectSoorten() {
+    List<SelectItem>  items = new LinkedList<>();
+    Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
+    rijen.addAll(getTaxonService().getSoorten(getGebruikersTaal()));
+    rijen.forEach(rij ->
+      items.add(new SelectItem(rij.getTaxonId(),
+                               rij.getNaam() + " ("
                                 + rij.getLatijnsenaam() + ")")));
 
     return items;

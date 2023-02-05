@@ -97,7 +97,10 @@
                 return data.latijnsenaam;
               }
             },
-            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            },
             { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
                 if (data.hasOwnProperty('fotoDetail')) {
                   return data.fotoDetail;
@@ -206,15 +209,15 @@
                 <d:spacer />
                 <div id="rangTabs" class="tabs is-boxed">
                   <ul>
-                    <li class="tab-link is-active" onclick="switchTab(event, 'tabWaarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
-                    <li class="tab-link" onclick="switchTab(event, 'tabFotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
+                    <li id="tabWaarnemingen" class="tab-link is-active" onclick="switchToTab('Waarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
+                    <li id="tabFotos" class="tab-link" onclick="switchToTab('Fotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
                   </ul>
                 </div>
                 <div class="tabs-details titel">
-                  <div id="tabWaarnemingen" class="tab-detail">
+                  <div id="conWaarnemingen" class="tab-detail">
                     <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemingenTabel" />
                   </div>
-                  <div id="tabFotos" class="tab-detail is-hidden">
+                  <div id="conFotos" class="tab-detail is-hidden">
                     <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
                   </div>
                 </div>

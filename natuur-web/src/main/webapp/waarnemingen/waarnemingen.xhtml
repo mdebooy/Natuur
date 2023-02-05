@@ -50,7 +50,6 @@
                 return getTaxonnaam(data.taxon, taal);
               }
             },
-            { data: 'taxon.latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
             { data: 'gebied.naam', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
                 return getLandnaam(data.gebied.landId, taal);

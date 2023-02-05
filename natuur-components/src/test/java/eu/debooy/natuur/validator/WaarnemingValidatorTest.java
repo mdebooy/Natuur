@@ -80,7 +80,7 @@ public class WaarnemingValidatorTest {
                            .setParams(new Object[]{Datum.fromDate(morgen)})
                            .build();
 
-gebied    = TestUtils.getGebied();
+    gebied    = TestUtils.getGebied();
     gebiedDto = TestUtils.getGebiedDto();
     taxon     = TestUtils.getTaxon();
     taxonDto  = TestUtils.getTaxonDto();

@@ -17,6 +17,7 @@
 
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import java.io.Serializable;
@@ -40,12 +41,16 @@ public class RegiolijstTaxon
   public RegiolijstTaxon() {}
 
   public RegiolijstTaxon(RegiolijstTaxonDto regiolijstTaxonDto) {
+    this(regiolijstTaxonDto, null);
+  }
+
+  public RegiolijstTaxon(RegiolijstTaxonDto regiolijstTaxonDto, String taal) {
     regioId = regiolijstTaxonDto.getRegioId();
     status  = regiolijstTaxonDto.getStatus();
     if (null == regiolijstTaxonDto.getTaxon()) {
       taxon = new Taxon();
     } else {
-      taxon = new Taxon(regiolijstTaxonDto.getTaxon());
+      taxon = new Taxon(regiolijstTaxonDto.getTaxon(), taal);
     }
     taxonId = regiolijstTaxonDto.getTaxonId();
   }
@@ -77,7 +82,7 @@ public class RegiolijstTaxon
   }
 
   public String getStatus() {
-    return status;
+    return DoosUtils.nullToEmpty(status).trim();
   }
 
   public Taxon getTaxon() {
@@ -114,6 +119,10 @@ public class RegiolijstTaxon
 
   public void setStatus(String status) {
     this.status   = status;
+  }
+
+  public void setTaxon(Taxon taxon) {
+    this.taxon    = taxon;
   }
 
   public void setTaxonId(Long taxonId) {

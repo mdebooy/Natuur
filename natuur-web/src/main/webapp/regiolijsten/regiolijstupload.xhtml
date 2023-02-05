@@ -1,0 +1,147 @@
+<ui:composition
+      xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:d="http://java.debooy.eu/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:t="http://myfaces.apache.org/tomahawk"
+   xmlns:ui="http://java.sun.com/jsf/facelets"
+   template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        $('#dubbelTabel').DataTable( {
+          data: #{natuurRegiolijst.dubbel},
+          order: [[0, 'asc'], [1, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxonnaam', title: '#{i18nTeksten.tekst('label.naam')}' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            }
+          ]
+        } );
+        $('#nieuwTabel').DataTable( {
+          data: #{natuurRegiolijst.nieuw},
+          order: [[0, 'asc'], [1, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxonnaam', title: '#{i18nTeksten.tekst('label.naam')}' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            }
+          ]
+        } );
+        $('#onbekendTabel').DataTable( {
+          data: #{natuurRegiolijst.onbekend},
+          order: [[0, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic'}
+          ]
+        } );
+        initTabs();
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="columns is-centered content">
+      <div class="column is-10">
+        <h:form id="regiolijstUploadForm" enctype="multipart/form-data">
+          <d:titel titel="#{natuurRegiolijst.detailSubTitel}" />
+
+          <div class="field is-horizontal">
+            <d:label label="#{i18nTeksten.tekst('label.selecteerBestand')}" />
+            <div class="field-body is-normal">
+              <d:inputFileUpload id="bestand" label="" value="#{natuurRegiolijst.bestand}" />
+            </div>
+          </div>
+
+          <div class="field is-grouped">
+            <p class="control">
+              <h:commandLink action="#{natuurRegiolijst.uploading}" id="submit" styleClass="button is-primary">#{i18nTeksten.tekst('button.load')}</h:commandLink>
+            </p>
+            <p class="control">
+              <a class="button" href="#{natuur.path}/regiolijsten/regiolijst.xhtml">#{i18nTeksten.tekst('button.cancel')}</a>
+            </p>
+          </div>
+
+          <t:div rendered="#{natuurRegiolijst.gelezen}">
+            <d:spacer />
+            <div id="taxonTabs" class="tabs is-boxed">
+              <ul>
+                <li id="tabNieuw" class="tab-link is-active" onclick="switchToTab('Nieuw')"><a>#{natuurRegiolijst.getTekst('tab.natuur.nieuw', natuurRegiolijst.aantalNieuw)}</a></li>
+                <li id="tabDubbel" class="tab-link" onclick="switchToTab('Dubbel')"><a>#{natuurRegiolijst.getTekst('tab.natuur.dubbel', natuurRegiolijst.aantalDubbel)}</a></li>
+                <li id="tabOnbekend" class="tab-link" onclick="switchToTab('Onbekend')"><a>#{natuurRegiolijst.getTekst('tab.natuur.onbekend', natuurRegiolijst.aantalOnbekend)}</a></li>
+              </ul>
+            </div>
+            <div class="tabs-details titel">
+              <div id="conNieuw" class="tab-detail">
+                <table id="nieuwTabel" class="table is-striped is-narrow" aria-describedby="nieuwTabel" />
+              </div>
+              <div id="conDubbel" class="tab-detail is-hidden">
+                <table id="dubbelTabel" class="table is-striped is-narrow" aria-describedby="dubbelTabel" />
+              </div>
+              <div id="conOnbekend" class="tab-detail is-hidden">
+                <table id="onbekendTabel" class="table is-striped is-narrow" aria-describedby="onbekendTabel" />
+              </div>
+            </div>
+          </t:div>
+       </h:form>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>

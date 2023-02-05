@@ -253,4 +253,15 @@ public class TaxonService {
 
     return resultaat;
   }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public TaxonDto taxon(String latijnsenaam) {
+    TaxonDto  resultaat = taxonDao.getTaxon(latijnsenaam);
+
+    if (null == resultaat) {
+      return new TaxonDto();
+    }
+
+    return resultaat;
+  }
 }

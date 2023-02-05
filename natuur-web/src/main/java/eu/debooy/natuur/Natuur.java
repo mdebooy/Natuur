@@ -24,6 +24,8 @@ import eu.debooy.natuur.service.GebiedService;
 import eu.debooy.natuur.service.GeenFotoService;
 import eu.debooy.natuur.service.OverzichtService;
 import eu.debooy.natuur.service.RangService;
+import eu.debooy.natuur.service.RegiolijstService;
+import eu.debooy.natuur.service.RegiolijstTaxonService;
 import eu.debooy.natuur.service.TaxonService;
 import eu.debooy.natuur.service.TaxonnaamService;
 import eu.debooy.natuur.service.WaarnemingService;
@@ -45,48 +47,64 @@ public class Natuur extends DoosBean {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(Natuur.class);
 
-  private transient DetailService     detailService;
-  private transient FotoService       fotoService;
-  private transient GebiedService     gebiedService;
-  private transient GeenFotoService   geenFotoService;
-  private transient OverzichtService  overzichtService;
-  private transient RangService       rangService;
-  private transient TaxonnaamService  taxonnaamService;
-  private transient TaxonService      taxonService;
-  private transient WaarnemingService waarnemingService;
+  private transient DetailService           detailService;
+  private transient FotoService             fotoService;
+  private transient GebiedService           gebiedService;
+  private transient GeenFotoService         geenFotoService;
+  private transient OverzichtService        overzichtService;
+  private transient RangService             rangService;
+  private transient RegiolijstService       regiolijstService;
+  private transient RegiolijstTaxonService  regiolijstTaxonService;
+  private transient TaxonnaamService        taxonnaamService;
+  private transient TaxonService            taxonService;
+  private transient WaarnemingService       waarnemingService;
 
   @EJB
   private transient II18nLandnaam i18nLandnaam;
 
-  protected static final  String  ADMIN_ROLE            = "natuur-admin";
-  protected static final  String  APPLICATIE_NAAM       = "Natuur";
-  protected static final  String  FOTO_REDIRECT         =
+  protected static final  String  ADMIN_ROLE                = "natuur-admin";
+  protected static final  String  APPLICATIE_NAAM           = "Natuur";
+  protected static final  String  FOTO_REDIRECT             =
       "/waarnemingen/foto.xhtml";
-  protected static final  String  FOTOS_REDIRECT        = "/fotos/fotos.xhtml";
-  protected static final  String  GEBIED_REDIRECT       =
+  protected static final  String  FOTOS_REDIRECT            =
+      "/fotos/fotos.xhtml";
+  protected static final  String  GEBIED_REDIRECT           =
       "/gebieden/gebied.xhtml";
-  protected static final  String  GEBIEDEN_REDIRECT     =
+  protected static final  String  GEBIEDEN_REDIRECT         =
       "/gebieden/gebieden.xhtml";
-  protected static final  String  GEENFOTOS_REDIRECT    =
+  protected static final  String  GEENFOTOS_REDIRECT        =
       "/rangen/geenfotos.xhtml";
-  protected static final  String  RANG_REDIRECT         = "/rangen/rang.xhtml";
-  protected static final  String  RANGEN_REDIRECT       =
+  protected static final  String  RANG_REDIRECT             =
+      "/rangen/rang.xhtml";
+  protected static final  String  RANGEN_REDIRECT           =
       "/rangen/rangen.xhtml";
-  protected static final  String  RANGNAAM_REDIRECT     =
+  protected static final  String  RANGNAAM_REDIRECT         =
       "/rangen/rangnaam.xhtml";
-  protected static final  String  RANG_TOTALEN_REDIRECT =
+  protected static final  String  RANG_TOTALEN_REDIRECT     =
       "/rangen/totalen.xhtml";
-  protected static final  String  TAXON_REDIRECT        = "/taxa/taxon.xhtml";
-  protected static final  String  TAXONNAAM_REDIRECT    =
+  protected static final  String  REGIOLIJST_REDIRECT       =
+      "/regiolijsten/regiolijst.xhtml";
+  protected static final  String  REGIOLIJSTEN_REDIRECT     =
+      "/regiolijsten/regiolijsten.xhtml";
+  protected static final  String  REGIOLIJSTUPLOAD_REDIRECT =
+      "/regiolijsten/regiolijstupload.xhtml";
+  protected static final  String  REGIOLIJSTTAXON_REDIRECT  =
+      "/regiolijsten/regiolijsttaxon.xhtml";
+  protected static final  String  STATUSSEN                 =
+      "natuur.taxon.status";
+  protected static final  String  TAXA_REDIRECT             =
+      "/taxa/taxa.xhtml";
+  protected static final  String  TAXON_REDIRECT            =
+      "/taxa/taxon.xhtml";
+  protected static final  String  TAXONNAAM_REDIRECT        =
       "/taxa/taxonnaam.xhtml";
-  protected static final  String  TAXA_REDIRECT         = "/taxa/taxa.xhtml";
-  protected static final  String  USER_ROLE             = "natuur-user";
-  protected static final  String  VIEW_ROLE             = "natuur-view";
-  protected static final  String  WAARNEMING_REDIRECT   =
+  protected static final  String  USER_ROLE                 = "natuur-user";
+  protected static final  String  VIEW_ROLE                 = "natuur-view";
+  protected static final  String  WAARNEMING_REDIRECT       =
       "/waarnemingen/waarneming.xhtml";
-  protected static final  String  WAARNEMINGEN_REDIRECT =
+  protected static final  String  WAARNEMINGEN_REDIRECT     =
       "/waarnemingen/waarnemingen.xhtml";
-  protected static final  String  WNMFOTO_REDIRECT      =
+  protected static final  String  WNMFOTO_REDIRECT          =
       "/waarnemingen/foto.xhtml";
 
   public Natuur() {
@@ -106,6 +124,7 @@ public class Natuur extends DoosBean {
     if (isUser() || isView()) {
       addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
       addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
+      addMenuitem(REGIOLIJSTEN_REDIRECT,  "menu.regiolijsten");
       addMenuitem(TAXA_REDIRECT,          "menu.taxa");
       addMenuitem(WAARNEMINGEN_REDIRECT,  "menu.waarnemingen");
       addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
@@ -168,6 +187,24 @@ public class Natuur extends DoosBean {
     }
 
     return rangService;
+  }
+
+  protected RegiolijstService getRegiolijstService() {
+    if (null == regiolijstService) {
+      regiolijstService = (RegiolijstService)
+          new JNDI.JNDINaam().metBean(RegiolijstService.class).locate();
+    }
+
+    return regiolijstService;
+  }
+
+  protected RegiolijstTaxonService getRegiolijstTaxonService() {
+    if (null == regiolijstTaxonService) {
+      regiolijstTaxonService  = (RegiolijstTaxonService)
+          new JNDI.JNDINaam().metBean(RegiolijstTaxonService.class).locate();
+    }
+
+    return regiolijstTaxonService;
   }
 
   protected TaxonnaamService getTaxonnaamService() {

@@ -46,7 +46,10 @@
                 return data.latijnsenaam;
               }
             },
-            { data: 'latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
+                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+              }
+            },
             { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
                 if (data.hasOwnProperty('fotoDetail')) {
                   return data.fotoDetail;
