@@ -138,16 +138,21 @@ public class RegiolijstTest {
   @Test
   public void testSetDatum() {
     var instance  = new Regiolijst();
+
     assertNotEquals(datum, instance.getDatum());
 
     instance.setDatum(datum);
+
     assertEquals(datum, instance.getDatum());
 
     // Geen reference maar value?
     Date  datum2  = instance.getDatum();
+
     assertEquals(datum2, instance.getDatum());
     assertEquals(datum, instance.getDatum());
+
     datum2.setTime(0);
+
     assertNotEquals(datum2, instance.getDatum());
     assertEquals(datum, instance.getDatum());
 
@@ -158,16 +163,24 @@ public class RegiolijstTest {
   @Test
   public void testSetOmschrijving() {
     var instance  = new Regiolijst();
+
     assertNotEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
+
     instance.setOmschrijving(TestConstants.OMSCHRIJVING);
 
     assertEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
+
+    instance.setOmschrijving(null);
+
+    assertNull(instance.getOmschrijving());
   }
 
   @Test
   public void testSetRegioId() {
     var instance  = new Regiolijst();
+
     assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
+
     instance.setRegioId(TestConstants.REGIOID);
 
     assertEquals(TestConstants.REGIOID, instance.getRegioId());

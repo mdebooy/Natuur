@@ -33,7 +33,7 @@ public class Regio implements Serializable {
   public static final String  COL_REGIOID   = "regioId";
 
   private Long    landId;
-  private String  regio;
+  private String  regionaam;
   private String  regiokode;
   private Long    regioId;
 
@@ -49,7 +49,7 @@ public class Regio implements Serializable {
   }
 
   public String getRegio() {
-    return regio;
+    return regionaam;
   }
 
   public String getRegiokode() {
@@ -68,7 +68,7 @@ public class Regio implements Serializable {
 
   private void setRegio(JSONObject json) {
     if (json.containsKey(COL_REGIO)) {
-      regio     = (String) json.get(COL_REGIO);
+      regionaam = (String) json.get(COL_REGIO);
     }
   }
 

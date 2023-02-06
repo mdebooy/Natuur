@@ -20,6 +20,7 @@ import eu.debooy.natuur.TestConstants;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -96,11 +97,27 @@ public class RegiolijstDtoTest {
   @Test
   public void testSetDatum() {
     var instance  = new RegiolijstDto();
+
     assertNotEquals(datum, instance.getDatum());
 
     instance.setDatum(datum);
 
     assertEquals(datum, instance.getDatum());
+
+    // Geen reference maar value?
+    Date  datum2  = instance.getDatum();
+
+    assertEquals(datum2, instance.getDatum());
+    assertEquals(datum, instance.getDatum());
+
+    datum2.setTime(0);
+
+    assertNotEquals(datum2, instance.getDatum());
+    assertEquals(datum, instance.getDatum());
+
+    instance.setDatum(null);
+
+    assertNull(instance.getDatum());
   }
 
   @Test
@@ -111,11 +128,16 @@ public class RegiolijstDtoTest {
     instance.setOmschrijving(TestConstants.OMSCHRIJVING);
 
     assertEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
-}
+
+    instance.setOmschrijving(null);
+
+    assertNull(instance.getOmschrijving());
+  }
 
   @Test
   public void testSetRegioId() {
     var instance    = new RegiolijstDto();
+
     assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
 
     instance.setRegioId(TestConstants.REGIOID);

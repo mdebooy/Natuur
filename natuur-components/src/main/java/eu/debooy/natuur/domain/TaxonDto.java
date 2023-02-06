@@ -321,6 +321,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     this.rang = rang;
   }
 
+  @SuppressWarnings("java:S1612")
   public void setTaxonId(Long taxonId) {
     if (!new EqualsBuilder().append(this.taxonId, taxonId).isEquals()) {
       this.taxonId = taxonId;

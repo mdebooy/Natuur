@@ -78,7 +78,7 @@ public class RegiolijstController extends Natuur {
   private final JSONArray         dubbel    = new JSONArray();
   private final JSONArray         nieuw     = new JSONArray();
   private final JSONArray         onbekend  = new JSONArray();
-  private final List<SelectItem>  statussen = new LinkedList<>();
+  private final List<SelectItem>  statusses = new LinkedList<>();
 
   private UploadedFile    bestand;
   private Regio           regio;
@@ -206,13 +206,13 @@ public class RegiolijstController extends Natuur {
   }
 
   public Collection<SelectItem> getStatussen() {
-    if (statussen.isEmpty()) {
-      statussen.add(new SelectItem(" ", "--"));
-      statussen.addAll(getI18nLijst(STATUSSEN, getGebruikersTaal(),
+    if (statusses.isEmpty()) {
+      statusses.add(new SelectItem(" ", "--"));
+      statusses.addAll(getI18nLijst(STATUSSEN, getGebruikersTaal(),
                               new I18nSelectItem.WaardeComparator()));
     }
 
-    return statussen;
+    return statusses;
   }
 
   public boolean isGelezen() {
@@ -433,42 +433,22 @@ public class RegiolijstController extends Natuur {
         var deel  = invoer.readLine().split(",", -1);
         String  latijnsenaam;
         String  status;
-        latijnsenaam  = deel[0].replaceAll("^\"|\"$", "")
-                               .replaceAll("\"\"", "\"")
+        latijnsenaam  = deel[0].replaceAll("(?:^\")|(?:\"$)", "")
+                               .replace("\"\"", "\"")
                                .trim();
         if (DoosUtils.isBlankOrNull(latijnsenaam)) {
           continue;
         }
 
         if (deel.length > 1) {
-          status      = deel[1].replaceAll("^\"|\"$", "")
-                               .replaceAll("\"\"", "\"")
+          status      = deel[1].replaceAll("(?:^\")|(?:\"$)", "")
+                               .replace("\"\"", "\"")
                                .trim();
         } else {
           status      = "";
         }
-        var       json  = new JSONObject();
-        TaxonDto  taxon = new TaxonDto();
-        try {
-          taxon = getTaxonService().taxon(latijnsenaam);
-          if (null == taxon.getTaxonId()) {
-            json.put("latijnsenaam", latijnsenaam);
-            onbekend.add(json);
-          } else {
-            var lijstTaxon  = new RegiolijstTaxonDto();
 
-            lijstTaxon.setRegioId(regiolijst.getRegioId());
-            lijstTaxon.setStatus(status);
-            lijstTaxon.setTaxonId(taxon.getTaxonId());
-            lijstTaxon.setTaxon(taxon);
-            getRegiolijstTaxonService().save(lijstTaxon);
-            taxonToJson(taxon, json);
-             nieuw.add(json);
-          }
-        } catch (DuplicateObjectException e) {
-          taxonToJson(taxon, json);
-          dubbel.add(json);
-        }
+        uploadTaxon(latijnsenaam, status);
       }
 
       addInfo("message.upload", bestand.getName());
@@ -477,5 +457,31 @@ public class RegiolijstController extends Natuur {
     } catch (IOException e) {
       generateExceptionMessage(e);
     }
+  }
+
+  private void uploadTaxon(String latijnsenaam, String status) {
+    var json  = new JSONObject();
+    var taxon = new TaxonDto();
+
+    try {
+        taxon = getTaxonService().taxon(latijnsenaam);
+        if (null == taxon.getTaxonId()) {
+          json.put("latijnsenaam", latijnsenaam);
+          onbekend.add(json);
+        } else {
+          var lijstTaxon  = new RegiolijstTaxonDto();
+
+          lijstTaxon.setRegioId(regiolijst.getRegioId());
+          lijstTaxon.setStatus(status);
+          lijstTaxon.setTaxonId(taxon.getTaxonId());
+          lijstTaxon.setTaxon(taxon);
+          getRegiolijstTaxonService().save(lijstTaxon);
+          taxonToJson(taxon, json);
+           nieuw.add(json);
+        }
+      } catch (DuplicateObjectException e) {
+        taxonToJson(taxon, json);
+        dubbel.add(json);
+      }
   }
 }

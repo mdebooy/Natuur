@@ -69,6 +69,7 @@ public class RegiolijstDto
                                       regiolijstDto.regioId).isEquals();
   }
 
+  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Date getDatum() {
     if (null == datum) {
       return null;

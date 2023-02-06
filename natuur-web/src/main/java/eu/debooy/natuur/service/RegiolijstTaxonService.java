@@ -90,8 +90,8 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public RegiolijstTaxonDto regiolijstTaxon(Long regioId, Long TaxonId) {
-    return regiolijstTaxon(new RegiolijstTaxonPK(regioId, TaxonId));
+  public RegiolijstTaxonDto regiolijstTaxon(Long regioId, Long taxonId) {
+    return regiolijstTaxon(new RegiolijstTaxonPK(regioId, taxonId));
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
