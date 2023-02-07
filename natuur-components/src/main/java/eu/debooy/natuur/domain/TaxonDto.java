@@ -233,7 +233,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
                               .isEquals();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getLatijnsenaam() {
     return latijnsenaam;
   }
@@ -329,6 +328,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     }
   }
 
+  @SuppressWarnings("java:S1612")
   public void setTaxonnamen(Collection<TaxonnaamDto> taxonnamen) {
     this.taxonnamen.clear();
     taxonnamen.forEach(taxonnaam -> addNaam(taxonnaam));

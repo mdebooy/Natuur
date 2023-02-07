@@ -331,7 +331,6 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);

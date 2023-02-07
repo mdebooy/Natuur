@@ -64,7 +64,6 @@ public class Regiolijst extends Formulier
     return new EqualsBuilder().append(regioId, regiolijst.regioId).isEquals();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Date getDatum() {
     if (null == datum) {
       return null;

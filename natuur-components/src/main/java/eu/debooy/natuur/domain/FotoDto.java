@@ -83,7 +83,6 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return new EqualsBuilder().append(fotoId, fotoDto.fotoId).isEquals();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getFotoBestand() {
     return fotoBestand;
   }
@@ -113,7 +112,6 @@ public class FotoDto extends Dto implements Comparable<FotoDto> {
     return new HashCodeBuilder().append(fotoId).toHashCode();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void setFotoBestand(String fotoBestand) {
     this.fotoBestand  = fotoBestand;
   }

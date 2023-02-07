@@ -183,7 +183,6 @@ public class FotoOverzichtDto
                               .isEquals();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Date getDatum() {
     return new Date(datum.getTime());
   }
@@ -237,7 +236,6 @@ public class FotoOverzichtDto
     return landId;
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public String getLatijnsenaam() {
     return latijnsenaam;
   }

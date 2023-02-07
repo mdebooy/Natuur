@@ -125,7 +125,6 @@ public class Gebied
     return coordinaten.toString();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Long getGebiedId() {
     return gebiedId;
   }
@@ -228,7 +227,6 @@ public class Gebied
     }
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void setGebiedId(Long gebiedId) {
     this.gebiedId = gebiedId;
   }

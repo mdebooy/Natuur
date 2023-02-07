@@ -58,8 +58,8 @@ public class TaxonController extends Natuur {
   private static final  String  TIT_CREATE  = "natuur.titel.taxon.create";
   private static final  String  TIT_UPDATE  = "natuur.titel.taxon.update";
 
-  private static final  String  KINDEREN_TAB  = "kinderenTab";
-  private static final  String  NAMEN_TAB     = "namenTab";
+  private static final  String  KINDEREN_TAB  = "Kinderen";
+  private static final  String  NAMEN_TAB     = "Namen";
 
   private String        aktieveTab;
   private Taxon         ouder;

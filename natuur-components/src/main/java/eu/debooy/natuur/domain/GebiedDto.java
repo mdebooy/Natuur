@@ -104,7 +104,6 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
     return new EqualsBuilder().append(gebiedId, gebiedDto.gebiedId).isEquals();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public Long getGebiedId() {
     return gebiedId;
   }
@@ -154,7 +153,6 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
     return new HashCodeBuilder().append(gebiedId).toHashCode();
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void setGebiedId(Long gebiedId) {
     this.gebiedId = gebiedId;
   }

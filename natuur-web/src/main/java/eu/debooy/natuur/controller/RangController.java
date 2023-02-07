@@ -343,7 +343,6 @@ public class RangController extends Natuur {
     return items;
   }
 
-  @SuppressWarnings("common-java:DuplicatedBlocks")
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
