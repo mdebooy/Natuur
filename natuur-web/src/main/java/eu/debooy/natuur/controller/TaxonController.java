@@ -58,8 +58,8 @@ public class TaxonController extends Natuur {
   private static final  String  TIT_CREATE  = "natuur.titel.taxon.create";
   private static final  String  TIT_UPDATE  = "natuur.titel.taxon.update";
 
-  private static final  String  KINDEREN_TAB  = "Kinderen";
-  private static final  String  NAMEN_TAB     = "Namen";
+  private static final  String  TAB_KINDEREN  = "Kinderen";
+  private static final  String  TAB_NAMEN     = "Namen";
 
   private String        aktieveTab;
   private Taxon         ouder;
@@ -87,7 +87,7 @@ public class TaxonController extends Natuur {
 
     var ec  = FacesContext.getCurrentInstance().getExternalContext();
 
-    aktieveTab  = KINDEREN_TAB;
+    aktieveTab  = TAB_KINDEREN;
     taxon       = new Taxon();
     taxonDto    = new TaxonDto();
     if (ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
@@ -110,7 +110,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    aktieveTab    = NAMEN_TAB;
+    aktieveTab    = TAB_NAMEN;
     taxonnaam     = new Taxonnaam();
     taxonnaam.setTaal(getGebruikersTaal());
     setDetailAktie(PersistenceConstants.CREATE);
@@ -205,7 +205,7 @@ public class TaxonController extends Natuur {
     var taxonId = Long.valueOf(ec.getRequestParameterMap()
                                  .get(TaxonDto.COL_TAXONID));
 
-    aktieveTab  = KINDEREN_TAB;
+    aktieveTab  = TAB_KINDEREN;
     taxonDto    = getTaxonService().taxon(taxonId);
     taxon       = new Taxon(taxonDto, getGebruikersTaal());
     bepaalOuder(taxon.getParentId());
@@ -227,7 +227,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    aktieveTab  = NAMEN_TAB;
+    aktieveTab  = TAB_NAMEN;
     taxonnaam   =
         new Taxonnaam(taxonDto.getTaxonnaam(ec.getRequestParameterMap()
                                               .get(TaxonnaamDto.COL_TAAL)));
@@ -253,7 +253,7 @@ public class TaxonController extends Natuur {
       var latijnsenaam  = taxonDto.getLatijnsenaam();
       taxon.persist(taxonDto);
       getTaxonService().save(taxonDto);
-      aktieveTab  = KINDEREN_TAB;
+      aktieveTab  = TAB_KINDEREN;
       bepaalOuder(taxon.getParentId());
       var naam    = taxon.getNaam();
       switch (getAktie().getAktie()) {
@@ -377,7 +377,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    aktieveTab  = KINDEREN_TAB;
+    aktieveTab  = TAB_KINDEREN;
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
   }

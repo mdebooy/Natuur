@@ -38,7 +38,7 @@
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
-                return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
+                return getLatijnsenaam(data.taxon.latijnsenaam, data.taxon.uitgestorven);
               }
             }
           ]

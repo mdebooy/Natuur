@@ -53,12 +53,12 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
 
   @Id
   @Column(name="REGIO_ID", nullable=false)
-  private Long    regioId;
+  private Long      regioId;
   @Column(name="STATUS", length = 2)
-  private String  status;
+  private String    status;
   @Id
   @Column(name="TAXON_ID", nullable=false)
-  private Long    taxonId;
+  private Long      taxonId;
 
   @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
