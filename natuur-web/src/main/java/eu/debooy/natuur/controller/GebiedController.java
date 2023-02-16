@@ -17,7 +17,6 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doosutils.ComponentsConstants;
-import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -196,7 +195,6 @@ public class GebiedController extends Natuur {
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
-    addInfo(DoosConstants.NOI18N, gebied.toString());
   }
 
   public void update() {
