@@ -151,6 +151,7 @@ public class TaxonController extends Natuur {
         taxon.setNaam(null);
         setSubTitel(getTekst(TIT_UPDATE, taxonnaam.getNaam()));
       }
+      taxonnaam = new Taxonnaam();
       redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
