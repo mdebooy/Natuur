@@ -122,7 +122,7 @@ function getRegionaam(regioId) {
     });
   }
 
-  return regios[regioId].regio;
+  return regios[regioId].naam;
 }
 
 function getStatus(status, taal) {

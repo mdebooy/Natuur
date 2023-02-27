@@ -28,18 +28,18 @@ public class Regio implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
   public static final String  COL_LANDID    = "landId";
-  public static final String  COL_REGIO     = "regio";
+  public static final String  COL_NAAM      = "naam";
   public static final String  COL_REGIOKODE = "regiokode";
   public static final String  COL_REGIOID   = "regioId";
 
   private Long    landId;
-  private String  regionaam;
+  private String  naam;
   private String  regiokode;
   private Long    regioId;
 
   public Regio(JSONObject json) {
     setLandId(json);
-    setRegio(json);
+    setNaam(json);
     setRegioId(json);
     setRegiokode(json);
   }
@@ -48,8 +48,8 @@ public class Regio implements Serializable {
     return landId;
   }
 
-  public String getRegio() {
-    return regionaam;
+  public String getNaam() {
+    return naam;
   }
 
   public String getRegiokode() {
@@ -62,19 +62,19 @@ public class Regio implements Serializable {
 
   private void setLandId(JSONObject json) {
     if (json.containsKey(COL_LANDID)) {
-      landId    = (Long) json.get(COL_LANDID);
+      landId  = (Long) json.get(COL_LANDID);
     }
   }
 
-  private void setRegio(JSONObject json) {
-    if (json.containsKey(COL_REGIO)) {
-      regionaam = (String) json.get(COL_REGIO);
+  private void setNaam(JSONObject json) {
+    if (json.containsKey(COL_NAAM)) {
+      naam    = (String) json.get(COL_NAAM);
     }
   }
 
   private void setRegiokode(JSONObject json) {
     if (json.containsKey(COL_REGIOID)) {
-      regioId   = (Long) json.get(COL_REGIOID);
+      regioId = (Long) json.get(COL_REGIOID);
     }
   }
 
