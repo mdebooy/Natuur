@@ -296,6 +296,7 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
+    setRegio(regiolijst.getRegioId());
     var naam  = regio.getNaam();
     try {
       switch (getAktie().getAktie()) {
@@ -303,7 +304,6 @@ public class RegiolijstController extends Natuur {
           regiolijst.persist(regiolijstDto);
           getRegiolijstService().save(regiolijstDto);
           regiolijst.setRegioId(regiolijstDto.getRegioId());
-          setRegio(regiolijst.getRegioId());
           addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
           update();
           break;

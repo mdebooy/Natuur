@@ -47,7 +47,7 @@
                 return getLatijnsenaam(data.taxon.latijnsenaam, data.taxon.uitgestorven);
               }
             },
-            { data: null, title: '#{i18nTeksten.tekst('label.status')}', width: '75px', class: 'has-text-centered', orderData: 0, render: function ( data, type, row ) {
+            { data: null, title: '#{i18nTeksten.tekst('label.status')}', width: '150px', class: 'has-text-centered', orderData: 0, render: function ( data, type, row ) {
                 if (data.hasOwnProperty('status')) {
                   return getStatus(data.status, taal);
                 }
@@ -82,7 +82,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.regio')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="regioId" value="#{natuurRegiolijst.regiolijst.regioId}" fullwidth="true" readonly="#{!natuurRegiolijst.aktie.nieuw}" required="true" items="#{natuurRegiolijst.selectRegios}" textvalue="#{natuurRegiolijst.regio.regio}" />
+                  <d:listbox id="regioId" value="#{natuurRegiolijst.regiolijst.regioId}" fullwidth="true" readonly="#{!natuurRegiolijst.aktie.nieuw}" required="true" items="#{natuurRegiolijst.selectRegios}" textvalue="#{natuurRegiolijst.regio.naam}" />
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -98,7 +98,7 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurRegiolijst}" form="formRegiolijst" returnto="#{natuur.path}/regiolijsten/regiolijsten.xhtml" tekst="#{natuurRegiolijst.regio.regio}" />
+              <d:crudbuttonbar bean="#{natuurRegiolijst}" form="formRegiolijst" returnto="#{natuur.path}/regiolijsten/regiolijsten.xhtml" tekst="#{natuurRegiolijst.regio.naam}" />
 
               <t:div rendered="#{!natuurRegiolijst.aktie.nieuw}">
                 <d:spacer />
