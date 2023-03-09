@@ -31,7 +31,8 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class WaarnemingValidator extends NatuurValidator {
-  private WaarnemingValidator() {}
+  protected static final  String  LBL_AANTAL  = "_I18N.label.aantal";
+  protected static final  String  LBL_DATUM   = "_I18N.label.datum";
 
   public static List<Message> valideer(WaarnemingDto waarneming) {
     return valideer(new Waarneming(waarneming));
@@ -52,7 +53,7 @@ public final class WaarnemingValidator extends NatuurValidator {
     if (null == waarneming.getTaxon()) {
       valideerTaxonId(null, fouten);
     } else {
-      valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
+    valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
     }
 
     return fouten;
@@ -65,7 +66,7 @@ public final class WaarnemingValidator extends NatuurValidator {
                             .setAttribute(WaarnemingDto.COL_AANTAL)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.ISKLEINER)
-                            .setParams(new Object[]{"_I18N.label.aantal", 1})
+                            .setParams(new Object[]{LBL_AANTAL, 1})
                             .build());
     }
   }
@@ -76,7 +77,7 @@ public final class WaarnemingValidator extends NatuurValidator {
                             .setAttribute(WaarnemingDto.COL_DATUM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.datum"})
+                            .setParams(new Object[]{LBL_DATUM})
                             .build());
       return;
     }

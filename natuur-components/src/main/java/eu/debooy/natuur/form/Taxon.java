@@ -272,33 +272,13 @@ public class Taxon
   }
 
   public void persist(TaxonDto parameter) {
-    if (!new EqualsBuilder().append(this.latijnsenaam,
-                                    parameter.getLatijnsenaam()).isEquals()) {
-      parameter.setLatijnsenaam(this.latijnsenaam);
-    }
-    if (!new EqualsBuilder().append(this.opmerking,
-                                    parameter.getOpmerking()).isEquals()) {
-      parameter.setOpmerking(this.opmerking);
-    }
-    if (!new EqualsBuilder().append(this.parentId,
-                                    parameter.getParentId()).isEquals()) {
-      parameter.setParentId(this.parentId);
-    }
-    if (!new EqualsBuilder().append(this.rang,
-                                    parameter.getRang()).isEquals()) {
-      parameter.setRang(this.rang);
-    }
-    if (!new EqualsBuilder().append(this.taxonId,
-                                    parameter.getTaxonId()).isEquals()) {
-      parameter.setTaxonId(this.taxonId);
-    }
-    if (!this.uitgestorven.equals(parameter.getUitgestorven())) {
-      parameter.setUitgestorven(this.uitgestorven);
-    }
-    if (!new EqualsBuilder().append(this.volgnummer,
-                                    parameter.getVolgnummer()).isEquals()) {
-      parameter.setVolgnummer(this.volgnummer);
-    }
+    parameter.setLatijnsenaam(this.latijnsenaam);
+    parameter.setOpmerking(this.opmerking);
+    parameter.setParentId(this.parentId);
+    parameter.setRang(this.rang);
+    parameter.setTaxonId(this.taxonId);
+    parameter.setUitgestorven(this.uitgestorven);
+    parameter.setVolgnummer(this.volgnummer);
   }
 
   public void setLatijnsenaam(String latijnsenaam) {

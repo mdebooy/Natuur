@@ -90,8 +90,7 @@ public class RangController extends Natuur {
     rangnaam.setTaal(getGebruikersTaal());
     rangnaam.setRang(rang.getRang());
     rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(getGebruikersTaal());
-    rangnaamDto.setRang(rangDto.getRang());
+    rangnaam.persist(rangnaamDto);
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE));
     redirect(RANGNAAM_REDIRECT);
@@ -106,8 +105,10 @@ public class RangController extends Natuur {
     try {
       getRangService().delete(rang.getRang());
       addInfo(PersistenceConstants.DELETED, this.rang.getNaam());
-      rang    = new Rang();
-      rangDto = new RangDto();
+      rang        = new Rang();
+      rangDto     = new RangDto();
+      rangnaam    = new Rangnaam();
+      rangnaamDto = new RangnaamDto();
       redirect(RANGEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, rang);
@@ -124,10 +125,12 @@ public class RangController extends Natuur {
       return;
     }
 
-    var taal  = rangnaam.getTaal();
+    var taal      = rangnaam.getTaal();
     try {
       rangDto.removeRangnaam(taal);
       getRangService().save(rangDto);
+      rangnaam    = new Rangnaam();
+      rangnaamDto = new RangnaamDto();
       addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
       redirect(RANG_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -182,25 +185,28 @@ public class RangController extends Natuur {
   }
 
   public void retrieve() {
-    if (!isUser() && !isView()) {
+    if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }
 
-    var ec  = FacesContext.getCurrentInstance().getExternalContext();
+    var ec    = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(RangDto.COL_RANG)) {
       addError(ComponentsConstants.GEENPARAMETER, RangDto.COL_RANG);
       return;
     }
 
-    rangDto = getRangService().rang(ec.getRequestParameterMap()
-                                      .get(RangDto.COL_RANG));
-    rang    = new Rang(rangDto, getGebruikersTaal());
-    setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(getTekst(TIT_RETRIEVE));
-
-    redirect(RANG_REDIRECT);
+    try {
+      rangDto = getRangService().rang(ec.getRequestParameterMap()
+                                        .get(RangDto.COL_RANG));
+      rang    = new Rang(rangDto, getGebruikersTaal());
+      setAktie(PersistenceConstants.RETRIEVE);
+      setSubTitel(getTekst(TIT_RETRIEVE));
+      redirect(RANG_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_RANG));
+    }
   }
 
   public void retrieveDetail() {
@@ -216,13 +222,16 @@ public class RangController extends Natuur {
       return;
     }
 
-    rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
-                                         .get(RangnaamDto.COL_TAAL));
-    rangnaam     = new Rangnaam(rangnaamDto);
-    setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel(getTekst(DTIT_RETRIEVE));
-
-    redirect(RANGNAAM_REDIRECT);
+    try {
+      rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
+                                           .get(RangnaamDto.COL_TAAL));
+      rangnaam     = new Rangnaam(rangnaamDto);
+      setDetailAktie(PersistenceConstants.UPDATE);
+      setDetailSubTitel(getTekst(DTIT_RETRIEVE));
+      redirect(RANGNAAM_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAAL));
+    }
   }
 
   public void retrieveGeenFotos() {
@@ -241,9 +250,12 @@ public class RangController extends Natuur {
     var taxonId = Long.valueOf(ec.getRequestParameterMap()
                                  .get(TaxonDto.COL_TAXONID));
 
-    geenFotos = getTaxonService().taxon(taxonId);
-
-    redirect(GEENFOTOS_REDIRECT);
+    try {
+      geenFotos = getTaxonService().taxon(taxonId);
+      redirect(GEENFOTOS_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXON));
+    }
   }
 
   public void save() {

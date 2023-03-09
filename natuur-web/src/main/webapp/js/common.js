@@ -78,7 +78,7 @@ function getLandnaam(landId, taal) {
     return landId;
   }
 
-  return landnamen[naam].landnaam;
+  return landnamen[naam].naam;
 }
 
 function getLatijnsenaam(latijnsenaam, uitgestorven=false) {

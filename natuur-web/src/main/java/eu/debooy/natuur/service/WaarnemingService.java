@@ -23,7 +23,6 @@ import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
-import eu.debooy.natuur.form.Waarneming;
 import java.util.ArrayList;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -118,15 +117,6 @@ public class WaarnemingService {
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(Waarneming waarneming) {
-    var dto = new WaarnemingDto();
-
-    waarneming.persist(dto);
-
-    save(dto);
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)

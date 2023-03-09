@@ -82,30 +82,31 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    var   ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var   ec        = FacesContext.getCurrentInstance().getExternalContext();
 
     if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
       addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
       return;
     }
 
-    Long  taxonId = Long.valueOf(ec.getRequestParameterMap()
+    Long  taxonId   = Long.valueOf(ec.getRequestParameterMap()
                                    .get(TaxonDto.COL_TAXONID));
 
-    var   gebied  = getGebiedService().gebied(
-              Long.valueOf(getParameter("natuur.default.gebiedid")));
-    var   taxon   = getTaxonService().taxon(taxonId);
-    waarnemingDto = new WaarnemingDto();
-    waarnemingDto.setTaxon(taxon);
-    waarnemingDto.setDatum(new Date());
-    waarnemingDto.setGebied(gebied);
-    waarneming    = new Waarneming();
-    waarneming.setDatum(waarnemingDto.getDatum());
-    waarneming.setGebied(new Gebied(gebied));
-    waarneming.setTaxon(new Taxon(taxon, getGebruikersTaal()));
-    setAktie(PersistenceConstants.CREATE);
-    setSubTitel(getTekst(TIT_CREATE));
-    redirect(WAARNEMING_REDIRECT);
+    try {
+      var gebied    = getGebiedService().gebied(
+                          Long.valueOf(getParameter(DEF_GEBIEDID)));
+      var taxon     = getTaxonService().taxon(taxonId);
+      waarnemingDto = new WaarnemingDto();
+      waarnemingDto.setTaxon(taxon);
+      waarnemingDto.setDatum(new Date());
+      waarnemingDto.setGebied(gebied);
+      waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+      setAktie(PersistenceConstants.CREATE);
+      setSubTitel(getTekst(TIT_CREATE));
+      redirect(WAARNEMING_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_PARAMETERS));
+    }
   }
 
   public void createDetail() {
@@ -117,7 +118,7 @@ public class WaarnemingController extends Natuur {
     foto    = new Foto();
     fotoDto = new FotoDto();
     foto.setWaarnemingId(waarneming.getWaarnemingId());
-    fotoDto.setWaarnemingId(waarnemingDto.getWaarnemingId());
+    foto.persist(fotoDto);
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE));
     redirect(WNMFOTO_REDIRECT);
@@ -132,6 +133,8 @@ public class WaarnemingController extends Natuur {
     var waarnemingId = waarneming.getWaarnemingId();
     try {
       getWaarnemingService().delete(waarnemingId);
+      waarneming    = new Waarneming();
+      waarnemingDto = new WaarnemingDto();
       addInfo(PersistenceConstants.DELETED,
               formateerDatum(waarneming.getDatum()));
     } catch (ObjectNotFoundException e) {
@@ -153,6 +156,8 @@ public class WaarnemingController extends Natuur {
     try {
       waarnemingDto.removeFoto(taxonSeq);
       getWaarnemingService().save(waarnemingDto);
+      foto    = new Foto();
+      fotoDto = new FotoDto();
       addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
       redirect(WAARNEMING_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -197,7 +202,7 @@ public class WaarnemingController extends Natuur {
   }
 
   public void retrieve() {
-    if (!isUser() && !isView()) {
+    if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }
@@ -215,15 +220,19 @@ public class WaarnemingController extends Natuur {
         Long.valueOf(ec.getRequestParameterMap()
                        .get(WaarnemingDto.COL_WAARNEMINGID));
 
-    waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
-    waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
-    setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(getTekst(TIT_RETRIEVE));
-    redirect(WAARNEMING_REDIRECT);
+    try {
+      waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
+      waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+      setAktie(PersistenceConstants.RETRIEVE);
+      setSubTitel(getTekst(TIT_RETRIEVE));
+      redirect(WAARNEMING_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_WAARNEMING));
+    }
   }
 
   public void retrieveDetail() {
-    if (!isUser() && !isView()) {
+    if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }
@@ -240,32 +249,48 @@ public class WaarnemingController extends Natuur {
         Long.valueOf(ec.getRequestParameterMap()
                        .get(FotoDto.COL_FOTOID));
 
-    fotoDto = getFotoService().foto(fotoId);
-    foto    = new Foto(fotoDto);
-    setDetailAktie(PersistenceConstants.RETRIEVE);
-    setDetailSubTitel(getTekst(DTIT_RETRIEVE));
-    redirect(FOTO_REDIRECT);
+    try {
+      fotoDto = getFotoService().foto(fotoId);
+      foto    = new Foto(fotoDto);
+      setDetailAktie(PersistenceConstants.RETRIEVE);
+      setDetailSubTitel(getTekst(DTIT_RETRIEVE));
+      redirect(FOTO_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_FOTO));
+    }
   }
 
   public void save() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages  = WaarnemingValidator.valideer(waarneming);
     if (!messages.isEmpty()) {
       addMessage(messages);
       return;
     }
 
-    var melding = formateerDatum(waarneming.getDatum()) + " "
-                    + waarneming.getGebied().getNaam();
+    var datum = formateerDatum(waarneming.getDatum());
     try {
-      waarneming.persist(waarnemingDto);
-      getWaarnemingService().save(waarnemingDto);
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
+          waarneming.setGebied(
+              new Gebied(getGebiedService().gebied(
+                      waarneming.getGebied().getGebiedId())));
+          waarneming.persist(waarnemingDto);
+          getWaarnemingService().save(waarnemingDto);
           waarneming.setWaarnemingId(waarnemingDto.getWaarnemingId());
-          addInfo(PersistenceConstants.CREATED, melding);
+          addInfo(PersistenceConstants.CREATED, datum);
           break;
         case PersistenceConstants.UPDATE:
-          addInfo(PersistenceConstants.UPDATED, melding);
+          waarneming.setGebied(
+              new Gebied(getGebiedService().gebied(
+                      waarneming.getGebied().getGebiedId())));
+          waarneming.persist(waarnemingDto);
+          getWaarnemingService().save(waarnemingDto);
+          addInfo(PersistenceConstants.UPDATED, datum);
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
@@ -273,9 +298,9 @@ public class WaarnemingController extends Natuur {
       }
       redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, melding);
+      addError(PersistenceConstants.DUPLICATE, datum);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, melding);
+      addError(PersistenceConstants.NOTFOUND, datum);
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -284,6 +309,11 @@ public class WaarnemingController extends Natuur {
   }
 
   public void saveDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
     var messages      = FotoValidator.valideer(foto);
     var fotoOverzicht =
             getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
@@ -303,16 +333,20 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
+    var taxonSeq  = foto.getTaxonSeq();
     try {
-      foto.persist(fotoDto);
-      getFotoService().save(fotoDto);
-      waarnemingDto.addFoto(fotoDto);
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
-          addInfo(PersistenceConstants.CREATED, "'" + foto.getTaxonSeq()+ "'");
+          foto.persist(fotoDto);
+          getFotoService().save(fotoDto);
+          waarnemingDto.addFoto(fotoDto);
+          addInfo(PersistenceConstants.CREATED, "'" + taxonSeq + "'");
           break;
         case PersistenceConstants.UPDATE:
-          addInfo(PersistenceConstants.UPDATED, "'" + foto.getTaxonSeq() + "'");
+          foto.persist(fotoDto);
+          getFotoService().save(fotoDto);
+          waarnemingDto.addFoto(fotoDto);
+          addInfo(PersistenceConstants.UPDATED, "'" + taxonSeq + "'");
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT,
@@ -321,9 +355,9 @@ public class WaarnemingController extends Natuur {
       }
       redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, foto.getTaxonSeq());
+      addError(PersistenceConstants.DUPLICATE, taxonSeq);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, foto.getTaxonSeq());
+      addError(PersistenceConstants.NOTFOUND, taxonSeq);
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -352,7 +386,7 @@ public class WaarnemingController extends Natuur {
   }
 
   public void waarnemingenlijst() {
-    if (!isUser() && !isView()) {
+    if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }

@@ -63,10 +63,11 @@ public class GebiedTest {
 
   @Test
   public void testCompareTo() {
-    var gelijk  = new Gebied(gebied);
+    var gelijk  = new Gebied();
     var groter  = new Gebied();
     var kleiner = new Gebied();
 
+    gelijk.setGebiedId(gebied.getGebiedId());
     groter.setGebiedId(gebied.getGebiedId() + 1);
     kleiner.setGebiedId(gebied.getGebiedId() - 1);
 
@@ -87,7 +88,8 @@ public class GebiedTest {
     instance.setGebiedId(gebied.getGebiedId());
     assertEquals(gebied, instance);
 
-    instance  = new Gebied(gebied);
+    instance  = new Gebied();
+    instance.setGebiedId(gebied.getGebiedId());
     assertEquals(gebied, instance);
 
     instance  = new Gebied(gebiedDto);
@@ -178,24 +180,6 @@ public class GebiedTest {
 
   @Test
   public void testInit2() {
-    var instance  = new Gebied(gebied);
-
-    assertEquals(gebied.getGebiedId(), instance.getGebiedId());
-    assertEquals(gebied.getLandId(), instance.getLandId());
-    assertEquals(gebied.getLatitude(), instance.getLatitude());
-    assertEquals(gebied.getLatitudeGraden(), instance.getLatitudeGraden());
-    assertEquals(gebied.getLatitudeMinuten(), instance.getLatitudeMinuten());
-    assertEquals(gebied.getLatitudeSeconden(), instance.getLatitudeSeconden());
-    assertEquals(gebied.getLongitude(), instance.getLongitude());
-    assertEquals(gebied.getLongitudeGraden(), instance.getLongitudeGraden());
-    assertEquals(gebied.getLongitudeMinuten(), instance.getLongitudeMinuten());
-    assertEquals(gebied.getLongitudeSeconden(),
-                 instance.getLongitudeSeconden());
-    assertEquals(gebied.getNaam(), instance.getNaam());
-  }
-
-  @Test
-  public void testInit3() {
     var instance  = new Gebied(gebiedDto);
 
     assertEquals(gebiedDto.getGebiedId(), instance.getGebiedId());
@@ -237,41 +221,23 @@ public class GebiedTest {
   @Test
   public void testPersist() {
     var parameter = new GebiedDto();
-    var instance  = new Gebied(gebied);
 
-    instance.persist(parameter);
+    gebied.persist(parameter);
 
-    assertEquals(instance.getGebiedId(), parameter.getGebiedId());
-    assertEquals(instance.getLandId(), parameter.getLandId());
-    assertEquals(instance.getLatitude(), parameter.getLatitude());
-    assertEquals(instance.getLatitudeGraden(), parameter.getLatitudeGraden());
-    assertEquals(instance.getLatitudeMinuten(), parameter.getLatitudeMinuten());
-    assertEquals(instance.getLatitudeSeconden(),
+    assertEquals(gebied.getGebiedId(), parameter.getGebiedId());
+    assertEquals(gebied.getLandId(), parameter.getLandId());
+    assertEquals(gebied.getLatitude(), parameter.getLatitude());
+    assertEquals(gebied.getLatitudeGraden(), parameter.getLatitudeGraden());
+    assertEquals(gebied.getLatitudeMinuten(), parameter.getLatitudeMinuten());
+    assertEquals(gebied.getLatitudeSeconden(),
                  parameter.getLatitudeSeconden());
-    assertEquals(instance.getLongitude(), parameter.getLongitude());
-    assertEquals(instance.getLongitudeGraden(), parameter.getLongitudeGraden());
-    assertEquals(instance.getLongitudeMinuten(),
+    assertEquals(gebied.getLongitude(), parameter.getLongitude());
+    assertEquals(gebied.getLongitudeGraden(), parameter.getLongitudeGraden());
+    assertEquals(gebied.getLongitudeMinuten(),
                  parameter.getLongitudeMinuten());
-    assertEquals(instance.getLongitudeSeconden(),
+    assertEquals(gebied.getLongitudeSeconden(),
                  parameter.getLongitudeSeconden());
-    assertEquals(instance.getNaam(), parameter.getNaam());
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getGebiedId(), parameter.getGebiedId());
-    assertEquals(instance.getLandId(), parameter.getLandId());
-    assertEquals(instance.getLatitude(), parameter.getLatitude());
-    assertEquals(instance.getLatitudeGraden(), parameter.getLatitudeGraden());
-    assertEquals(instance.getLatitudeMinuten(), parameter.getLatitudeMinuten());
-    assertEquals(instance.getLatitudeSeconden(),
-                 parameter.getLatitudeSeconden());
-    assertEquals(instance.getLongitude(), parameter.getLongitude());
-    assertEquals(instance.getLongitudeGraden(), parameter.getLongitudeGraden());
-    assertEquals(instance.getLongitudeMinuten(),
-                 parameter.getLongitudeMinuten());
-    assertEquals(instance.getLongitudeSeconden(),
-                 parameter.getLongitudeSeconden());
-    assertEquals(instance.getNaam(), parameter.getNaam());
+    assertEquals(gebied.getNaam(), parameter.getNaam());
   }
 
   @Test

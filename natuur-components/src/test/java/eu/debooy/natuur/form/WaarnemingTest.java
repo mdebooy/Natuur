@@ -74,12 +74,13 @@ public class WaarnemingTest {
 
   @Test
   public void testCompareTo() {
-    var gelijk  = new Waarneming(waarneming);
+    var gelijk  = new Waarneming();
     var groter  = new Waarneming();
     var kleiner = new Waarneming();
 
-    groter.setWaarnemingId(waarneming.getWaarnemingId()+ 1);
-    kleiner.setWaarnemingId(waarneming.getWaarnemingId()- 1);
+    gelijk.setWaarnemingId(waarneming.getWaarnemingId());
+    groter.setWaarnemingId(waarneming.getWaarnemingId() + 1);
+    kleiner.setWaarnemingId(waarneming.getWaarnemingId() - 1);
 
     assertTrue(waarneming.compareTo(groter) < 0);
     assertEquals(0, waarneming.compareTo(gelijk));
@@ -119,7 +120,8 @@ public class WaarnemingTest {
     instance.setWaarnemingId(waarneming.getWaarnemingId());
     assertEquals(waarneming, instance);
 
-    instance  = new Waarneming(waarneming);
+    instance  = new Waarneming();
+    instance.setWaarnemingId(waarneming.getWaarnemingId());
     assertEquals(waarneming, instance);
 
     instance  = new Waarneming(waarnemingDto);
@@ -184,33 +186,6 @@ public class WaarnemingTest {
 
   @Test
   public void testInit2() {
-    var instance  = new Waarneming(waarneming);
-
-    assertEquals(waarneming.getAantal(), instance.getAantal());
-    assertEquals(waarneming.getDatum(), instance.getDatum());
-    assertEquals(waarneming.getGebied(), new Gebied(instance.getGebied()));
-    assertEquals(waarneming.getOpmerking(), instance.getOpmerking());
-    assertEquals(waarneming.getTaxon(), new Taxon(instance.getTaxon()));
-    assertEquals(waarneming.getWaarnemingId(), instance.getWaarnemingId());
-  }
-
-  @Test
-  public void testInit3() {
-    var instance  = new Waarneming(waarneming);
-
-    instance.setGebied(null);
-    instance.setTaxon(null);
-
-    assertEquals(waarneming.getAantal(), instance.getAantal());
-    assertEquals(waarneming.getDatum(), instance.getDatum());
-    assertNull(instance.getGebied());
-    assertEquals(waarneming.getOpmerking(), instance.getOpmerking());
-    assertNull(instance.getTaxon());
-    assertEquals(waarneming.getWaarnemingId(), instance.getWaarnemingId());
-  }
-
-  @Test
-  public void testInit4() {
     var instance  = new Waarneming(waarnemingDto);
 
     assertEquals(waarnemingDto.getAantal(), instance.getAantal());
@@ -224,24 +199,14 @@ public class WaarnemingTest {
   @Test
   public void testPersist() {
     var parameter = new WaarnemingDto();
-    var instance  = new Waarneming(waarneming);
-    instance.persist(parameter);
+    waarneming.persist(parameter);
 
-    assertEquals(instance.getAantal(), parameter.getAantal());
-    assertEquals(instance.getDatum(), parameter.getDatum());
-    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
-    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
-    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
-
-    instance.persist(parameter);
-
-    assertEquals(instance.getAantal(), parameter.getAantal());
-    assertEquals(instance.getDatum(), parameter.getDatum());
-    assertEquals(instance.getGebied(), new Gebied(parameter.getGebied()));
-    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getTaxon(), new Taxon(parameter.getTaxon()));
-    assertEquals(instance.getWaarnemingId(), parameter.getWaarnemingId());
+    assertEquals(waarneming.getAantal(), parameter.getAantal());
+    assertEquals(waarneming.getDatum(), parameter.getDatum());
+    assertEquals(waarneming.getGebied(), new Gebied(parameter.getGebied()));
+    assertEquals(waarneming.getOpmerking(), parameter.getOpmerking());
+    assertEquals(waarneming.getTaxon(), new Taxon(parameter.getTaxon()));
+    assertEquals(waarneming.getWaarnemingId(), parameter.getWaarnemingId());
   }
 
   @Test

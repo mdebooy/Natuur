@@ -309,15 +309,15 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking  = opmerking;
+    this.opmerking    = opmerking;
   }
 
   public void setParentId(Long parentId) {
-    this.parentId = parentId;
+    this.parentId     = parentId;
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rang         = rang;
   }
 
   @SuppressWarnings("java:S1612")
@@ -344,6 +344,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setVolgnummer(Integer volgnummer) {
-    this.volgnummer = volgnummer;
+    this.volgnummer   = volgnummer;
   }
 }

@@ -56,7 +56,6 @@ public class FotoTest {
     fotoDto.setOpmerking(OPMERKING);
     fotoDto.setTaxonSeq(TAXONSEQ);
     fotoDto.setWaarnemingId(WAARNEMINGID);
-
   }
 
   @Test

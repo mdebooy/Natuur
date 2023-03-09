@@ -194,9 +194,9 @@ public class WaarnemingDto
 
   public void setDatum(Date datum) {
     if (null == datum) {
-      this.datum  = null;
+      this.datum    = null;
     } else {
-      this.datum  = new Date(datum.getTime());
+      this.datum    = new Date(datum.getTime());
     }
   }
 
@@ -215,11 +215,11 @@ public class WaarnemingDto
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking  = opmerking;
+    this.opmerking    = opmerking;
   }
 
   public void setTaxon(TaxonDto taxon) {
-    this.taxon  = taxon;
+    this.taxon        = taxon;
   }
 
   public void setWaarnemingId(Long waarnemingId) {

@@ -51,7 +51,8 @@ public class GebiedController extends Natuur {
   private static final  String  TIT_RETRIEVE  = "natuur.titel.gebied.retrieve";
   private static final  String  TIT_UPDATE    = "natuur.titel.gebied.update";
 
-  private Gebied  gebied;
+  private Gebied    gebied;
+  private GebiedDto gebiedDto;
 
   public void create() {
     if (!isUser()) {
@@ -59,11 +60,17 @@ public class GebiedController extends Natuur {
       return;
     }
 
-    gebied  = new Gebied();
-    gebied.setLandId(Long.valueOf(getParameter("natuur.default.landid")));
-    setAktie(PersistenceConstants.CREATE);
-    setSubTitel(getTekst(TIT_CREATE));
-    redirect(GEBIED_REDIRECT);
+    try {
+      gebied    = new Gebied();
+      gebiedDto = new GebiedDto();
+      gebied.setLandId(Long.valueOf(getParameter(DEF_LANDID)));
+      gebied.persist(gebiedDto);
+      setAktie(PersistenceConstants.CREATE);
+      setSubTitel(getTekst(TIT_CREATE));
+      redirect(GEBIED_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(DEF_LANDID));
+    }
   }
 
   public void delete() {
@@ -74,8 +81,9 @@ public class GebiedController extends Natuur {
 
     try {
       getGebiedService().delete(gebied.getGebiedId());
+      gebied    = new Gebied();
+      gebiedDto = new GebiedDto();
       addInfo(PersistenceConstants.DELETED, gebied.getNaam());
-      gebied  = new Gebied();
       redirect(GEBIEDEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
@@ -91,16 +99,6 @@ public class GebiedController extends Natuur {
   }
 
   public Collection<SelectItem> getSelectGebieden() {
-    List<SelectItem>  items = new LinkedList<>();
-
-    getGebiedService().query()
-                      .forEach(rij ->
-      items.add(new SelectItem(rij, rij.getNaam())));
-
-    return items;
-  }
-
-  public Collection<SelectItem> getSelectGebiedenId() {
     List<SelectItem>  items = new LinkedList<>();
 
     getGebiedService().query()
@@ -139,7 +137,7 @@ public class GebiedController extends Natuur {
   }
 
   public void retrieve() {
-    if (!isUser() && !isView()) {
+    if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
       return;
     }
@@ -154,10 +152,14 @@ public class GebiedController extends Natuur {
     var gebiedId  = Long.valueOf(ec.getRequestParameterMap()
                                    .get(GebiedDto.COL_GEBIEDID));
 
-    gebied  = new Gebied(getGebiedService().gebied(gebiedId));
-    setAktie(PersistenceConstants.RETRIEVE);
-    setSubTitel(getTekst(TIT_RETRIEVE));
-    redirect(GEBIED_REDIRECT);
+    try {
+      gebied  = new Gebied(getGebiedService().gebied(gebiedId));
+      setAktie(PersistenceConstants.RETRIEVE);
+      setSubTitel(getTekst(TIT_RETRIEVE));
+      redirect(GEBIED_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_GEBIED));
+    }
   }
 
   public void save() {
@@ -173,13 +175,17 @@ public class GebiedController extends Natuur {
     }
 
     try {
-      getGebiedService().save(gebied);
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
+          gebied.persist(gebiedDto);
+          getGebiedService().save(gebiedDto);
+          gebied.setGebiedId(gebiedDto.getGebiedId());
           addInfo(PersistenceConstants.CREATED, gebied.getNaam());
           update();
           break;
         case PersistenceConstants.UPDATE:
+          gebied.persist(gebiedDto);
+          getGebiedService().save(gebiedDto);
           addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
           break;
         default:

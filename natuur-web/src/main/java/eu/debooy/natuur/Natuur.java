@@ -64,6 +64,10 @@ public class Natuur extends DoosBean {
 
   protected static final  String  ADMIN_ROLE                = "natuur-admin";
   protected static final  String  APPLICATIE_NAAM           = "Natuur";
+  protected static final  String  DEF_GEBIEDID              =
+      "natuur.default.gebiedid";
+  protected static final  String  DEF_LANDID                =
+      "natuur.default.landid";
   protected static final  String  FOTO_REDIRECT             =
       "/waarnemingen/foto.xhtml";
   protected static final  String  FOTOS_REDIRECT            =
@@ -74,6 +78,18 @@ public class Natuur extends DoosBean {
       "/gebieden/gebieden.xhtml";
   protected static final  String  GEENFOTOS_REDIRECT        =
       "/rangen/geenfotos.xhtml";
+  protected static final  String  LBL_FOTO                  = "label.foto";
+  protected static final  String  LBL_GEBIED                = "label.gebied";
+  protected static final  String  LBL_PARAMETERS            =
+      "label.parameters";
+  protected static final  String  LBL_RANG                  = "label.rang";
+  protected static final  String  LBL_REGIOLIJST            =
+      "label.regiolijst";
+  protected static final  String  LBL_TAAL                  = "label.taal";
+  protected static final  String  LBL_TAXON                 = "label.taxon";
+  protected static final  String  LBL_TAXONNAAM             = "label.taxonnaam";
+  protected static final  String  LBL_WAARNEMING            =
+      "label.waarneming";
   protected static final  String  RANG_REDIRECT             =
       "/rangen/rang.xhtml";
   protected static final  String  RANGEN_REDIRECT           =

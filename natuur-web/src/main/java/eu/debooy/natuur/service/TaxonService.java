@@ -234,11 +234,15 @@ public class TaxonService {
     var                 comp  = new TaxonDto.NaamComparator();
     comp.setTaal(taal);
     Set<TaxonDto>       rijen = new TreeSet<>(comp);
-    rijen.addAll(taxonDao.getOuders(niveau));
-    // Waarom zo?
-    rijen.forEach(rij ->  items.put(" " + rij.getTaxonId(),
-                                    rij.getNaam(taal)
-                                        + " (" + rij.getLatijnsenaam() + ")"));
+    try {
+      rijen.addAll(taxonDao.getOuders(niveau));
+      rijen.forEach(rij ->  items.put(" " + rij.getTaxonId(),
+                                      rij.getNaam(taal)
+                                          + " (" + rij.getLatijnsenaam()
+                                          + ")"));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
 
     return Response.ok().entity(items).build();
   }

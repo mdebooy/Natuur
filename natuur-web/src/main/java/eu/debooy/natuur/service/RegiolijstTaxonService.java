@@ -21,7 +21,6 @@ import eu.debooy.natuur.access.RegiolijstTaxonDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
-import eu.debooy.natuur.form.RegiolijstTaxon;
 import java.util.ArrayList;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -100,25 +99,8 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void update(RegiolijstTaxon regiolijstTaxon) {
-    var dto = regiolijstTaxon(regiolijstTaxon.getRegioId(),
-                              regiolijstTaxon.getTaxonId());
-    regiolijstTaxon.persist(dto);
-
-    update(dto);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void update(RegiolijstTaxonDto regiolijstTaxon) {
     regiolijstTaxonDao.update(regiolijstTaxon);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(RegiolijstTaxon regiolijst) {
-    var dto = new RegiolijstTaxonDto();
-    regiolijst.persist(dto);
-
-    save(dto);
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)

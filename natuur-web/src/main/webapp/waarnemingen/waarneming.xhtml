@@ -106,7 +106,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.gebied')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="gebiedId" value="#{natuurWaarneming.waarneming.gebied}" converter="GebiedConverter" fullwidth="true" required="true" readonly="#{natuurWaarneming.aktie.readonly}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" />
+                  <d:listbox id="gebiedId" value="#{natuurWaarneming.waarneming.gebied.gebiedId}" items="#{natuurGebied.selectGebieden}" textvalue="#{natuurWaarneming.waarneming.gebied.naam}" fullwidth="true" required="true" readonly="#{natuurWaarneming.aktie.readonly}" />
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -116,7 +116,7 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formWaarneming" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurWaarneming.formateerDatum(waarneming.datum)} - #{waarneming.gebied.naam}" />
+              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formWaarneming" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurWaarneming.formateerDatum(natuurWaarneming.waarneming.datum)} - #{natuurWaarneming.waarneming.gebied.naam}" />
 
               <t:div rendered="#{!natuurWaarneming.aktie.nieuw}">
                 <d:spacer />

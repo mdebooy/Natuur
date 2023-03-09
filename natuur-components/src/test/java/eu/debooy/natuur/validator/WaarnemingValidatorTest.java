@@ -49,7 +49,7 @@ public class WaarnemingValidatorTest {
                  .setAttribute(WaarnemingDto.COL_AANTAL)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.ISKLEINER)
-                 .setParams(new Object[]{"_I18N.label.aantal", 1})
+                 .setParams(new Object[]{WaarnemingValidator.LBL_AANTAL, 1})
                  .build();
 
   public static final Message REQ_DATUM =
@@ -57,7 +57,7 @@ public class WaarnemingValidatorTest {
                  .setAttribute(WaarnemingDto.COL_DATUM)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.datum"})
+                 .setParams(new Object[]{WaarnemingValidator.LBL_DATUM})
                  .build();
 
   private static  Message   errDatum;

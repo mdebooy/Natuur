@@ -474,17 +474,6 @@ public class TaxonTest {
     assertEquals(instance.getTaxonId(), parameter.getTaxonId());
     assertEquals(instance.getVolgnummer(), parameter.getVolgnummer());
     assertFalse(parameter.isUitgestorven());
-
-    parameter.setUitgestorven(true);
-    instance.persist(parameter);
-
-    assertEquals(instance.getLatijnsenaam(), parameter.getLatijnsenaam());
-    assertEquals(instance.getOpmerking(), parameter.getOpmerking());
-    assertEquals(instance.getParentId(), parameter.getParentId());
-    assertEquals(instance.getRang(), parameter.getRang());
-    assertEquals(instance.getTaxonId(), parameter.getTaxonId());
-    assertEquals(instance.getVolgnummer(), parameter.getVolgnummer());
-    assertFalse(parameter.isUitgestorven());
   }
 
   @Test

@@ -19,7 +19,6 @@ package eu.debooy.natuur.service;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RegiolijstDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
-import eu.debooy.natuur.form.Regiolijst;
 import java.util.ArrayList;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -93,24 +92,8 @@ public class RegiolijstService {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(Regiolijst regiolijst) {
-    var dto = new RegiolijstDto();
-    regiolijst.persist(dto);
-
-    save(dto);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(RegiolijstDto regiolijst) {
     regiolijstDao.create(regiolijst);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void update(Regiolijst regiolijst) {
-    var dto = regiolijstDao.getByPrimaryKey(regiolijst.getRegioId());
-    regiolijst.persist(dto);
-
-    update(dto);
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)

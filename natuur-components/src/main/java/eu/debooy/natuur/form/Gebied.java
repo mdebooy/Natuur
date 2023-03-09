@@ -48,20 +48,6 @@ public class Gebied
 
   public Gebied() {}
 
-  public Gebied(Gebied gebied) {
-    gebiedId          = gebied.getGebiedId();
-    landId            = gebied.getLandId();
-    latitude          = gebied.getLatitude();
-    latitudeGraden    = gebied.getLatitudeGraden();
-    latitudeMinuten   = gebied.getLatitudeMinuten();
-    latitudeSeconden  = gebied.getLatitudeSeconden();
-    longitude         = gebied.getLongitude();
-    longitudeGraden   = gebied.getLongitudeGraden();
-    longitudeMinuten  = gebied.getLongitudeMinuten();
-    longitudeSeconden = gebied.getLongitudeSeconden();
-    naam              = gebied.getNaam();
-  }
-
   public Gebied(GebiedDto gebiedDto) {
     gebiedId          = gebiedDto.getGebiedId();
     landId            = gebiedDto.getLandId();
@@ -175,56 +161,17 @@ public class Gebied
   }
 
   public void persist(GebiedDto parameter) {
-    if (!new EqualsBuilder().append(gebiedId,
-                                    parameter.getGebiedId()).isEquals()) {
-      parameter.setGebiedId(gebiedId);
-    }
-    if (!new EqualsBuilder().append(landId,
-                                    parameter.getLandId()).isEquals()) {
-      parameter.setLandId(landId);
-    }
-    if (!new EqualsBuilder().append(latitude,
-                                    parameter.getLatitude()).isEquals()) {
-      parameter.setLatitude(latitude);
-    }
-    if (!new EqualsBuilder().append(latitudeGraden,
-                                    parameter.getLatitudeGraden())
-                            .isEquals()) {
-      parameter.setLatitudeGraden(latitudeGraden);
-    }
-    if (!new EqualsBuilder().append(latitudeMinuten,
-                                    parameter.getLatitudeMinuten())
-                            .isEquals()) {
-      parameter.setLatitudeMinuten(latitudeMinuten);
-    }
-    if (!new EqualsBuilder().append(latitudeSeconden,
-                                    parameter.getLatitudeSeconden())
-                            .isEquals()) {
-      parameter.setLatitudeSeconden(latitudeSeconden);
-    }
-    if (!new EqualsBuilder().append(longitude,
-                                    parameter.getLongitude()).isEquals()) {
-      parameter.setLongitude(longitude);
-    }
-    if (!new EqualsBuilder().append(longitudeGraden,
-                                    parameter.getLongitudeGraden())
-                            .isEquals()) {
-      parameter.setLongitudeGraden(longitudeGraden);
-    }
-    if (!new EqualsBuilder().append(longitudeMinuten,
-                                    parameter.getLongitudeMinuten())
-                            .isEquals()) {
-      parameter.setLongitudeMinuten(longitudeMinuten);
-    }
-    if (!new EqualsBuilder().append(longitudeSeconden,
-                                    parameter.getLongitudeSeconden())
-                            .isEquals()) {
-      parameter.setLongitudeSeconden(longitudeSeconden);
-    }
-    if (!new EqualsBuilder().append(naam,
-                                    parameter.getNaam()).isEquals()) {
-      parameter.setNaam(naam);
-    }
+    parameter.setGebiedId(gebiedId);
+    parameter.setLandId(landId);
+    parameter.setLatitude(latitude);
+    parameter.setLatitudeGraden(latitudeGraden);
+    parameter.setLatitudeMinuten(latitudeMinuten);
+    parameter.setLatitudeSeconden(latitudeSeconden);
+    parameter.setLongitude(longitude);
+    parameter.setLongitudeGraden(longitudeGraden);
+    parameter.setLongitudeMinuten(longitudeMinuten);
+    parameter.setLongitudeSeconden(longitudeSeconden);
+    parameter.setNaam(naam);
   }
 
   public void setGebiedId(Long gebiedId) {

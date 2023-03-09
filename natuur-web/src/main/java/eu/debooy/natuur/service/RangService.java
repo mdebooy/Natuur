@@ -82,7 +82,11 @@ public class RangService {
   @GET
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRangen() {
-    return Response.ok().entity(rangDao.getAll()).build();
+    try {
+      return Response.ok().entity(rangDao.getAll()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList()).build();
+    }
   }
 
   @GET
@@ -127,11 +131,7 @@ public class RangService {
     try {
       return Response.ok().entity(rangDao.getVanaf(niveau)).build();
     } catch (ObjectNotFoundException e) {
-      var message = new Message.Builder()
-                               .setAttribute(RangDto.COL_NIVEAU)
-                               .setMessage(PersistenceConstants.NOTFOUND)
-                               .setSeverity(Message.ERROR).build();
-      return Response.status(400).entity(message).build();
+      return Response.ok().entity(new ArrayList()).build();
     }
   }
 

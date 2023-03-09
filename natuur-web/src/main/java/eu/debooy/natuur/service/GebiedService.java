@@ -119,15 +119,11 @@ public class GebiedService {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(Gebied gebied) {
-    var dto = new GebiedDto();
-    gebied.persist(dto);
-
+  public void save(GebiedDto gebied) {
     if (null == gebied.getGebiedId()) {
-      gebiedDao.create(dto);
-      gebied.setGebiedId(dto.getGebiedId());
+      gebiedDao.create(gebied);
     } else {
-      gebiedDao.update(dto);
+      gebiedDao.update(gebied);
     }
   }
 }

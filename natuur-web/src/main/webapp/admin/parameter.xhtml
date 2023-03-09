@@ -21,10 +21,10 @@
                     <d:inputText id="waarde" value="#{natuurAppParam.waarde}" required="true" maxlength="255" size="100" />
                   </t:div>
                   <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
-                    <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" required="true" textvalue="" />
+                    <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{i18nLandnaam.selectLandnamen()}" fullwidth="true" required="true" textvalue="" />
                   </t:div>
                   <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
-                    <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebiedenId}" required="true" textvalue="" />
+                    <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebieden}" fullwidth="true" required="true" textvalue="" />
                   </t:div>
                 </div>
               </div>

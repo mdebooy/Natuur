@@ -48,24 +48,6 @@ public class Waarneming extends Formulier
 
   public Waarneming() {}
 
-  public Waarneming(Waarneming waarneming) {
-    aantal        = waarneming.getAantal();
-    aantalFotos   = waarneming.getAantalFotos();
-    datum         = waarneming.getDatum();
-    if (null == waarneming.getGebied()) {
-      gebied      = null;
-    } else {
-      gebied      = new Gebied(waarneming.getGebied());
-    }
-    opmerking     = waarneming.getOpmerking();
-    if (null == waarneming.getTaxon()) {
-      taxon       = null;
-    } else {
-      taxon       = new Taxon(waarneming.getTaxon());
-    }
-    waarnemingId  = waarneming.getWaarnemingId();
-  }
-
   public Waarneming(WaarnemingDto waarnemingDto) {
     this(waarnemingDto, null);
   }
@@ -169,35 +151,16 @@ public class Waarneming extends Formulier
   }
 
   public void persist(WaarnemingDto waarnemingDto) {
-    if (!new EqualsBuilder().append(aantal, waarnemingDto.getAantal())
-                            .isEquals()) {
-      waarnemingDto.setAantal(aantal);
-    }
-    if (!new EqualsBuilder().append(datum, waarnemingDto.getDatum())
-                            .isEquals()) {
-      waarnemingDto.setDatum(datum);
-    }
-    if (!new EqualsBuilder().append(gebied, waarnemingDto.getGebied())
-                            .isEquals()) {
-      var gebiedDto = new GebiedDto();
-      gebied.persist(gebiedDto);
-      waarnemingDto.setGebied(gebiedDto);
-    }
-    if (!new EqualsBuilder().append(opmerking, waarnemingDto.getOpmerking())
-                            .isEquals()) {
-      waarnemingDto.setOpmerking(opmerking);
-    }
-    if (!new EqualsBuilder().append(taxon, waarnemingDto.getTaxon())
-                            .isEquals()) {
-      var taxonDto  = new TaxonDto();
-      taxon.persist(taxonDto);
-      waarnemingDto.setTaxon(taxonDto);
-    }
-    if (!new EqualsBuilder().append(waarnemingId,
-                                    waarnemingDto.getWaarnemingId())
-                            .isEquals()) {
-      waarnemingDto.setWaarnemingId(waarnemingId);
-    }
+    waarnemingDto.setAantal(aantal);
+    waarnemingDto.setDatum(datum);
+    var gebiedDto = new GebiedDto();
+    gebied.persist(gebiedDto);
+    waarnemingDto.setGebied(gebiedDto);
+    waarnemingDto.setOpmerking(opmerking);
+    var taxonDto  = new TaxonDto();
+    taxon.persist(taxonDto);
+    waarnemingDto.setTaxon(taxonDto);
+    waarnemingDto.setWaarnemingId(waarnemingId);
   }
 
   public void setAantal(Integer aantal) {
@@ -217,7 +180,7 @@ public class Waarneming extends Formulier
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking  = opmerking;
+    this.opmerking    = opmerking;
   }
 
   public void setTaxon(Taxon taxon) {

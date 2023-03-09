@@ -165,14 +165,6 @@ public class FotoService {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(Foto foto) {
-    var dto = new FotoDto();
-    foto.persist(dto);
-
-    save(dto);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(FotoDto fotoDto) {
     if (null == fotoDto.getFotoId()) {
       fotoDao.create(fotoDto);
