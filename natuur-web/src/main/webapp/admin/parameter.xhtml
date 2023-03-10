@@ -17,7 +17,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst(natuurAppParam.parameter)}" />
                 <div class="field-body is-normal">
-                  <t:div rendered="#{natuurAppParam.sleutel!='natuur.default.landid' and natuurAppParam.sleutel!='natuur.default.gebiedid'}">
+                  <t:div rendered="#{!natuurAppParam.isSpeciaal(natuurAppParam.sleutel)}">
                     <d:inputText id="waarde" value="#{natuurAppParam.waarde}" required="true" maxlength="255" size="100" />
                   </t:div>
                   <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">

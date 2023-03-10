@@ -17,7 +17,6 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.controller.AppParamController;
-
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -29,6 +28,12 @@ import javax.inject.Named;
 @SessionScoped
 public class NatuurAppParamController extends AppParamController {
   private static final  long  serialVersionUID  = 1L;
+
+  public NatuurAppParamController() {
+    initSpeciaal();
+    addSpeciaal("natuur.default.gebiedid");
+    addSpeciaal("natuur.default.landid");
+  }
 
   public Long getGebiedId() {
     return Long.valueOf(getWaarde());
