@@ -85,7 +85,7 @@ public class RangService {
     try {
       return Response.ok().entity(rangDao.getAll()).build();
     } catch (ObjectNotFoundException e) {
-      return Response.ok().entity(new ArrayList()).build();
+      return Response.ok().entity(new ArrayList<>()).build();
     }
   }
 
@@ -131,7 +131,7 @@ public class RangService {
     try {
       return Response.ok().entity(rangDao.getVanaf(niveau)).build();
     } catch (ObjectNotFoundException e) {
-      return Response.ok().entity(new ArrayList()).build();
+      return Response.ok().entity(new ArrayList<>()).build();
     }
   }
 
