@@ -242,7 +242,8 @@ public class RegiolijstController extends Natuur {
                                  .get(RegiolijstDto.COL_REGIOID));
 
     try {
-      regiolijst  = new Regiolijst(getRegiolijstService().regiolijst(sleutel));
+      regiolijstDto = getRegiolijstService().regiolijst(sleutel);
+      regiolijst    = new Regiolijst(regiolijstDto);
       setRegio(sleutel);
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTekst(TIT_RETRIEVE, regio.getNaam()));
@@ -309,7 +310,7 @@ public class RegiolijstController extends Natuur {
           break;
         case PersistenceConstants.UPDATE:
           regiolijst.persist(regiolijstDto);
-          getRegiolijstService().save(regiolijstDto);
+          getRegiolijstService().update(regiolijstDto);
           addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
           break;
         default:

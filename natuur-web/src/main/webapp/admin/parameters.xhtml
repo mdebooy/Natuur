@@ -7,7 +7,6 @@
   template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var parametersTabel = $('#parametersTabel').DataTable( {
@@ -36,10 +35,10 @@
             { data: 'sleutel', title: '#{i18nTeksten.tekst('label.sleutel')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.waarde')}', render: function ( data, type, row ) {
                 switch(data.sleutel) {
-                  case "natuur.default.gebiedid":
+                  case 'natuur.default.gebiedid':
                     return getGebied(data.waarde).naam;
                     break;
-                  case "natuur.default.landid":
+                  case 'natuur.default.landid':
                     return getLandnaam(data.waarde, taal);
                     break;
                   default:
@@ -58,7 +57,6 @@
           jsfCommandLink.click();
         } );
       });
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">

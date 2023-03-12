@@ -86,19 +86,9 @@ public class Regiolijst extends Formulier
   }
 
   public void persist(RegiolijstDto regiolijstDto) {
-    if (!new EqualsBuilder().append(datum,
-                                    regiolijstDto.getDatum()).isEquals()) {
-      regiolijstDto.setDatum(datum);
-    }
-    if (!new EqualsBuilder().append(omschrijving,
-                                    regiolijstDto.getOmschrijving())
-                            .isEquals()) {
-      regiolijstDto.setOmschrijving(omschrijving);
-    }
-    if (!new EqualsBuilder().append(regioId,
-                                    regiolijstDto.getRegioId()).isEquals()) {
-      regiolijstDto.setRegioId(regioId);
-    }
+    regiolijstDto.setDatum(datum);
+    regiolijstDto.setOmschrijving(omschrijving);
+    regiolijstDto.setRegioId(regioId);
   }
 
   public void setDatum(Date datum) {
@@ -110,11 +100,7 @@ public class Regiolijst extends Formulier
   }
 
   public void setOmschrijving(String omschrijving) {
-    if (null == omschrijving) {
-      this.omschrijving = null;
-    } else {
-      this.omschrijving = omschrijving;
-    }
+    this.omschrijving = omschrijving;
   }
 
   public void setRegioId(Long regioId) {

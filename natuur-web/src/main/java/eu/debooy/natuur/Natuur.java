@@ -137,7 +137,7 @@ public class Natuur extends DoosBean {
       addDropdownmenuitem(DD_ADMIN, APP_PARAMS_REDIRECT,
           "menu.applicatieparameters");
     }
-    if (isUser() || isView()) {
+    if (isGerechtigd()) {
       addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
       addMenuitem(GEBIEDEN_REDIRECT,      "menu.gebieden");
       addMenuitem(REGIOLIJSTEN_REDIRECT,  "menu.regiolijsten");

@@ -145,7 +145,6 @@ function getStatus(status, taal) {
     return status;
   }
 
-
   return teksten[naam].tekst;
 }
 

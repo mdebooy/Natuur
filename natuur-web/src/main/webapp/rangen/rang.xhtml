@@ -67,9 +67,18 @@
                 return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
               }
             },
-            { data: 'totaal', title: '#{i18nTeksten.tekst('label.aantalsoorten')}', width: '50px', class: 'has-text-right' },
-            { data: 'waargenomen', title: '#{i18nTeksten.tekst('label.aantalwaarnemingen')}', width: '50px', class: 'has-text-right' },
-            { data: 'opFoto', title: '#{i18nTeksten.tekst('label.opfoto')}', width: '50px', class: 'has-text-right' },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantalsoorten')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                return formatNumber(data.totaal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantalwaarnemingen')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                return formatNumber(data.waargenomen);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.opfoto')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                return formatNumber(data.opFoto);
+              }
+            },
             { data: null, title: '%', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
                 return data.pctOpFoto+'%';
               }
