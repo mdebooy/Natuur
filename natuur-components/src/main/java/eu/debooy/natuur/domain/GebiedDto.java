@@ -17,8 +17,6 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
-import java.io.Serializable;
-import java.util.Comparator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -74,20 +72,20 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
   private Double  longitudeSeconden;
   @Column(name="NAAM", length=225, nullable=false)
   private String  naam;
-
-  public static class NaamComparator
-      implements Comparator<GebiedDto>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    @Override
-    public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
-      return gebiedDto1.naam.compareTo(gebiedDto2.naam);
-    }
-  }
+//
+//  public static class NaamComparator
+//      implements Comparator<GebiedDto>, Serializable {
+//    private static final  long  serialVersionUID  = 1L;
+//
+//    @Override
+//    public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
+//      return gebiedDto1.naam.compareTo(gebiedDto2.naam);
+//    }
+//  }
 
   @Override
   public int compareTo(GebiedDto gebiedDto) {
-    return new CompareToBuilder().append(gebiedId, gebiedDto.gebiedId)
+    return new CompareToBuilder().append(naam, gebiedDto.naam)
                                  .toComparison();
   }
 

@@ -21,7 +21,6 @@ import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
 import java.io.Serializable;
 import java.text.DecimalFormat;
-import java.util.Comparator;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -62,19 +61,9 @@ public class Gebied
     naam              = gebiedDto.getNaam();
   }
 
-  public static class NaamComparator
-      implements Comparator<Gebied>, Serializable {
-    private static final  long  serialVersionUID  = 1L;
-
-    @Override
-    public int compare(Gebied gebied1, Gebied gebied2) {
-      return gebied1.naam.compareTo(gebied2.naam);
-    }
-  }
-
   @Override
   public int compareTo(Gebied gebied) {
-    return new CompareToBuilder().append(gebiedId, gebied.gebiedId)
+    return new CompareToBuilder().append(naam, gebied.naam)
                                  .toComparison();
   }
 

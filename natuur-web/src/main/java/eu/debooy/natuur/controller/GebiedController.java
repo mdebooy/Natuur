@@ -29,6 +29,8 @@ import eu.debooy.natuur.validator.GebiedValidator;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -100,9 +102,10 @@ public class GebiedController extends Natuur {
 
   public Collection<SelectItem> getSelectGebieden() {
     List<SelectItem>  items = new LinkedList<>();
+    Set<Gebied>       rijen = new TreeSet<>();
+    rijen.addAll(getGebiedService().query());
 
-    getGebiedService().query()
-                      .forEach(rij ->
+    rijen.forEach(rij ->
       items.add(new SelectItem(rij.getGebiedId(), rij.getNaam())));
 
     return items;
