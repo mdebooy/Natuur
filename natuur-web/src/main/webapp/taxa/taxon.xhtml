@@ -131,7 +131,7 @@
         $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}',
                   dataSrc: '' },
-          order: [[1, "desc"],[3, "asc"],[2, "asc"]],
+          order: [[1, "asc"]],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
