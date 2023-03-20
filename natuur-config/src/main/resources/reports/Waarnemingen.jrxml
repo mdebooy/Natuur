@@ -63,12 +63,12 @@
 		<band height="12" splitType="Stretch">
 			<frame>
 				<reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="12"/>
-				<textField isStretchWithOverflow="true">
+				<textField textAdjust="StretchHeight">
 					<reportElement style="Row" x="0" y="0" width="275" height="12"/>
 					<textElement/>
 					<textFieldExpression><![CDATA[$F{naam}]]></textFieldExpression>
 				</textField>
-				<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
 					<reportElement style="Row" x="280" y="0" width="275" height="12"/>
 					<textElement>
 						<font isItalic="true"/>
