@@ -20,6 +20,7 @@ import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
@@ -45,7 +46,7 @@ public class RegiolijstTaxonDao extends Dao<RegiolijstTaxonDto> {
     return em;
   }
 
-  public Object getPerRegiolijst(Long regioId) {
+  public List<RegiolijstTaxonDto> getPerRegiolijst(Long regioId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(RegiolijstTaxonDto.PAR_REGIOID, regioId);
 

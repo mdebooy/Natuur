@@ -25,6 +25,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -51,6 +52,8 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
   public static final String  QRY_REGIO = "regiolijsttaxonPerRegio";
   public static final String  QRY_TAXON = "regiolijsttaxonPerTaxon";
 
+  @Transient
+  private boolean   gezien  = false;
   @Id
   @Column(name="REGIO_ID", nullable=false)
   private Long      regioId;
@@ -105,6 +108,14 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(regioId).append(taxonId).toHashCode();
+  }
+
+  public boolean isGezien() {
+    return gezien;
+  }
+
+  public void setGezien(boolean gezien) {
+    this.gezien   = gezien;
   }
 
   public void setRegioId(Long regioId) {

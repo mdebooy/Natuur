@@ -33,6 +33,7 @@ public class RegiolijstTaxon
     extends Formulier implements Comparable<RegiolijstTaxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
+  private boolean gezien;
   private Long    regioId;
   private String  status;
   private Taxon   taxon;
@@ -45,6 +46,7 @@ public class RegiolijstTaxon
   }
 
   public RegiolijstTaxon(RegiolijstTaxonDto regiolijstTaxonDto, String taal) {
+    gezien  = regiolijstTaxonDto.isGezien();
     regioId = regiolijstTaxonDto.getRegioId();
     status  = regiolijstTaxonDto.getStatus();
     if (null == regiolijstTaxonDto.getTaxon()) {
@@ -98,19 +100,18 @@ public class RegiolijstTaxon
     return new HashCodeBuilder().append(regioId).append(taxonId).toHashCode();
   }
 
+  public boolean isGezien() {
+    return gezien;
+  }
+
   public void persist(RegiolijstTaxonDto parameter) {
-    if (!new EqualsBuilder().append(regioId,
-                                    parameter.getRegioId()).isEquals()) {
-      parameter.setRegioId(regioId);
-    }
-    if (!new EqualsBuilder().append(status,
-                                    parameter.getStatus()).isEquals()) {
-      parameter.setStatus(status);
-    }
-    if (!new EqualsBuilder().append(taxonId,
-                                    parameter.getTaxonId()).isEquals()) {
-      parameter.setTaxonId(taxonId);
-    }
+    parameter.setRegioId(regioId);
+    parameter.setStatus(status);
+    parameter.setTaxonId(taxonId);
+  }
+
+  public void setGezien(boolean gezien) {
+    this.gezien = gezien;
   }
 
   public void setRegioId(Long regioId) {

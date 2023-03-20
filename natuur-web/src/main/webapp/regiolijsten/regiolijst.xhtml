@@ -18,7 +18,7 @@
         var regiolijstTaxaTabel = $('#regiolijstTaxaTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regioId}',
                   dataSrc: '' },
-          order: [[0, 'asc'], [2, 'asc']],
+          order: [[1, 'asc'], [3, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
@@ -38,6 +38,10 @@
             infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
           },
           columns: [
+            { data: null, title: '', width: '25px', class: 'has-text-centered', render: function ( data, type, row ) {
+                return showBoolean(data.gezien);
+              }
+            },
             { data: 'taxon.volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
             { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
                 return getTaxonnaam(data.taxon, taal);

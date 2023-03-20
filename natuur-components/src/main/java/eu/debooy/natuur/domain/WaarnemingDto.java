@@ -50,6 +50,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Table(name="WAARNEMINGEN", schema="NATUUR")
 @NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId")
 @NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w where w.taxon.taxonId=:taxonId")
+//@NamedQuery(name="waarnemingenTaxon", query="select distinct(w.taxon.taxonId) from WaarnemingDto w")
 public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -66,6 +67,7 @@ public class WaarnemingDto
 
   public static final String  QRY_PERGEBIED = "waarnemingenPerGebied";
   public static final String  QRY_PERTAXON  = "waarnemingenPerTaxon";
+  public static final String  QRY_TAXON     = "select distinct w.taxon.taxonId from WaarnemingDto w";
 
   @Column(name="AANTAL")
   private Integer   aantal;

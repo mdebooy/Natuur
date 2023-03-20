@@ -18,10 +18,12 @@ package eu.debooy.natuur.service;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RegiolijstTaxonDao;
+import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -55,6 +57,8 @@ public class RegiolijstTaxonService {
 
   @Inject
   private RegiolijstTaxonDao  regiolijstTaxonDao;
+  @Inject
+  private WaarnemingDao       waarnemingDao;
 
   public RegiolijstTaxonService() {
     LOGGER.debug("init RegiolijstTaxonService");
@@ -68,13 +72,14 @@ public class RegiolijstTaxonService {
   @GET
   @Path("/{regioId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Response getRegiolijst
+  public Response getPerRegiolijst
       (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId) {
     try {
-      return Response.ok().entity(regiolijstTaxonDao.getPerRegiolijst(regioId))
-                     .build();
+      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regioId);
+      setGezien(taxa);
+      return Response.ok().entity(taxa).build();
     } catch (ObjectNotFoundException e) {
-      return Response.ok().entity(new ArrayList<RegiolijstTaxonDto>()).build();
+      return Response.ok().entity(new ArrayList<>()).build();
     }
   }
 
@@ -82,9 +87,11 @@ public class RegiolijstTaxonService {
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRegiolijsten() {
     try {
-      return Response.ok().entity(regiolijstTaxonDao.getAll()).build();
+      var taxa  = regiolijstTaxonDao.getAll();
+      setGezien(taxa);
+      return Response.ok().entity(taxa).build();
     } catch (ObjectNotFoundException e) {
-      return Response.ok().entity(new ArrayList<RegiolijstTaxonDto>()).build();
+      return Response.ok().entity(new ArrayList<>()).build();
     }
   }
 
@@ -106,5 +113,12 @@ public class RegiolijstTaxonService {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(RegiolijstTaxonDto regiolijst) {
     regiolijstTaxonDao.create(regiolijst);
+  }
+
+  private void setGezien(List<RegiolijstTaxonDto> taxa) {
+    var gezien  = waarnemingDao.getTaxa();
+
+    taxa.forEach(rij -> rij.setGezien(gezien.contains(rij.getTaxon()
+                                                         .getTaxonId())));
   }
 }

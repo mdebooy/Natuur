@@ -59,4 +59,9 @@ public class WaarnemingDao extends Dao<WaarnemingDto> {
 
     return namedQuery(WaarnemingDto.QRY_PERTAXON, params);
   }
+
+  public List<Long> getTaxa() {
+    return em.createQuery(WaarnemingDto.QRY_TAXON, Long.class)
+             .getResultList();
+  }
 }
