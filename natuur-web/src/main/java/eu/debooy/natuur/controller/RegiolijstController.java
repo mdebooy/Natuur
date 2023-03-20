@@ -80,11 +80,12 @@ public class RegiolijstController extends Natuur {
   private final JSONArray         onbekend  = new JSONArray();
   private final List<SelectItem>  statusses = new LinkedList<>();
 
-  private UploadedFile    bestand;
-  private Regio           regio;
-  private Regiolijst      regiolijst;
-  private RegiolijstDto   regiolijstDto;
-  private RegiolijstTaxon regiolijstTaxon;
+  private UploadedFile        bestand;
+  private Regio               regio;
+  private Regiolijst          regiolijst;
+  private RegiolijstDto       regiolijstDto;
+  private RegiolijstTaxon     regiolijstTaxon;
+  private RegiolijstTaxonDto  regiolijstTaxonDto;
 
   public void batch() {
     if (!isUser()) {
@@ -119,8 +120,10 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    regiolijstTaxon = new RegiolijstTaxon();
+    regiolijstTaxon     = new RegiolijstTaxon();
+    regiolijstTaxonDto  = new RegiolijstTaxonDto();
     regiolijstTaxon.setRegioId(regiolijst.getRegioId());
+    regiolijstTaxon.persist(regiolijstTaxonDto);
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE, regio.getNaam()));
     redirect(REGIOLIJSTTAXON_REDIRECT);
@@ -159,7 +162,8 @@ public class RegiolijstController extends Natuur {
       var sleutel     = new RegiolijstTaxonPK(regiolijstTaxon.getRegioId(),
                                               regiolijstTaxon.getTaxonId());
       getRegiolijstTaxonService().delete(sleutel);
-      regiolijstTaxon = new RegiolijstTaxon();
+      regiolijstTaxon     = new RegiolijstTaxon();
+      regiolijstTaxonDto  = new RegiolijstTaxonDto();
       addInfo(PersistenceConstants.DELETED, "'" + naam + "'");
       redirect(REGIOLIJST_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -272,10 +276,11 @@ public class RegiolijstController extends Natuur {
                                      .get(RegiolijstTaxonDto.COL_TAXONID));
 
     try {
-      regiolijstTaxon =
-          new RegiolijstTaxon(getRegiolijstTaxonService()
-                  .regiolijstTaxon(regiolijst.getRegioId(), taxonId),
-                              getGebruikersTaal());
+      regiolijstTaxonDto  =
+          getRegiolijstTaxonService().regiolijstTaxon(regiolijst.getRegioId(),
+                                                      taxonId);
+      regiolijstTaxon     = new RegiolijstTaxon(regiolijstTaxonDto,
+                                                getGebruikersTaal());
       setDetailAktie(PersistenceConstants.UPDATE);
       setDetailSubTitel(getTekst(DTIT_UPDATE, regio.getNaam()));
 
@@ -362,17 +367,16 @@ public class RegiolijstController extends Natuur {
     }
 
     var naam  = regiolijstTaxon.getTaxon().getNaam();
-    var taxon = new RegiolijstTaxonDto();
     try {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
-          regiolijstTaxon.persist(taxon);
-          getRegiolijstTaxonService().save(taxon);
+          regiolijstTaxon.persist(regiolijstTaxonDto);
+          getRegiolijstTaxonService().save(regiolijstTaxonDto);
           addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
           break;
         case PersistenceConstants.UPDATE:
-          regiolijstTaxon.persist(taxon);
-          getRegiolijstTaxonService().save(taxon);
+          regiolijstTaxon.persist(regiolijstTaxonDto);
+          getRegiolijstTaxonService().update(regiolijstTaxonDto);
           addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
           break;
         default:
