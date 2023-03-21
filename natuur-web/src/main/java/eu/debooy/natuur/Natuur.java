@@ -102,10 +102,12 @@ public class Natuur extends DoosBean {
       "/regiolijsten/regiolijst.xhtml";
   protected static final  String  REGIOLIJSTEN_REDIRECT     =
       "/regiolijsten/regiolijsten.xhtml";
-  protected static final  String  REGIOLIJSTUPLOAD_REDIRECT =
-      "/regiolijsten/regiolijstupload.xhtml";
+  protected static final  String  REGIOLIJSTPARAMS_REDIRECT =
+      "/regiolijsten/regiolijstparameters.xhtml";
   protected static final  String  REGIOLIJSTTAXON_REDIRECT  =
       "/regiolijsten/regiolijsttaxon.xhtml";
+  protected static final  String  REGIOLIJSTUPLOAD_REDIRECT =
+      "/regiolijsten/regiolijstupload.xhtml";
   protected static final  String  STATUSSEN                 =
       "natuur.taxon.status";
   protected static final  String  TAXA_REDIRECT             =

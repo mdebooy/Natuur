@@ -96,6 +96,20 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<RegiolijstTaxonDto> query(Long regioId) {
+    List<RegiolijstTaxonDto>  taxa  = new ArrayList<>();
+
+    try {
+      taxa.addAll(regiolijstTaxonDao.getPerRegiolijst(regioId));
+      setGezien(taxa);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return taxa;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public RegiolijstTaxonDto regiolijstTaxon(Long regioId, Long taxonId) {
     return regiolijstTaxon(new RegiolijstTaxonPK(regioId, taxonId));
   }

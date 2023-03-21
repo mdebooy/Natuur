@@ -72,6 +72,9 @@
           addInsertButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.nieuw')}');
           addUploadButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.upload')}');
         }
+        if (#{natuurRegiolijst.user or natuurRegiolijst.view}) {
+          addPdfButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.PDF')}');
+        }
       } );
     </script>
   </ui:define>
@@ -112,6 +115,7 @@
                 </h:commandLink>
                 <h:commandLink id="addRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.createDetail}" />
                 <h:commandLink id="uploadRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.batch}" />
+                <h:commandLink id="pdfRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.parameters}" />
               </t:div>
             </div>
           </div>

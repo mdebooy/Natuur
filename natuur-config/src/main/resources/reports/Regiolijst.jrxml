@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Regiolijst" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="d8372f99-fd84-45d0-80f8-70a646ec6093">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="Column Header" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fontName="DejaVu Sans" fontSize="12" isBold="true"/>
+	<style name="Footer" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontName="DejaVu Sans" fontSize="8" isItalic="true"/>
+	<style name="Row" mode="Transparent" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+			<style backcolor="#777777"/>
+		</conditionalStyle>
+	</style>
+	<style name="Titel" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fontSize="12" isBold="true"/>
+	<parameter name="ReportTitel" class="java.lang.String"/>
+	<parameter name="ReportType" class="java.lang.String"/>
+	<parameter name="LabelLatijnsenaam" class="java.lang.String"/>
+	<parameter name="LabelTaal1" class="java.lang.String"/>
+	<parameter name="LabelTaal2" class="java.lang.String"/>
+	<parameter name="LabelTaal3" class="java.lang.String"/>
+	<field name="gezien" class="java.lang.String"/>
+	<field name="latijnsenaam" class="java.lang.String"/>
+	<field name="taal1" class="java.lang.String"/>
+	<field name="taal2" class="java.lang.String"/>
+	<field name="taal3" class="java.lang.String"/>
+	<background>
+		<band/>
+	</background>
+	<pageHeader>
+		<band height="50">
+			<printWhenExpression><![CDATA[$P{ReportType}.matches("PDF")]]></printWhenExpression>
+			<frame>
+				<reportElement style="Titel" x="-20" y="0" width="842" height="43" uuid="ed803d05-ff40-49a1-b4d6-c09c57eb7976"/>
+				<textField>
+					<reportElement style="Titel" x="0" y="0" width="842" height="43" uuid="fc6ca1fe-1d93-4f32-9c63-b6547639a9a8"/>
+					<textElement textAlignment="Center">
+						<font size="34" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$P{ReportTitel}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="20" splitType="Stretch">
+			<frame>
+				<reportElement style="Column Header" mode="Opaque" x="0" y="0" width="802" height="20" uuid="808f60cc-5300-4d72-93c0-1ba101ec0079"/>
+			</frame>
+			<textField>
+				<reportElement style="Column Header" x="20" y="0" width="195" height="20" uuid="a2c3e634-5e14-421a-acf0-059557b155c8"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{LabelLatijnsenaam}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column Header" x="215" y="0" width="195" height="20" uuid="fb2b2883-85e0-450a-9921-d30b0834ec5d"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{LabelTaal1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column Header" x="410" y="0" width="195" height="20" uuid="ba339043-6552-4cf0-8fd6-dbcb3197214c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{LabelTaal2}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Column Header" x="605" y="0" width="195" height="20" uuid="20a1d6d1-a339-4b24-9f0f-63f854c05f2c"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{LabelTaal3}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="12" splitType="Stretch">
+			<frame>
+				<reportElement style="Row" mode="Opaque" x="0" y="0" width="802" height="12" uuid="9ef41cbb-cafc-4e93-9a29-2d6da6a56611">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Row" isPrintRepeatedValues="true" x="0" y="0" width="20" height="12" uuid="a2c3e634-5e14-421a-acf0-059557b155c8"/>
+					<textElement textAlignment="Center"/>
+					<textFieldExpression><![CDATA[$F{gezien}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Row" x="20" y="0" width="195" height="12" uuid="a2c3e634-5e14-421a-acf0-059557b155c8"/>
+					<textFieldExpression><![CDATA[$F{latijnsenaam}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Row" x="215" y="0" width="195" height="12" uuid="fb2b2883-85e0-450a-9921-d30b0834ec5d"/>
+					<textFieldExpression><![CDATA[$F{taal1}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Row" x="410" y="0" width="195" height="12" uuid="ba339043-6552-4cf0-8fd6-dbcb3197214c"/>
+					<textFieldExpression><![CDATA[$F{taal2}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight">
+					<reportElement style="Row" x="605" y="0" width="195" height="12" uuid="20a1d6d1-a339-4b24-9f0f-63f854c05f2c"/>
+					<textFieldExpression><![CDATA[$F{taal3}]]></textFieldExpression>
+				</textField>
+			</frame>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="12">
+			<printWhenExpression><![CDATA[$P{ReportType}.matches("PDF")]]></printWhenExpression>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement style="Footer" x="0" y="2" width="100" height="10" uuid="02c50410-8e7e-4164-84f1-edb8f47b4151"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="Footer" x="100" y="2" width="662" height="10" uuid="81e2d59e-c75c-4f56-a90c-42177fd36113"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}+" /"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement style="Footer" x="762" y="2" width="40" height="10" uuid="0f151bbe-8212-4b06-ae15-c48daedc92da"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

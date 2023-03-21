@@ -17,6 +17,8 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
+import java.io.Serializable;
+import java.util.Comparator;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -66,6 +68,22 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
   @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
   private TaxonDto  taxon;
+
+  public static class VolgnummerLatijnsenaamComparator
+      implements Comparator<RegiolijstTaxonDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(RegiolijstTaxonDto taxonDto1,
+                       RegiolijstTaxonDto taxonDto2) {
+      return
+          new CompareToBuilder().append(taxonDto1.getTaxon().getVolgnummer(),
+                                        taxonDto2.getTaxon().getVolgnummer())
+                                .append(taxonDto1.getTaxon().getLatijnsenaam(),
+                                        taxonDto2.getTaxon().getLatijnsenaam())
+                                .toComparison();
+    }
+  }
 
   @Override
   public int compareTo(RegiolijstTaxonDto naamDto) {
