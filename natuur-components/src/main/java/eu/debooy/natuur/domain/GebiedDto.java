@@ -72,20 +72,12 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
   private Double  longitudeSeconden;
   @Column(name="NAAM", length=225, nullable=false)
   private String  naam;
-//
-//  public static class NaamComparator
-//      implements Comparator<GebiedDto>, Serializable {
-//    private static final  long  serialVersionUID  = 1L;
-//
-//    @Override
-//    public int compare(GebiedDto gebiedDto1, GebiedDto gebiedDto2) {
-//      return gebiedDto1.naam.compareTo(gebiedDto2.naam);
-//    }
-//  }
 
   @Override
   public int compareTo(GebiedDto gebiedDto) {
-    return new CompareToBuilder().append(naam, gebiedDto.naam)
+    return new CompareToBuilder().append(naam.toUpperCase(),
+                                         gebiedDto.naam.toUpperCase())
+                                 .append(gebiedId, gebiedDto.gebiedId)
                                  .toComparison();
   }
 

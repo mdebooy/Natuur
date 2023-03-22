@@ -177,7 +177,6 @@ public class RangService {
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void save(Rang rang) {
-    LOGGER.debug("save " + rang.toString());
     var dto = new RangDto();
     rang.persist(dto);
 

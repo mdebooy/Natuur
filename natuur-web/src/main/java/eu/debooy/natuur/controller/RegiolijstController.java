@@ -279,7 +279,7 @@ public class RegiolijstController extends Natuur {
     exportData.addMetadata("lijstnaam",   "regiolijst");
     exportData.setParameters(getLijstParameters());
 
-    exportData.setKolommen(new String[] { "gezien", "latijnsenaam",
+    exportData.setKolommen(new String[] { "gezien", TaxonDto.COL_LATIJNSENAAM,
                                           "taal1", "taal2", "taal3" });
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
@@ -504,10 +504,10 @@ public class RegiolijstController extends Natuur {
   }
 
   private void taxonToJson(TaxonDto taxon, JSONObject json) {
-    json.put("volgnummer", taxon.getVolgnummer());
+    json.put(TaxonDto.COL_VOLGNUMMER, taxon.getVolgnummer());
     json.put("taxonnaam", taxon.getTaxonnaam(getGebruikersTaal()).getNaam());
-    json.put("latijnsenaam", taxon.getLatijnsenaam());
-    json.put("uitgestorven", taxon.isUitgestorven());
+    json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
+    json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
   }
 
   public void update() {
@@ -575,7 +575,7 @@ public class RegiolijstController extends Natuur {
     try {
         taxon = getTaxonService().taxon(latijnsenaam);
         if (null == taxon.getTaxonId()) {
-          json.put("latijnsenaam", latijnsenaam);
+          json.put(TaxonDto.COL_LATIJNSENAAM, latijnsenaam);
           onbekend.add(json);
         } else {
           var lijstTaxon  = new RegiolijstTaxonDto();

@@ -89,7 +89,7 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    Long  taxonId   = Long.valueOf(ec.getRequestParameterMap()
+    var taxonId     = Long.valueOf(ec.getRequestParameterMap()
                                    .get(TaxonDto.COL_TAXONID));
 
     try {
