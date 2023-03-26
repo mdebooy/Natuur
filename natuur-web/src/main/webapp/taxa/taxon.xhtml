@@ -12,7 +12,7 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         var taxaTabel = $('#taxaTabel').DataTable( {
-          ajax: { url: '/natuur/taxa/kinderen/#{natuurTaxon.taxon.taxonId}',
+          ajax: { url: '/natuur/taxa/kinderen/#{natuurTaxon.taxon.taxonId}/' + taal,
                   dataSrc: '' },
           order: [[0, 'asc'], [2, 'asc']],
           pagingType: 'full_numbers',
@@ -35,10 +35,7 @@
           },
           columns: [
             { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                return getTaxonnaam(data, taal);
-              }
-            },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
               }

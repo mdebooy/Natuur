@@ -18,6 +18,7 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -31,6 +32,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -48,8 +50,8 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
 @NamedQuery(name="fotooverzichtPerGebied", query="select f from FotoOverzichtDto f where f.gebiedId=:gebiedId")
-@NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId")
-@NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
+@NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxon.taxonId=:taxonId")
+@NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxon.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
 public class FotoOverzichtDto
     extends Dto implements Comparable<FotoOverzichtDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -80,62 +82,57 @@ public class FotoOverzichtDto
   @ReadOnly
   @OrderColumn
   @Column(name="DATUM", nullable=false)
-  private Date    datum;
+  private Date      datum;
   @ReadOnly
   @Column(name="FOTO_BESTAND")
-  private String  fotoBestand;
+  private String    fotoBestand;
   @ReadOnly
   @Column(name="FOTO_DETAIL")
-  private String  fotoDetail;
+  private String    fotoDetail;
   @Id
   @ReadOnly
   @Column(name="FOTO_ID")
-  private Long    fotoId;
+  private Long      fotoId;
   @ReadOnly
   @Column(name="GEBIED")
-  private String  gebied;
+  private String    gebied;
   @ReadOnly
   @Column(name="GEBIED_ID")
-  private Long    gebiedId;
+  private Long      gebiedId;
   @ReadOnly
   @Column(name="KLASSE_ID")
-  private Long    klasseId;
+  private Long      klasseId;
   @ReadOnly
   @Column(name="KLASSE_LATIJNSENAAM")
-  private String  klasseLatijnsenaam;
+  private String    klasseLatijnsenaam;
   @ReadOnly
   @Column(name="KLASSE_VOLGNUMMER")
-  private Long    klasseVolgnummer;
+  private Long      klasseVolgnummer;
   @ReadOnly
   @Column(name="LAND_ID")
-  private Long    landId;
+  private Long      landId;
   @ReadOnly
   @Column(name="LATIJNSENAAM")
-  private String  latijnsenaam;
+  private String    latijnsenaam;
   @ReadOnly
   @Column(name="OPMERKING")
-  private String  opmerking;
+  private String    opmerking;
   @ReadOnly
-  @Column(name="TAXON_ID")
-  private Long    taxonId;
+  @OneToOne
+  @JoinColumn(name="TAXON_ID", nullable=false)
+  private TaxonDto  taxon;
   @ReadOnly
   @Column(name="TAXON_SEQ")
-  private Long    taxonSeq;
+  private Long      taxonSeq;
   @ReadOnly
   @Column(name="VOLGNUMMER")
-  private Long    volgnummer;
+  private Long      volgnummer;
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", referencedColumnName="KLASSE_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> klassenamen = new HashMap<>();
-
-  @ReadOnly
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
-  @JoinColumn(name="TAXON_ID", referencedColumnName="TAXON_ID", nullable=false, updatable=false, insertable=true)
-  @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
   public static class LijstComparator
       implements Comparator<FotoOverzichtDto>, Serializable {
@@ -242,23 +239,23 @@ public class FotoOverzichtDto
 
   @Transient
   public String getNaam(String taal) {
-    if (taxonnamen.containsKey(taal)) {
-      return taxonnamen.get(taal).getNaam();
-    } else {
-      return latijnsenaam;
-    }
+    return taxon.getNaam(taal);
   }
 
   public String getOpmerking() {
     return opmerking;
   }
 
-  public Long getTaxonId() {
-    return taxonId;
+  public TaxonDto getTaxon() {
+    return taxon;
   }
 
-  public Map<String, TaxonnaamDto> getTaxonnamen() {
-    return taxonnamen;
+  public Long getTaxonId() {
+    return taxon.getTaxonId();
+  }
+
+  public Collection<TaxonnaamDto> getTaxonnamen() {
+    return taxon.getTaxonnamen();
   }
 
   public Long getTaxonSeq() {
@@ -266,7 +263,7 @@ public class FotoOverzichtDto
   }
 
   public Long getVolgnummer() {
-    return volgnummer;
+    return taxon.getVolgnummer();
   }
 
   @Override

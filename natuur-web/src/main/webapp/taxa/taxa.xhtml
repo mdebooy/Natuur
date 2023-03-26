@@ -10,7 +10,7 @@
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var taxaTabel = $('#taxaTabel').DataTable( {
-          ajax: { url: '/natuur/taxa',
+          ajax: { url: '/natuur/taxa/taal/'+taal,
                   dataSrc: '' },
           order: [[2, 'asc']],
           pagingType: 'full_numbers',
@@ -33,10 +33,7 @@
           },
           columns: [
             { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                return getTaxonnaam(data, taal);
-              }
-            },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
               }

@@ -11,7 +11,7 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         $('#fotosTabel').DataTable( {
-          ajax: { url: '/natuur/fotos',
+          ajax: { url: '/natuur/fotos/' + taal,
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
           pagingType: 'full_numbers',
@@ -39,13 +39,7 @@
               }
             },
             { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                if (data.taxonnamen.hasOwnProperty(taal)) {
-                  return data.taxonnamen[taal].naam;
-                }
-                return data.latijnsenaam;
-              }
-            },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.latijnsenaam, data.uitgestorven);
               }

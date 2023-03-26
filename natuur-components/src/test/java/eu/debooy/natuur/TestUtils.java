@@ -143,6 +143,7 @@ public final class TestUtils {
 
   public static Taxon getTaxon() {
     Taxon taxon = new Taxon();
+
     taxon.setLatijnsenaam(LATIJNSENAAM);
     taxon.setNaam(NAAM);
     taxon.setOpmerking(OPMERKING);
@@ -151,6 +152,7 @@ public final class TestUtils {
     taxon.setParentNaam(PARENTNAAM);
     taxon.setParentVolgnummer(PARENTVOLGNUMMER);
     taxon.setRang(RANG);
+    taxon.setSorteervolgnummer(VOLGNUMMER * NatuurConstants.SORTEERFACOR);
     taxon.setTaxonId(TAXONID);
     taxon.setVolgnummer(VOLGNUMMER);
 

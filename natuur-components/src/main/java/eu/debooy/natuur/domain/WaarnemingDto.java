@@ -79,13 +79,16 @@ public class WaarnemingDto
   private GebiedDto gebied;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
-  @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
-  private TaxonDto  taxon;
+  private Long      taxonId;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="WAARNEMING_ID", nullable=false)
   private Long      waarnemingId;
+
+  @OneToOne
+  @JoinColumn(name="TAXON_ID", nullable=false)
+  private TaxonDto  taxon;
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=FotoDto.class, orphanRemoval=true)
   @JoinColumn(name="WAARNEMING_ID", nullable=false, updatable=false, insertable=true)
@@ -172,6 +175,10 @@ public class WaarnemingDto
     return taxon;
   }
 
+  public Long getTaxonId() {
+    return taxonId;
+  }
+
   public Long getWaarnemingId() {
     return waarnemingId;
   }
@@ -222,6 +229,10 @@ public class WaarnemingDto
 
   public void setTaxon(TaxonDto taxon) {
     this.taxon        = taxon;
+  }
+
+  public void setTaxonId(Long taxonId) {
+    this.taxonId = taxonId;
   }
 
   public void setWaarnemingId(Long waarnemingId) {

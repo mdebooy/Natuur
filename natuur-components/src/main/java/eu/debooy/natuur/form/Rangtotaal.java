@@ -38,7 +38,7 @@ public class Rangtotaal
   private String  rang;
   private Long    taxonId;
   private Integer totaal;
-  private Integer volgnummer;
+  private Long    volgnummer;
   private Integer waargenomen;
 
   public Rangtotaal() {}
@@ -138,7 +138,7 @@ public class Rangtotaal
     return totaal;
   }
 
-  public Integer getVolgnummer() {
+  public Long getVolgnummer() {
     return volgnummer;
   }
 
@@ -175,7 +175,7 @@ public class Rangtotaal
     this.totaal       = totaal;
   }
 
-  public void setVolgnummer(Integer volgnummer) {
+  public void setVolgnummer(Long volgnummer) {
     this.volgnummer   = volgnummer;
   }
 

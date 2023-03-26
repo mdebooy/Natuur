@@ -43,17 +43,17 @@ public final class WaarnemingValidator extends NatuurValidator {
 
     valideerAantal(waarneming.getAantal(), fouten);
     valideerDatum(waarneming.getDatum(), fouten);
-    if (null == waarneming.getTaxon()) {
+    if (null == waarneming.getGebied()) {
       valideerGebiedId(null, fouten);
     } else {
-      valideerGebiedId(waarneming.getTaxon().getTaxonId(), fouten);
+      valideerGebiedId(waarneming.getGebied().getGebiedId(), fouten);
     }
     valideerOpmerking(DoosUtils.nullToEmpty(waarneming.getOpmerking()),
                       fouten);
-    if (null == waarneming.getTaxon()) {
+    if (null == waarneming.getTaxonId()) {
       valideerTaxonId(null, fouten);
     } else {
-    valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
+    valideerTaxonId(waarneming.getTaxonId(), fouten);
     }
 
     return fouten;

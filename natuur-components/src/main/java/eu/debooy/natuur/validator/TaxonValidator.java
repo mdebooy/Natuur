@@ -29,7 +29,12 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class TaxonValidator extends NatuurValidator {
-  private TaxonValidator() {}
+  protected static final  String  LBL_LATIJNSENAAM  =
+      "_I18N.label.latijnsenaam";
+  protected static final  String  LBL_UITGESTORVEN  =
+      "_I18N.label.uitgestorven";
+  protected static final  String  LBL_VOLGNUMMER    =
+      "_I18N.label.volgnummer";
 
   public static List<Message> valideer(TaxonDto taxon) {
     return valideer(new Taxon(taxon));
@@ -55,7 +60,7 @@ public final class TaxonValidator extends NatuurValidator {
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.latijnsenaam"})
+                            .setParams(new Object[]{LBL_LATIJNSENAAM})
                             .build());
       return;
     }
@@ -65,8 +70,7 @@ public final class TaxonValidator extends NatuurValidator {
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.latijnsenaam",
-                                                    255})
+                            .setParams(new Object[]{LBL_LATIJNSENAAM, 255})
                             .build());
     }
   }
@@ -78,19 +82,19 @@ public final class TaxonValidator extends NatuurValidator {
                             .setAttribute(TaxonDto.COL_UITGESTORVEN)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.uitgestorven"})
+                            .setParams(new Object[]{LBL_UITGESTORVEN})
                             .build());
     }
   }
 
-  private static void valideerVolgnummer(Integer volgnummer,
+  private static void valideerVolgnummer(Long volgnummer,
                                          List<Message> fouten) {
     if (null == volgnummer) {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_VOLGNUMMER)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.volgnummer"})
+                            .setParams(new Object[]{LBL_VOLGNUMMER})
                             .build());
     }
   }

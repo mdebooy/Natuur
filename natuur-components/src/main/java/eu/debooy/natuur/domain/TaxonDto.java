@@ -22,6 +22,7 @@ import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
+import eu.debooy.natuur.NatuurConstants;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -39,6 +40,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -84,26 +87,35 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  QRY_TALEN         = "taxonTalen";
 
   @Column(name="LATIJNSENAAM", length=255, nullable=false)
-  private String    latijnsenaam;
+  private String  latijnsenaam;
   @Column(name="OPMERKING", length=2000)
-  private String    opmerking;
+  private String  opmerking;
   @Column(name="PARENT_ID")
-  private Long      parentId;
+  private Long    parentId;
   @Column(name="RANG", length=3, nullable=false)
-  private String    rang;
+  private String  rang;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
-  private Long      taxonId;
+  private Long    taxonId;
   @Column(name="UITGESTORVEN", length=1, nullable=false)
-  private String    uitgestorven  = DoosConstants.ONWAAR;
+  private String  uitgestorven  = DoosConstants.ONWAAR;
   @Column(name="VOLGNUMMER", nullable=false)
-  private Integer   volgnummer    = 0;
+  private Long    volgnummer    = 0L;
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
   @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
+
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name="taal")
+  private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
+
+  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=true)
+  @JoinColumn(name="PARENT_ID", referencedColumnName="TAXON_ID", updatable=false, insertable=false)
+  private TaxonDto  parent;
 
   public static class LatijnsenaamComparator
       implements Comparator<TaxonDto>, Serializable {
@@ -145,8 +157,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return new CompareToBuilder().append(taxonDto1.volgnummer,
-                                           taxonDto2.volgnummer)
+      return new CompareToBuilder().append(taxonDto1.getSorteervolgnummer(),
+                                           taxonDto2.getSorteervolgnummer())
                                    .append(taxonDto1.getLatijnsenaam(),
                                            taxonDto2.getLatijnsenaam())
                                    .toComparison();
@@ -169,8 +181,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return new CompareToBuilder().append(taxonDto1.volgnummer,
-                                           taxonDto2.volgnummer)
+      return new CompareToBuilder().append(taxonDto1.getSorteervolgnummer(),
+                                           taxonDto2.getSorteervolgnummer())
                                    .append(taxonDto1.getNaam(taal),
                                            taxonDto2.getNaam(taal))
                                    .append(taxonDto1.getLatijnsenaam(),
@@ -193,7 +205,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       taxonId     = json.getJsonNumber(COL_TAXONID).longValue();
     }
     uitgestorven  = json.getString(COL_UITGESTORVEN);
-    volgnummer    = json.getJsonNumber(COL_VOLGNUMMER).intValue();
+    volgnummer    = json.getJsonNumber(COL_VOLGNUMMER).longValue();
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {
@@ -239,11 +251,21 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   @Transient
   public String getNaam(String taal) {
-    if (taxonnamen.containsKey(taal)) {
-      return taxonnamen.get(taal).getNaam();
-    } else {
-      return latijnsenaam;
+    if (hasTaxonnaam(taal)) {
+      return getTaxonnaam(taal).getNaam();
     }
+
+    if (null == getRang()) {
+      return getLatijnsenaam();
+    }
+
+    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+        && hasParentnaam(taal)) {
+      return String.format("%s ssp %s", getParentnaam(taal).getNaam(),
+                           latijnsenaam.split(" ")[2]);
+    }
+
+    return getLatijnsenaam();
   }
 
   public String getOpmerking() {
@@ -254,8 +276,37 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return parentId;
   }
 
+  public TaxonnaamDto getParentnaam(String taal) {
+    if (parentnamen.containsKey(taal)) {
+      return parentnamen.get(taal);
+    } else {
+      return new TaxonnaamDto();
+    }
+  }
+
+  private TaxonDto getPostLoadTaxon() {
+    return parent;
+  }
+
   public String getRang() {
     return rang;
+  }
+
+  public TaxonDto getParent() {
+    return parent;
+  }
+
+  @Transient
+  public Long getSorteervolgnummer() {
+    switch (rang) {
+      case NatuurConstants.RANG_SOORT:
+        return volgnummer * NatuurConstants.SORTEERFACOR;
+      case NatuurConstants.RANG_ONDERSOORT:
+        return parent.getVolgnummer() * NatuurConstants.SORTEERFACOR
+                + volgnummer;
+      default:
+        return volgnummer;
+    }
   }
 
   public Long getTaxonId() {
@@ -278,7 +329,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return uitgestorven.equals(DoosConstants.WAAR);
   }
 
-  public Integer getVolgnummer() {
+  public Long getVolgnummer() {
     return volgnummer;
   }
 
@@ -288,12 +339,24 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   @Transient
+  public boolean hasParentnaam(String taal) {
+    return parentnamen.containsKey(taal);
+  }
+
+  @Transient
   public boolean hasTaxonnaam(String taal) {
     return taxonnamen.containsKey(taal);
   }
 
   public boolean isUitgestorven() {
     return getUitgestorven();
+  }
+
+  @PostLoad
+  private void onPostLoad() {
+    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
+      getPostLoadTaxon();
+    }
   }
 
   public void removeTaxonnaam(String taal) {
@@ -343,7 +406,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
         uitgestorven ? DoosConstants.WAAR : DoosConstants.ONWAAR;
   }
 
-  public void setVolgnummer(Integer volgnummer) {
+  public void setVolgnummer(Long volgnummer) {
     this.volgnummer   = volgnummer;
   }
 }

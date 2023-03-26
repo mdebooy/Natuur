@@ -28,6 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
@@ -83,16 +84,17 @@ public class RegiolijstController extends Natuur {
   private static final  String  TIT_UPDATE    =
       "natuur.titel.regiolijst.update";
 
-  private final JSONArray         dubbel    = new JSONArray();
-  private final JSONArray         nieuw     = new JSONArray();
-  private final JSONArray         onbekend  = new JSONArray();
-  private final List<SelectItem>  statusses = new LinkedList<>();
+  private final JSONArray           dubbel                = new JSONArray();
+  private final JSONArray           nieuw                 = new JSONArray();
+  private final JSONArray           onbekend              = new JSONArray();
+  private final Regiolijstparameter regiolijstparameters  =
+      new Regiolijstparameter();
+  private final List<SelectItem>    statusses             = new LinkedList<>();
 
   private UploadedFile        bestand;
   private Regio               regio;
   private Regiolijst          regiolijst;
   private RegiolijstDto       regiolijstDto;
-  private Regiolijstparameter regiolijstparameters  = new Regiolijstparameter();
   private RegiolijstTaxon     regiolijstTaxon;
   private RegiolijstTaxonDto  regiolijstTaxonDto;
 
@@ -212,6 +214,29 @@ public class RegiolijstController extends Natuur {
     return dubbel;
   }
 
+  private String  getNaam(TaxonDto taxon, String taal) {
+    if (taxon.hasTaxonnaam(taal)) {
+      return taxon.getNaam(taal);
+    }
+
+    if (!taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
+      return "";
+    }
+
+    try {
+      var parent  = getTaxonService().taxon(taxon.getParentId());
+      if (parent.hasTaxonnaam(taal)) {
+        return String.format("%s ssp %s",
+                             parent.getNaam(taal),
+                             taxon.getLatijnsenaam().split(" ")[2]);
+      }
+    } catch (ObjectNotFoundException e) {
+      // Geen parent aanwezig = geen naam.
+    }
+
+    return "";
+  }
+
   public JSONArray getNieuw() {
     return nieuw;
   }
@@ -297,9 +322,9 @@ public class RegiolijstController extends Natuur {
       exportData.addData(
           new String[] {getBoolean(rij.isGezien()),
                         rij.getTaxon().getLatijnsenaam(),
-                        rij.getTaxon().getTaxonnaam(taal1).getNaam(),
-                        rij.getTaxon().getTaxonnaam(taal2).getNaam(),
-                        rij.getTaxon().getTaxonnaam(taal3).getNaam()})
+                        rij.getTaxon().getNaam(taal1),
+                        rij.getTaxon().getNaam(taal2),
+                        rij.getTaxon().getNaam(taal3)})
     );
 
     var response  =

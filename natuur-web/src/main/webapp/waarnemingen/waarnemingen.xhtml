@@ -12,7 +12,7 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         $('#waarnemingenTabel').DataTable( {
-          ajax: { url: '/natuur/waarnemingen',
+          ajax: { url: '/natuur/waarnemingen/taal/' + taal,
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
           pagingType: 'full_numbers',
@@ -46,10 +46,7 @@
                 return '';
               }
             },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                return getTaxonnaam(data.taxon, taal);
-              }
-            },
+            { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: 'gebied.naam', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
                 return getLandnaam(data.gebied.landId, taal);

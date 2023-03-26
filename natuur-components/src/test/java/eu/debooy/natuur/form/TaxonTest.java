@@ -211,7 +211,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -372,11 +372,11 @@ public class TaxonTest {
     groter.setParentNaam(taxon.getParentNaam());
     groter.setParentVolgnummer(taxon.getParentVolgnummer());
     groter.setNaam(taxon.getNaam());
-    groter.setVolgnummer(taxon.getVolgnummer() + 1);
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer() + 1);
     kleiner.setParentNaam(taxon.getParentNaam());
     kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
     kleiner.setNaam(taxon.getNaam());
-    kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer() - 1);
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
     taxa.add(groter);
@@ -398,11 +398,11 @@ public class TaxonTest {
     groter.setParentNaam(taxon.getParentNaam());
     groter.setParentVolgnummer(taxon.getParentVolgnummer());
     groter.setNaam(NAAM_GR);
-    groter.setVolgnummer(taxon.getVolgnummer());
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer());
     kleiner.setParentNaam(taxon.getParentNaam());
     kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
     kleiner.setNaam(NAAM_KL);
-    kleiner.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer());
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
     taxa.add(groter);
@@ -493,7 +493,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -513,7 +513,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
     instance.setLatijnsenaam(LATIJNSENAAM);
     assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
@@ -537,7 +537,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -557,7 +557,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -578,7 +578,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -598,7 +598,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
     instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
     assertEquals(PARENTLATIJNSENAAM, instance.getParentLatijnsenaam());
@@ -622,7 +622,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -642,7 +642,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -662,7 +662,7 @@ public class TaxonTest {
     assertEquals(RANGNAAM, instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -682,7 +682,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertEquals(TAXONID, instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -705,7 +705,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertTrue(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -729,7 +729,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -752,7 +752,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertTrue(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -776,7 +776,7 @@ public class TaxonTest {
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(Integer.valueOf(0), instance.getVolgnummer());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
@@ -805,9 +805,9 @@ public class TaxonTest {
     var kleiner = new Taxon();
 
     groter.setLatijnsenaam(taxon.getLatijnsenaam());
-    groter.setVolgnummer(taxon.getVolgnummer() + 1);
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer() + 1);
     kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
-    kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer() - 1);
 
     Set<Taxon>  taxa  =
         new TreeSet<>(new Taxon.VolgnummerLatijnsenaamComparator());
@@ -817,9 +817,12 @@ public class TaxonTest {
 
     var tabel = new Taxon[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
-    assertEquals(taxon.getVolgnummer(), tabel[1].getVolgnummer());
-    assertEquals(groter.getVolgnummer(), tabel[2].getVolgnummer());
+    assertEquals(kleiner.getSorteervolgnummer(),
+                 tabel[0].getSorteervolgnummer());
+    assertEquals(taxon.getSorteervolgnummer(),
+                 tabel[1].getSorteervolgnummer());
+    assertEquals(groter.getSorteervolgnummer(),
+                 tabel[2].getSorteervolgnummer());
   }
 
   @Test
@@ -828,9 +831,9 @@ public class TaxonTest {
     var kleiner = new Taxon();
 
     groter.setLatijnsenaam(LATIJNSENAAM_GR);
-    groter.setVolgnummer(taxon.getVolgnummer());
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer());
     kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
-    kleiner.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer());
 
     Set<Taxon>  taxa  =
         new TreeSet<>(new Taxon.VolgnummerLatijnsenaamComparator());
@@ -852,9 +855,17 @@ public class TaxonTest {
 
     groter.setLatijnsenaam(taxon.getLatijnsenaam());
     groter.setNaam(taxon.getNaam());
+    groter.setParentNaam(taxon.getParentNaam());
+    groter.setParentVolgnummer(taxon.getParentVolgnummer());
+    groter.setRang(taxon.getRang());
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer() + 1);
     groter.setVolgnummer(taxon.getVolgnummer() + 1);
     kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
     kleiner.setNaam(taxon.getNaam());
+    kleiner.setParentNaam(taxon.getParentNaam());
+    kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
+    kleiner.setRang(taxon.getRang());
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer() - 1);
     kleiner.setVolgnummer(taxon.getVolgnummer() - 1);
 
     Set<Taxon>  taxa  =
@@ -862,12 +873,14 @@ public class TaxonTest {
     taxa.add(groter);
     taxa.add(taxon);
     taxa.add(kleiner);
-
     var tabel = new Taxon[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
-    assertEquals(taxon.getVolgnummer(), tabel[1].getVolgnummer());
-    assertEquals(groter.getVolgnummer(), tabel[2].getVolgnummer());
+    assertEquals(kleiner.getSorteervolgnummer(),
+                 tabel[0].getSorteervolgnummer());
+    assertEquals(taxon.getSorteervolgnummer(),
+                 tabel[1].getSorteervolgnummer());
+    assertEquals(groter.getSorteervolgnummer(),
+                 tabel[2].getSorteervolgnummer());
   }
 
   @Test
@@ -877,10 +890,10 @@ public class TaxonTest {
 
     groter.setLatijnsenaam(taxon.getLatijnsenaam());
     groter.setNaam(NAAM_GR);
-    groter.setVolgnummer(taxon.getVolgnummer());
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer());
     kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
     kleiner.setNaam(NAAM_KL);
-    kleiner.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer());
 
     Set<Taxon>  taxa  =
         new TreeSet<>(new Taxon.VolgnummerNaamComparator());
@@ -902,10 +915,10 @@ public class TaxonTest {
 
     groter.setLatijnsenaam(LATIJNSENAAM_GR);
     groter.setNaam(taxon.getNaam());
-    groter.setVolgnummer(taxon.getVolgnummer());
+    groter.setSorteervolgnummer(taxon.getSorteervolgnummer());
     kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
     kleiner.setNaam(taxon.getNaam());
-    kleiner.setVolgnummer(taxon.getVolgnummer());
+    kleiner.setSorteervolgnummer(taxon.getSorteervolgnummer());
 
     Set<Taxon>  taxa  =
         new TreeSet<>(new Taxon.VolgnummerNaamComparator());

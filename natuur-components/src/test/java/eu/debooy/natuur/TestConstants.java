@@ -68,7 +68,7 @@ public final class TestConstants {
   public static final String  PARENTRANG              = "ge";
   public static final String  PARENTRANG_GR           = "oge";
   public static final String  PARENTRANG_KL           = "fa";
-  public static final Integer PARENTVOLGNUMMER        = 5000;
+  public static final Long    PARENTVOLGNUMMER        = 5000L;
   public static final int     PCTOPFOTO               = 20;
   public static final String  RANG                    = "so";
   public static final String  RANG_FOUT               = "xxxx";
@@ -96,9 +96,9 @@ public final class TestConstants {
   public static final String  TAXONNAAM_KL            = "a_Great cormorant";
   public static final Long    TAXONSEQ                = 5L;
   public static final Integer TOTAAL                  = 10;
-  public static final Integer VOLGNUMMER              = Integer.MIN_VALUE + 8;
-  public static final Long    WAARNEMINGID            = Long.MAX_VALUE - 11;
-  public static final int     WAARNEMINGID_HASH       = -2147483008;
+  public static final Long    VOLGNUMMER              = 800L;
+  public static final Long    WAARNEMINGID            = 1100L;
+  public static final int     WAARNEMINGID_HASH       = 1729;
   public static final Integer WAARGENOMEN             = 5;
 
   public static final Message ERR_OPMERKING =

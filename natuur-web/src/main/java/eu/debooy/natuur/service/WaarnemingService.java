@@ -22,7 +22,9 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
+import eu.debooy.natuur.form.Waarneming;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Lock;
@@ -81,6 +83,23 @@ public class WaarnemingService {
   }
 
   @GET
+  @Path("/gebied/{gebiedId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getGebiedWaarnemingen(
+                      @PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Waarneming>  waarnemingen  = new ArrayList<>();
+      waarnemingDao.getPerGebied(gebiedId)
+              .forEach(waarneming ->
+                          waarnemingen.add(new Waarneming(waarneming, taal)));
+      return Response.ok().entity(waarnemingen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getTaxonWaarnemingen(
@@ -128,6 +147,22 @@ public class WaarnemingService {
   public Response getWaarnemingen() {
     try {
       return Response.ok().entity(waarnemingDao.getAll()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/taal/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getWaarnemingen(
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Waarneming>  waarnemingen  = new ArrayList<>();
+      waarnemingDao.getAll()
+              .forEach(waarneming ->
+                          waarnemingen.add(new Waarneming(waarneming, taal)));
+      return Response.ok().entity(waarnemingen).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }

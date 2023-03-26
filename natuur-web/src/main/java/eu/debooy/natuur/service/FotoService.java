@@ -23,7 +23,9 @@ import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Foto;
+import eu.debooy.natuur.form.FotoOverzicht;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Lock;
@@ -89,6 +91,30 @@ public class FotoService {
   }
 
   @GET
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotos() {
+    try {
+      return Response.ok().entity(fotoOverzichtDao.getAll()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotos(@PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<FotoOverzicht> fotos = new ArrayList<>();
+      fotoOverzichtDao.getAll()
+              .forEach(foto -> fotos.add(new FotoOverzicht(foto, taal)));
+      return Response.ok().entity(fotos).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/gebied/{gebiedId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getFotosGebied(
@@ -102,12 +128,43 @@ public class FotoService {
   }
 
   @GET
+  @Path("/gebied/{gebiedId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotosPerGebied(
+                      @PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<FotoOverzicht> fotos = new ArrayList<>();
+      fotoOverzichtDao.getPerGebied(gebiedId)
+              .forEach(foto -> fotos.add(new FotoOverzicht(foto, taal)));
+      return Response.ok().entity(fotos).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Response getFotosTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
+  public Response getFotosPerTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
     try {
       return Response.ok()
                      .entity(fotoOverzichtDao.getPerTaxon(taxonId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/taxon/{taxonId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotosTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<FotoOverzicht> fotos = new ArrayList<>();
+      fotoOverzichtDao.getPerTaxon(taxonId)
+              .forEach(foto -> fotos.add(new FotoOverzicht(foto, taal)));
+      return Response.ok().entity(fotos).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
@@ -138,12 +195,6 @@ public class FotoService {
     } catch (ObjectNotFoundException e) {
       return new ArrayList<>();
     }
-  }
-
-  @GET
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Response getFotos() {
-    return Response.ok().entity(fotoOverzichtDao.getAll()).build();
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

@@ -134,11 +134,41 @@ public class TaxonService {
   }
 
   @GET
+  @Path("/taal/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getTaxa(@PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Taxon> taxa  = new ArrayList<>();
+      taxonDao.getAll().forEach(taxon -> taxa.add(new Taxon(taxon, taal)));
+      return Response.ok().entity(taxa).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
     try {
       return Response.ok().entity(taxonDao.getTaxon(taxonId)).build();
+    } catch (ObjectNotFoundException e) {
+      var message = new Message.Builder()
+                               .setAttribute(TaxonDto.COL_TAXONID)
+                               .setMessage(PersistenceConstants.NOTFOUND)
+                               .setSeverity(Message.ERROR).build();
+      return Response.status(400).entity(message).build();
+    }
+  }
+
+  @GET
+  @Path("/{taxonId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId,
+                           @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      return Response.ok().entity(new Taxon(taxonDao.getTaxon(taxonId), taal))
+                     .build();
     } catch (ObjectNotFoundException e) {
       var message = new Message.Builder()
                                .setAttribute(TaxonDto.COL_TAXONID)
@@ -173,6 +203,21 @@ public class TaxonService {
   public Response kinderen(@PathParam(TaxonDto.COL_PARENTID) Long parentId) {
     try {
       return Response.ok().entity(taxonDao.getKinderen(parentId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/kinderen/{parentId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response kinderen(@PathParam(TaxonDto.COL_PARENTID) Long parentId,
+                           @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Taxon> taxa  = new ArrayList<>();
+      taxonDao.getKinderen(parentId)
+              .forEach(taxon -> taxa.add(new Taxon(taxon, taal)));
+      return Response.ok().entity(taxa).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }

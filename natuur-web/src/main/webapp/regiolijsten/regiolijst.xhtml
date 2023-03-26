@@ -16,7 +16,7 @@
                                                    dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
         }
         var regiolijstTaxaTabel = $('#regiolijstTaxaTabel').DataTable( {
-          ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regioId}',
+          ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regioId}/' + taal,
                   dataSrc: '' },
           order: [[1, 'asc'], [3, 'asc']],
           pagingType: 'full_numbers',
@@ -42,11 +42,8 @@
                 return showBoolean(data.gezien);
               }
             },
-            { data: 'taxon.volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                return getTaxonnaam(data.taxon, taal);
-              }
-            },
+            { data: 'taxon.sorteervolgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.taxon.latijnsenaam, data.taxon.uitgestorven);
               }

@@ -48,7 +48,7 @@ public class RangtotaalTest {
     leeg.setTaxonId(0L);
     leeg.setTotaal(0);
     leeg.setOpFoto(0);
-    leeg.setVolgnummer(0);
+    leeg.setVolgnummer(0L);
     leeg.setWaargenomen(0);
 
     rangtotaal  = new Rangtotaal();

@@ -22,6 +22,8 @@ import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
+import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.RegiolijstTaxon;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Lock;
@@ -78,6 +80,23 @@ public class RegiolijstTaxonService {
       var taxa  = regiolijstTaxonDao.getPerRegiolijst(regioId);
       setGezien(taxa);
       return Response.ok().entity(taxa).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/{regioId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getPerRegiolijst
+      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId,
+                  @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regioId);
+      var lijst = new ArrayList<RegiolijstTaxon>();
+      setGezien(taxa);
+      taxa.forEach(taxon -> lijst.add(new RegiolijstTaxon(taxon, taal)));
+      return Response.ok().entity(lijst).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }

@@ -79,7 +79,7 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
   private String    parentRang;
   @ReadOnly
   @Column(name="PARENT_VOLGNUMMER", insertable=false, updatable=false)
-  private Integer   parentVolgnummer;
+  private Long      parentVolgnummer;
   @Id
   @ReadOnly
   @Column(name="RANG", length=3, insertable=false, updatable=false)
@@ -153,7 +153,7 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
     return parentRang;
   }
 
-  public Integer getParentVolgnummer() {
+  public Long getParentVolgnummer() {
     return parentVolgnummer;
   }
 

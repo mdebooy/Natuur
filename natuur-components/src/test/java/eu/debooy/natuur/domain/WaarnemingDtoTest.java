@@ -62,7 +62,7 @@ public class WaarnemingDtoTest {
     waarnemingDto.setFotos(fotos);
     waarnemingDto.setGebied(gebiedDto);
     waarnemingDto.setOpmerking(OPMERKING);
-    waarnemingDto.setTaxon(taxonDto);
+    waarnemingDto.setTaxonId(taxonDto.getTaxonId());
     waarnemingDto.setWaarnemingId(WAARNEMINGID);
   }
 
@@ -171,7 +171,7 @@ public class WaarnemingDtoTest {
 
   @Test
   public void testGetTaxon() {
-    assertEquals(taxonDto, waarnemingDto.getTaxon());
+    assertNull(waarnemingDto.getTaxon());
   }
 
   @Test
@@ -306,22 +306,6 @@ public class WaarnemingDtoTest {
     assertNull(instance.getGebied());
     assertEquals(OPMERKING, instance.getOpmerking());
     assertNull(instance.getTaxon());
-    assertNull(instance.getWaarnemingId());
-  }
-
-  @Test
-  public void testSetTaxon() {
-    var instance  = new WaarnemingDto();
-    assertNotEquals(taxonDto, instance.getTaxon());
-
-    instance.setTaxon(taxonDto);
-
-    assertNull(instance.getAantal());
-    assertNull(instance.getDatum());
-    assertTrue(instance.getFotos().isEmpty());
-    assertNull(instance.getGebied());
-    assertNull(instance.getOpmerking());
-    assertEquals(taxonDto, instance.getTaxon());
     assertNull(instance.getWaarnemingId());
   }
 

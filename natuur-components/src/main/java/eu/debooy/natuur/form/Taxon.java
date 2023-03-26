@@ -41,12 +41,13 @@ public class Taxon
   private Long                parentId;
   private String              parentLatijnsenaam;
   private String              parentNaam;
-  private Integer             parentVolgnummer;
+  private Long                parentVolgnummer;
   private String              rang;
   private String              rangnaam;
+  private Long                sorteervolgnummer   = 0L;
   private Long                taxonId;
   private Boolean             uitgestorven        = Boolean.FALSE;
-  private Integer             volgnummer          = 0;
+  private Long                volgnummer          = 0L;
 
   public Taxon() {}
 
@@ -59,6 +60,7 @@ public class Taxon
     parentNaam          = taxon.getParentNaam();
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
+    sorteervolgnummer   = taxon.getSorteervolgnummer();
     taxonId             = taxon.getTaxonId();
     uitgestorven        = taxon.getUitgestorven();
     volgnummer          = taxon.getVolgnummer();
@@ -69,16 +71,23 @@ public class Taxon
   }
 
   public Taxon(TaxonDto taxonDto, String taal) {
-    latijnsenaam  = taxonDto.getLatijnsenaam();
+    latijnsenaam          = taxonDto.getLatijnsenaam();
     if (DoosUtils.isNotBlankOrNull(taal)) {
-      naam        = taxonDto.getNaam(taal);
+      naam                = taxonDto.getNaam(taal);
     }
-    opmerking     = taxonDto.getOpmerking();
-    parentId      = taxonDto.getParentId();
-    rang          = taxonDto.getRang();
-    taxonId       = taxonDto.getTaxonId();
-    uitgestorven  = taxonDto.getUitgestorven();
-    volgnummer    = taxonDto.getVolgnummer();
+    opmerking             = taxonDto.getOpmerking();
+    parentId              = taxonDto.getParentId();
+    if (null != taxonDto.getParent()) {
+      parentLatijnsenaam  = taxonDto.getParent().getLatijnsenaam();
+      parentVolgnummer    = taxonDto.getParent().getVolgnummer();
+    }
+    rang                  = taxonDto.getRang();
+    if (null != rang) {
+      sorteervolgnummer   = taxonDto.getSorteervolgnummer();
+    }
+    taxonId               = taxonDto.getTaxonId();
+    uitgestorven          = taxonDto.getUitgestorven();
+    volgnummer            = taxonDto.getVolgnummer();
   }
 
   public Taxon(DetailDto detailDto) {
@@ -89,7 +98,7 @@ public class Taxon
     latijnsenaam        = detailDto.getLatijnsenaam();
     if (DoosUtils.isNotBlankOrNull(taal)) {
       naam              = detailDto.getNaam(taal);
-      parentNaam        = detailDto.getParentNaam(taal);
+      parentNaam        = detailDto.getParentnaam(taal);
     }
     opmerking           = detailDto.getOpmerking();
     parentId            = detailDto.getParentId();
@@ -135,8 +144,8 @@ public class Taxon
                                            taxon2.getParentVolgnummer())
                                    .append(taxon1.getParentNaam(),
                                            taxon2.getParentNaam())
-                                   .append(taxon1.getVolgnummer(),
-                                           taxon2.getVolgnummer())
+                                   .append(taxon1.getSorteervolgnummer(),
+                                           taxon2.getSorteervolgnummer())
                                    .append(taxon1.getNaam(),
                                            taxon2.getNaam())
                                    .toComparison();
@@ -166,8 +175,8 @@ public class Taxon
 
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.getVolgnummer(),
-                                           taxon2.getVolgnummer())
+      return new CompareToBuilder().append(taxon1.getSorteervolgnummer(),
+                                           taxon2.getSorteervolgnummer())
                                    .append(taxon1.getLatijnsenaam(),
                                            taxon2.getLatijnsenaam())
                                    .toComparison();
@@ -184,8 +193,8 @@ public class Taxon
 
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.getVolgnummer(),
-                                           taxon2.getVolgnummer())
+      return new CompareToBuilder().append(taxon1.getSorteervolgnummer(),
+                                           taxon2.getSorteervolgnummer())
                                    .append(taxon1.getNaam(),
                                            taxon2.getNaam())
                                    .append(taxon1.getLatijnsenaam(),
@@ -238,7 +247,7 @@ public class Taxon
                                                 : parentNaam);
   }
 
-  public Integer getParentVolgnummer() {
+  public Long getParentVolgnummer() {
     return parentVolgnummer;
   }
 
@@ -250,6 +259,10 @@ public class Taxon
     return rangnaam;
   }
 
+  public Long getSorteervolgnummer() {
+    return sorteervolgnummer;
+  }
+
   public Long getTaxonId() {
     return taxonId;
   }
@@ -258,7 +271,7 @@ public class Taxon
     return uitgestorven;
   }
 
-  public Integer getVolgnummer() {
+  public Long getVolgnummer() {
     return volgnummer;
   }
 
@@ -305,7 +318,7 @@ public class Taxon
     this.parentNaam         = parentNaam;
   }
 
-  public void setParentVolgnummer(Integer parentVolgnummer) {
+  public void setParentVolgnummer(Long parentVolgnummer) {
     this.parentVolgnummer   = parentVolgnummer;
   }
 
@@ -315,6 +328,10 @@ public class Taxon
 
   public void setRangnaam(String rangnaam) {
     this.rangnaam           = rangnaam;
+  }
+
+  public void setSorteervolgnummer(Long sorteervolgnummer) {
+    this.sorteervolgnummer  = sorteervolgnummer;
   }
 
   public void setTaxonId(Long taxonId) {
@@ -334,7 +351,7 @@ public class Taxon
     this.uitgestorven       = uitgestorven;
   }
 
-  public void setVolgnummer(Integer volgnummer) {
+  public void setVolgnummer(Long volgnummer) {
     this.volgnummer       = volgnummer;
   }
 }

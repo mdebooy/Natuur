@@ -10,7 +10,7 @@
         var rang = '#{natuurRang.rang.rang}';
         var taal = '#{gebruiker.locale.language}';
         tabel = $('#geenfotosTabel').DataTable( {
-          ajax: { url: '/natuur/geenfotos/taxon/#{natuurRang.geenFotosTaxonId}',
+          ajax: { url: '/natuur/geenfotos/taxon/#{natuurRang.geenFotosTaxonId}/' + taal,
                   dataSrc: '' },
           order: [[0, 'asc'],[1, 'asc']],
           pagingType: 'full_numbers',
@@ -32,11 +32,8 @@
             infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
           },
           columns: [
-            { data: 'taxon.volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
-            { data: null, title: '#{i18nTeksten.tekst('label.naam')}', render: function ( data, type, row ) {
-                return getTaxonnaam(data.taxon, taal);
-              }
-            },
+            { data: 'taxon.sorteervolgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.taxon.latijnsenaam, data.taxon.uitgestorven);
               }

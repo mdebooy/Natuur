@@ -20,7 +20,10 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.GeenFotoDao;
 import eu.debooy.natuur.domain.GeenFotoDto;
 import eu.debooy.natuur.domain.RangDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.GeenFoto;
 import java.util.ArrayList;
+import java.util.List;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
@@ -72,6 +75,23 @@ public class GeenFotoService {
   }
 
   @GET
+  @Path("/rang/{rang}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getGeenFotosVoorRang(
+                      @PathParam(RangDto.COL_RANG) String rang,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<GeenFoto>  geenFotos = new ArrayList<>();
+      geenFotoDao.getGeenFotoRang(rang)
+              .forEach(geenFoto ->
+                          geenFotos.add(new GeenFoto(geenFoto, taal)));
+      return Response.ok().entity(geenFotos).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getGeenFotosVoorTaxon(
@@ -79,6 +99,23 @@ public class GeenFotoService {
     try {
       return Response.ok().entity(geenFotoDao.getGeenFotoTaxon(taxonId))
                      .build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/taxon/{taxonId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getGeenFotosVoorTaxon(
+                      @PathParam(GeenFotoDto.COL_TAXONID) Long taxonId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<GeenFoto>  geenFotos = new ArrayList<>();
+      geenFotoDao.getGeenFotoTaxon(taxonId)
+              .forEach(geenFoto ->
+                          geenFotos.add(new GeenFoto(geenFoto, taal)));
+      return Response.ok().entity(geenFotos).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
