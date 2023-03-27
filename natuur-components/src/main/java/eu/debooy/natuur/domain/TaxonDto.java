@@ -18,6 +18,7 @@ package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
@@ -255,11 +256,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       return getTaxonnaam(taal).getNaam();
     }
 
-    if (null == getRang()) {
-      return getLatijnsenaam();
-    }
-
-    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+    if (DoosUtils.nullToEmpty(getRang())
+                 .equals(NatuurConstants.RANG_ONDERSOORT)
         && hasParentnaam(taal)) {
       return String.format("%s ssp %s", getParentnaam(taal).getNaam(),
                            latijnsenaam.split(" ")[2]);
@@ -298,7 +296,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   @Transient
   public Long getSorteervolgnummer() {
-    switch (rang) {
+    switch (DoosUtils.nullToEmpty(rang)) {
       case NatuurConstants.RANG_SOORT:
         return volgnummer * NatuurConstants.SORTEERFACOR;
       case NatuurConstants.RANG_ONDERSOORT:

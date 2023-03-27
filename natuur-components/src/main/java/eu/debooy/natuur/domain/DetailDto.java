@@ -17,6 +17,7 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.natuur.NatuurConstants;
 import java.io.Serializable;
@@ -34,6 +35,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapKey;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
@@ -108,6 +111,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
+
+  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=true)
+  @JoinColumn(name="TAXON_ID", updatable=false, insertable=false)
+  private TaxonDto  taxon;
 
   /**
    * De Latijnsenaam is toegevoegd om dubbele volgnummers niet te laten
@@ -195,11 +202,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       return getTaxonnaam(taal).getNaam();
     }
 
-    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)
-        && getParentRang().equals(NatuurConstants.RANG_SOORT)
-        && hasParentnaam(taal)) {
-      return String.format("%s ssp %s", getParentnaam(taal),
-                           latijnsenaam.split(" ")[2]);
+    if (DoosUtils.nullToEmpty(rang).equals(NatuurConstants.RANG_ONDERSOORT)) {
+      return taxon.getNaam(taal);
     }
 
     return getLatijnsenaam();
@@ -246,18 +250,21 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return parentVolgnummer;
   }
 
+  private TaxonDto getPostLoadTaxon() {
+    return taxon;
+  }
+
   public String getRang() {
     return rang;
   }
 
   @Transient
   public Long getSorteervolgnummer() {
-    switch (rang) {
+    switch (DoosUtils.nullToEmpty(rang)) {
       case NatuurConstants.RANG_SOORT:
         return volgnummer * NatuurConstants.SORTEERFACOR;
       case NatuurConstants.RANG_ONDERSOORT:
-        return getParentVolgnummer() * NatuurConstants.SORTEERFACOR
-                + volgnummer;
+        return taxon.getSorteervolgnummer();
       default:
         return volgnummer;
     }
@@ -304,5 +311,12 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   public boolean isUitgestorven() {
     return getUitgestorven();
+  }
+
+  @PostLoad
+  private void onPostLoad() {
+    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
+      getPostLoadTaxon();
+    }
   }
 }

@@ -148,13 +148,18 @@ public class FotoOverzichtDto
     public int compare(FotoOverzichtDto fotoOverzichtDto1,
                        FotoOverzichtDto fotoOverzichtDto2) {
       return
-          new CompareToBuilder().append(fotoOverzichtDto1.getKlasseNaam(taal),
-                                        fotoOverzichtDto2.getKlasseNaam(taal))
-                                .append(fotoOverzichtDto1.getNaam(taal),
-                                        fotoOverzichtDto2.getNaam(taal))
-                                .append(fotoOverzichtDto1.taxonSeq,
-                                        fotoOverzichtDto2.taxonSeq)
-                                .toComparison();
+          new CompareToBuilder()
+                  .append(fotoOverzichtDto1.getKlasseVolgnummer(),
+                          fotoOverzichtDto2.getKlasseVolgnummer())
+                  .append(fotoOverzichtDto1.getKlasseNaam(taal),
+                          fotoOverzichtDto2.getKlasseNaam(taal))
+                  .append(fotoOverzichtDto1.getTaxon().getSorteervolgnummer(),
+                          fotoOverzichtDto2.getTaxon().getSorteervolgnummer())
+                  .append(fotoOverzichtDto1.getNaam(taal),
+                          fotoOverzichtDto2.getNaam(taal))
+                  .append(fotoOverzichtDto1.taxonSeq,
+                          fotoOverzichtDto2.taxonSeq)
+                  .toComparison();
     }
   }
 

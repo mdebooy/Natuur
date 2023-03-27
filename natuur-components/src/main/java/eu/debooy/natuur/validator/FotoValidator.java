@@ -29,8 +29,6 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class FotoValidator extends NatuurValidator {
-  private FotoValidator() {}
-
   public static List<Message> valideer(FotoDto foto) {
     return valideer(new Foto(foto));
   }

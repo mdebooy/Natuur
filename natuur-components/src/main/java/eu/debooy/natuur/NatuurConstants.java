@@ -22,6 +22,10 @@ package eu.debooy.natuur;
  * @author Marco de Booij
  */
 public final class NatuurConstants {
+  private NatuurConstants() {
+    throw new IllegalStateException("Utility class");
+  }
+
   public static final String  RANG_ONDERSOORT = "oso";
   public static final String  RANG_SOORT      = "so";
   public static final Long    SORTEERFACOR    = 1000000L;

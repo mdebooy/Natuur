@@ -214,29 +214,6 @@ public class RegiolijstController extends Natuur {
     return dubbel;
   }
 
-  private String  getNaam(TaxonDto taxon, String taal) {
-    if (taxon.hasTaxonnaam(taal)) {
-      return taxon.getNaam(taal);
-    }
-
-    if (!taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
-      return "";
-    }
-
-    try {
-      var parent  = getTaxonService().taxon(taxon.getParentId());
-      if (parent.hasTaxonnaam(taal)) {
-        return String.format("%s ssp %s",
-                             parent.getNaam(taal),
-                             taxon.getLatijnsenaam().split(" ")[2]);
-      }
-    } catch (ObjectNotFoundException e) {
-      // Geen parent aanwezig = geen naam.
-    }
-
-    return "";
-  }
-
   public JSONArray getNieuw() {
     return nieuw;
   }

@@ -105,6 +105,7 @@ public class Taxon
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
+    sorteervolgnummer   = detailDto.getSorteervolgnummer();
     taxonId             = detailDto.getTaxonId();
     uitgestorven        = detailDto.getUitgestorven();
     volgnummer          = detailDto.getVolgnummer();

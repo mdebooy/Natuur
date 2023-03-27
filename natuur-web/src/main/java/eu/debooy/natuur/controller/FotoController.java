@@ -24,6 +24,8 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -58,13 +60,15 @@ public class FotoController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.fotolijst"));
 
-    var               taal            = getGebruikersTaal();
-    Map<Long, String> landnamen       = new HashMap<>();
-    var               lijstComparator = new FotoOverzichtDto.LijstComparator();
+    var                   taal            = getGebruikersTaal();
+    Map<Long, String>     landnamen       = new HashMap<>();
+    var                   lijstComparator =
+        new FotoOverzichtDto.LijstComparator();
     lijstComparator.setTaal(taal);
 
-    getFotoService().fotoOverzicht()
-                    .forEach(rij -> {
+    Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
+    rijen.addAll(getFotoService().fotoOverzicht());
+    rijen.forEach(rij -> {
       var landId  = rij.getLandId();
       landnamen.computeIfAbsent(landId,
                                 k -> getI18nLandnaam().getI18nLandnaam(landId,
