@@ -26,6 +26,7 @@ import static eu.debooy.natuur.TestConstants.REQ_GEBIEDID;
 import static eu.debooy.natuur.TestConstants.REQ_TAXONID;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
@@ -64,6 +65,7 @@ public class WaarnemingValidatorTest {
   private static  Gebied    gebied;
   private static  GebiedDto gebiedDto;
   private static  Taxon     taxon;
+  private static  TaxonDto  taxonDto;
 
   @BeforeClass
   public static void setUpClass() {
@@ -81,6 +83,8 @@ public class WaarnemingValidatorTest {
     gebied    = TestUtils.getGebied();
     gebiedDto = TestUtils.getGebiedDto();
     taxon     = TestUtils.getTaxon();
+    taxonDto  = new TaxonDto();
+    taxon.persist(taxonDto);
   }
 
   private void setFouten(List<Message> expResult) {
@@ -121,7 +125,7 @@ public class WaarnemingValidatorTest {
     waarneming.setDatum(new Date());
     waarneming.setGebied(gebied);
     waarneming.setOpmerking(OPMERKING);
-    waarneming.setTaxonId(taxon.getTaxonId());
+    waarneming.setTaxon(taxon);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());
@@ -162,7 +166,7 @@ public class WaarnemingValidatorTest {
     waarneming.setDatum(new Date());
     waarneming.setGebied(gebiedDto);
     waarneming.setOpmerking(OPMERKING);
-    waarneming.setTaxonId(taxon.getTaxonId());
+    waarneming.setTaxon(taxonDto);
 
     List<Message> result      = WaarnemingValidator.valideer(waarneming);
     assertEquals(expResult.toString(), result.toString());

@@ -97,7 +97,7 @@ public class WaarnemingController extends Natuur {
                           Long.valueOf(getParameter(DEF_GEBIEDID)));
       var taxon     = getTaxonService().taxon(taxonId);
       waarnemingDto = new WaarnemingDto();
-      waarnemingDto.setTaxonId(taxon.getTaxonId());
+      waarnemingDto.setTaxon(taxon);
       waarnemingDto.setDatum(new Date());
       waarnemingDto.setGebied(gebied);
       waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());

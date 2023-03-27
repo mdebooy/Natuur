@@ -62,7 +62,7 @@ public class WaarnemingDtoTest {
     waarnemingDto.setFotos(fotos);
     waarnemingDto.setGebied(gebiedDto);
     waarnemingDto.setOpmerking(OPMERKING);
-    waarnemingDto.setTaxonId(taxonDto.getTaxonId());
+    waarnemingDto.setTaxon(taxonDto);
     waarnemingDto.setWaarnemingId(WAARNEMINGID);
   }
 
@@ -171,7 +171,7 @@ public class WaarnemingDtoTest {
 
   @Test
   public void testGetTaxon() {
-    assertNull(waarnemingDto.getTaxon());
+    assertEquals(taxonDto, waarnemingDto.getTaxon());
   }
 
   @Test

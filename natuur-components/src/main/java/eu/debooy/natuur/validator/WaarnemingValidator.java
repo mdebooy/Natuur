@@ -50,10 +50,10 @@ public final class WaarnemingValidator extends NatuurValidator {
     }
     valideerOpmerking(DoosUtils.nullToEmpty(waarneming.getOpmerking()),
                       fouten);
-    if (null == waarneming.getTaxonId()) {
+    if (null == waarneming.getTaxon()) {
       valideerTaxonId(null, fouten);
     } else {
-    valideerTaxonId(waarneming.getTaxonId(), fouten);
+    valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
     }
 
     return fouten;

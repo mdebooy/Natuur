@@ -50,7 +50,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Table(name="WAARNEMINGEN", schema="NATUUR")
 @NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId")
 @NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w where w.taxon.taxonId=:taxonId")
-//@NamedQuery(name="waarnemingenTaxon", query="select distinct(w.taxon.taxonId) from WaarnemingDto w")
 public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -79,16 +78,13 @@ public class WaarnemingDto
   private GebiedDto gebied;
   @Column(name="OPMERKING", length=2000)
   private String    opmerking;
+  @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
-  private Long      taxonId;
+  private TaxonDto  taxon;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="WAARNEMING_ID", nullable=false)
   private Long      waarnemingId;
-
-  @OneToOne
-  @JoinColumn(name="TAXON_ID", nullable=false)
-  private TaxonDto  taxon;
 
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=FotoDto.class, orphanRemoval=true)
   @JoinColumn(name="WAARNEMING_ID", nullable=false, updatable=false, insertable=true)
@@ -175,10 +171,6 @@ public class WaarnemingDto
     return taxon;
   }
 
-  public Long getTaxonId() {
-    return taxonId;
-  }
-
   public Long getWaarnemingId() {
     return waarnemingId;
   }
@@ -229,10 +221,6 @@ public class WaarnemingDto
 
   public void setTaxon(TaxonDto taxon) {
     this.taxon        = taxon;
-  }
-
-  public void setTaxonId(Long taxonId) {
-    this.taxonId = taxonId;
   }
 
   public void setWaarnemingId(Long waarnemingId) {

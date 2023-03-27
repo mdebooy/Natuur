@@ -21,6 +21,7 @@ import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -43,7 +44,6 @@ public class Waarneming extends Formulier
   private Gebied  gebied;
   private String  opmerking;
   private Taxon   taxon;
-  private Long    taxonId;
   private Long    waarnemingId;
 
   public Waarneming() {}
@@ -71,7 +71,6 @@ public class Waarneming extends Formulier
         taxon   = new Taxon(waarnemingDto.getTaxon(), taal);
       }
     }
-    taxonId       = waarnemingDto.getTaxonId();
     waarnemingId  = waarnemingDto.getWaarnemingId();
   }
 
@@ -142,10 +141,6 @@ public class Waarneming extends Formulier
     return taxon;
   }
 
-  public Long getTaxonId() {
-    return taxonId;
-  }
-
   public Long getWaarnemingId() {
     return waarnemingId;
   }
@@ -162,7 +157,9 @@ public class Waarneming extends Formulier
     gebied.persist(gebiedDto);
     waarnemingDto.setGebied(gebiedDto);
     waarnemingDto.setOpmerking(opmerking);
-    waarnemingDto.setTaxonId(taxonId);
+    var taxonDto  = new TaxonDto();
+    taxon.persist(taxonDto);
+    waarnemingDto.setTaxon(taxonDto);
     waarnemingDto.setWaarnemingId(waarnemingId);
   }
 
@@ -188,10 +185,6 @@ public class Waarneming extends Formulier
 
   public void setTaxon(Taxon taxon) {
     this.taxon  = taxon;
-  }
-
-  public void setTaxonId(Long taxonId) {
-    this.taxonId = taxonId;
   }
 
   public void setWaarnemingId(Long waarnemingId) {

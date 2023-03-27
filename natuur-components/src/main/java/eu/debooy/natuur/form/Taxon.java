@@ -286,13 +286,13 @@ public class Taxon
   }
 
   public void persist(TaxonDto parameter) {
-    parameter.setLatijnsenaam(this.latijnsenaam);
-    parameter.setOpmerking(this.opmerking);
-    parameter.setParentId(this.parentId);
-    parameter.setRang(this.rang);
-    parameter.setTaxonId(this.taxonId);
-    parameter.setUitgestorven(this.uitgestorven);
-    parameter.setVolgnummer(this.volgnummer);
+    parameter.setLatijnsenaam(latijnsenaam);
+    parameter.setOpmerking(opmerking);
+    parameter.setParentId(parentId);
+    parameter.setRang(rang);
+    parameter.setTaxonId(taxonId);
+    parameter.setUitgestorven(uitgestorven);
+    parameter.setVolgnummer(volgnummer);
   }
 
   public void setLatijnsenaam(String latijnsenaam) {

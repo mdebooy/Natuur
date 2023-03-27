@@ -39,8 +39,8 @@ import org.junit.Test;
 public class WaarnemingTest {
   private static  Date          datum;
   private static  Gebied        gebied;
-  private static  TaxonDto      taxonDto;
   private static  Taxon         taxon;
+  private static  TaxonDto      taxonDto;
   private static  Waarneming    waarneming;
   private static  WaarnemingDto waarnemingDto;
 
@@ -48,8 +48,9 @@ public class WaarnemingTest {
   public static void setUpClass() {
     datum         = new Date();
     gebied        = TestUtils.getGebied();
-    taxonDto      = new TaxonDto();
     taxon         = TestUtils.getTaxon();
+    taxonDto      = new TaxonDto();
+    taxon.persist(taxonDto);
 
     waarneming    = new Waarneming();
     waarneming.setAantal(TestConstants.AANTAL);
@@ -57,7 +58,6 @@ public class WaarnemingTest {
     waarneming.setGebied(gebied);
     waarneming.setOpmerking(TestConstants.OPMERKING);
     waarneming.setTaxon(taxon);
-    waarneming.setTaxonId(taxon.getTaxonId());
     waarneming.setWaarnemingId(TestConstants.WAARNEMINGID);
 
     waarnemingDto = new WaarnemingDto();
@@ -66,7 +66,6 @@ public class WaarnemingTest {
     waarnemingDto.setGebied(TestUtils.getGebiedDto());
     waarnemingDto.setOpmerking(TestConstants.OPMERKING);
     waarnemingDto.setTaxon(taxonDto);
-    waarnemingDto.setTaxonId(taxon.getTaxonId());
     waarnemingDto.setWaarnemingId(TestConstants.WAARNEMINGID);
   }
 
@@ -203,7 +202,7 @@ public class WaarnemingTest {
     assertEquals(waarneming.getDatum(), parameter.getDatum());
     assertEquals(waarneming.getGebied(), new Gebied(parameter.getGebied()));
     assertEquals(waarneming.getOpmerking(), parameter.getOpmerking());
-    assertEquals(waarneming.getTaxonId(), parameter.getTaxonId());
+    assertEquals(waarneming.getTaxon(), new Taxon(parameter.getTaxon()));
     assertEquals(waarneming.getWaarnemingId(), parameter.getWaarnemingId());
   }
 
