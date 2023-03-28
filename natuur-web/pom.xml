@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.debooy.natuur</groupId>
     <artifactId>natuur</artifactId>
-    <version>4.0.0</version>
+    <version>4.1.0-SNAPSHOT</version>
   </parent>
   <artifactId>natuur-web</artifactId>
   <packaging>war</packaging>
