@@ -7,7 +7,6 @@
   template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var rangenTabel = $('#rangenTabel').DataTable( {
@@ -36,11 +35,7 @@
             { data: 'niveau', title: '#{i18nTeksten.tekst('label.niveau')}', width: '50px', class: 'has-text-centered' },
             { data: 'rang', title: '', width: '50px', class: 'has-text-centered' },
             { data: null, title: '#{i18nTeksten.tekst('label.rang')}', render: function ( data, type, row ) {
-                var naam = data.rangnamen.findIndex(i => i.taal === taal);
-                if (naam < 0) {
-                  return data.rang;
-                }
-                return data.rangnamen[naam].naam;
+                return getRangnaam(data.rangnamen, data.rang, taal);
               }
             }
           ]
@@ -58,7 +53,6 @@
           addInsertButton('rangenTabel', 'formRangen', imgTekst);
         }
       });
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">
