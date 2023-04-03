@@ -190,7 +190,8 @@ public class TaxonController extends Natuur {
       return taxon.getNaam(taal);
     }
 
-    if (!taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
+    if (null == taxon.getRang()
+        || !taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
       return "";
     }
 
