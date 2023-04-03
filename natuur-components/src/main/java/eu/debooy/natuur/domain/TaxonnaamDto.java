@@ -111,7 +111,7 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam = naam.trim();
   }
 
   public void setTaal(String taal) {

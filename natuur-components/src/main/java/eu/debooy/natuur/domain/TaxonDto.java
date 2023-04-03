@@ -366,7 +366,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam;
+    this.latijnsenaam = latijnsenaam.trim();
   }
 
   public void setOpmerking(String opmerking) {
