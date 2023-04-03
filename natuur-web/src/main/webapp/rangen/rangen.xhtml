@@ -35,7 +35,7 @@
             { data: 'niveau', title: '#{i18nTeksten.tekst('label.niveau')}', width: '50px', class: 'has-text-centered' },
             { data: 'rang', title: '', width: '50px', class: 'has-text-centered' },
             { data: null, title: '#{i18nTeksten.tekst('label.rang')}', render: function ( data, type, row ) {
-                return getRangnaam(data.rangnamen, data.rang, taal);
+                return getRangNaam(data.rangnamen, data.rang, taal);
               }
             }
           ]

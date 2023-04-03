@@ -103,10 +103,10 @@ function getRangnaam(rang, taal) {
     });
   }
 
-  return getRangnaam(rangnamen, rang, taal);
+  return getRangNaam(rangnamen, rang, taal);
 }
 
-function getRangnaam(rangnamen, rang, taal) {
+function getRangNaam(rangnamen, rang, taal) {
   var naam = rangnamen.findIndex(i => i.taal === taal);
   if (naam < 0) {
     return rang;
