@@ -128,7 +128,7 @@
         $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}',
                   dataSrc: '' },
-          order: [[1, "asc"]],
+          order: [[2, "asc"]],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
@@ -206,6 +206,8 @@
           addInsertButton('taxaTabel', 'formTaxon', imgTekst);
           addInsertButton('taxonnamenTabel', 'formTaxon', imgTekst);
           addInsertButton('waarnemingenTabel', 'formTaxon', imgTekst);
+        }
+        if (#{!natuurTaxon.aktie.nieuw}) {
           initTabs();
           switchToTab('#{natuurTaxon.actieveTab}');
         }
