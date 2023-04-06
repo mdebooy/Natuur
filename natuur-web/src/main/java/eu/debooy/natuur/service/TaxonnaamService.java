@@ -16,9 +16,11 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.TaxonnaamDao;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.domain.TaxonnaamPK;
+import eu.debooy.natuur.form.AantalPerTaal;
 import eu.debooy.natuur.form.Taxonnaam;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,6 +35,12 @@ import javax.ejb.TransactionAttributeType;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +50,9 @@ import org.slf4j.LoggerFactory;
  */
 @Singleton
 @Named("natuurTaxonnaamService")
+@Path("/taxonnamen")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 @Lock(LockType.WRITE)
 public class TaxonnaamService {
   private static final  Logger  LOGGER  =
@@ -52,6 +63,21 @@ public class TaxonnaamService {
 
   public TaxonnaamService() {
     LOGGER.debug("init TaxonnaamService");
+  }
+
+  @GET
+  @Path("/aantalpertaal")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getAantalPerTaal() {
+    try {
+      var totalen = new ArrayList<AantalPerTaal>();
+      taxonnaamDao.getAantalPerTaal().forEach(rij ->
+          totalen.add(new AantalPerTaal(rij.getSleutel(),
+                                       Long.valueOf(rij.getWaarde()))));
+      return Response.ok().entity(totalen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

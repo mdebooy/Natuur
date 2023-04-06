@@ -38,6 +38,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @IdClass(TaxonnaamPK.class)
 @NamedQuery(name="taxonnaamPerTaxon", query="select t from TaxonnaamDto t where t.taxonId=:taxonId")
 @NamedQuery(name="taxonnaamPerTaal", query="select t from TaxonnaamDto t where t.taal=:taal")
+@NamedQuery(name="taxonnamenPerTaal",
+            query="select t.taal, count(t.taxonId) from TaxonnaamDto t group by t.taal")
 public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -48,8 +50,9 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   public static final String  PAR_TAAL    = "taal";
   public static final String  PAR_TAXONID = "taxonId";
 
-  public static final String  QRY_TAXON = "taxonnaamPerTaxon";
-  public static final String  QRY_TAAL  = "taxonnaamPerTaal";
+  public static final String  QRY_TAXON   = "taxonnaamPerTaxon";
+  public static final String  QRY_TAAL    = "taxonnaamPerTaal";
+  public static final String  QRY_TOTALEN = "taxonnamenPerTaal";
 
   @Column(name="NAAM", length=255, nullable=false)
   private String  naam;

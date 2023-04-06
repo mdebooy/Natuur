@@ -64,6 +64,7 @@ public class Natuur extends DoosBean {
 
   protected static final  String  ADMIN_ROLE                = "natuur-admin";
   protected static final  String  APPLICATIE_NAAM           = "Natuur";
+  protected static final  String  DD_STATS                  = "stats";
   protected static final  String  DEF_GEBIEDID              =
       "natuur.default.gebiedid";
   protected static final  String  DEF_LANDID                =
@@ -90,6 +91,8 @@ public class Natuur extends DoosBean {
   protected static final  String  LBL_TAXONNAAM             = "label.taxonnaam";
   protected static final  String  LBL_WAARNEMING            =
       "label.waarneming";
+  protected static final  String  NAMENPERTAAL_REDIRECT     =
+      "/statistieken/namenpertaal.xhtml";
   protected static final  String  RANG_REDIRECT             =
       "/rangen/rang.xhtml";
   protected static final  String  RANGEN_REDIRECT           =
@@ -133,11 +136,11 @@ public class Natuur extends DoosBean {
     setViewRole(getExternalContext().isUserInRole(VIEW_ROLE));
     setPath(getExternalContext().getRequestContextPath());
     if (isAdministrator()) {
-      addMenuitem("Dropdown.admin", "menu.administratie");
+      addMenuitem("Dropdown." + DD_ADMIN, "menu.administratie");
       addDropdownmenuitem(DD_ADMIN, APP_LOGS_REDIRECT,
-          "menu.applicatielogs");
+                                          "menu.applicatielogs");
       addDropdownmenuitem(DD_ADMIN, APP_PARAMS_REDIRECT,
-          "menu.applicatieparameters");
+                                          "menu.applicatieparameters");
     }
     if (isGerechtigd()) {
       addMenuitem(RANGEN_REDIRECT,        "menu.rangen");
@@ -146,6 +149,9 @@ public class Natuur extends DoosBean {
       addMenuitem(TAXA_REDIRECT,          "menu.taxa");
       addMenuitem(WAARNEMINGEN_REDIRECT,  "menu.waarnemingen");
       addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
+      addMenuitem("Dropdown." + DD_STATS, "menu.statistieken");
+      addDropdownmenuitem(DD_STATS, NAMENPERTAAL_REDIRECT,
+                                          "menu.namen.per.taal");
     }
   }
 

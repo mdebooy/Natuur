@@ -16,12 +16,16 @@
  */
 package eu.debooy.natuur.access;
 
+import eu.debooy.doosutils.KeyValue;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -58,5 +62,21 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
     params.put(TaxonnaamDto.PAR_TAXONID, taxonId);
 
     return namedQuery(TaxonnaamDto.QRY_TAXON, params);
+  }
+
+  public Collection<KeyValue> getAantalPerTaal() {
+    var query = getEntityManager().createNamedQuery(
+                    TaxonnaamDto.QRY_TOTALEN);
+
+    List<Object[]>  rijen     = query.getResultList();
+    Set<KeyValue>   resultaat = new HashSet<>();
+    if (null != rijen) {
+      for (Object[] rij : rijen) {
+        resultaat.add(new KeyValue((String) rij[0],
+                                   Long.toString((Long) rij[1])));
+      }
+    }
+
+    return resultaat;
   }
 }
