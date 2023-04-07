@@ -50,7 +50,8 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
 @NamedQuery(name="fotooverzichtPerGebied", query="select f from FotoOverzichtDto f where f.gebiedId=:gebiedId")
-@NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.taxon.taxonId=:taxonId")
+@NamedQuery(name="fotooverzichtPerRang", query="select f from FotoOverzichtDto f where f.parentRang=:rang")
+@NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.parentId=:taxonId")
 @NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxon.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
 public class FotoOverzichtDto
     extends Dto implements Comparable<FotoOverzichtDto> {
@@ -61,21 +62,26 @@ public class FotoOverzichtDto
   public static final String  COL_FOTODETAIL          = "fotoDetail";
   public static final String  COL_FOTOID              = "fotoId";
   public static final String  COL_GEBIED              = "gebied";
-  public static final String  COL_KLASSEID            = "klasseId";
-  public static final String  COL_KLASSELATIJNSENAAM  = "klasseLatijnsenaam";
-  public static final String  COL_KLASSEVOLGNUMMER    = "klasseVolgnummer";
+  public static final String  COL_GEBIEDID            = "gebiedId";
   public static final String  COL_LANDID              = "landId";
   public static final String  COL_LATIJNSENAAM        = "latijnsenaam";
   public static final String  COL_OPMERKING           = "opmerking";
+  public static final String  COL_PARENTID            = "parentId";
+  public static final String  COL_PARENTLATIJNSENAAM  = "parentLatijnsenaam";
+  public static final String  COL_PARENTRANG          = "parentRang";
+  public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
+  public static final String  COL_RANG                = "rang";
   public static final String  COL_TAXONID             = "taxonId";
   public static final String  COL_TAXONSEQ            = "taxonSeq";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
 
+  public static final String  PAR_GEBIEDID  = "gebiedId";
+  public static final String  PAR_RANG      = "rang";
   public static final String  PAR_TAXONID   = "taxonId";
   public static final String  PAR_TAXONSEQ  = "taxonSeq";
-  public static final String  PAR_GEBIEDID  = "gebiedId";
 
   public static final String  QRY_PERGEBIED = "fotooverzichtPerGebied";
+  public static final String  QRY_PERRANG   = "fotooverzichtPerRang";
   public static final String  QRY_PERTAXON  = "fotooverzichtPerTaxon";
   public static final String  QRY_TAXONSEQ  = "fotooverzichtTaxonSeq";
 
@@ -100,15 +106,6 @@ public class FotoOverzichtDto
   @Column(name="GEBIED_ID")
   private Long      gebiedId;
   @ReadOnly
-  @Column(name="KLASSE_ID")
-  private Long      klasseId;
-  @ReadOnly
-  @Column(name="KLASSE_LATIJNSENAAM")
-  private String    klasseLatijnsenaam;
-  @ReadOnly
-  @Column(name="KLASSE_VOLGNUMMER")
-  private Long      klasseVolgnummer;
-  @ReadOnly
   @Column(name="LAND_ID")
   private Long      landId;
   @ReadOnly
@@ -117,6 +114,21 @@ public class FotoOverzichtDto
   @ReadOnly
   @Column(name="OPMERKING")
   private String    opmerking;
+  @ReadOnly
+  @Column(name="PARENT_ID")
+  private Long      parentId;
+  @ReadOnly
+  @Column(name="PARENT_RANG")
+  private String    parentRang;
+  @ReadOnly
+  @Column(name="PARENT_LATIJNSENAAM")
+  private String    parentLatijnsenaam;
+  @ReadOnly
+  @Column(name="PARENT_VOLGNUMMER")
+  private Long      parentVolgnummer;
+  @ReadOnly
+  @Column(name="RANG")
+  private String    rang;
   @ReadOnly
   @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
@@ -130,9 +142,9 @@ public class FotoOverzichtDto
 
   @ReadOnly
   @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
-  @JoinColumn(name="TAXON_ID", referencedColumnName="KLASSE_ID", nullable=false, updatable=false, insertable=true)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
-  private Map<String, TaxonnaamDto> klassenamen = new HashMap<>();
+  private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
 
   public static class LijstComparator
       implements Comparator<FotoOverzichtDto>, Serializable {
@@ -149,10 +161,10 @@ public class FotoOverzichtDto
                        FotoOverzichtDto fotoOverzichtDto2) {
       return
           new CompareToBuilder()
-                  .append(fotoOverzichtDto1.getKlasseVolgnummer(),
-                          fotoOverzichtDto2.getKlasseVolgnummer())
-                  .append(fotoOverzichtDto1.getKlasseNaam(taal),
-                          fotoOverzichtDto2.getKlasseNaam(taal))
+                  .append(fotoOverzichtDto1.getParentVolgnummer(),
+                          fotoOverzichtDto2.getParentVolgnummer())
+                  .append(fotoOverzichtDto1.getParentNaam(taal),
+                          fotoOverzichtDto2.getParentNaam(taal))
                   .append(fotoOverzichtDto1.getTaxon().getSorteervolgnummer(),
                           fotoOverzichtDto2.getTaxon().getSorteervolgnummer())
                   .append(fotoOverzichtDto1.getNaam(taal),
@@ -209,31 +221,6 @@ public class FotoOverzichtDto
     return gebiedId;
   }
 
-  public Long getKlasseId() {
-    return klasseId;
-  }
-
-  public String getKlasseLatijnsenaam() {
-    return klasseLatijnsenaam;
-  }
-
-  @Transient
-  public String getKlasseNaam(String taal) {
-    if (klassenamen.containsKey(taal)) {
-      return klassenamen.get(taal).getNaam();
-    } else {
-      return klasseLatijnsenaam;
-    }
-  }
-
-  public Long getKlasseVolgnummer() {
-    return klasseVolgnummer;
-  }
-
-  public Map<String, TaxonnaamDto> getKlassenamen() {
-    return klassenamen;
-  }
-
   public Long getLandId() {
     return landId;
   }
@@ -249,6 +236,39 @@ public class FotoOverzichtDto
 
   public String getOpmerking() {
     return opmerking;
+  }
+
+  public Long getParentId() {
+    return parentId;
+  }
+
+  public String getParentLatijnsenaam() {
+    return parentLatijnsenaam;
+  }
+
+  @Transient
+  public String getParentNaam(String taal) {
+    if (parentnamen.containsKey(taal)) {
+      return parentnamen.get(taal).getNaam();
+    } else {
+      return parentLatijnsenaam;
+    }
+  }
+
+  public String getParentRang() {
+    return parentRang;
+  }
+
+  public Long getParentVolgnummer() {
+    return parentVolgnummer;
+  }
+
+  public Map<String, TaxonnaamDto> getParentnamen() {
+    return parentnamen;
+  }
+
+  public String getRang() {
+    return rang;
   }
 
   public TaxonDto getTaxon() {

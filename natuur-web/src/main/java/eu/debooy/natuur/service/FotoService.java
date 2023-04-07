@@ -17,6 +17,7 @@
 package eu.debooy.natuur.service;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.access.FotoDao;
 import eu.debooy.natuur.access.FotoOverzichtDao;
 import eu.debooy.natuur.domain.FotoDto;
@@ -106,7 +107,7 @@ public class FotoService {
   public Response getFotos(@PathParam(TaxonnaamDto.COL_TAAL) String taal) {
     try {
       List<FotoOverzicht> fotos = new ArrayList<>();
-      fotoOverzichtDao.getAll()
+      fotoOverzichtDao.getPerRang(NatuurConstants.RANG_KLASSE)
               .forEach(foto -> fotos.add(new FotoOverzicht(foto, taal)));
       return Response.ok().entity(fotos).build();
     } catch (ObjectNotFoundException e) {
@@ -189,9 +190,9 @@ public class FotoService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<FotoOverzichtDto> fotoOverzicht() {
+  public List<FotoOverzichtDto> fotoOverzicht(String rang) {
     try {
-      return fotoOverzichtDao.getAll();
+      return fotoOverzichtDao.getPerRang(rang);
     } catch (ObjectNotFoundException e) {
       return new ArrayList<>();
     }

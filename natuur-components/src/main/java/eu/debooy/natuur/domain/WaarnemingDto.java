@@ -49,7 +49,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Entity
 @Table(name="WAARNEMINGEN", schema="NATUUR")
 @NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId")
-@NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w where w.taxon.taxonId=:taxonId")
+@NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w, DetailDto d where w.taxon.taxonId=d.taxonId and d.parentId=:taxonId")
 public class WaarnemingDto
     extends Dto implements Comparable<WaarnemingDto> {
   private static final  long  serialVersionUID  = 1L;

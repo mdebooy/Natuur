@@ -21,6 +21,7 @@ import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,14 +68,14 @@ public class FotoController extends Natuur {
     lijstComparator.setTaal(taal);
 
     Set<FotoOverzichtDto> rijen           = new TreeSet<>(lijstComparator);
-    rijen.addAll(getFotoService().fotoOverzicht());
+    rijen.addAll(getFotoService().fotoOverzicht(NatuurConstants.RANG_KLASSE));
     rijen.forEach(rij -> {
       var landId  = rij.getLandId();
       landnamen.computeIfAbsent(landId,
                                 k -> getI18nLandnaam().getI18nLandnaam(landId,
                                                                        taal));
-      exportData.addData(new String[] {rij.getKlasseNaam(taal),
-                                       rij.getKlasseLatijnsenaam(),
+      exportData.addData(new String[] {rij.getParentNaam(taal),
+                                       rij.getParentLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),
                                        landnamen.get(landId),
                                        rij.getNaam(taal),

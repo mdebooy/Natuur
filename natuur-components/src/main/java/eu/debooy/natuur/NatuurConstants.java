@@ -26,7 +26,9 @@ public final class NatuurConstants {
     throw new IllegalStateException("Utility class");
   }
 
+  public static final String  RANG_KLASSE     = "kl";
   public static final String  RANG_ONDERSOORT = "oso";
   public static final String  RANG_SOORT      = "so";
+
   public static final Long    SORTEERFACOR    = 1000000L;
 }

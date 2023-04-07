@@ -31,6 +31,10 @@ Deze versie is een tussenversie die nodig is om naar de nieuwe databasestructuur
 _____
 Deze versie veranderd de structuur van de tabel `fotos`. De script `Natuur-Patch.sql` maakt een kopie met de naam `NATUUR.FOTOS_V2_1_1` aan voordat het overbodige kolommen verwijderd. Deze tabel kan worden verwijderd na controle date de `foto`'s aan een `waarneming` zijn gekoppeld.
 
+4.1.0
+_____
+Deze versie veranderd de structuur van de view `foto_overzicht`. De `KLASSE` attributen worden `PARENT`. Om in de appicatie dezelfde resultaten te verkrijgen moet je gebruik maken van de methode `getPerRang('kl')` in plaats van `gerAll()`. Ook de view `details` is veranderd. Het geeft nu ook een rij met de taxon zelf als zijn 'parent'.
+
 <hr />
 
 This project is meant to keep track of all species that were spotted. Through taxonomy every specie can be put in an observation list. The application uses the projects `DOOS` and `Sedes`.
@@ -63,3 +67,6 @@ This version is an intermediate version that is necessary to move to the new dat
 _____
 This version changes the structure of the `fotos` table. The script `Natuur-Patch.sql` makes a copy with the name `NATUUR.FOTOS_V2_1_1` before the obsolete columns are dropped. You can drop this table manually after you checked that all pictures are linked to an observation.
 
+4.1.0
+_____
+This version changes the structure of the `foto_overzicht` view. The `KLASSE` attributen become `PARENT`. In the application, to get the same results, you must use the method `getPerRang('kl')` instead of `gerAll()`. Also the view `details` is changed. It now returns an extra row in which the taxon is it's own 'parent'.

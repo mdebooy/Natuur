@@ -77,9 +77,9 @@
           ]
         } );
         var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
-          ajax: { url: '/natuur/waarnemingen/taxon/#{natuurTaxon.taxon.taxonId}',
+          ajax: { url: '/natuur/waarnemingen/taxon/#{natuurTaxon.taxon.taxonId}/' + taal,
                   dataSrc: '' },
-          order: [[1, 'desc'], [3, 'asc']],
+          order: [[1, 'desc'], [3, 'asc'], [4, 'asc'], [5, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
@@ -111,6 +111,8 @@
                 return '';
               }
             },
+            { data: 'taxon.sorteervolgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: 'gebied.naam', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
                 return getLandnaam(data.gebied.landId, taal);
@@ -126,9 +128,9 @@
           ]
         } );
         $('#fotosTabel').DataTable( {
-          ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}',
+          ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}/' + taal,
                   dataSrc: '' },
-          order: [[2, "asc"]],
+          order: [[2, "asc"], [3, "asc"], [4, "asc"]],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength.tab')},
           lengthChange: false,
@@ -153,6 +155,8 @@
                 return formatDatum(data.datum, taal);
               }
             },
+            { data: 'sorteervolgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
             { data: 'gebied', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {

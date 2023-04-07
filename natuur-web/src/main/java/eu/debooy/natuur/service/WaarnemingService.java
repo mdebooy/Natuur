@@ -111,6 +111,28 @@ public class WaarnemingService {
     }
   }
 
+  @GET
+  @Path("/taxon/{taxonId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getTaxonWaarnemingen(
+                      @PathParam(TaxonDto.COL_TAXONID) Long taxonId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Waarneming>  waarnemingen  = new ArrayList<>();
+      waarnemingDao.getPerTaxon(taxonId)
+              .forEach(waarneming ->
+                          waarnemingen.add(new Waarneming(waarneming, taal)));
+      return Response.ok().entity(waarnemingen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+//    try {
+//      return Response.ok().entity(waarnemingDao.getPerTaxon(taxonId)).build();
+//    } catch (ObjectNotFoundException e) {
+//      return Response.ok().entity(new ArrayList<>()).build();
+//    }
+  }
+
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Long> getTaxa() {
     List<Long> taxa  = new ArrayList<>();

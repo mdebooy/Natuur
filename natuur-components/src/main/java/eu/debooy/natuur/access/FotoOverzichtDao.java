@@ -60,6 +60,13 @@ public class FotoOverzichtDao extends Dao<FotoOverzichtDto> {
     return namedQuery(FotoOverzichtDto.QRY_PERTAXON, params);
   }
 
+  public List<FotoOverzichtDto> getPerRang(String rang) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(FotoOverzichtDto.PAR_RANG, rang);
+
+    return namedQuery(FotoOverzichtDto.QRY_PERRANG, params);
+  }
+
   public FotoOverzichtDto getTaxonSeq(Long taxonId, Long taxonSeq) {
     Map<String, Object> params  = new HashMap<>();
     params.put(FotoOverzichtDto.PAR_TAXONID, taxonId);

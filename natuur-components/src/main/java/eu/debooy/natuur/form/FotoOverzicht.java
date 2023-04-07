@@ -35,14 +35,17 @@ public class FotoOverzicht {
   private String  fotoDetail;
   private Long    fotoId;
   private String  gebied;
-  private Long    klasseId;
-  private String  klasseLatijnsenaam;
-  private String  klasseNaam;
-  private Long    klasseVolgnummer;
+  private Long    parentId;
+  private String  parentLatijnsenaam;
+  private String  parentNaam;
+  private String  parentRang;
+  private Long    parentVolgnummer;
   private Long    landId;
   private String  landnaam;
   private String  latijnsenaam;
   private String  naam;
+  private String  rang;
+  private Long    sorteervolgnummer;
   private Long    taxonId;
   private Long    taxonSeq;
   private Long    volgnummer;
@@ -62,16 +65,19 @@ public class FotoOverzicht {
     fotoDetail          = fotoOverzichtDto.getFotoDetail();
     fotoId              = fotoOverzichtDto.getFotoId();
     gebied              = fotoOverzichtDto.getGebied();
-    klasseId            = fotoOverzichtDto.getKlasseId();
-    klasseLatijnsenaam  = fotoOverzichtDto.getKlasseLatijnsenaam();
-    klasseNaam          = fotoOverzichtDto.getKlasseNaam(taal);
-    klasseVolgnummer    = fotoOverzichtDto.getKlasseVolgnummer();
     landId              = fotoOverzichtDto.getLandId();
     this.landnaam       = landnaam;
     latijnsenaam        = fotoOverzichtDto.getLatijnsenaam();
     if (DoosUtils.isNotBlankOrNull(taal)) {
       naam              = fotoOverzichtDto.getNaam(taal);
     }
+    parentId            = fotoOverzichtDto.getParentId();
+    parentLatijnsenaam  = fotoOverzichtDto.getParentLatijnsenaam();
+    parentNaam          = fotoOverzichtDto.getParentNaam(taal);
+    parentRang          = fotoOverzichtDto.getParentRang();
+    parentVolgnummer    = fotoOverzichtDto.getParentVolgnummer();
+    rang                = fotoOverzichtDto.getRang();
+    sorteervolgnummer   = fotoOverzichtDto.getTaxon().getSorteervolgnummer();
     taxonId             = fotoOverzichtDto.getTaxonId();
     taxonSeq            = fotoOverzichtDto.getTaxonSeq();
     volgnummer          = fotoOverzichtDto.getVolgnummer();
@@ -118,22 +124,6 @@ public class FotoOverzicht {
     return gebied;
   }
 
-  public Long getKlasseId() {
-    return klasseId;
-  }
-
-  public String getKlasseLatijnsenaam() {
-    return klasseLatijnsenaam;
-  }
-
-  public String getKlasseNaam() {
-    return klasseNaam;
-  }
-
-  public Long getKlasseVolgnummer() {
-    return klasseVolgnummer;
-  }
-
   public Long getLandId() {
     return landId;
   }
@@ -150,12 +140,40 @@ public class FotoOverzicht {
     return naam;
   }
 
+  public Long getParentId() {
+    return parentId;
+  }
+
+  public String getParentLatijnsenaam() {
+    return parentLatijnsenaam;
+  }
+
+  public String getParentNaam() {
+    return parentNaam;
+  }
+
+  public String getParentRang() {
+    return parentRang;
+  }
+
+  public Long getParentVolgnummer() {
+    return parentVolgnummer;
+  }
+
+  public String getRang() {
+    return rang;
+  }
+
   public String getSorteerdatum() {
     if (null == datum) {
       return "";
     }
 
     return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
+  }
+
+  public Long getSorteervolgnummer() {
+    return sorteervolgnummer;
   }
 
   public Long getTaxonId() {
@@ -195,22 +213,6 @@ public class FotoOverzicht {
     this.gebied             = gebied;
   }
 
-  public void setKlasseId(Long klasseId) {
-    this.klasseId           = klasseId;
-  }
-
-  public void setKlasseLatijnsenaam(String klasseLatijnsenaam) {
-    this.klasseLatijnsenaam = klasseLatijnsenaam;
-  }
-
-  public void setKlasseNaam(String klasseNaam) {
-    this.klasseNaam         = klasseNaam;
-  }
-
-  public void setKlasseVolgnummer(Long klasseVolgnummer) {
-    this.klasseVolgnummer = klasseVolgnummer;
-  }
-
   public void setLandId(Long landId) {
     this.landId             = landId;
   }
@@ -221,6 +223,30 @@ public class FotoOverzicht {
 
   public void setNaam(String naam) {
     this.naam               = naam;
+  }
+
+  public void setParentId(Long parentId) {
+    this.parentId           = parentId;
+  }
+
+  public void setParentLatijnsenaam(String parentLatijnsenaam) {
+    this.parentLatijnsenaam = parentLatijnsenaam;
+  }
+
+  public void setParentNaam(String parentNaam) {
+    this.parentNaam         = parentNaam;
+  }
+
+  public void setParentRang(String parentRang) {
+    this.parentRang         = parentRang;
+  }
+
+  public void setParentVolgnummer(Long parentVolgnummer) {
+    this.parentVolgnummer = parentVolgnummer;
+  }
+
+  public void setRang(String rang) {
+    this.rang               = rang;
   }
 
   public void setTaxonId(Long taxonId) {
