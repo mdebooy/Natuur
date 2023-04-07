@@ -19,6 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
@@ -29,6 +30,11 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class TaxonValidator extends NatuurValidator {
+  public static final String  ERR_LATIJNSENAAMONDERSOORT  =
+      "errors.latijnsenaam.ondersoort";
+  public static final String  ERR_LATIJNSENAAMSOORT       =
+      "errors.latijnsenaam.soort";
+
   protected static final  String  LBL_LATIJNSENAAM  =
       "_I18N.label.latijnsenaam";
   protected static final  String  LBL_UITGESTORVEN  =
@@ -44,6 +50,7 @@ public final class TaxonValidator extends NatuurValidator {
     List<Message> fouten  = new ArrayList<>();
 
     valideerLatijnsenaam(DoosUtils.nullToEmpty(taxon.getLatijnsenaam()),
+                         DoosUtils.nullToEmpty(taxon.getRang()),
                          fouten);
     valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
@@ -54,6 +61,7 @@ public final class TaxonValidator extends NatuurValidator {
   }
 
   private static void valideerLatijnsenaam(String latijnsenaam,
+                                           String rang,
                                            List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(latijnsenaam)) {
       fouten.add(new Message.Builder()
@@ -72,6 +80,27 @@ public final class TaxonValidator extends NatuurValidator {
                             .setMessage(PersistenceConstants.MAXLENGTH)
                             .setParams(new Object[]{LBL_LATIJNSENAAM, 255})
                             .build());
+    }
+
+    var deel  = latijnsenaam.split(" ");
+    if (rang.equals(NatuurConstants.RANG_SOORT)) {
+      if (deel.length != 2) {
+        fouten.add(new Message.Builder()
+                              .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                              .setSeverity(Message.ERROR)
+                              .setMessage(ERR_LATIJNSENAAMSOORT)
+                              .build());
+      }
+    }
+
+    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)) {
+      if (deel.length != 3) {
+        fouten.add(new Message.Builder()
+                              .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                              .setSeverity(Message.ERROR)
+                              .setMessage(ERR_LATIJNSENAAMONDERSOORT)
+                              .build());
+      }
     }
   }
 

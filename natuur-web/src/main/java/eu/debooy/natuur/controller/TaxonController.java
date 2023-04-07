@@ -151,8 +151,8 @@ public class TaxonController extends Natuur {
       getTaxonService().save(taxonDto);
       addInfo(PersistenceConstants.DELETED, "'" + taxonnaam.getTaal() + "'");
       if (getGebruikersTaal().equals(taxonnaam.getTaal())) {
-        taxon.setNaam(null);
-        setSubTitel(getTekst(TIT_UPDATE, taxonnaam.getNaam()));
+        taxon.setNaam(taxonDto.getNaam(getGebruikersTaal()));
+        setSubTitel(getTekst(TIT_UPDATE, getTaxonnaam(getGebruikersTaal())));
       }
       taxonnaam = new Taxonnaam();
       redirect(TAXON_REDIRECT);
@@ -192,21 +192,20 @@ public class TaxonController extends Natuur {
 
     if (null == taxon.getRang()
         || !taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
-      return "";
+      return taxon.getLatijnsenaam();
     }
 
     try {
       var parent  = getTaxonService().taxon(taxon.getParentId());
       if (parent.hasTaxonnaam(taal)) {
-        return String.format("%s ssp %s",
-                             parent.getNaam(taal),
+        return String.format("%s ssp %s", parent.getNaam(taal),
                              taxon.getLatijnsenaam().split(" ")[2]);
       }
     } catch (ObjectNotFoundException e) {
       // Geen parent aanwezig = geen naam.
     }
 
-    return "";
+    return taxon.getLatijnsenaam();
   }
 
   public JSONArray getTaxonnamen() {
@@ -355,7 +354,8 @@ public class TaxonController extends Natuur {
           taxonDto.addNaam(taxonnaamDto);
           if (getGebruikersTaal().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
-            setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
+            setSubTitel(getTekst(TIT_UPDATE,
+                                 getTaxonnaam(getGebruikersTaal())));
           }
           getTaxonService().save(taxonDto);
           addInfo(PersistenceConstants.CREATED, "'" + taal + "'");
@@ -364,7 +364,8 @@ public class TaxonController extends Natuur {
           taxonDto.addNaam(taxonnaamDto);
           if (getGebruikersTaal().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
-            setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
+            setSubTitel(getTekst(TIT_UPDATE,
+                                 getTaxonnaam(getGebruikersTaal())));
           }
           getTaxonService().save(taxonDto);
           addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
@@ -424,7 +425,7 @@ public class TaxonController extends Natuur {
 
     setActieveTab(TAB_KINDEREN);
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
+    setSubTitel(getTekst(TIT_UPDATE, getTaxonnaam(getGebruikersTaal())));
   }
 
   private int wijzigKinderen(String oud, String nieuw, Long parentId) {
