@@ -127,6 +127,8 @@ public class Natuur extends DoosBean {
       "/waarnemingen/waarnemingen.xhtml";
   protected static final  String  WNMFOTO_REDIRECT          =
       "/waarnemingen/foto.xhtml";
+  protected static final  String  WNMNPERLAND_REDIRECT      =
+      "/statistieken/waarnemingenperland.xhtml";
 
   public Natuur() {
     LOGGER.debug("Nieuwe Natuur Sessie geopend.");
@@ -152,6 +154,8 @@ public class Natuur extends DoosBean {
       addMenuitem("Dropdown." + DD_STATS, "menu.statistieken");
       addDropdownmenuitem(DD_STATS, NAMENPERTAAL_REDIRECT,
                                           "menu.namen.per.taal");
+      addDropdownmenuitem(DD_STATS, WNMNPERLAND_REDIRECT,
+                                          "menu.waarnemingen.per.land");
     }
   }
 

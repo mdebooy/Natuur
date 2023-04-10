@@ -16,12 +16,17 @@
  */
 package eu.debooy.natuur.access;
 
+import eu.debooy.doosutils.KeyValue;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -39,6 +44,22 @@ public class WaarnemingDao extends Dao<WaarnemingDto> {
 
   public WaarnemingDao() {
     super(WaarnemingDto.class);
+  }
+
+  public Collection<KeyValue> getAantalPerLand() {
+    var query = getEntityManager().createNamedQuery(
+                    WaarnemingDto.QRY_TOTPERLAND);
+
+    List<Object[]>  rijen     = query.getResultList();
+    Set<KeyValue>   resultaat = new HashSet<>();
+    if (null != rijen) {
+      for (Object[] rij : rijen) {
+        resultaat.add(new KeyValue(Long.toString((Long) rij[0]),
+                                   Long.toString((Long) rij[1])));
+      }
+    }
+
+    return resultaat;
   }
 
   @Override
@@ -63,5 +84,21 @@ public class WaarnemingDao extends Dao<WaarnemingDto> {
   public List<Long> getTaxa() {
     return em.createQuery(WaarnemingDto.QRY_TAXON, Long.class)
              .getResultList();
+  }
+
+  public Collection<KeyValue> getAantalPerTaal() {
+    var query = getEntityManager().createNamedQuery(
+                    TaxonnaamDto.QRY_TOTPERTAAL);
+
+    List<Object[]>  rijen     = query.getResultList();
+    Set<KeyValue>   resultaat = new HashSet<>();
+    if (null != rijen) {
+      for (Object[] rij : rijen) {
+        resultaat.add(new KeyValue((String) rij[0],
+                                   Long.toString((Long) rij[1])));
+      }
+    }
+
+    return resultaat;
   }
 }

@@ -24,6 +24,7 @@ import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
+import eu.debooy.natuur.form.AantalPerId;
 import eu.debooy.natuur.form.Waarneming;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,6 +69,21 @@ public class WaarnemingService {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(Long waarnemingId) {
     waarnemingDao.delete(waarnemingDao.getByPrimaryKey(waarnemingId));
+  }
+
+  @GET
+  @Path("/aantalperland")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getAantalPerLand() {
+    try {
+      var totalen = new ArrayList<AantalPerId>();
+      waarnemingDao.getAantalPerLand().forEach(rij ->
+          totalen.add(new AantalPerId(Long.valueOf(rij.getSleutel()),
+                                      Long.valueOf(rij.getWaarde()))));
+      return Response.ok().entity(totalen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 
   @GET
