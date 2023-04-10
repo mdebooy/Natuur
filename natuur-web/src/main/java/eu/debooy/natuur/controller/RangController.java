@@ -177,9 +177,10 @@ public class RangController extends Natuur {
   public List<SelectItem> getSelectRangen() {
     List<SelectItem>  items = new LinkedList<>();
 
-    getRangService().query()
-                    .forEach(rij ->  items.add(new SelectItem(rij.getRang(),
-                                               getRangtekst(rij.getRang()))));
+    getRangService().query().stream().sorted(new Rang.NiveauComparator())
+                    .forEachOrdered(rij ->
+                        items.add(new SelectItem(rij.getRang(),
+                                  getRangtekst(rij.getRang()))));
 
     return items;
   }
