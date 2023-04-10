@@ -45,6 +45,22 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
     super(TaxonnaamDto.class);
   }
 
+  public Collection<KeyValue> getAantalPerTaal() {
+    var query = getEntityManager().createNamedQuery(
+                    TaxonnaamDto.QRY_TOTPERTAAL);
+
+    List<Object[]>  rijen     = query.getResultList();
+    Set<KeyValue>   resultaat = new HashSet<>();
+    if (null != rijen) {
+      for (Object[] rij : rijen) {
+        resultaat.add(new KeyValue((String) rij[0],
+                                   Long.toString((Long) rij[1])));
+      }
+    }
+
+    return resultaat;
+  }
+
   @Override
   protected EntityManager getEntityManager() {
     return em;
@@ -62,21 +78,5 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
     params.put(TaxonnaamDto.PAR_TAXONID, taxonId);
 
     return namedQuery(TaxonnaamDto.QRY_TAXON, params);
-  }
-
-  public Collection<KeyValue> getAantalPerTaal() {
-    var query = getEntityManager().createNamedQuery(
-                    TaxonnaamDto.QRY_TOTALEN);
-
-    List<Object[]>  rijen     = query.getResultList();
-    Set<KeyValue>   resultaat = new HashSet<>();
-    if (null != rijen) {
-      for (Object[] rij : rijen) {
-        resultaat.add(new KeyValue((String) rij[0],
-                                   Long.toString((Long) rij[1])));
-      }
-    }
-
-    return resultaat;
   }
 }
