@@ -144,46 +144,46 @@ public class GebiedDto extends Dto implements Comparable<GebiedDto> {
   }
 
   public void setGebiedId(Long gebiedId) {
-    this.gebiedId = gebiedId;
+    this.gebiedId           = gebiedId;
   }
 
   public void setLandId(Long landId) {
-    this.landId = landId;
+    this.landId             = landId;
   }
 
   public void setLatitude(String latitude) {
-    this.latitude = latitude;
+    this.latitude           = latitude;
   }
 
   public void setLatitudeGraden(Integer latitudeGraden) {
-    this.latitudeGraden = latitudeGraden;
+    this.latitudeGraden     = latitudeGraden;
   }
 
   public void setLatitudeMinuten(Integer latitudeMinuten) {
-    this.latitudeMinuten = latitudeMinuten;
+    this.latitudeMinuten    = latitudeMinuten;
   }
 
   public void setLatitudeSeconden(Double latitudeSeconden) {
-    this.latitudeSeconden = latitudeSeconden;
+    this.latitudeSeconden   = latitudeSeconden;
   }
 
   public void setLongitude(String longitude) {
-    this.longitude = longitude;
+    this.longitude          = longitude;
   }
 
   public void setLongitudeGraden(Integer longitudeGraden) {
-    this.longitudeGraden = longitudeGraden;
+    this.longitudeGraden    = longitudeGraden;
   }
 
   public void setLongitudeMinuten(Integer longitudeMinuten) {
-    this.longitudeMinuten = longitudeMinuten;
+    this.longitudeMinuten   = longitudeMinuten;
   }
 
   public void setLongitudeSeconden(Double longitudeSeconden) {
-    this.longitudeSeconden = longitudeSeconden;
+    this.longitudeSeconden  = longitudeSeconden;
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam               = naam.trim();
   }
 }

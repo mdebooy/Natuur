@@ -29,8 +29,6 @@ import eu.debooy.natuur.validator.GebiedValidator;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -66,7 +64,6 @@ public class GebiedController extends Natuur {
       gebied    = new Gebied();
       gebiedDto = new GebiedDto();
       gebied.setLandId(Long.valueOf(getParameter(DEF_LANDID)));
-      gebied.persist(gebiedDto);
       setAktie(PersistenceConstants.CREATE);
       setSubTitel(getTekst(TIT_CREATE));
       redirect(GEBIED_REDIRECT);
@@ -102,10 +99,9 @@ public class GebiedController extends Natuur {
 
   public Collection<SelectItem> getSelectGebieden() {
     List<SelectItem>  items = new LinkedList<>();
-    Set<Gebied>       rijen = new TreeSet<>();
-    rijen.addAll(getGebiedService().query());
 
-    rijen.forEach(rij ->
+    getGebiedService().query().stream().sorted()
+                      .forEachOrdered(rij ->
       items.add(new SelectItem(rij.getGebiedId(), rij.getNaam())));
 
     return items;
@@ -156,7 +152,8 @@ public class GebiedController extends Natuur {
                                    .get(GebiedDto.COL_GEBIEDID));
 
     try {
-      gebied  = new Gebied(getGebiedService().gebied(gebiedId));
+      gebiedDto = getGebiedService().gebied(gebiedId);
+      gebied    = new Gebied(gebiedDto);
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTekst(TIT_RETRIEVE));
       redirect(GEBIED_REDIRECT);
