@@ -49,7 +49,7 @@ import org.apache.openjpa.persistence.ReadOnly;
  */
 @Entity
 @Table(name="FOTO_OVERZICHT", schema="NATUUR")
-@NamedQuery(name="fotooverzichtPerGebied", query="select f from FotoOverzichtDto f where f.gebiedId=:gebiedId")
+@NamedQuery(name="fotooverzichtPerGebied", query="select f from FotoOverzichtDto f where f.parentId=f.taxon.taxonId and f.gebiedId=:gebiedId")
 @NamedQuery(name="fotooverzichtPerRang", query="select f from FotoOverzichtDto f where f.parentRang=:rang")
 @NamedQuery(name="fotooverzichtPerTaxon", query="select f from FotoOverzichtDto f where f.parentId=:taxonId")
 @NamedQuery(name="fotooverzichtTaxonSeq", query="select f from FotoOverzichtDto f where f.taxon.taxonId=:taxonId and f.taxonSeq=:taxonSeq")
