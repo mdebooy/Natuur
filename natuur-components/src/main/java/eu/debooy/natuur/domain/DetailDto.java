@@ -55,14 +55,19 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
+@NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regioId=:regioId")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  PAR_REGIOID = "regioId";
 
   public static final String  QRY_SOORTMETKLASSE  = "detailSoortMetKlasse";
+  public static final String  QRY_VANREGIIOLIJST  = "detailVanRegiolijst";
   public static final String  QRY_WAARGENOMEN     = "detailWaargenomen";
 
+  @Transient
+  private boolean gezien              = false;
   @ReadOnly
   @Column(name="LATIJNSENAAM", insertable= false, updatable=false)
   private String  latijnsenaam;
@@ -101,20 +106,44 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   private Long    volgnummer;
 
   @ReadOnly
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
-  @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=false)
+  @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=false)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
 
   @ReadOnly
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
-  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=true)
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=false)
+  @JoinColumn(name="TAXON_ID", nullable=false, updatable=false, insertable=false)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
-  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=true)
+  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=false)
   @JoinColumn(name="TAXON_ID", updatable=false, insertable=false)
   private TaxonDto  taxon;
+
+  public static class LijstComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    private String  taal  = "nl";
+
+    public void setTaal(String taal) {
+      this.taal = taal;
+    }
+
+    @Override
+    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
+      return new CompareToBuilder().append(detailDto1.getParentVolgnummer(),
+                                           detailDto2.getParentVolgnummer())
+                                   .append(detailDto1.getParentnaam(taal),
+                                           detailDto2.getParentnaam(taal))
+                                   .append(detailDto1.getSorteervolgnummer(),
+                                           detailDto2.getSorteervolgnummer())
+                                   .append(detailDto1.getNaam(taal),
+                                           detailDto2.getNaam(taal))
+                                   .toComparison();
+    }
+  }
 
   /**
    * De Latijnsenaam is toegevoegd om dubbele volgnummers niet te laten
@@ -309,6 +338,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return taxonnamen.containsKey(taal);
   }
 
+  public boolean isGezien() {
+    return gezien;
+  }
+
   public boolean isUitgestorven() {
     return getUitgestorven();
   }
@@ -318,5 +351,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
       getPostLoadTaxon();
     }
+  }
+
+  public void setGezien(boolean gezien) {
+    this.gezien   = gezien;
   }
 }

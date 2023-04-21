@@ -18,6 +18,8 @@ package eu.debooy.natuur.service;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.DetailDao;
+import eu.debooy.natuur.access.WaarnemingDao;
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +55,8 @@ public class DetailService {
 
   @Inject
   private DetailDao detailDao;
+  @Inject
+  private WaarnemingDao       waarnemingDao;
 
   public DetailService() {
     LOGGER.debug("init DetailService");
@@ -73,6 +77,20 @@ public class DetailService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<DetailDto> getVanRegiolijst(Long regioId) {
+    List<DetailDto> soorten = new ArrayList<>();
+
+    try {
+      soorten.addAll(detailDao.getVanRegiolijst(regioId));
+      setGezien(soorten);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getWaargenomen(String taal) {
     List<Taxon> soorten = new ArrayList<>();
 
@@ -84,6 +102,12 @@ public class DetailService {
     }
 
     return soorten;
+  }
+
+  private void setGezien(List<DetailDto> taxa) {
+    var gezien  = waarnemingDao.getTaxa();
+
+    taxa.forEach(rij -> rij.setGezien(gezien.contains(rij.getTaxonId())));
   }
 
   @GET

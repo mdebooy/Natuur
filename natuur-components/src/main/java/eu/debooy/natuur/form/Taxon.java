@@ -35,19 +35,19 @@ public class Taxon
     extends Formulier implements Comparable<Taxon>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  private String              latijnsenaam;
-  private String              naam;
-  private String              opmerking;
-  private Long                parentId;
-  private String              parentLatijnsenaam;
-  private String              parentNaam;
-  private Long                parentVolgnummer;
-  private String              rang;
-  private String              rangnaam;
-  private Long                sorteervolgnummer   = 0L;
-  private Long                taxonId;
-  private Boolean             uitgestorven        = Boolean.FALSE;
-  private Long                volgnummer          = 0L;
+  private String  latijnsenaam;
+  private String  naam;
+  private String  opmerking;
+  private Long    parentId;
+  private String  parentLatijnsenaam;
+  private String  parentNaam;
+  private Long    parentVolgnummer;
+  private String  rang;
+  private String  rangnaam;
+  private Long    sorteervolgnummer   = 0L;
+  private Long    taxonId;
+  private Boolean uitgestorven        = Boolean.FALSE;
+  private Long    volgnummer          = 0L;
 
   public Taxon() {}
 

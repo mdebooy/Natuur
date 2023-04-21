@@ -87,6 +87,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  QRY_SOORT         = "taxonSoort";
   public static final String  QRY_TALEN         = "taxonTalen";
 
+  @Transient
+  private boolean   gezien  = false;
   @Column(name="LATIJNSENAAM", length=255, nullable=false)
   private String  latijnsenaam;
   @Column(name="OPMERKING", length=2000)
@@ -114,7 +116,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
 
-  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=true)
+  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=false)
   @JoinColumn(name="PARENT_ID", referencedColumnName="TAXON_ID", updatable=false, insertable=false)
   private TaxonDto  parent;
 
@@ -346,6 +348,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return taxonnamen.containsKey(taal);
   }
 
+  public boolean isGezien() {
+    return gezien;
+  }
+
   public boolean isUitgestorven() {
     return getUitgestorven();
   }
@@ -363,6 +369,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     } else {
       throw new ObjectNotFoundException(DoosLayer.PERSISTENCE, taal);
     }
+  }
+
+  public void setGezien(boolean gezien) {
+    this.gezien   = gezien;
   }
 
   public void setLatijnsenaam(String latijnsenaam) {

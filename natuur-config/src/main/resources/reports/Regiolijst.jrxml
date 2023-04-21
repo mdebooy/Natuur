@@ -18,11 +18,32 @@
 	<parameter name="LabelTaal1" class="java.lang.String"/>
 	<parameter name="LabelTaal2" class="java.lang.String"/>
 	<parameter name="LabelTaal3" class="java.lang.String"/>
+	<field name="klasse" class="java.lang.String"/>
 	<field name="gezien" class="java.lang.String"/>
 	<field name="latijnsenaam" class="java.lang.String"/>
 	<field name="taal1" class="java.lang.String"/>
 	<field name="taal2" class="java.lang.String"/>
 	<field name="taal3" class="java.lang.String"/>
+  <group name="klasseLatijnsenaam" keepTogether="true">
+    <groupExpression><![CDATA[$F{klasse}]]></groupExpression>
+    <groupHeader>
+      <band height="16">
+        <frame>
+          <reportElement mode="Transparent" x="-20" y="0" width="842" height="14"/>
+          <textField>
+            <reportElement style="Titel" x="20" y="0" width="802" height="14"/>
+            <textElement textAlignment="Center">
+              <font isBold="true"/>
+            </textElement>
+            <textFieldExpression><![CDATA[$F{klasse}]]></textFieldExpression>
+          </textField>
+        </frame>
+      </band>
+    </groupHeader>
+    <groupFooter>
+      <band height="6"/>
+    </groupFooter>
+  </group>
 	<background>
 		<band/>
 	</background>

@@ -20,6 +20,7 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.WaarnemingDao;
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
@@ -213,6 +214,12 @@ public class WaarnemingService {
     } else {
       waarnemingDao.update(waarnemingDto);
     }
+  }
+
+  public void setGezien(List<DetailDto> taxa) {
+    var gezien  = waarnemingDao.getTaxa();
+
+    taxa.forEach(rij -> rij.setGezien(gezien.contains(rij.getTaxonId())));
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

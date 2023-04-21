@@ -19,7 +19,9 @@ package eu.debooy.natuur.access;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.DetailDto;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -51,6 +53,13 @@ public class DetailDao extends Dao<DetailDto> {
 
   public List<DetailDto> getSoortenMetKlasse() {
     return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
+  }
+
+  public List<DetailDto> getVanRegiolijst(Long regioId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(DetailDto.PAR_REGIOID, regioId);
+
+    return namedQuery(DetailDto.QRY_VANREGIIOLIJST, params);
   }
 
   public List<DetailDto> getWaargenomen() {

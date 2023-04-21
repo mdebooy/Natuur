@@ -28,6 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
@@ -213,6 +214,34 @@ public class RegiolijstController extends Natuur {
     return dubbel;
   }
 
+  private String  getKlasse(String latijnsenaam,
+                            String taal1, String taal2, String taal3) {
+    var resultaat = new StringBuilder();
+
+    resultaat.append(latijnsenaam);
+    if (!taal1.equals(latijnsenaam)) {
+      resultaat.append("/").append(taal1);
+    }
+    if (!taal2.equals(latijnsenaam)) {
+      resultaat.append("/").append(taal2);
+    }
+    if (!taal3.equals(latijnsenaam)) {
+      resultaat.append("/").append(taal3);
+    }
+
+    return resultaat.toString();
+  }
+
+  private String getNaam(DetailDto detail, String taal) {
+    var naam  = detail.getNaam(taal);
+
+    if (naam.equals(detail.getLatijnsenaam())) {
+      return "";
+    }
+
+    return naam;
+  }
+
   public JSONArray getNieuw() {
     return nieuw;
   }
@@ -280,7 +309,8 @@ public class RegiolijstController extends Natuur {
     exportData.addMetadata("lijstnaam",   "regiolijst");
     exportData.setParameters(getLijstParameters());
 
-    exportData.setKolommen(new String[] { "gezien", TaxonDto.COL_LATIJNSENAAM,
+    exportData.setKolommen(new String[] { "klasse", "gezien",
+                                          TaxonDto.COL_LATIJNSENAAM,
                                           "taal1", "taal2", "taal3" });
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
@@ -290,17 +320,17 @@ public class RegiolijstController extends Natuur {
     exportData.addVeld("LabelTaal2",        iso6391Naam(taal2, taal2));
     exportData.addVeld("LabelTaal3",        iso6391Naam(taal3, taal3));
 
-    Set<RegiolijstTaxonDto>  rijen =
-        new TreeSet<>(
-              new RegiolijstTaxonDto.VolgnummerLatijnsenaamComparator());
-    rijen.addAll(getRegiolijstTaxonService().query(regiolijst.getRegioId()));
+    Set<DetailDto>  rijen = new TreeSet<>(new DetailDto.LijstComparator());
+    rijen.addAll(getDetailService().getVanRegiolijst(regiolijst.getRegioId()));
     rijen.forEach(rij ->
       exportData.addData(
-          new String[] {getBoolean(rij.isGezien()),
-                        rij.getTaxon().getLatijnsenaam(),
-                        rij.getTaxon().getNaam(taal1),
-                        rij.getTaxon().getNaam(taal2),
-                        rij.getTaxon().getNaam(taal3)})
+          new String[] {getKlasse(rij.getParentLatijnsenaam(),
+                                  rij.getParentnaam(taal1),
+                                  rij.getParentnaam(taal2),
+                                  rij.getParentnaam(taal3)),
+                        getBoolean(rij.isGezien()), rij.getLatijnsenaam(),
+                        getNaam(rij, taal1), getNaam(rij, taal2),
+                        getNaam(rij, taal3)})
     );
 
     var response  =
