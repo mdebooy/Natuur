@@ -286,7 +286,6 @@ public class TaxonController extends Natuur {
 
     try {
       var latijnsenaam  = taxon.getLatijnsenaam();
-      var naam          = getTaxonnaam(getGebruikersTaal());
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           taxon.persist(taxonDto);
@@ -294,7 +293,8 @@ public class TaxonController extends Natuur {
           taxon.setTaxonId(taxonDto.getTaxonId());
           bepaalOuder(taxon.getParentId());
           setActieveTab(TAB_KINDEREN);
-          addInfo(PersistenceConstants.CREATED, naam);
+          addInfo(PersistenceConstants.CREATED,
+                  getTaxonnaam(getGebruikersTaal()));
           update();
           break;
         case PersistenceConstants.UPDATE:
@@ -302,7 +302,8 @@ public class TaxonController extends Natuur {
           getTaxonService().save(taxonDto);
           bepaalOuder(taxon.getParentId());
           setActieveTab(TAB_KINDEREN);
-          addInfo(PersistenceConstants.UPDATED, naam);
+          addInfo(PersistenceConstants.UPDATED,
+                  getTaxonnaam(getGebruikersTaal()));
           if (!latijnsenaam.equals(taxonDto.getLatijnsenaam())) {
             var gewijzigd = wijzigKinderen(latijnsenaam,
                                            taxonDto.getLatijnsenaam(),
