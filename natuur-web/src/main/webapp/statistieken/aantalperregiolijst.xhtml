@@ -12,7 +12,7 @@
         $('#aantalperregiolijstTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsttaxa/aantalperregiolijst',
                   dataSrc: '' },
-          order: [[0, 'asc']],
+          order: [[2, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength')},
           lengthChange: false,

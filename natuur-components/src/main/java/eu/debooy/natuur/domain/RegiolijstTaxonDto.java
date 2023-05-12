@@ -41,7 +41,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @IdClass(RegiolijstTaxonPK.class)
 @NamedQuery(name="regiolijsttaxonPerRegio", query="select r from RegiolijstTaxonDto r where r.regioId=:regioId")
 @NamedQuery(name="regiolijsttaxonPerTaxon", query="select r from RegiolijstTaxonDto r where r.taxonId=:taxonId")
-@NamedQuery(name="regiolijsttaxonTotalenPerRegio", query="select r.regioId, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o where r.taxonId=o.parentId group by r.regioId")
+@NamedQuery(name="regiolijsttaxonTotalenPerRegio", query="select r.regioId, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o where r.taxonId=o.parentId and o.parentRang=o.rang group by r.regioId")
 public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 
