@@ -41,6 +41,13 @@ public class RegiolijstTaxonDao extends Dao<RegiolijstTaxonDto> {
     super(RegiolijstTaxonDto.class);
   }
 
+  public List<Object[]> getAantalPerRegiolijst() {
+    var query = getEntityManager().createNamedQuery(
+                    RegiolijstTaxonDto.QRY_TOTPERREGIO);
+
+    return query.getResultList();
+  }
+
   @Override
   protected EntityManager getEntityManager() {
     return em;

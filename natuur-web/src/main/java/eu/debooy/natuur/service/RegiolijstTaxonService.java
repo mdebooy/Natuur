@@ -23,6 +23,7 @@ import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.AantalPerRegio;
 import eu.debooy.natuur.form.RegiolijstTaxon;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,6 +70,25 @@ public class RegiolijstTaxonService {
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
   public void delete(RegiolijstTaxonPK sleutel) {
     regiolijstTaxonDao.delete(regiolijstTaxonDao.getByPrimaryKey(sleutel));
+  }
+
+  @GET
+  @Path("/aantalperregiolijst")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getAantalPerRegiolijst
+      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId) {
+    List<AantalPerRegio>  aantallen = new ArrayList<>();
+    try {
+      regiolijstTaxonDao.getAantalPerRegiolijst()
+                        .forEach(aantal ->
+                            aantallen.add(new AantalPerRegio(
+                                    Long.valueOf(String.valueOf(aantal[0])),
+                                    Long.valueOf(String.valueOf(aantal[1])),
+                                    Long.valueOf(String.valueOf(aantal[2])))));
+      return Response.ok().entity(aantallen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new RegiolijstDto()).build();
+    }
   }
 
   @GET

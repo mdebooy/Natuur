@@ -62,6 +62,8 @@ public class Natuur extends DoosBean {
   @EJB
   private transient II18nLandnaam i18nLandnaam;
 
+  protected static final  String  AANTALPERREGIO_REDIRECT   =
+      "/statistieken/aantalperregiolijst.xhtml";
   protected static final  String  ADMIN_ROLE                = "natuur-admin";
   protected static final  String  APPLICATIE_NAAM           = "Natuur";
   protected static final  String  DD_STATS                  = "stats";
@@ -156,6 +158,8 @@ public class Natuur extends DoosBean {
                                           "menu.namen.per.taal");
       addDropdownmenuitem(DD_STATS, WNMNPERLAND_REDIRECT,
                                           "menu.waarnemingen.per.land");
+      addDropdownmenuitem(DD_STATS, AANTALPERREGIO_REDIRECT,
+                                          "menu.aantal.per.regiolijst");
     }
   }
 

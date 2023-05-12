@@ -1,0 +1,69 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        var taal = '#{gebruiker.locale.language}';
+        $('#aantalperregiolijstTabel').DataTable( {
+          ajax: { url: '/natuur/regiolijsttaxa/aantalperregiolijst',
+                  dataSrc: '' },
+          order: [[0, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'aantal', visible: false },
+            { data: 'gezien', visible: false },
+            { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
+                return getRegionaam(data.regioId);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', orderData: 0, render: function ( data, type, row ) {
+                return formatNumber(data.aantal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.gezien')}', width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
+                return formatNumber(data.gezien);
+              }
+            },
+            { data: null, title: '', orderable: false, width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
+                return formatNumber(100*(data.gezien/data.aantal), 2)+'%';
+              }
+            }
+          ]
+        } );
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formTotalen">
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.aantal.per.regiolijst')}" />
+
+          <table id="aantalperregiolijstTabel" class="table is-striped is-narrow" aria-describedby="aantalperregiolijstTabel" />
+        </h:form>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>
