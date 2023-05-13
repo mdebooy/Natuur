@@ -143,11 +143,6 @@ public class WaarnemingService {
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
-//    try {
-//      return Response.ok().entity(waarnemingDao.getPerTaxon(taxonId)).build();
-//    } catch (ObjectNotFoundException e) {
-//      return Response.ok().entity(new ArrayList<>()).build();
-//    }
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

@@ -83,24 +83,22 @@ public final class TaxonValidator extends NatuurValidator {
     }
 
     var deel  = latijnsenaam.split(" ");
-    if (rang.equals(NatuurConstants.RANG_SOORT)) {
-      if (deel.length != 2) {
+    if (rang.equals(NatuurConstants.RANG_SOORT)
+      && deel.length != 2) {
         fouten.add(new Message.Builder()
                               .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                               .setSeverity(Message.ERROR)
                               .setMessage(ERR_LATIJNSENAAMSOORT)
                               .build());
-      }
     }
 
-    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)) {
-      if (deel.length != 3) {
+    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)
+      && deel.length != 3) {
         fouten.add(new Message.Builder()
                               .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                               .setSeverity(Message.ERROR)
                               .setMessage(ERR_LATIJNSENAAMONDERSOORT)
                               .build());
-      }
     }
   }
 
