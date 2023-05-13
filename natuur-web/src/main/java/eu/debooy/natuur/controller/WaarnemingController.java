@@ -137,6 +137,7 @@ public class WaarnemingController extends Natuur {
       waarnemingDto = new WaarnemingDto();
       addInfo(PersistenceConstants.DELETED,
               formateerDatum(waarneming.getDatum()));
+      redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
     } catch (DoosRuntimeException e) {

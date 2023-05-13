@@ -12,7 +12,7 @@
         var regiolijstenTabel = $('#regiolijstenTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsten',
                   dataSrc: '' },
-          order: [[1, 'asc']],
+          order: [[1, 'asc'], [2, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength')},
           lengthChange: false,
