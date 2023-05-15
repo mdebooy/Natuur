@@ -366,6 +366,7 @@ public class RegiolijstController extends Natuur {
       setRegio(sleutel);
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTekst(TIT_RETRIEVE, regio.getNaam()));
+      setReturnTo(ec, REGIOLIJSTEN_REDIRECT);
       redirect(REGIOLIJST_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_REGIOLIJST));

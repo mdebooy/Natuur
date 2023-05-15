@@ -8,8 +8,7 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var taal = '#{gebruiker.locale.language}';
-        $('#aantalperregiolijstTabel').DataTable( {
+        var aantalperregiolijstTabel = $('#aantalperregiolijstTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsttaxa/aantalperregiolijst',
                   dataSrc: '' },
           order: [[2, 'asc']],
@@ -52,6 +51,14 @@
             }
           ]
         } );
+        $( '#aantalperregiolijstTabel tbody').on('click', 'tr', function() {
+          if (aantalperregiolijstTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTotalen:linkRegiolijst');
+          alterParam(jsfCommandLink, aantalperregiolijstTabel.row(this).data().regioId);
+          jsfCommandLink.click();
+        } );
       } );
     </script>
   </ui:define>
@@ -61,7 +68,11 @@
         <h:form id="formTotalen">
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.aantal.per.regiolijst')}" />
 
-          <table id="aantalperregiolijstTabel" class="table is-striped is-narrow" aria-describedby="aantalperregiolijstTabel" />
+          <table id="aantalperregiolijstTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="aantalperregiolijstTabel" />
+          <h:commandLink id="linkRegiolijst" class="is-hidden" action="#{natuurRegiolijst.retrieve}">
+            <f:param name="regioId" value="XX" />
+            <f:param name="returnTo" value="/statistieken/aantalperregiolijst.xhtml" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

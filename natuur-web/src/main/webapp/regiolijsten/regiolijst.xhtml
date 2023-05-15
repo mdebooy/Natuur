@@ -102,7 +102,7 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurRegiolijst}" form="formRegiolijst" returnto="#{natuur.path}/regiolijsten/regiolijsten.xhtml" tekst="#{natuurRegiolijst.regio.naam}" />
+              <d:crudbuttonbar bean="#{natuurRegiolijst}" form="formRegiolijst" returnto="#{natuur.path}#{natuurRegiolijst.returnTo}" tekst="#{natuurRegiolijst.regio.naam}" />
 
               <t:div rendered="#{!natuurRegiolijst.aktie.nieuw}">
                 <d:spacer />
