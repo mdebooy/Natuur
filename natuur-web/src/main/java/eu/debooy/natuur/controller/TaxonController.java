@@ -239,6 +239,7 @@ public class TaxonController extends Natuur {
       bepaalOuder(taxon.getParentId());
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTaxonnaam(getGebruikersTaal()));
+      setReturnTo(ec, TAXA_REDIRECT);
       redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXON));

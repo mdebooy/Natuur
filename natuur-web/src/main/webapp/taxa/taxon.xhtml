@@ -268,7 +268,7 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxon" returnto="#{natuur.path}/taxa/taxa.xhtml" tekst="#{natuurTaxon.taxon.naam}" />
+              <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxon" returnto="#{natuur.path}#{natuurTaxon.returnTo}" tekst="#{natuurTaxon.taxon.naam}" />
 
               <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
                 <d:spacer />

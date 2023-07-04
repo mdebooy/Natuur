@@ -1,6 +1,7 @@
 <ui:composition
     xmlns="http://www.w3.org/1999/xhtml"
   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://java.sun.com/jsf/core"
   xmlns:h="http://java.sun.com/jsf/html"
  xmlns:ui="http://java.sun.com/jsf/facelets"
  template="/WEB-INF/templates/template.xhtml">
@@ -9,7 +10,7 @@
       $(document).ready(function() {
         var rang = '#{natuurRang.rang.rang}';
         var taal = '#{gebruiker.locale.language}';
-        tabel = $('#geenfotosTabel').DataTable( {
+        geenfotosTabel = $('#geenfotosTabel').DataTable( {
           ajax: { url: '/natuur/geenfotos/taxon/#{natuurRang.geenFotosTaxonId}/' + taal,
                   dataSrc: '' },
           order: [[0, 'asc'],[1, 'asc']],
@@ -40,6 +41,14 @@
             }
           ]
         });
+        $( '#geenfotosTabel tbody').on('click', 'tr', function() {
+          if (geenfotosTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formGeenFotos:linkTaxon');
+          alterParam(jsfCommandLink, geenfotosTabel.row(this).data().taxon.taxonId);
+          jsfCommandLink.click();
+        } );
       });
     </script>
   </ui:define>
@@ -50,6 +59,10 @@
           <d:titel titel="#{natuurRang.geenFotosTitel}" />
 
           <table id="geenfotosTabel" class="table is-striped is-narrow" aria-describedby="geenfotosTabel" />
+          <h:commandLink id="linkTaxon" class="is-hidden" action="#{natuurTaxon.retrieve}">
+            <f:param name="taxonId" value="XX" />
+            <f:param name="returnTo" value="/rangen/geenfotos.xhtml" />
+          </h:commandLink>
 
           <d:cancel aktie="#{natuurRang.geenFotosAktie}" returnto="#{natuur.path}/rangen/rang.xhtml" />
         </h:form>
