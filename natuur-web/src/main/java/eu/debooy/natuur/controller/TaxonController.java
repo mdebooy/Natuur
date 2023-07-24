@@ -127,9 +127,9 @@ public class TaxonController extends Natuur {
 
     try {
       getTaxonService().delete(taxon.getTaxonId());
+      addInfo(PersistenceConstants.DELETED, taxon.getNaam());
       taxon       = new Taxon();
       taxonDto    = new TaxonDto();
-      addInfo(PersistenceConstants.DELETED, taxon.getNaam());
       redirect(TAXA_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxon.getTaxonId());

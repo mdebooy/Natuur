@@ -133,10 +133,10 @@ public class WaarnemingController extends Natuur {
     var waarnemingId = waarneming.getWaarnemingId();
     try {
       getWaarnemingService().delete(waarnemingId);
-      waarneming    = new Waarneming();
-      waarnemingDto = new WaarnemingDto();
       addInfo(PersistenceConstants.DELETED,
               formateerDatum(waarneming.getDatum()));
+      waarneming    = new Waarneming();
+      waarnemingDto = new WaarnemingDto();
       redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);

@@ -111,12 +111,12 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
-  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=true)
+  @OneToMany(cascade=CascadeType.REFRESH, fetch=FetchType.EAGER, targetEntity=TaxonnaamDto.class, orphanRemoval=false)
   @JoinColumn(name="TAXON_ID", referencedColumnName="PARENT_ID", nullable=false, updatable=false, insertable=true)
   @MapKey(name="taal")
   private Map<String, TaxonnaamDto> parentnamen = new HashMap<>();
 
-  @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=false)
+  @OneToOne(cascade=CascadeType.REFRESH, fetch=FetchType.LAZY, targetEntity=TaxonDto.class, orphanRemoval=false)
   @JoinColumn(name="PARENT_ID", referencedColumnName="TAXON_ID", updatable=false, insertable=false)
   private TaxonDto  parent;
 

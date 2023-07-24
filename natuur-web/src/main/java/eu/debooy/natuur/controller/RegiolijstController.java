@@ -148,10 +148,10 @@ public class RegiolijstController extends Natuur {
 
     try {
       getRegiolijstService().delete(regiolijst.getRegioId());
+      addInfo(PersistenceConstants.DELETED, regio.getNaam());
       regiolijst      = new Regiolijst();
       regiolijstDto   = new RegiolijstDto();
       regiolijstTaxon = new RegiolijstTaxon();
-      addInfo(PersistenceConstants.DELETED, regio.getNaam());
       redirect(REGIOLIJSTEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, regiolijst.getRegioId());

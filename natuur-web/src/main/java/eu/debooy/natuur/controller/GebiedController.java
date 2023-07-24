@@ -80,9 +80,9 @@ public class GebiedController extends Natuur {
 
     try {
       getGebiedService().delete(gebied.getGebiedId());
+      addInfo(PersistenceConstants.DELETED, gebied.getNaam());
       gebied    = new Gebied();
       gebiedDto = new GebiedDto();
-      addInfo(PersistenceConstants.DELETED, gebied.getNaam());
       redirect(GEBIEDEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, gebied.getNaam());
