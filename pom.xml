@@ -4,11 +4,11 @@
   <parent>
     <groupId>eu.debooy.maven</groupId>
     <artifactId>tomee</artifactId>
-    <version>8.0.15-SNAPSHOT</version>
+    <version>8.0.15</version>
   </parent>
   <groupId>eu.debooy.natuur</groupId>
   <artifactId>natuur</artifactId>
-  <version>4.1.0-SNAPSHOT</version>
+  <version>4.1.0</version>
   <packaging>pom</packaging>
   <name>Natuur</name>
   <description>Waarnemingen in de natuur.</description>
@@ -16,7 +16,7 @@
   <scm>
     <developerConnection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/Natuur.git</developerConnection>
     <connection>scm:git:ssh://ptah.debooy.eu/srv/local/devops/git/debooy/Natuur.git</connection>
-    <tag>HEAD</tag>
+    <tag>natuur-4.1.0</tag>
   </scm>
 
   <developers>
