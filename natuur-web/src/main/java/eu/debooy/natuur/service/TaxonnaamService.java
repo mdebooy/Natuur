@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.TaxonnaamDao;
 import eu.debooy.natuur.domain.TaxonnaamDto;
@@ -38,6 +39,7 @@ import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -112,5 +114,23 @@ public class TaxonnaamService {
                                                   rij.getNaam())));
 
     return items;
+  }
+
+  @GET
+  @Path("/zoek/{naam}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getZoek(@PathParam(TaxonnaamDto.COL_NAAM) String naam) {
+    if (DoosUtils.isBlankOrNull(naam)) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+
+    try {
+      var taxonnamen  = new ArrayList<Taxonnaam>();
+      taxonnaamDao.getZoeken(naam).forEach(rij ->
+          taxonnamen.add(new Taxonnaam(rij)));
+      return Response.ok().entity(taxonnamen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 }
