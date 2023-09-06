@@ -29,6 +29,8 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class RangValidator extends NatuurValidator {
+  protected static final  String  LBL_NIVEAU  = "_I18N.label.niveau";
+
   private RangValidator() {}
 
   public static List<Message> valideer(RangDto rang) {
@@ -50,7 +52,7 @@ public final class RangValidator extends NatuurValidator {
                             .setAttribute(RangDto.COL_NIVEAU)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.niveau"})
+                            .setParams(new Object[]{LBL_NIVEAU})
                             .build());
       return;
     }
@@ -60,7 +62,7 @@ public final class RangValidator extends NatuurValidator {
                             .setAttribute(RangDto.COL_NIVEAU)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.NIETGROTER)
-                            .setParams(new Object[]{"_I18N.label.niveau", 0})
+                            .setParams(new Object[]{LBL_NIVEAU, 0})
                             .build());
     }
   }

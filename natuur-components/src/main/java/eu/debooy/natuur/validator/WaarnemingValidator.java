@@ -34,6 +34,8 @@ public final class WaarnemingValidator extends NatuurValidator {
   protected static final  String  LBL_AANTAL  = "_I18N.label.aantal";
   protected static final  String  LBL_DATUM   = "_I18N.label.datum";
 
+  private WaarnemingValidator() {}
+
   public static List<Message> valideer(WaarnemingDto waarneming) {
     return valideer(new Waarneming(waarneming));
   }

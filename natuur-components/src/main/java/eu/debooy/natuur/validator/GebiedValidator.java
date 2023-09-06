@@ -29,6 +29,24 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class GebiedValidator extends NatuurValidator {
+  protected static final  String  ERR_COORDINATEN =
+      "_I18N.error.coordinaten.onvolledig";
+  protected static final  String  ERR_LATITUDE    = "_I18N.error.latitude";
+  protected static final  String  ERR_LAT_GRD     =
+      "_I18N.error.latitude.graden";
+  protected static final  String  ERR_LAT_MIN     =
+      "_I18N.error.latitude.minuten";
+  protected static final  String  ERR_LAT_SEC     =
+      "_I18N.error.latitude.secondes";
+  protected static final  String  ERR_LONGITUDE   = "_I18N.error.longitude";
+  protected static final  String  ERR_LONG_GRD    =
+      "_I18N.error.longitude.graden";
+  protected static final  String  ERR_LONG_MIN    =
+      "_I18N.error.longitude.minuten";
+  protected static final  String  ERR_LONG_SEC    =
+      "_I18N.error.longitude.secondes";
+  protected static final  String  LBL_LAND        = "_I18N.label.land";
+
   private GebiedValidator() {}
 
   public static List<Message> valideer(GebiedDto gebied) {
@@ -59,7 +77,7 @@ public final class GebiedValidator extends NatuurValidator {
     if (leeg != 0 && leeg != 8) {
       fouten.add(new Message.Builder()
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.coordinaten.onvolledig")
+                            .setMessage(ERR_COORDINATEN)
                             .build());
     }
 
@@ -72,7 +90,7 @@ public final class GebiedValidator extends NatuurValidator {
                             .setAttribute(GebiedDto.COL_LANDID)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.land"})
+                            .setParams(new Object[]{LBL_LAND})
                             .build());
     }
   }
@@ -86,7 +104,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LATITUDE)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.latitude")
+                            .setMessage(ERR_LATITUDE)
                             .build());
     }
 
@@ -103,7 +121,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LATITUDEGRADEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.latitude.graden")
+                            .setMessage(ERR_LAT_GRD)
                             .build());
     }
 
@@ -120,7 +138,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LATITUDEMINUTEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.latitude.minuten")
+                            .setMessage(ERR_LAT_MIN)
                             .build());
     }
 
@@ -137,7 +155,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LATITUDESECONDEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.latitude.seconden")
+                            .setMessage(ERR_LAT_SEC)
                             .build());
     }
 
@@ -154,7 +172,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LONGITUDE)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.longitude")
+                            .setMessage(ERR_LONGITUDE)
                             .build());
     }
 
@@ -171,7 +189,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LONGITUDEGRADEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.longitude.graden")
+                            .setMessage(ERR_LONG_GRD)
                             .build());
     }
 
@@ -188,7 +206,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LONGITUDEMINUTEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.longitude.minuten")
+                            .setMessage(ERR_LONG_MIN)
                             .build());
     }
 
@@ -205,7 +223,7 @@ public final class GebiedValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_LONGITUDESECONDEN)
                             .setSeverity(Message.ERROR)
-                            .setMessage("error.longitude.seconden")
+                            .setMessage(ERR_LONG_SEC)
                             .build());
     }
 
@@ -218,7 +236,7 @@ public final class GebiedValidator extends NatuurValidator {
                             .setAttribute(GebiedDto.COL_NAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.gebied"})
+                            .setParams(new Object[]{NatuurValidator.LBL_GEBIED})
                             .build());
       return;
     }
@@ -228,7 +246,8 @@ public final class GebiedValidator extends NatuurValidator {
                             .setAttribute(GebiedDto.COL_NAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.gebied", 255})
+                            .setParams(new Object[]{NatuurValidator.LBL_GEBIED,
+                                                    255})
                             .build());
     }
   }

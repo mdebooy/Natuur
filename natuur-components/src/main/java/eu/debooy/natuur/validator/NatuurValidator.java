@@ -31,13 +31,21 @@ import java.util.List;
  */
 @SuppressWarnings("java:S1118")
 public abstract class NatuurValidator {
+  protected static final  String  LBL_GEBIED      = "_I18N.label.gebied";
+  protected static final  String  LBL_NAAM        = "_I18N.label.naam";
+  protected static final  String  LBL_OPMERKING   = "_I18N.label.opmerking";
+  protected static final  String  LBL_RANG        = "_I18N.label.rang";
+  protected static final  String  LBL_SOORT       = "_I18N.label.soort";
+  protected static final  String  LBL_TAAL        = "_I18N.label.taal";
+  protected static final  String  LBL_WAARNEMING  = "_I18N.label.waarneming";
+
   protected static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(gebiedId)) {
       fouten.add(new Message.Builder()
                             .setAttribute(GebiedDto.COL_GEBIEDID)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.gebied"})
+                            .setParams(new Object[]{LBL_GEBIED})
                             .build());
     }
   }
@@ -49,8 +57,7 @@ public abstract class NatuurValidator {
                             .setAttribute(TaxonDto.COL_OPMERKING)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.opmerking",
-                                                    2000})
+                            .setParams(new Object[]{LBL_OPMERKING, 2000})
                             .build());
     }
   }
@@ -61,7 +68,7 @@ public abstract class NatuurValidator {
                             .setAttribute(RangDto.COL_RANG)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.rang"})
+                            .setParams(new Object[]{LBL_RANG})
                             .build());
       return;
     }
@@ -71,7 +78,7 @@ public abstract class NatuurValidator {
                             .setAttribute(RangDto.COL_RANG)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.rang", 3})
+                            .setParams(new Object[]{LBL_RANG, 3})
                             .build());
     }
   }
@@ -82,7 +89,7 @@ public abstract class NatuurValidator {
                             .setAttribute(TaxonDto.COL_TAXONID)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.soort"})
+                            .setParams(new Object[]{LBL_SOORT})
                             .build());
     }
   }
@@ -94,7 +101,7 @@ public abstract class NatuurValidator {
                             .setAttribute(WaarnemingDto.COL_WAARNEMINGID)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.waarneming"})
+                            .setParams(new Object[]{LBL_WAARNEMING})
                             .build());
 
     }

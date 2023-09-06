@@ -51,7 +51,7 @@ public class RangnaamValidator extends NatuurValidator {
                             .setAttribute(RangnaamDto.COL_NAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.naam"})
+                            .setParams(new Object[]{NatuurValidator.LBL_NAAM})
                             .build());
       return;
     }
@@ -61,7 +61,8 @@ public class RangnaamValidator extends NatuurValidator {
                           .setAttribute(RangnaamDto.COL_NAAM)
                           .setSeverity(Message.ERROR)
                           .setMessage(PersistenceConstants.MAXLENGTH)
-                          .setParams(new Object[]{"_I18N.label.naam", 255})
+                          .setParams(new Object[]{NatuurValidator.LBL_NAAM,
+                                                  255})
                           .build());
     }
   }
@@ -72,7 +73,7 @@ public class RangnaamValidator extends NatuurValidator {
                             .setAttribute(RangnaamDto.COL_TAAL)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.taal"})
+                            .setParams(new Object[]{NatuurValidator.LBL_TAAL})
                             .build());
       return;
     }
@@ -82,7 +83,7 @@ public class RangnaamValidator extends NatuurValidator {
                           .setAttribute(RangnaamDto.COL_TAAL)
                           .setSeverity(Message.ERROR)
                           .setMessage(PersistenceConstants.FIXLENGTH)
-                          .setParams(new Object[]{"_I18N.label.taal", 2})
+                          .setParams(new Object[]{NatuurValidator.LBL_TAAL, 2})
                           .build());
     }
   }

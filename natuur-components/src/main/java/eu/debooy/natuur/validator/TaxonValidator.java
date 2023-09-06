@@ -42,6 +42,8 @@ public final class TaxonValidator extends NatuurValidator {
   protected static final  String  LBL_VOLGNUMMER    =
       "_I18N.label.volgnummer";
 
+  private TaxonValidator() {}
+
   public static List<Message> valideer(TaxonDto taxon) {
     return valideer(new Taxon(taxon));
   }

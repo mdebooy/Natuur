@@ -19,12 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import static eu.debooy.natuur.TestConstants.LANDID;
-import static eu.debooy.natuur.TestConstants.LATITUDE;
-import static eu.debooy.natuur.TestConstants.LATITUDE2;
-import static eu.debooy.natuur.TestConstants.LONGITUDE;
-import static eu.debooy.natuur.TestConstants.LONGITUDE2;
-import static eu.debooy.natuur.TestConstants.NAAM;
+import eu.debooy.natuur.TestConstants;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
@@ -42,61 +37,61 @@ public class GebiedValidatorTest {
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LATITUDE)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.latitude")
+                 .setMessage(GebiedValidator.ERR_LATITUDE)
                  .build();
   private static final  Message ERR_LATITUDE_GR   =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LATITUDEGRADEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.latitude.graden")
+                 .setMessage(GebiedValidator.ERR_LAT_GRD)
                  .build();
   private static final  Message ERR_LATITUDE_MIN  =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LATITUDEMINUTEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.latitude.minuten")
+                 .setMessage(GebiedValidator.ERR_LAT_MIN)
                  .build();
   private static final  Message ERR_LATITUDE_SEC  =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LATITUDESECONDEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.latitude.seconden")
+                 .setMessage(GebiedValidator.ERR_LAT_SEC)
                  .build();
   private static final  Message ERR_LONGITUDE     =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LONGITUDE)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.longitude")
+                 .setMessage(GebiedValidator.ERR_LONGITUDE)
                  .build();
   private static final  Message ERR_LONGITUDE_GR  =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LONGITUDEGRADEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.longitude.graden")
+                 .setMessage(GebiedValidator.ERR_LONG_GRD)
                  .build();
   private static final  Message ERR_LONGITUDE_MIN =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LONGITUDEMINUTEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.longitude.minuten")
+                 .setMessage(GebiedValidator.ERR_LONG_MIN)
                  .build();
   private static final  Message ERR_LONGITUDE_SEC =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LONGITUDESECONDEN)
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.longitude.seconden")
+                 .setMessage(GebiedValidator.ERR_LONG_SEC)
                  .build();
   private static final  Message ERR_NAAM          =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_NAAM)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.MAXLENGTH)
-                 .setParams(new Object[]{"_I18N.label.gebied", 255})
+                 .setParams(new Object[]{NatuurValidator.LBL_GEBIED, 255})
                  .build();
   private static final  Message ERR_ONVOLLEDIG    =
       new Message.Builder()
                  .setSeverity(Message.ERROR)
-                 .setMessage("error.coordinaten.onvolledig")
+                 .setMessage(GebiedValidator.ERR_COORDINATEN)
                  .build();
 
   private static final  Message REQ_GEBIED  =
@@ -104,14 +99,14 @@ public class GebiedValidatorTest {
                  .setAttribute(GebiedDto.COL_NAAM)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.gebied"})
+                 .setParams(new Object[]{NatuurValidator.LBL_GEBIED})
                  .build();
   private static final  Message REQ_LANDID  =
       new Message.Builder()
                  .setAttribute(GebiedDto.COL_LANDID)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.land"})
+                 .setParams(new Object[]{GebiedValidator.LBL_LAND})
                  .build();
 
   private Gebied getFoutGebied1() {
@@ -126,7 +121,7 @@ public class GebiedValidatorTest {
     gebied.setLongitudeGraden(-1);
     gebied.setLongitudeMinuten(-1);
     gebied.setLongitudeSeconden(-0.1d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    gebied.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
 
     return gebied;
   }
@@ -143,7 +138,7 @@ public class GebiedValidatorTest {
     gebied.setLongitudeGraden(181);
     gebied.setLongitudeMinuten(60);
     gebied.setLongitudeSeconden(60.0d);
-    gebied.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    gebied.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
 
     return gebied;
   }
@@ -325,11 +320,11 @@ public class GebiedValidatorTest {
     Gebied        gebied    = TestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLatitude(LATITUDE2);
+    gebied.setLatitude(TestConstants.LATITUDE2);
     gebied.setLatitudeGraden(null);
     gebied.setLatitudeMinuten(null);
     gebied.setLatitudeSeconden(null);
-    gebied.setLongitude(LONGITUDE2);
+    gebied.setLongitude(TestConstants.LONGITUDE2);
     gebied.setLongitudeGraden(null);
     gebied.setLongitudeMinuten(null);
     gebied.setLongitudeSeconden(null);
@@ -352,10 +347,10 @@ public class GebiedValidatorTest {
     Gebied        gebied    = new Gebied();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(LANDID);
-    gebied.setLatitude(LATITUDE);
-    gebied.setLongitude(LONGITUDE);
-    gebied.setNaam(NAAM);
+    gebied.setLandId(TestConstants.LANDID);
+    gebied.setLatitude(TestConstants.LATITUDE);
+    gebied.setLongitude(TestConstants.LONGITUDE);
+    gebied.setNaam(TestConstants.NAAM);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());
@@ -412,10 +407,10 @@ public class GebiedValidatorTest {
     GebiedDto     gebied    = new GebiedDto();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(LANDID);
-    gebied.setLatitude(LATITUDE);
-    gebied.setLongitude(LONGITUDE);
-    gebied.setNaam(NAAM);
+    gebied.setLandId(TestConstants.LANDID);
+    gebied.setLatitude(TestConstants.LATITUDE);
+    gebied.setLongitude(TestConstants.LONGITUDE);
+    gebied.setNaam(TestConstants.NAAM);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());

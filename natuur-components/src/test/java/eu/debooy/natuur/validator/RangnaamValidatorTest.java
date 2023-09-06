@@ -20,9 +20,6 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.TestConstants;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAAL_FOUT;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.form.Rangnaam;
 import java.util.ArrayList;
@@ -40,14 +37,14 @@ public class RangnaamValidatorTest {
                  .setAttribute(RangnaamDto.COL_NAAM)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.MAXLENGTH)
-                 .setParams(new Object[]{"_I18N.label.naam", 255})
+                 .setParams(new Object[]{NatuurValidator.LBL_NAAM, 255})
                  .build();
   private static final  Message ERR_TAAL  =
       new Message.Builder()
                  .setAttribute(RangnaamDto.COL_TAAL)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.FIXLENGTH)
-                 .setParams(new Object[]{"_I18N.label.taal", 2})
+                 .setParams(new Object[]{NatuurValidator.LBL_TAAL, 2})
                  .build();
 
   private static final  Message REQ_NAAM  =
@@ -55,14 +52,14 @@ public class RangnaamValidatorTest {
                  .setAttribute(RangnaamDto.COL_NAAM)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.naam"})
+                 .setParams(new Object[]{NatuurValidator.LBL_NAAM})
                  .build();
   private static final  Message REQ_TAAL  =
       new Message.Builder()
                  .setAttribute(RangnaamDto.COL_TAAL)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.taal"})
+                 .setParams(new Object[]{NatuurValidator.LBL_TAAL})
                  .build();
 
   @Test
@@ -70,9 +67,9 @@ public class RangnaamValidatorTest {
     Rangnaam      rangnaam  = new Rangnaam();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    rangnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
     rangnaam.setRang(TestConstants.RANG_FOUT);
-    rangnaam.setTaal(TAAL_FOUT);
+    rangnaam.setTaal(TestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(TestConstants.ERR_RANG);
@@ -87,9 +84,9 @@ public class RangnaamValidatorTest {
     Rangnaam      rangnaam  = new Rangnaam();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(NAAM);
+    rangnaam.setNaam(TestConstants.NAAM);
     rangnaam.setRang(TestConstants.RANG);
-    rangnaam.setTaal(TAAL);
+    rangnaam.setTaal(TestConstants.TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
     assertEquals(expResult.toString(), result.toString());
@@ -113,9 +110,9 @@ public class RangnaamValidatorTest {
     RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(DoosUtils.stringMetLengte(NAAM, 256, "X"));
+    rangnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
     rangnaam.setRang(TestConstants.RANG_FOUT);
-    rangnaam.setTaal(TAAL_FOUT);
+    rangnaam.setTaal(TestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(TestConstants.ERR_RANG);
@@ -130,9 +127,9 @@ public class RangnaamValidatorTest {
     RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(NAAM);
+    rangnaam.setNaam(TestConstants.NAAM);
     rangnaam.setRang(TestConstants.RANG);
-    rangnaam.setTaal(TAAL);
+    rangnaam.setTaal(TestConstants.TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
     assertEquals(expResult.toString(), result.toString());

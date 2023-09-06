@@ -29,6 +29,12 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class FotoValidator extends NatuurValidator {
+  protected static final  String  LBL_FOTOBESTAND = "_I18N.label.fotobestand";
+  protected static final  String  LBL_FOTODETAIL  = "_I18N.label.fotodetail";
+  protected static final  String  LBL_SEQ         = "_I18N.label.seq";
+
+  private FotoValidator() {}
+
   public static List<Message> valideer(FotoDto foto) {
     return valideer(new Foto(foto));
   }
@@ -52,7 +58,7 @@ public final class FotoValidator extends NatuurValidator {
                             .setAttribute(FotoDto.COL_FOTOBESTAND)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.fotobestand",
+                            .setParams(new Object[]{LBL_FOTOBESTAND,
                                                     255})
                             .build());
     }
@@ -65,8 +71,7 @@ public final class FotoValidator extends NatuurValidator {
                             .setAttribute(FotoDto.COL_FOTODETAIL)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{"_I18N.label.fotodetail",
-                                                    20})
+                            .setParams(new Object[]{LBL_FOTODETAIL, 20})
                             .build());
     }
   }
@@ -77,7 +82,7 @@ public final class FotoValidator extends NatuurValidator {
                             .setAttribute(FotoDto.COL_TAXONSEQ)
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{"_I18N.label.seq"})
+                            .setParams(new Object[]{LBL_SEQ})
                             .build());
     }
   }

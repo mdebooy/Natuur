@@ -18,10 +18,7 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import static eu.debooy.natuur.TestConstants.ERR_RANG;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANG_FOUT;
-import static eu.debooy.natuur.TestConstants.REQ_RANG;
+import eu.debooy.natuur.TestConstants;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
 import java.util.ArrayList;
@@ -39,22 +36,22 @@ public class RangValidatorTest {
                  .setAttribute(RangDto.COL_NIVEAU)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.NIETGROTER)
-                 .setParams(new Object[]{"_I18N.label.niveau", 0})
+                 .setParams(new Object[]{RangValidator.LBL_NIVEAU, 0})
                  .build();
   public static final Message REQ_NIVEAU  =
       new Message.Builder()
                  .setAttribute(RangDto.COL_NIVEAU)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{"_I18N.label.niveau"})
+                 .setParams(new Object[]{RangValidator.LBL_NIVEAU})
                  .build();
 
   @Test
   public void testValideerGoedeRang() {
-    Rang          rang      = new Rang();
+    var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG);
+    rang.setRang(TestConstants.RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -63,12 +60,12 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerFouteRang() {
-    Rang          rang      = new Rang();
+    var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG_FOUT);
+    rang.setRang(TestConstants.RANG_FOUT);
     rang.setNiveau(Long.MIN_VALUE);
-    expResult.add(ERR_RANG);
+    expResult.add(TestConstants.ERR_RANG);
     expResult.add(ERR_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -77,10 +74,10 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerLegeRang() {
-    Rang          rang      = new Rang();
+    var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    expResult.add(REQ_RANG);
+    expResult.add(TestConstants.REQ_RANG);
     expResult.add(REQ_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -89,10 +86,10 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerGoedeRangDto() {
-    RangDto       rang      = new RangDto();
+    var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG);
+    rang.setRang(TestConstants.RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -101,12 +98,12 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerFouteRangDto() {
-    RangDto       rang      = new RangDto();
+    var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG_FOUT);
+    rang.setRang(TestConstants.RANG_FOUT);
     rang.setNiveau(0L);
-    expResult.add(ERR_RANG);
+    expResult.add(TestConstants.ERR_RANG);
     expResult.add(ERR_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -115,9 +112,9 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerLegeRangDto() {
-    RangDto       rang      = new RangDto();
+    var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
-    expResult.add(REQ_RANG);
+    expResult.add(TestConstants.REQ_RANG);
     expResult.add(REQ_NIVEAU);
     List<Message> result    = RangValidator.valideer(rang);
     assertEquals(expResult.toString(), result.toString());
@@ -125,10 +122,10 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerRangNiveau() {
-    Rang          rang      = new Rang();
+    var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG);
+    rang.setRang(TestConstants.RANG);
     rang.setNiveau(Long.MIN_VALUE);
     expResult.add(ERR_NIVEAU);
 
@@ -138,12 +135,12 @@ public class RangValidatorTest {
 
   @Test
   public void testValideerRangRang() {
-    Rang          rang      = new Rang();
+    var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(RANG_FOUT);
+    rang.setRang(TestConstants.RANG_FOUT);
     rang.setNiveau(1L);
-    expResult.add(ERR_RANG);
+    expResult.add(TestConstants.ERR_RANG);
 
     List<Message> result    = RangValidator.valideer(rang);
     assertEquals(expResult.toString(), result.toString());

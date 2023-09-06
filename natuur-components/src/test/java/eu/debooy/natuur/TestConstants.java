@@ -28,6 +28,7 @@ import eu.debooy.natuur.domain.TaxonDto;
  */
 public final class TestConstants {
   public static final Integer AANTAL                  = 1;
+  public static final Integer AANTALFOTOS             = 0;
   public static final String  COORDINATEN             =
       "N 30 31 33,210 - E 40 41 43,210";
   public static final int     DETAILPK_HASH           = -2147460291;
