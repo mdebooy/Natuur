@@ -46,7 +46,9 @@ public class Waarneming extends Formulier
   private Taxon   taxon;
   private Long    waarnemingId;
 
-  public Waarneming() {}
+  public Waarneming() {
+    aantalFotos = 0;
+  }
 
   public Waarneming(WaarnemingDto waarnemingDto) {
     this(waarnemingDto, null);
