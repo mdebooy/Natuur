@@ -134,6 +134,11 @@ public class WaarnemingTest {
   }
 
   @Test
+  public void testGetAantalFotos() {
+    assertEquals(TestConstants.AANTALFOTOS, waarneming.getAantalFotos());
+  }
+
+  @Test
   public void testGetDatum() {
     assertEquals(datum, waarneming.getDatum());
   }
