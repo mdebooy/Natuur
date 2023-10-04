@@ -152,7 +152,6 @@ public final class TestUtils {
     taxon.setParentNaam(PARENTNAAM);
     taxon.setParentVolgnummer(PARENTVOLGNUMMER);
     taxon.setRang(RANG);
-    taxon.setSorteervolgnummer(VOLGNUMMER * NatuurConstants.SORTEERFACOR);
     taxon.setTaxonId(TAXONID);
     taxon.setVolgnummer(VOLGNUMMER);
 

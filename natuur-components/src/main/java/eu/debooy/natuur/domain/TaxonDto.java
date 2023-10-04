@@ -160,8 +160,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return new CompareToBuilder().append(taxonDto1.getSorteervolgnummer(),
-                                           taxonDto2.getSorteervolgnummer())
+      return new CompareToBuilder().append(taxonDto1.getVolgnummer(),
+                                           taxonDto2.getVolgnummer())
                                    .append(taxonDto1.getLatijnsenaam(),
                                            taxonDto2.getLatijnsenaam())
                                    .toComparison();
@@ -184,8 +184,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
     @Override
     public int compare(TaxonDto taxonDto1, TaxonDto taxonDto2) {
-      return new CompareToBuilder().append(taxonDto1.getSorteervolgnummer(),
-                                           taxonDto2.getSorteervolgnummer())
+      return new CompareToBuilder().append(taxonDto1.getVolgnummer(),
+                                           taxonDto2.getVolgnummer())
                                    .append(taxonDto1.getNaam(taal),
                                            taxonDto2.getNaam(taal))
                                    .append(taxonDto1.getLatijnsenaam(),
@@ -294,19 +294,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public TaxonDto getParent() {
     return parent;
-  }
-
-  @Transient
-  public Long getSorteervolgnummer() {
-    switch (DoosUtils.nullToEmpty(rang)) {
-      case NatuurConstants.RANG_SOORT:
-        return volgnummer * NatuurConstants.SORTEERFACOR;
-      case NatuurConstants.RANG_ONDERSOORT:
-        return parent.getVolgnummer() * NatuurConstants.SORTEERFACOR
-                + volgnummer;
-      default:
-        return volgnummer;
-    }
   }
 
   public Long getTaxonId() {

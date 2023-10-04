@@ -137,8 +137,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
                                            detailDto2.getParentVolgnummer())
                                    .append(detailDto1.getParentnaam(taal),
                                            detailDto2.getParentnaam(taal))
-                                   .append(detailDto1.getSorteervolgnummer(),
-                                           detailDto2.getSorteervolgnummer())
+                                   .append(detailDto1.getVolgnummer(),
+                                           detailDto2.getVolgnummer())
                                    .append(detailDto1.getNaam(taal),
                                            detailDto2.getNaam(taal))
                                    .toComparison();
@@ -159,8 +159,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
                                            detailDto2.parentVolgnummer)
                                    .append(detailDto1.getParentLatijnsenaam(),
                                            detailDto2.getParentLatijnsenaam())
-                                   .append(detailDto1.getSorteervolgnummer(),
-                                           detailDto2.getSorteervolgnummer())
+                                   .append(detailDto1.getVolgnummer(),
+                                           detailDto2.getVolgnummer())
                                    .append(detailDto1.getLatijnsenaam(),
                                            detailDto2.getLatijnsenaam())
                                    .toComparison();
@@ -285,18 +285,6 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   public String getRang() {
     return rang;
-  }
-
-  @Transient
-  public Long getSorteervolgnummer() {
-    switch (DoosUtils.nullToEmpty(rang)) {
-      case NatuurConstants.RANG_SOORT:
-        return volgnummer * NatuurConstants.SORTEERFACOR;
-      case NatuurConstants.RANG_ONDERSOORT:
-        return taxon.getSorteervolgnummer();
-      default:
-        return volgnummer;
-    }
   }
 
   public Long getTaxonId() {

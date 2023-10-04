@@ -80,8 +80,8 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
     public int compare(RegiolijstTaxonDto taxonDto1,
                        RegiolijstTaxonDto taxonDto2) {
       return new CompareToBuilder()
-                    .append(taxonDto1.getTaxon().getSorteervolgnummer(),
-                            taxonDto2.getTaxon().getSorteervolgnummer())
+                    .append(taxonDto1.getTaxon().getVolgnummer(),
+                            taxonDto2.getTaxon().getVolgnummer())
                     .append(taxonDto1.getTaxon().getLatijnsenaam(),
                             taxonDto2.getTaxon().getLatijnsenaam())
                     .toComparison();

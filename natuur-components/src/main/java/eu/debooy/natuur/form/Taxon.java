@@ -44,7 +44,6 @@ public class Taxon
   private Long    parentVolgnummer;
   private String  rang;
   private String  rangnaam;
-  private Long    sorteervolgnummer   = 0L;
   private Long    taxonId;
   private Boolean uitgestorven        = Boolean.FALSE;
   private Long    volgnummer          = 0L;
@@ -60,7 +59,6 @@ public class Taxon
     parentNaam          = taxon.getParentNaam();
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
-    sorteervolgnummer   = taxon.getSorteervolgnummer();
     taxonId             = taxon.getTaxonId();
     uitgestorven        = taxon.getUitgestorven();
     volgnummer          = taxon.getVolgnummer();
@@ -82,9 +80,6 @@ public class Taxon
       parentVolgnummer    = taxonDto.getParent().getVolgnummer();
     }
     rang                  = taxonDto.getRang();
-    if (null != rang) {
-      sorteervolgnummer   = taxonDto.getSorteervolgnummer();
-    }
     taxonId               = taxonDto.getTaxonId();
     uitgestorven          = taxonDto.getUitgestorven();
     volgnummer            = taxonDto.getVolgnummer();
@@ -105,7 +100,6 @@ public class Taxon
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
-    sorteervolgnummer   = detailDto.getSorteervolgnummer();
     taxonId             = detailDto.getTaxonId();
     uitgestorven        = detailDto.getUitgestorven();
     volgnummer          = detailDto.getVolgnummer();
@@ -145,8 +139,8 @@ public class Taxon
                                            taxon2.getParentVolgnummer())
                                    .append(taxon1.getParentNaam(),
                                            taxon2.getParentNaam())
-                                   .append(taxon1.getSorteervolgnummer(),
-                                           taxon2.getSorteervolgnummer())
+                                   .append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
                                    .append(taxon1.getNaam(),
                                            taxon2.getNaam())
                                    .toComparison();
@@ -176,8 +170,8 @@ public class Taxon
 
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.getSorteervolgnummer(),
-                                           taxon2.getSorteervolgnummer())
+      return new CompareToBuilder().append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
                                    .append(taxon1.getLatijnsenaam(),
                                            taxon2.getLatijnsenaam())
                                    .toComparison();
@@ -194,8 +188,8 @@ public class Taxon
 
     @Override
     public int compare(Taxon taxon1, Taxon taxon2) {
-      return new CompareToBuilder().append(taxon1.getSorteervolgnummer(),
-                                           taxon2.getSorteervolgnummer())
+      return new CompareToBuilder().append(taxon1.getVolgnummer(),
+                                           taxon2.getVolgnummer())
                                    .append(taxon1.getNaam(),
                                            taxon2.getNaam())
                                    .append(taxon1.getLatijnsenaam(),
@@ -258,10 +252,6 @@ public class Taxon
 
   public String getRangnaam() {
     return rangnaam;
-  }
-
-  public Long getSorteervolgnummer() {
-    return sorteervolgnummer;
   }
 
   public Long getTaxonId() {
@@ -329,10 +319,6 @@ public class Taxon
 
   public void setRangnaam(String rangnaam) {
     this.rangnaam           = rangnaam;
-  }
-
-  public void setSorteervolgnummer(Long sorteervolgnummer) {
-    this.sorteervolgnummer  = sorteervolgnummer;
   }
 
   public void setTaxonId(Long taxonId) {

@@ -42,7 +42,7 @@
                 return showBoolean(data.gezien);
               }
             },
-            { data: 'taxon.sorteervolgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'taxon.volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
             { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic', render: function ( data, type, row ) {
                 return getLatijnsenaam(data.taxon.latijnsenaam, data.taxon.uitgestorven);

@@ -45,7 +45,6 @@ public class FotoOverzicht {
   private String  latijnsenaam;
   private String  naam;
   private String  rang;
-  private Long    sorteervolgnummer;
   private Long    taxonId;
   private Long    taxonSeq;
   private Long    volgnummer;
@@ -77,7 +76,6 @@ public class FotoOverzicht {
     parentRang          = fotoOverzichtDto.getParentRang();
     parentVolgnummer    = fotoOverzichtDto.getParentVolgnummer();
     rang                = fotoOverzichtDto.getRang();
-    sorteervolgnummer   = fotoOverzichtDto.getTaxon().getSorteervolgnummer();
     taxonId             = fotoOverzichtDto.getTaxonId();
     taxonSeq            = fotoOverzichtDto.getTaxonSeq();
     volgnummer          = fotoOverzichtDto.getVolgnummer();
@@ -170,10 +168,6 @@ public class FotoOverzicht {
     }
 
     return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
-  }
-
-  public Long getSorteervolgnummer() {
-    return sorteervolgnummer;
   }
 
   public Long getTaxonId() {

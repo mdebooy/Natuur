@@ -165,8 +165,8 @@ public class FotoOverzichtDto
                           fotoOverzichtDto2.getParentVolgnummer())
                   .append(fotoOverzichtDto1.getParentNaam(taal),
                           fotoOverzichtDto2.getParentNaam(taal))
-                  .append(fotoOverzichtDto1.getTaxon().getSorteervolgnummer(),
-                          fotoOverzichtDto2.getTaxon().getSorteervolgnummer())
+                  .append(fotoOverzichtDto1.getTaxon().getVolgnummer(),
+                          fotoOverzichtDto2.getTaxon().getVolgnummer())
                   .append(fotoOverzichtDto1.getNaam(taal),
                           fotoOverzichtDto2.getNaam(taal))
                   .append(fotoOverzichtDto1.taxonSeq,

@@ -51,7 +51,7 @@ public abstract class NatuurValidator {
   }
 
   protected static void valideerOpmerking(String opmerking,
-                                        List<Message> fouten) {
+                                          List<Message> fouten) {
     if (DoosUtils.nullToEmpty(opmerking).length() > 2000) {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_OPMERKING)
