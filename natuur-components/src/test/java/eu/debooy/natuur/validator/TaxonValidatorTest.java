@@ -40,15 +40,6 @@ public class TaxonValidatorTest {
                  .setMessage(PersistenceConstants.MAXLENGTH)
                  .setParams(new Object[]{TaxonValidator.LBL_LATIJNSENAAM, 255})
                  .build();
-  private static final  Message ERR_UITGESTORVEN  =
-      new Message.Builder()
-                 .setAttribute(TaxonDto.COL_UITGESTORVEN)
-                 .setSeverity(Message.ERROR)
-                 .setMessage(PersistenceConstants.WRONGVALUE)
-                 .setParams(new Object[]{TaxonValidator.LBL_UITGESTORVEN,
-                                         DoosConstants.WAAR,
-                                         DoosConstants.ONWAAR})
-                 .build();
   private static final  Message REQ_LATIJNSENAAM  =
       new Message.Builder()
                  .setAttribute(TaxonDto.COL_LATIJNSENAAM)
