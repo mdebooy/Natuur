@@ -126,7 +126,7 @@ public class TaxonnaamService {
 
     try {
       var taxonnamen  = new ArrayList<Taxonnaam>();
-      taxonnaamDao.getZoeken(naam).forEach(rij ->
+      taxonnaamDao.getZoeken(naam.toLowerCase()).forEach(rij ->
           taxonnamen.add(new Taxonnaam(rij)));
       return Response.ok().entity(taxonnamen).build();
     } catch (ObjectNotFoundException e) {
