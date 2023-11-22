@@ -12,8 +12,9 @@
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
          $('#waarnemingenTabel').DataTable( {
-          ajax: { url: '/natuur/waarnemingen/gebied/#{natuurGebied.gebied.gebiedId}/' + taal,
+          ajax: { url: '/natuur/waarnemingen/gebied/#{natuurGebied.gebied.gebiedId}/' + iso6392t,
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
           pagingType: 'full_numbers',
@@ -59,7 +60,7 @@
           ]
         } );
         $('#fotosTabel').DataTable( {
-          ajax: { url: '/natuur/fotos/gebied/#{natuurGebied.gebied.gebiedId}/' + taal,
+          ajax: { url: '/natuur/fotos/gebied/#{natuurGebied.gebied.gebiedId}/' + iso6392t,
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
           pagingType: 'full_numbers',

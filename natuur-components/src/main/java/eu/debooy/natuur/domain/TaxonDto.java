@@ -16,7 +16,6 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
@@ -138,7 +137,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = ComponentsConstants.DEF_TAAL;
+    private String  taal  = NatuurConstants.DEF_TAAL;
 
     public void setTaal(String taal) {
       this.taal = taal;
@@ -176,7 +175,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       implements Comparator<TaxonDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = ComponentsConstants.DEF_TAAL;
+    private String  taal  = NatuurConstants.DEF_TAAL;
 
     public void setTaal(String taal) {
       this.taal = taal;

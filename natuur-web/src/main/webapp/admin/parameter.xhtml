@@ -13,7 +13,7 @@
           <d:titel titel="#{natuurAppParam.subTitel}" />
 
           <div class="columns is-centered">
-            <div class="column">
+            <div class="column is-12">
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst(natuurAppParam.parameter)}" />
                 <div class="field-body is-normal">
@@ -26,8 +26,17 @@
                   <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
                     <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebieden}" fullwidth="true" required="true" textvalue="" />
                   </t:div>
+                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.1'}">
+                    <d:listbox id="taal1" value="#{natuurAppParam.taal1}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
+                  </t:div>
+                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.2'}">
+                    <d:listbox id="taal2" value="#{natuurAppParam.taal2}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
+                  </t:div>
+                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.3'}">
+                    <d:listbox id="taal3" value="#{natuurAppParam.taal3}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
+                  </t:div>
                 </div>
-              </div>
+               </div>
 
               <div class="field is-grouped">
                 <c:if test="${natuur.administrator}">

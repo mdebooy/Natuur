@@ -10,13 +10,14 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
         if (#{!natuurRegiolijst.aktie.readonly}) {
           $("#formRegiolijst\\:datum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
                                                    monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
                                                    dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
         }
         var regiolijstTaxaTabel = $('#regiolijstTaxaTabel').DataTable( {
-          ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regioId}/' + taal,
+          ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regioId}/' + iso6392t,
                   dataSrc: '' },
           order: [[1, 'asc'], [3, 'asc']],
           pagingType: 'full_numbers',

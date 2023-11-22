@@ -9,6 +9,7 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
         var parametersTabel = $('#parametersTabel').DataTable( {
           ajax: { url: '/doos/parameters/applicatie/natuur',
                   dataSrc: '' },
@@ -40,6 +41,15 @@
                     break;
                   case 'natuur.default.landid':
                     return getLandnaam(data.waarde, taal);
+                    break;
+                  case 'natuur.regiolijst.taal.1':
+                    return getISO6392tTaalnaam(data.waarde, iso6392t);
+                    break;
+                  case 'natuur.regiolijst.taal.2':
+                    return getISO6392tTaalnaam(data.waarde, iso6392t);
+                    break;
+                  case 'natuur.regiolijst.taal.3':
+                    return getISO6392tTaalnaam(data.waarde, iso6392t);
                     break;
                   default:
                     return data.waarde;

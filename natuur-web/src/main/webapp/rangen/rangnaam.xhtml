@@ -22,7 +22,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="taal" value="#{natuurRang.rangnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurRang.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurRang.rangnaam.taal)}" />
+                  <d:listbox id="taal" value="#{natuurRang.rangnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurRang.detailAktie.nieuw}" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRang.rangnaam.taal)}" />
                 </div>
               </div>
               <div class="field is-horizontal">

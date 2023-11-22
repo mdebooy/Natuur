@@ -78,12 +78,12 @@ public class RangnaamValidator extends NatuurValidator {
       return;
     }
 
-    if (taal.length() != 2) {
+    if (taal.length() != 3) {
     fouten.add(new Message.Builder()
                           .setAttribute(RangnaamDto.COL_TAAL)
                           .setSeverity(Message.ERROR)
                           .setMessage(PersistenceConstants.FIXLENGTH)
-                          .setParams(new Object[]{NatuurValidator.LBL_TAAL, 2})
+                          .setParams(new Object[]{NatuurValidator.LBL_TAAL, 3})
                           .build());
     }
   }

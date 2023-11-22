@@ -87,7 +87,7 @@ public class RangController extends Natuur {
     }
 
     rangnaam    = new Rangnaam();
-    rangnaam.setTaal(getGebruikersTaal());
+    rangnaam.setTaal(getGebruikersIso639t2());
     rangnaam.setRang(rang.getRang());
     rangnaamDto = new RangnaamDto();
     rangnaam.persist(rangnaamDto);
@@ -151,7 +151,7 @@ public class RangController extends Natuur {
   }
 
   public String getGeenFotosTitel() {
-    return getTekst(TIT_GEENFOTOS, geenFotos.getNaam(getGebruikersTaal()));
+    return getTekst(TIT_GEENFOTOS, geenFotos.getNaam(getGebruikersIso639t2()));
   }
 
   public Rang getRang() {
@@ -171,7 +171,7 @@ public class RangController extends Natuur {
   }
 
   public String getRangtekst(String rang) {
-    return getRangService().rang(rang).getNaam(getGebruikersTaal());
+    return getRangService().rang(rang).getNaam(getGebruikersIso639t2());
   }
 
   public List<SelectItem> getSelectRangen() {
@@ -201,9 +201,9 @@ public class RangController extends Natuur {
     try {
       rangDto = getRangService().rang(ec.getRequestParameterMap()
                                         .get(RangDto.COL_RANG));
-      rang    = new Rang(rangDto, getGebruikersTaal());
+      rang    = new Rang(rangDto, getGebruikersIso639t2());
       setAktie(PersistenceConstants.RETRIEVE);
-      setSubTitel(getTekst(TIT_RETRIEVE));
+      setSubTitel(rang.getNaam());
       redirect(RANG_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_RANG));
@@ -317,6 +317,7 @@ public class RangController extends Natuur {
       return;
     }
 
+    var taal  = rangnaam.getTaal();
     try {
       rangnaamDto  = new RangnaamDto();
       rangnaam.persist(rangnaamDto);
@@ -325,9 +326,17 @@ public class RangController extends Natuur {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
+          if (getGebruikersIso639t2().equals(taal)) {
+            rang.setNaam(rangDto.getNaam(taal));
+            setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
+          }
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
+          if (getGebruikersIso639t2().equals(taal)) {
+            rang.setNaam(rangDto.getNaam(taal));
+            setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
+          }
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT,
@@ -363,6 +372,6 @@ public class RangController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel(getTekst(TIT_UPDATE));
+    setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
   }
 }

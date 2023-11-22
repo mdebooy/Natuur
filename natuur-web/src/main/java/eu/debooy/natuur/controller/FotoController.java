@@ -61,7 +61,7 @@ public class FotoController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst("natuur.titel.fotolijst"));
 
-    var                   taal            = getGebruikersTaal();
+    var                   taal            = getGebruikersIso639t2();
     Map<Long, String>     landnamen       = new HashMap<>();
     var                   lijstComparator =
         new FotoOverzichtDto.LijstComparator();

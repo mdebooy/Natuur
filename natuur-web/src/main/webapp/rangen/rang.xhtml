@@ -9,6 +9,8 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
+        var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
         var rangnamenTabel = $('#rangnamenTabel').DataTable( {
           data: #{natuurRang.rangnamen},
           order: [[1, 'asc']],
@@ -40,7 +42,7 @@
           ]
         } );
         var totalenTabel = $('#totalenTabel').DataTable( {
-          ajax: { url: '/natuur/overzicht/#{natuurRang.rang.rang}/#{gebruiker.locale.language}',
+          ajax: { url: '/natuur/overzicht/#{natuurRang.rang.rang}/' + iso6392t,
                   dataSrc: '' },
           order: [[0, 'asc']],
           pagingType: 'full_numbers',

@@ -33,6 +33,9 @@ public class NatuurAppParamController extends AppParamController {
     initSpeciaal();
     addSpeciaal("natuur.default.gebiedid");
     addSpeciaal("natuur.default.landid");
+    addSpeciaal("natuur.regiolijst.taal.1");
+    addSpeciaal("natuur.regiolijst.taal.2");
+    addSpeciaal("natuur.regiolijst.taal.3");
   }
 
   public Long getGebiedId() {
@@ -43,11 +46,35 @@ public class NatuurAppParamController extends AppParamController {
     return Long.valueOf(getWaarde());
   }
 
+  public String getTaal1() {
+    return getWaarde();
+  }
+
+  public String getTaal2() {
+    return getWaarde();
+  }
+
+  public String getTaal3() {
+    return getWaarde();
+  }
+
   public void setGebiedId(Long gebiedId) {
     setWaarde(String.valueOf(gebiedId));
   }
 
   public void setLandId(Long landId) {
     setWaarde(String.valueOf(landId));
+  }
+
+  public void setTaal1(String taal) {
+    setWaarde(taal);
+  }
+
+  public void setTaal2(String taal) {
+    setWaarde(taal);
+  }
+
+  public void setTaal3(String taal) {
+    setWaarde(taal);
   }
 }

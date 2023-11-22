@@ -44,7 +44,7 @@ public class RangnaamValidatorTest {
                  .setAttribute(RangnaamDto.COL_TAAL)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.FIXLENGTH)
-                 .setParams(new Object[]{NatuurValidator.LBL_TAAL, 2})
+                 .setParams(new Object[]{NatuurValidator.LBL_TAAL, 3})
                  .build();
 
   private static final  Message REQ_NAAM  =

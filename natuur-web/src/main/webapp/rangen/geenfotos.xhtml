@@ -10,8 +10,9 @@
       $(document).ready(function() {
         var rang = '#{natuurRang.rang.rang}';
         var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
         geenfotosTabel = $('#geenfotosTabel').DataTable( {
-          ajax: { url: '/natuur/geenfotos/taxon/#{natuurRang.geenFotosTaxonId}/' + taal,
+          ajax: { url: '/natuur/geenfotos/taxon/#{natuurRang.geenFotosTaxonId}/' + iso6392t,
                   dataSrc: '' },
           order: [[0, 'asc'],[1, 'asc']],
           pagingType: 'full_numbers',

@@ -16,7 +16,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="taal" value="#{natuurTaxon.taxonnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talen()}" textvalue="#{i18nTeksten.taal(natuurTaxon.taxonnaam.taal)}" />
+                  <d:listbox id="taal" value="#{natuurTaxon.taxonnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurTaxon.detailAktie.nieuw}" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurTaxon.taxonnaam.taal)}" />
                 </div>
               </div>
               <div class="field is-horizontal">

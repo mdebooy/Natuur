@@ -100,7 +100,7 @@ public class WaarnemingController extends Natuur {
       waarnemingDto.setTaxon(taxon);
       waarnemingDto.setDatum(new Date());
       waarnemingDto.setGebied(gebied);
-      waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+      waarneming    = new Waarneming(waarnemingDto, getGebruikersIso639t2());
       setAktie(PersistenceConstants.CREATE);
       setSubTitel(getTekst(TIT_CREATE));
       redirect(WAARNEMING_REDIRECT);
@@ -189,7 +189,8 @@ public class WaarnemingController extends Natuur {
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
-    rijen.addAll(getDetailService().getSoortenMetKlasse(getGebruikersTaal()));
+    rijen.addAll(
+        getDetailService().getSoortenMetKlasse(getGebruikersIso639t2()));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij,
                                rij.getNaam()
@@ -223,7 +224,7 @@ public class WaarnemingController extends Natuur {
 
     try {
       waarnemingDto = getWaarnemingService().waarneming(waarnemingId);
-      waarneming    = new Waarneming(waarnemingDto, getGebruikersTaal());
+      waarneming    = new Waarneming(waarnemingDto, getGebruikersIso639t2());
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTekst(TIT_RETRIEVE));
       redirect(WAARNEMING_REDIRECT);
@@ -406,7 +407,7 @@ public class WaarnemingController extends Natuur {
                        getTekst("natuur.titel.waarnemingen"));
 
     Set<Taxon> rijen = new TreeSet<>(new Taxon.LijstComparator());
-    rijen.addAll(getDetailService().getWaargenomen(getGebruikersTaal()));
+    rijen.addAll(getDetailService().getWaargenomen(getGebruikersIso639t2()));
     rijen.forEach(rij ->
       exportData.addData(new String[] {rij.getParentNaam(),
                                        rij.getParentLatijnsenaam(),

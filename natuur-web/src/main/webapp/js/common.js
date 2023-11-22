@@ -19,7 +19,6 @@ var landen = {};
 var rangen = {};
 var regios = {};
 var statussen = {};
-var talen = {};
 var windstreken = {};
 
 function getCoordinaten(gebied) {
@@ -57,47 +56,6 @@ function getGebied(gebiedId) {
   });
 
   return gebied;
-}
-
-function getISO6391Taalnaam(iso6391, iso6392t) {
-  var taalnamen = [];
-  if (talen.hasOwnProperty(iso6391)) {
-    taalnamen = talen[iso6391].taalnamen;
-  } else {
-    $.ajax({ url: '/doos/talen/iso6391/'+iso6391,
-             dataType: 'json',
-             async: false,
-             success:  function(data) {
-               talen[iso6391] = data;
-               taalnamen = data.taalnamen;
-             }
-    });
-  }
-
-  var naam = taalnamen.findIndex(i => i.iso6392t === iso6392t);
-  if (naam < 0) {
-    return iso6391;
-  }
-
-  return taalnamen[naam].naam;
-}
-
-function getISO6392t(iso6391) {
-  var iso6392t = iso6391;
-  if (talen.hasOwnProperty(iso6391)) {
-    iso6392t = talen[iso6391].iso6392t;
-  } else {
-    $.ajax({ url: '/doos/talen/iso6391/'+iso6391,
-             dataType: 'json',
-             async: false,
-             success:  function(data) {
-               talen[iso6391] = data;
-               iso6392t = data.iso6392t;
-             }
-    });
-  }
-
-  return iso6392t;
 }
 
 function getLandnaam(landId, taal) {

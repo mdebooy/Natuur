@@ -114,6 +114,10 @@ public class Rang
     }
   }
 
+  public void setNaam(String naam) {
+    this.naam     = naam;
+  }
+
   public void setNiveau(Long niveau) {
     this.niveau   = niveau;
   }

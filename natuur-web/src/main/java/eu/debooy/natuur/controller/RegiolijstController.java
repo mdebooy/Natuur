@@ -316,9 +316,9 @@ public class RegiolijstController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst(TIT_RETRIEVE, regio.getNaam()));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
-    exportData.addVeld("LabelTaal1",        iso6391Naam(taal1, taal1));
-    exportData.addVeld("LabelTaal2",        iso6391Naam(taal2, taal2));
-    exportData.addVeld("LabelTaal3",        iso6391Naam(taal3, taal3));
+    exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
+    exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
+    exportData.addVeld("LabelTaal3",        iso6392tNaam(taal3, taal3));
 
     Set<DetailDto>  rijen = new TreeSet<>(new DetailDto.LijstComparator());
     rijen.addAll(getDetailService().getVanRegiolijst(regiolijst.getRegioId()));
@@ -396,7 +396,7 @@ public class RegiolijstController extends Natuur {
           getRegiolijstTaxonService().regiolijstTaxon(regiolijst.getRegioId(),
                                                       taxonId);
       regiolijstTaxon     = new RegiolijstTaxon(regiolijstTaxonDto,
-                                                getGebruikersTaal());
+                                                getGebruikersIso639t2());
       setDetailAktie(PersistenceConstants.UPDATE);
       setDetailSubTitel(getTekst(DTIT_UPDATE, regio.getNaam()));
 
@@ -469,7 +469,7 @@ public class RegiolijstController extends Natuur {
         addError(PersistenceConstants.DUPLICATE,
                   (getTaxonService()
                      .taxon(regiolijstTaxon.getTaxonId())
-                                           .getNaam(getGebruikersTaal())));
+                                           .getNaam(getGebruikersIso639t2())));
         return;
       } catch (ObjectNotFoundException e) {
         // OK. Mag niet aanwezig zijn.
@@ -479,7 +479,7 @@ public class RegiolijstController extends Natuur {
     if (null == regiolijstTaxon.getTaxon()) {
       regiolijstTaxon.setTaxon(
           new Taxon(getTaxonService().taxon(regiolijstTaxon.getTaxonId()),
-                    getGebruikersTaal()));
+                    getGebruikersIso639t2()));
     }
 
     var naam  = regiolijstTaxon.getTaxon().getNaam();
@@ -537,7 +537,8 @@ public class RegiolijstController extends Natuur {
 
   private void taxonToJson(TaxonDto taxon, JSONObject json) {
     json.put(TaxonDto.COL_VOLGNUMMER, taxon.getVolgnummer());
-    json.put("taxonnaam", taxon.getTaxonnaam(getGebruikersTaal()).getNaam());
+    json.put("taxonnaam",
+             taxon.getTaxonnaam(getGebruikersIso639t2()).getNaam());
     json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
     json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
   }

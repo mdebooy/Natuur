@@ -54,7 +54,7 @@ public class RangnaamDto extends Dto implements Comparable<RangnaamDto> {
   @Column(name="RANG", length=3, nullable=false)
   private String  rang;
   @Id
-  @Column(name="TAAL", length=2, nullable=false)
+  @Column(name="TAAL", length=3, nullable=false)
   private String  taal;
 
   public static class NaamComparator

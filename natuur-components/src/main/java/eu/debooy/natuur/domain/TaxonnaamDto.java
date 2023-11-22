@@ -60,7 +60,7 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   @Column(name="NAAM", length=255, nullable=false)
   private String  naam;
   @Id
-  @Column(name="TAAL", length=2, nullable=false)
+  @Column(name="TAAL", length=3, nullable=false)
   private String  taal;
   @Id
   @Column(name="TAXON_ID", nullable=false)
