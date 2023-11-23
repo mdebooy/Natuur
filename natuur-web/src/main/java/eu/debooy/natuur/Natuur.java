@@ -193,10 +193,6 @@ public class Natuur extends DoosBean {
     return gebiedService;
   }
 
-  public String getGebruikersIso639t2() {
-    return "nld";
-  }
-
   protected GeenFotoService getGeenFotoService() {
     if (null == geenFotoService) {
       geenFotoService = (GeenFotoService)

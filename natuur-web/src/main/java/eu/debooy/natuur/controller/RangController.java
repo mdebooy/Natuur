@@ -51,12 +51,11 @@ public class RangController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(RangController.class);
 
-  private static final  String  DTIT_CREATE   = "natuur.titel.taxonnaam.create";
+  private static final  String  DTIT_CREATE   = "natuur.titel.rangnaam.create";
   private static final  String  DTIT_RETRIEVE =
-      "natuur.titel.taxonnaam.retrieve";
+      "natuur.titel.rangnaam.retrieve";
   private static final  String  TIT_CREATE    = "natuur.titel.rang.create";
   private static final  String  TIT_GEENFOTOS = "natuur.titel.geenfotos";
-  private static final  String  TIT_RETRIEVE  = "natuur.titel.rang.retrieve";
   private static final  String  TIT_UPDATE    = "natuur.titel.rang.update";
 
   private final Aktie       geenFotoAktie = new Aktie();
@@ -87,7 +86,7 @@ public class RangController extends Natuur {
     }
 
     rangnaam    = new Rangnaam();
-    rangnaam.setTaal(getGebruikersIso639t2());
+    rangnaam.setTaal(getGebruikersTaalInIso639t2());
     rangnaam.setRang(rang.getRang());
     rangnaamDto = new RangnaamDto();
     rangnaam.persist(rangnaamDto);
@@ -151,7 +150,8 @@ public class RangController extends Natuur {
   }
 
   public String getGeenFotosTitel() {
-    return getTekst(TIT_GEENFOTOS, geenFotos.getNaam(getGebruikersIso639t2()));
+    return getTekst(TIT_GEENFOTOS,
+                    geenFotos.getNaam(getGebruikersTaalInIso639t2()));
   }
 
   public Rang getRang() {
@@ -171,7 +171,7 @@ public class RangController extends Natuur {
   }
 
   public String getRangtekst(String rang) {
-    return getRangService().rang(rang).getNaam(getGebruikersIso639t2());
+    return getRangService().rang(rang).getNaam(getGebruikersTaalInIso639t2());
   }
 
   public List<SelectItem> getSelectRangen() {
@@ -201,7 +201,7 @@ public class RangController extends Natuur {
     try {
       rangDto = getRangService().rang(ec.getRequestParameterMap()
                                         .get(RangDto.COL_RANG));
-      rang    = new Rang(rangDto, getGebruikersIso639t2());
+      rang    = new Rang(rangDto, getGebruikersTaalInIso639t2());
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(rang.getNaam());
       redirect(RANG_REDIRECT);
@@ -326,14 +326,14 @@ public class RangController extends Natuur {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
-          if (getGebruikersIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso639t2().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
-          if (getGebruikersIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso639t2().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }

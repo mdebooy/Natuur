@@ -9,7 +9,7 @@
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
-        var iso6392t = getISO6392t(taal);
+        var iso6392t = getISO6391ToISO6392t(taal);
         $('#namenpertaalTabel').DataTable( {
           ajax: { url: '/natuur/taxonnamen/aantalpertaal',
                   dataSrc: '' },
@@ -34,13 +34,13 @@
           },
           columns: [
             { data: 'aantal', visible: false },
-            { data: 'iso6391', visible: false },
+            { data: 'taal', visible: false },
             { data: null, title: '', width: '50px', class: 'has-text-centered', orderData: 1, render: function ( data, type, row ) {
-                return taalvlag(data.iso6391);
+                return taalvlag(data.taal);
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.taal')}', render: function ( data, type, row ) {
-                return getISO6391Taalnaam(data.iso6391, iso6392t);
+                return getISO6392tTaalnaam(data.taal, iso6392t);
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', orderData: 0, render: function ( data, type, row ) {

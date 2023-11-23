@@ -22,19 +22,19 @@ package eu.debooy.natuur.form;
  * @author Marco de Booij
  */
 public class AantalPerTaal {
-  private Long    aantal;
-  private String  iso6391;
+  private final Long    aantal;
+  private final String  taal;
 
-  public AantalPerTaal(String iso6391, Long aantal) {
+  public AantalPerTaal(String taal, Long aantal) {
     this.aantal   = aantal;
-    this.iso6391  = iso6391;
+    this.taal     = taal;
   }
 
   public Long getAantal() {
     return aantal;
   }
 
-  public String getIso6391() {
-    return iso6391;
+  public String getTaal() {
+    return taal;
   }
 }
