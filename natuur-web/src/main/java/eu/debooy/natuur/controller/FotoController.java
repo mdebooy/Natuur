@@ -72,8 +72,8 @@ public class FotoController extends Natuur {
     rijen.forEach(rij -> {
       var landId  = rij.getLandId();
       landnamen.computeIfAbsent(landId,
-                                k -> getI18nLandnaam().getI18nLandnaam(landId,
-                                                                       taal));
+                                k -> getSedesRemote().getI18nLandnaam(landId,
+                                                                      taal));
       exportData.addData(new String[] {rij.getParentNaam(taal),
                                        rij.getParentLatijnsenaam(),
                                        rij.getTaxonSeq().toString(),

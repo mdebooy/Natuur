@@ -29,7 +29,7 @@ import eu.debooy.natuur.service.RegiolijstTaxonService;
 import eu.debooy.natuur.service.TaxonService;
 import eu.debooy.natuur.service.TaxonnaamService;
 import eu.debooy.natuur.service.WaarnemingService;
-import eu.debooy.sedes.component.business.II18nLandnaam;
+import eu.debooy.sedes.component.business.ISedesRemote;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
@@ -60,7 +60,7 @@ public class Natuur extends DoosBean {
   private transient WaarnemingService       waarnemingService;
 
   @EJB
-  private transient II18nLandnaam i18nLandnaam;
+  private transient ISedesRemote  sedesRemote;
 
   protected static final  String  AANTALPERREGIO_REDIRECT   =
       "/statistieken/aantalperregiolijst.xhtml";
@@ -204,8 +204,8 @@ public class Natuur extends DoosBean {
     return geenFotoService;
   }
 
-  protected II18nLandnaam getI18nLandnaam() {
-    return i18nLandnaam;
+  protected ISedesRemote getSedesRemote() {
+    return sedesRemote;
   }
 
   protected OverzichtService getOverzichtService() {

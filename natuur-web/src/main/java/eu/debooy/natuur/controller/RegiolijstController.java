@@ -513,7 +513,7 @@ public class RegiolijstController extends Natuur {
   }
 
   public Collection<SelectItem> getSelectRegios() {
-    return getI18nLandnaam().getSelectRegios();
+    return getSedesRemote().getSelectRegios();
   }
 
   public void setBestand(UploadedFile bestand) {
@@ -523,7 +523,7 @@ public class RegiolijstController extends Natuur {
   protected void setRegio(Long regioId) {
     if (null == regio
         || !regioId.equals(regio.getRegioId())) {
-      regio = new Regio(getI18nLandnaam().getRegio(regioId));
+      regio = new Regio(getSedesRemote().getRegio(regioId));
     }
   }
 
