@@ -76,7 +76,7 @@ public class RegiolijstController extends Natuur {
       "natuur.titel.regiolijsttaxon.update";
   private static final  String  DTIT_UPLOAD   =
       "natuur.titel.regiolijst.upload";
-  private static final  String  PAR_LIJSTTAAL = "natuur.regiolijst.taal.";
+  public  static final  String  PAR_LIJSTTAAL = "natuur.regiolijst.taal.";
   private static final  String  TIT_CREATE    =
       "natuur.titel.regiolijst.create";
   private static final  String  TIT_RETRIEVE  =

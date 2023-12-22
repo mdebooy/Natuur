@@ -67,10 +67,12 @@ public class Natuur extends DoosBean {
   protected static final  String  ADMIN_ROLE                = "natuur-admin";
   protected static final  String  APPLICATIE_NAAM           = "Natuur";
   protected static final  String  DD_STATS                  = "stats";
-  protected static final  String  DEF_GEBIEDID              =
+  public    static final  String  DEF_GEBIEDID              =
       "natuur.default.gebiedid";
-  protected static final  String  DEF_LANDID                =
+  public    static final  String  DEF_LANDID                =
       "natuur.default.landid";
+  public    static final  String  DEF_RANG                  =
+      "natuur.default.rang";
   protected static final  String  FOTO_REDIRECT             =
       "/waarnemingen/foto.xhtml";
   protected static final  String  FOTOS_REDIRECT            =

@@ -70,8 +70,26 @@ public class TaxonValidatorTest {
   }
 
   @Test
+  public void testNullTaxon() {
+    Taxon         taxon     = null;
+    List<Message> result    = TaxonValidator.valideer(taxon);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+  }
+
+  @Test
+  public void testNullTaxonDto() {
+    TaxonDto      taxon     = null;
+    List<Message> result    = TaxonValidator.valideer(taxon);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+  }
+
+  @Test
   public void testValideerFouteTaxon() {
-    Taxon         taxon     = new Taxon();
+    var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(DoosUtils.stringMetLengte(TestConstants.LATIJNSENAAM,
@@ -83,13 +101,13 @@ public class TaxonValidatorTest {
 
     setFoutenList(expResult);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerFouteTaxonDto() {
-    TaxonDto      taxon     = new TaxonDto();
+    var           taxon     = new TaxonDto();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(DoosUtils.stringMetLengte(TestConstants.LATIJNSENAAM,
@@ -101,13 +119,13 @@ public class TaxonValidatorTest {
 
     setFoutenList(expResult);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerFouteUitgestorven() {
-    Taxon         taxon     = new Taxon();
+    var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
@@ -117,7 +135,7 @@ public class TaxonValidatorTest {
 
     expResult.add(REQ_UITGESTORVEN);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
 
     taxon.setUitgestorven("X");
@@ -131,33 +149,34 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerGoedeTaxon() {
-    Taxon         taxon     = new Taxon();
+    var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
+    taxon.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
     taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
     taxon.setOpmerking(TestConstants.OPMERKING);
     taxon.setRang(TestConstants.RANG);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerGoedeTaxonDto() {
-    TaxonDto      taxon     = new TaxonDto();
+    var           taxon     = new TaxonDto();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
     taxon.setOpmerking(TestConstants.OPMERKING);
     taxon.setRang(TestConstants.RANG);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerGoedeUitgestorven() {
-    Taxon         taxon     = new Taxon();
+    var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
@@ -165,7 +184,7 @@ public class TaxonValidatorTest {
     taxon.setRang(TestConstants.RANG);
     taxon.setUitgestorven(DoosConstants.WAAR);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
 
     taxon.setUitgestorven(DoosConstants.ONWAAR);
@@ -176,25 +195,25 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerLegeTaxon() {
-    Taxon         taxon     = new Taxon();
+    var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_LATIJNSENAAM);
     expResult.add(TestConstants.REQ_RANG);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerLegeTaxonDto() {
-    TaxonDto      taxon     = new TaxonDto();
+    var           taxon     = new TaxonDto();
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_LATIJNSENAAM);
     expResult.add(TestConstants.REQ_RANG);
 
-    List<Message> result    = TaxonValidator.valideer(taxon);
+    var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 }

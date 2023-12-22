@@ -26,6 +26,7 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
@@ -80,6 +81,28 @@ public class TaxonController extends Natuur {
     }
   }
 
+  private void checkRangwijziging() {
+    if (!taxon.getRang().equals(taxonDto.getRang())) {
+      taxon.setRang(new Rang(getRangService().rang(taxon.getRang()),
+                             getGebruikersTaalInIso639t2()));
+    }
+
+    if (DoosUtils.isBlankOrNull(taxon.getParentId())) {
+      taxon.setParent(new Taxon());
+      taxon.setParentRang(new Rang());
+
+      return;
+    }
+
+    if (null == taxonDto.getParent()
+        || !taxon.getParentId().equals(taxonDto.getParent().getParentId())) {
+      taxon.setParent(getTaxonService().taxon(taxon.getParentId()),
+                      getGebruikersTaalInIso639t2());
+      taxon.setParentRang(new Rang(getRangService().rang(taxon.getParentRang()),
+                          getGebruikersTaalInIso639t2()));
+    }
+  }
+
   public void create() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -94,12 +117,12 @@ public class TaxonController extends Natuur {
     if (ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
       var parentId  = Long.valueOf(ec.getRequestParameterMap()
                                      .get(TaxonDto.COL_TAXONID));
-      var ouderRang = getTaxonService().taxon(parentId).getRang();
-      ouderNiveau   = getRangService().rang(ouderRang).getNiveau();
-      taxon.setParentId(parentId);
+      taxon.setParent(getTaxonService().taxon(parentId));
+      ouderNiveau   = taxon.getParentNiveau();
     } else {
-      ouderNiveau = Long.valueOf(0);
+      taxon.setRang(new Rang(getRangService().rang(getParameter(DEF_RANG))));
     }
+
     setAktie(PersistenceConstants.CREATE);
     setSubTitel(getTekst(TIT_CREATE));
     redirect(TAXON_REDIRECT);
@@ -280,6 +303,8 @@ public class TaxonController extends Natuur {
       return;
     }
 
+    checkRangwijziging();
+
     var messages  = TaxonValidator.valideer(taxon);
     if (!messages.isEmpty()) {
       addMessage(messages);
@@ -390,12 +415,15 @@ public class TaxonController extends Natuur {
 
   public List<SelectItem> selectOuders(String rang) {
     Long              niveau;
+
     if (DoosUtils.isBlankOrNull(rang)) {
       niveau  = Long.valueOf("1000");
     } else {
       niveau  = getRangService().rang(rang).getNiveau();
     }
+
     List<SelectItem>  items = new LinkedList<>();
+    items.add(new SelectItem("", "--"));
     Set<TaxonDto>     rijen = new TreeSet<>(new TaxonDto.NaamComparator());
     rijen.addAll(getTaxonService().getOuders(niveau));
     rijen.forEach(rij ->

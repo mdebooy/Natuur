@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.access;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.RangDto;
@@ -48,7 +49,7 @@ public class RangDao extends Dao<RangDto> {
 
   public List<RangDto>  getVanaf(Long niveau) {
     Map<String, Object> params  = new HashMap<>();
-    params.put(RangDto.PAR_NIVEAU, niveau);
+    params.put(RangDto.PAR_NIVEAU, DoosUtils.nullToValue(niveau, 0L));
 
     return namedQuery(RangDto.QRY_VANAF, params);
   }

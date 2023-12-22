@@ -42,6 +42,8 @@ public final class TestConstants {
   public static final String  LATIJNSENAAM            = "Phalacrocorax carbo";
   public static final String  LATIJNSENAAM_GR         = "Rynchops flavirostris";
   public static final String  LATIJNSENAAM_KL         = "Emberiza flaviventris";
+  public static final String  LATIJNSENAAM_OSO        =
+      "Phalacrocorax carbo maroccanus";
   public static final String  LATITUDE                = "N";
   public static final String  LATITUDE2               = "S";
   public static final Integer LATITUDE_GRADEN         = 30;

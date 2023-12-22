@@ -37,10 +37,14 @@ public class Taxon
 
   private String  latijnsenaam;
   private String  naam;
+  private Long    niveau;
   private String  opmerking;
   private Long    parentId;
   private String  parentLatijnsenaam;
   private String  parentNaam;
+  private Long    parentNiveau;
+  private String  parentRang;
+  private String  parentRangnaam;
   private Long    parentVolgnummer;
   private String  rang;
   private String  rangnaam;
@@ -53,12 +57,17 @@ public class Taxon
   public Taxon(Taxon taxon) {
     latijnsenaam        = taxon.getLatijnsenaam();
     naam                = taxon.getNaam();
+    niveau              = taxon.getNiveau();
     opmerking           = taxon.getOpmerking();
     parentId            = taxon.getParentId();
     parentLatijnsenaam  = taxon.getParentLatijnsenaam();
     parentNaam          = taxon.getParentNaam();
+    parentNiveau        = taxon.getParentNiveau();
+    parentRang          = taxon.getParentRang();
+    parentRangnaam      = taxon.getParentNaam();
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
+    rangnaam            = taxon.getRangnaam();
     taxonId             = taxon.getTaxonId();
     uitgestorven        = taxon.getUitgestorven();
     volgnummer          = taxon.getVolgnummer();
@@ -95,6 +104,7 @@ public class Taxon
       naam              = detailDto.getNaam(taal);
       parentNaam        = detailDto.getParentnaam(taal);
     }
+    niveau              = detailDto.getNiveau();
     opmerking           = detailDto.getOpmerking();
     parentId            = detailDto.getParentId();
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
@@ -225,6 +235,10 @@ public class Taxon
     return (DoosUtils.isBlankOrNull(naam) ? latijnsenaam : naam);
   }
 
+  public Long getNiveau() {
+    return niveau;
+  }
+
   public String getOpmerking() {
     return opmerking;
   }
@@ -240,6 +254,18 @@ public class Taxon
   public String getParentNaam() {
     return (DoosUtils.isBlankOrNull(parentNaam) ? parentLatijnsenaam
                                                 : parentNaam);
+  }
+
+  public Long getParentNiveau() {
+    return parentNiveau;
+  }
+
+  public String getParentRang() {
+    return parentRang;
+  }
+
+  public String getParentRangnaam() {
+    return parentRangnaam;
   }
 
   public Long getParentVolgnummer() {
@@ -293,8 +319,30 @@ public class Taxon
     this.naam               = naam;
   }
 
+  public void setNiveau(Long niveau) {
+    this.niveau             = niveau;
+  }
+
   public void setOpmerking(String opmerking) {
     this.opmerking          = opmerking;
+  }
+
+  public void setParent(Taxon parent) {
+    parentId                = parent.getTaxonId();
+    parentLatijnsenaam      = parent.getLatijnsenaam();
+    parentNaam              = parent.getNaam();
+    parentNiveau            = parent.getNiveau();
+    parentRang              = parent.getRang();
+    parentRangnaam          = parent.getRangnaam();
+    parentVolgnummer        = parent.getParentVolgnummer();
+  }
+
+  public void setParent(TaxonDto parent) {
+    setParent(new Taxon(parent));
+  }
+
+  public void setParent(TaxonDto parent, String taal) {
+    setParent(new Taxon(parent, taal));
   }
 
   public void setParentId(Long parentId) {
@@ -309,8 +357,32 @@ public class Taxon
     this.parentNaam         = parentNaam;
   }
 
+  public void setParentNiveau(Long parentNiveau) {
+    this.parentNiveau       = parentNiveau;
+  }
+
+  public void setParentRang(Rang parentRang) {
+    this.parentNiveau       = parentRang.getNiveau();
+    this.parentRang         = parentRang.getRang();
+    this.parentRangnaam     = parentRang.getNaam();
+  }
+
+  public void setParentRang(String parentRang) {
+    this.parentRang         = parentRang;
+  }
+
+  public void setParentRangnaam(String parentRangnaam) {
+    this.parentRangnaam     = parentRangnaam;
+  }
+
   public void setParentVolgnummer(Long parentVolgnummer) {
     this.parentVolgnummer   = parentVolgnummer;
+  }
+
+  public void setRang(Rang rang) {
+    this.niveau             = rang.getNiveau();
+    this.rang               = rang.getRang();
+    this.rangnaam           = rang.getNaam();
   }
 
   public void setRang(String rang) {
@@ -328,14 +400,14 @@ public class Taxon
   public void setUitgestorven(String uitgestorven) {
     if (uitgestorven.equals(DoosConstants.WAAR)
             || uitgestorven.equals(DoosConstants.ONWAAR)) {
-      this.uitgestorven = uitgestorven.equals(DoosConstants.WAAR);
+      this.uitgestorven     = uitgestorven.equals(DoosConstants.WAAR);
     } else {
-      this.uitgestorven = null;
+      this.uitgestorven     = null;
     }
   }
 
   public void setUitgestorven(boolean uitgestorven) {
-    this.uitgestorven       = uitgestorven;
+    this.uitgestorven       = Boolean.TRUE.equals(uitgestorven);
   }
 
   public void setVolgnummer(Long volgnummer) {

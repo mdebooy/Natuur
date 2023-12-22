@@ -17,6 +17,7 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.controller.AppParamController;
+import eu.debooy.natuur.Natuur;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -31,11 +32,12 @@ public class NatuurAppParamController extends AppParamController {
 
   public NatuurAppParamController() {
     initSpeciaal();
-    addSpeciaal("natuur.default.gebiedid");
-    addSpeciaal("natuur.default.landid");
-    addSpeciaal("natuur.regiolijst.taal.1");
-    addSpeciaal("natuur.regiolijst.taal.2");
-    addSpeciaal("natuur.regiolijst.taal.3");
+    addSpeciaal(Natuur.DEF_GEBIEDID);
+    addSpeciaal(Natuur.DEF_LANDID);
+    addSpeciaal(Natuur.DEF_RANG);
+    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "1");
+    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "2");
+    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "3");
   }
 
   public Long getGebiedId() {
@@ -44,6 +46,10 @@ public class NatuurAppParamController extends AppParamController {
 
   public Long getLandId() {
     return Long.valueOf(getWaarde());
+  }
+
+  public String getRang() {
+    return getWaarde();
   }
 
   public String getTaal1() {
@@ -64,6 +70,10 @@ public class NatuurAppParamController extends AppParamController {
 
   public void setLandId(Long landId) {
     setWaarde(String.valueOf(landId));
+  }
+
+  public void setRang(String rang) {
+    setWaarde(rang);
   }
 
   public void setTaal1(String taal) {

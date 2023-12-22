@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -30,10 +31,14 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class TaxonValidator extends NatuurValidator {
+  public static final String  ERR_LATIJNSENAAMFOUT        =
+      "errors.latijnsenaam.foutief";
   public static final String  ERR_LATIJNSENAAMONDERSOORT  =
       "errors.latijnsenaam.ondersoort";
   public static final String  ERR_LATIJNSENAAMSOORT       =
       "errors.latijnsenaam.soort";
+  public static final String  ERR_PARENTNIVEAU            =
+      "errors.rang.parentniveau";
 
   protected static final  String  LBL_LATIJNSENAAM  =
       "_I18N.label.latijnsenaam";
@@ -45,10 +50,18 @@ public final class TaxonValidator extends NatuurValidator {
   private TaxonValidator() {}
 
   public static List<Message> valideer(TaxonDto taxon) {
+    if (null == taxon) {
+      return ComponentsUtils.objectIsNull("TaxonDto");
+    }
+
     return valideer(new Taxon(taxon));
   }
 
   public static List<Message> valideer(Taxon taxon) {
+    if (null == taxon) {
+      return ComponentsUtils.objectIsNull("Taxon");
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerLatijnsenaam(DoosUtils.nullToEmpty(taxon.getLatijnsenaam()),
@@ -58,6 +71,20 @@ public final class TaxonValidator extends NatuurValidator {
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
     valideerUitgestorven(taxon.getUitgestorven(), fouten);
     valideerVolgnummer(taxon.getVolgnummer(), fouten);
+    var aantal  = fouten.size();
+    switch (DoosUtils.nullToEmpty(taxon.getRang())) {
+      case NatuurConstants.RANG_SOORT:
+        valideerSoort(taxon, fouten);
+        break;
+      case NatuurConstants.RANG_ONDERSOORT:
+        valideerOndersoort(taxon, fouten);
+        break;
+      default:
+        break;
+    }
+    if (aantal == fouten.size()) {
+      valideerRang(taxon, fouten);
+    }
 
     return fouten;
   }
@@ -83,24 +110,70 @@ public final class TaxonValidator extends NatuurValidator {
                             .setParams(new Object[]{LBL_LATIJNSENAAM, 255})
                             .build());
     }
+  }
 
-    var deel  = latijnsenaam.split(" ");
-    if (rang.equals(NatuurConstants.RANG_SOORT)
-      && deel.length != 2) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(TaxonDto.COL_LATIJNSENAAM)
-                              .setSeverity(Message.ERROR)
-                              .setMessage(ERR_LATIJNSENAAMSOORT)
-                              .build());
+  private static void valideerOndersoort(Taxon taxon, List<Message> fouten) {
+    var deel  = taxon.getLatijnsenaam().split(" ");
+    if (deel.length != 3) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMONDERSOORT)
+                            .build());
+      return;
     }
 
-    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)
-      && deel.length != 3) {
-        fouten.add(new Message.Builder()
-                              .setAttribute(TaxonDto.COL_LATIJNSENAAM)
-                              .setSeverity(Message.ERROR)
-                              .setMessage(ERR_LATIJNSENAAMONDERSOORT)
-                              .build());
+    if (DoosUtils.isBlankOrNull(taxon.getParentLatijnsenaam())) {
+      return;
+    }
+
+    if (!(deel[0] + " " + deel[1]).equals(taxon.getParentLatijnsenaam())) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMFOUT)
+                            .build());
+    }
+  }
+
+  private static void valideerRang(Taxon taxon, List<Message> fouten) {
+    if (null == taxon.getNiveau()
+        || null == taxon.getParentNiveau()) {
+      return;
+    }
+
+    if (taxon.getNiveau().compareTo(taxon.getParentNiveau()) <= 0) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_RANG)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_PARENTNIVEAU)
+                            .setParams(new Object[]{taxon.getRangnaam(),
+                                                    taxon.getParentRangnaam()})
+                            .build());
+    }
+  }
+
+  private static void valideerSoort(Taxon taxon, List<Message> fouten) {
+    var deel  = taxon.getLatijnsenaam().split(" ");
+    if (deel.length != 2) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMSOORT)
+                            .build());
+      return;
+    }
+
+    if (DoosUtils.isBlankOrNull(taxon.getParentLatijnsenaam())) {
+      return;
+    }
+
+    if (!deel[0].equals(taxon.getParentLatijnsenaam())) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMFOUT)
+                            .build());
     }
   }
 

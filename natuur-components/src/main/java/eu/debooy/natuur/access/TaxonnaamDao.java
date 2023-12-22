@@ -82,7 +82,7 @@ public class TaxonnaamDao extends Dao<TaxonnaamDto> {
 
   public List<TaxonnaamDto> getZoeken(String naam) {
     Map<String, Object> params  = new HashMap<>();
-    params.put(TaxonnaamDto.PAR_NAAM, naam.replace('*', '%'));
+    params.put(TaxonnaamDto.PAR_NAAM, naam.toLowerCase().replace('*', '%'));
 
     return namedQuery(TaxonnaamDto.QRY_ZOEKEN, params);
   }
