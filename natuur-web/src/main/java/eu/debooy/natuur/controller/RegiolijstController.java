@@ -33,13 +33,13 @@ import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonPK;
 import eu.debooy.natuur.domain.TaxonDto;
-import eu.debooy.natuur.form.Regio;
 import eu.debooy.natuur.form.Regiolijst;
 import eu.debooy.natuur.form.RegiolijstTaxon;
 import eu.debooy.natuur.form.Regiolijstparameter;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.validator.RegiolijstTaxonValidator;
 import eu.debooy.natuur.validator.RegiolijstValidator;
+import eu.debooy.sedes.component.entity.Regio;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -523,7 +523,7 @@ public class RegiolijstController extends Natuur {
   protected void setRegio(Long regioId) {
     if (null == regio
         || !regioId.equals(regio.getRegioId())) {
-      regio = new Regio(getSedesRemote().getRegio(regioId));
+      regio = getSedesRemote().getRegio(regioId);
     }
   }
 
