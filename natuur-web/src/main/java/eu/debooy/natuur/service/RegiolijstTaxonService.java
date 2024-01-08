@@ -58,8 +58,10 @@ public class RegiolijstTaxonService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(RegiolijstTaxonService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private RegiolijstTaxonDao  regiolijstTaxonDao;
+  @SuppressWarnings("java:S6813")
   @Inject
   private WaarnemingDao       waarnemingDao;
 

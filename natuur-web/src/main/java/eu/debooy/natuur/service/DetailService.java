@@ -53,8 +53,10 @@ public class DetailService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(DetailService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private DetailDao detailDao;
+  @SuppressWarnings("java:S6813")
   @Inject
   private WaarnemingDao       waarnemingDao;
 

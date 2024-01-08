@@ -54,6 +54,7 @@ public class OverzichtService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(OverzichtService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private OverzichtDao  overzichtDao;
 

@@ -60,6 +60,7 @@ public class TaxonnaamService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(TaxonnaamService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private TaxonnaamDao taxonnaamDao;
 

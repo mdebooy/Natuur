@@ -55,6 +55,7 @@ public class GebiedService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(GebiedService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private GebiedDao gebiedDao;
 

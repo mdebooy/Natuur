@@ -51,6 +51,7 @@ public class RegiolijstService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(RegiolijstService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private RegiolijstDao regiolijstDao;
 

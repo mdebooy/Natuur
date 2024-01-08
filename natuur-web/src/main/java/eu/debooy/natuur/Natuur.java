@@ -123,6 +123,8 @@ public class Natuur extends DoosBean {
       "/taxa/taxon.xhtml";
   protected static final  String  TAXONNAAM_REDIRECT        =
       "/taxa/taxonnaam.xhtml";
+  protected static final  String  TAXONNAMENUPLOAD_REDIRECT =
+      "/taxa/taxonnaamupload.xhtml";
   protected static final  String  USER_ROLE                 = "natuur-user";
   protected static final  String  VIEW_ROLE                 = "natuur-view";
   protected static final  String  WAARNEMING_REDIRECT       =

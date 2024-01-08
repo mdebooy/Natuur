@@ -65,7 +65,6 @@ public final class TaxonValidator extends NatuurValidator {
     List<Message> fouten  = new ArrayList<>();
 
     valideerLatijnsenaam(DoosUtils.nullToEmpty(taxon.getLatijnsenaam()),
-                         DoosUtils.nullToEmpty(taxon.getRang()),
                          fouten);
     valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
@@ -90,7 +89,6 @@ public final class TaxonValidator extends NatuurValidator {
   }
 
   private static void valideerLatijnsenaam(String latijnsenaam,
-                                           String rang,
                                            List<Message> fouten) {
     if (DoosUtils.isBlankOrNull(latijnsenaam)) {
       fouten.add(new Message.Builder()

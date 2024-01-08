@@ -60,6 +60,7 @@ public class WaarnemingService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(WaarnemingService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private WaarnemingDao waarnemingDao;
 

@@ -60,8 +60,10 @@ public class FotoService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(FotoService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private FotoDao           fotoDao;
+  @SuppressWarnings("java:S6813")
   @Inject
   private FotoOverzichtDao  fotoOverzichtDao;
 

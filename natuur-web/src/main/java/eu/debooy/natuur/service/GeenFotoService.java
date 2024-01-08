@@ -55,6 +55,7 @@ public class GeenFotoService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(GeenFotoService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private GeenFotoDao geenFotoDao;
 

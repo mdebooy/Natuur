@@ -63,9 +63,10 @@ public class RangService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(RangService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private RangDao     rangDao;
-
+  @SuppressWarnings("java:S6813")
   @Inject
   private RangnaamDao rangnaamDao;
 

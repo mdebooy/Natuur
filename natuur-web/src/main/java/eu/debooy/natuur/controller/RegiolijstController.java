@@ -606,24 +606,24 @@ public class RegiolijstController extends Natuur {
     var taxon = new TaxonDto();
 
     try {
-        taxon = getTaxonService().taxon(latijnsenaam);
-        if (null == taxon.getTaxonId()) {
-          json.put(TaxonDto.COL_LATIJNSENAAM, latijnsenaam);
-          onbekend.add(json);
-        } else {
-          var lijstTaxon  = new RegiolijstTaxonDto();
+      taxon = getTaxonService().taxon(latijnsenaam);
+      if (null == taxon.getTaxonId()) {
+        json.put(TaxonDto.COL_LATIJNSENAAM, latijnsenaam);
+        onbekend.add(json);
+      } else {
+        var lijstTaxon  = new RegiolijstTaxonDto();
 
-          lijstTaxon.setRegioId(regiolijst.getRegioId());
-          lijstTaxon.setStatus(status);
-          lijstTaxon.setTaxonId(taxon.getTaxonId());
-          lijstTaxon.setTaxon(taxon);
-          getRegiolijstTaxonService().save(lijstTaxon);
-          taxonToJson(taxon, json);
-           nieuw.add(json);
-        }
-      } catch (DuplicateObjectException e) {
+        lijstTaxon.setRegioId(regiolijst.getRegioId());
+        lijstTaxon.setStatus(status);
+        lijstTaxon.setTaxonId(taxon.getTaxonId());
+        lijstTaxon.setTaxon(taxon);
+        getRegiolijstTaxonService().save(lijstTaxon);
         taxonToJson(taxon, json);
-        dubbel.add(json);
+         nieuw.add(json);
       }
+    } catch (DuplicateObjectException e) {
+      taxonToJson(taxon, json);
+      dubbel.add(json);
+    }
   }
 }

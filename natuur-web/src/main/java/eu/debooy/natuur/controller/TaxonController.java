@@ -31,6 +31,9 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.natuur.validator.TaxonnaamValidator;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -39,7 +42,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,11 +69,24 @@ public class TaxonController extends Natuur {
   private static final  String  TAB_KINDEREN  = "Kinderen";
   private static final  String  TAB_NAMEN     = "Namen";
 
+  private final JSONArray resultaat = new JSONArray();
+
+  private UploadedFile  bestand;
   private Taxon         ouder;
   private Long          ouderNiveau;
   private Taxon         taxon;
   private TaxonDto      taxonDto;
   private Taxonnaam     taxonnaam;
+  private boolean       wijzigen    = false;
+
+  public void batch() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    redirect(TAXONNAMENUPLOAD_REDIRECT);
+  }
 
   public void bepaalOuder(Long parentId) {
     if (null == parentId) {
@@ -111,6 +129,7 @@ public class TaxonController extends Natuur {
 
     var ec      = FacesContext.getCurrentInstance().getExternalContext();
 
+    // TODO check ouderniveau bijkeuze voor rang.
     setActieveTab(TAB_KINDEREN);
     taxon       = new Taxon();
     taxonDto    = new TaxonDto();
@@ -189,6 +208,10 @@ public class TaxonController extends Natuur {
     }
   }
 
+  public UploadedFile getBestand() {
+    return bestand;
+  }
+
   public Taxon getOuder() {
     return ouder;
   }
@@ -238,6 +261,14 @@ public class TaxonController extends Natuur {
     taxonDto.getTaxonnamen().forEach(rij -> taxonnamen.add(rij.toJSON()));
 
     return taxonnamen;
+  }
+
+  public JSONArray getUploadresultaat() {
+    return resultaat;
+  }
+
+  public boolean getWijzigen() {
+    return wijzigen;
   }
 
   public void retrieve() {
@@ -446,6 +477,27 @@ public class TaxonController extends Natuur {
     return items;
   }
 
+  public void setBestand(UploadedFile bestand) {
+    this.bestand  = bestand;
+  }
+
+  public void setWijzigen(boolean wijzigen) {
+    this.wijzigen = wijzigen;
+  }
+
+  private void taxonToJson(TaxonDto taxon, JSONObject json) {
+    json.put(TaxonDto.COL_VOLGNUMMER, taxon.getVolgnummer());
+    json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
+    json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
+  }
+
+  private void taxonToJson(TaxonDto taxon, String taal, String naam,
+                           JSONObject json) {
+    taxonToJson(taxon, json);
+    json.put(TaxonnaamDto.COL_TAAL, taal);
+    json.put("nieuw", naam);
+  }
+
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -456,6 +508,120 @@ public class TaxonController extends Natuur {
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE,
                          getTaxonnaam(getGebruikersTaalInIso639t2())));
+  }
+
+  public void uploading() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    if (null == bestand) {
+      addError("errors.nofile");
+      return;
+    }
+
+    var taxa  = 0L;
+    resultaat.clear();
+
+    try (var invoer =
+            new BufferedReader(
+                new InputStreamReader(bestand.getInputStream()))) {
+      var talen = invoer.readLine().replace("\"", "").split(",", -1);
+
+      while (invoer.ready()) {
+        taxa++;
+        verwerkTaxon(invoer.readLine().split(",", -1), talen);
+      }
+
+      addInfo("message.upload", bestand.getName());
+      addInfo("message.gelezen", taxa);
+    } catch (IOException e) {
+      generateExceptionMessage(e);
+    }
+  }
+
+  private void verwerkTaxon(String[] deel, String[] taal) {
+    var latijnsenaam  = deel[0].replaceAll("^\"+|\"+$", "")
+                               .replace("\"\"", "\"")
+                               .trim();
+    if (DoosUtils.isBlankOrNull(latijnsenaam)) {
+      return;
+    }
+
+    var gewijzigd = false;
+    var item      = new TaxonDto();
+
+    try {
+      item = getTaxonService().taxon(latijnsenaam);
+      if (null == item.getTaxonId()) {
+        var json      = new JSONObject();
+        json.put(TaxonDto.COL_LATIJNSENAAM, latijnsenaam);
+        json.put("error", getTekst(PersistenceConstants.NOTFOUND, "").trim());
+        resultaat.add(json);
+      } else {
+        for (var i = 1; i < taal.length; i++) {
+          var naam  = deel[i].replaceAll("^\"+|\"+$", "")
+                             .replace("\"\"", "\"")
+                             .trim();
+          if (verwerkTaxonnaam(naam, taal[i], item)) {
+            gewijzigd = true;
+          }
+        }
+      }
+    } catch (DuplicateObjectException e) {
+      var json      = new JSONObject();
+      taxonToJson(item, json);
+      json.put("error", e.getLocalizedMessage());
+
+      resultaat.add(json);
+    } catch (ObjectNotFoundException e) {
+      var json      = new JSONObject();
+      json.put(TaxonDto.COL_LATIJNSENAAM, latijnsenaam);
+      json.put("error", getTekst(PersistenceConstants.NOTFOUND, "X").trim());
+
+      resultaat.add(json);
+    }
+
+    if (gewijzigd) {
+      getTaxonService().save(item);
+    }
+  }
+
+  private boolean verwerkTaxonnaam(String naam, String taal, TaxonDto item) {
+    if (DoosUtils.isBlankOrNull(naam)) {
+      return false;
+    }
+
+    var json  = new JSONObject();
+
+    if (item.hasTaxonnaam(taal)) {
+      if (!item.getTaxonnaam(taal).getNaam().equals(naam)) {
+        if (wijzigen) {
+          taxonToJson(item, taal, naam, json);
+          json.put("oud", item.getTaxonnaam(taal).getNaam());
+          resultaat.add(json);
+
+          item.getTaxonnaam(taal).setNaam(naam);
+
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    taxonToJson(item, taal, naam, json);
+    resultaat.add(json);
+
+    var taxonnaamDto  = new TaxonnaamDto();
+
+    taxonnaamDto.setNaam(naam);
+    taxonnaamDto.setTaal(taal);
+    taxonnaamDto.setTaxonId(item.getTaxonId());
+    item.addNaam(taxonnaamDto);
+
+    return true;
   }
 
   private int wijzigKinderen(String oud, String nieuw, Long parentId) {

@@ -63,10 +63,13 @@ public class TaxonService {
   private static final  Logger  LOGGER  =
       LoggerFactory.getLogger(TaxonService.class);
 
+  @SuppressWarnings("java:S6813")
   @Inject
   private RangDao       rangDao;
+  @SuppressWarnings("java:S6813")
   @Inject
   private TaxonDao      taxonDao;
+  @SuppressWarnings("java:S6813")
   @Inject
   private TaxonnaamDao  taxonnaamDao;
 

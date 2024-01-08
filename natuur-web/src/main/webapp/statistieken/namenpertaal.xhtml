@@ -49,16 +49,20 @@
             }
           ]
         } );
+        if (#{natuurTaxon.user}) {
+          addUploadButton('namenpertaalTabel', 'formNamenpertaal', '#{i18nTeksten.tekst('img.upload')}');
+        }
       } );
     </script>
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
-        <h:form id="formGebieden">
+        <h:form id="formNamenpertaal">
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.namen.per.taal')}" />
 
           <table id="namenpertaalTabel" class="table is-striped is-narrow" aria-describedby="namenpertaalTabel" />
+          <h:commandLink id="uploadNamenpertaal" class="is-hidden" action="#{natuurTaxon.batch}" />
         </h:form>
       </div>
     </div>
