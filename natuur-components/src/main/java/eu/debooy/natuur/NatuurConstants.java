@@ -31,4 +31,8 @@ public final class NatuurConstants {
   public static final String  RANG_KLASSE     = "kl";
   public static final String  RANG_ONDERSOORT = "oso";
   public static final String  RANG_SOORT      = "so";
+
+  public static final String  LAT_VOGELS  = "Aves";
+
+  public static final Integer VOLGNUMMERFACTOR  = 10000000;
 }
