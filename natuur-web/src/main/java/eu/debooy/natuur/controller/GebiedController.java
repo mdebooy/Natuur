@@ -97,14 +97,9 @@ public class GebiedController extends Natuur {
     return gebied;
   }
 
-  public Collection<SelectItem> getSelectGebieden() {
-    List<SelectItem>  items = new LinkedList<>();
-
-    getGebiedService().query().stream().sorted()
-                      .forEachOrdered(rij ->
-      items.add(new SelectItem(rij.getGebiedId(), rij.getNaam())));
-
-    return items;
+  public String getLandnaam() {
+    return getSedesRemote().getI18nLandnaam(gebied.getLandId(),
+                                            getGebruikersTaal());
   }
 
   public Collection<SelectItem> getLatitudes() {
@@ -127,12 +122,26 @@ public class GebiedController extends Natuur {
     return items;
   }
 
+  public Collection<SelectItem> getSelectGebieden() {
+    List<SelectItem>  items = new LinkedList<>();
+
+    getGebiedService().query().stream().sorted()
+                      .forEachOrdered(rij ->
+      items.add(new SelectItem(rij.getGebiedId(), rij.getNaam())));
+
+    return items;
+  }
+
+  public Collection<SelectItem> getSelectLanden() {
+    return getSedesRemote().selectLandnamen(getGebruikersTaal());
+  }
+
   public String getWindstreek(String windstreek) {
     if (DoosUtils.isBlankOrNull(windstreek)) {
       return "";
     }
 
-    return DoosUtils.nullToValue(getTekst("windstreek."+windstreek), "");
+    return DoosUtils.nullToValue(getTekst("windstreek." + windstreek), "");
   }
 
   public void retrieve() {

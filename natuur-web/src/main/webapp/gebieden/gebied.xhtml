@@ -131,7 +131,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.land')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{sedesRemote.selectLandnamen()}" textvalue="#{sedesRemote.landnaam(natuurGebied.gebied.landId)}" />
+                  <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.selectLanden}" textvalue="#{natuurGebied.landnaam}" />
                 </div>
               </div>
               <div class="field is-horizontal">
