@@ -94,7 +94,7 @@ public class TaxonController extends Natuur {
       ouderNiveau = Long.valueOf(0);
     } else {
       ouder       = new Taxon(getTaxonService().taxon(parentId),
-                              getGebruikersTaalInIso639t2());
+                              getGebruikersTaalInIso6392t());
       ouderNiveau = getRangService().rang(ouder.getRang()).getNiveau();
     }
   }
@@ -102,7 +102,7 @@ public class TaxonController extends Natuur {
   private void checkRangwijziging() {
     if (!taxon.getRang().equals(taxonDto.getRang())) {
       taxon.setRang(new Rang(getRangService().rang(taxon.getRang()),
-                             getGebruikersTaalInIso639t2()));
+                             getGebruikersTaalInIso6392t()));
     }
 
     if (DoosUtils.isBlankOrNull(taxon.getParentId())) {
@@ -115,9 +115,9 @@ public class TaxonController extends Natuur {
     if (null == taxonDto.getParent()
         || !taxon.getParentId().equals(taxonDto.getParent().getParentId())) {
       taxon.setParent(getTaxonService().taxon(taxon.getParentId()),
-                      getGebruikersTaalInIso639t2());
+                      getGebruikersTaalInIso6392t());
       taxon.setParentRang(new Rang(getRangService().rang(taxon.getParentRang()),
-                          getGebruikersTaalInIso639t2()));
+                          getGebruikersTaalInIso6392t()));
     }
   }
 
@@ -155,7 +155,7 @@ public class TaxonController extends Natuur {
 
     setActieveTab(TAB_NAMEN);
     taxonnaam     = new Taxonnaam();
-    taxonnaam.setTaal(getGebruikersTaalInIso639t2());
+    taxonnaam.setTaal(getGebruikersTaalInIso6392t());
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(DTIT_CREATE);
     redirect(TAXONNAAM_REDIRECT);
@@ -192,10 +192,10 @@ public class TaxonController extends Natuur {
       taxonDto.removeTaxonnaam(taxonnaam.getTaal());
       getTaxonService().save(taxonDto);
       addInfo(PersistenceConstants.DELETED, "'" + taxonnaam.getTaal() + "'");
-      if (getGebruikersTaalInIso639t2().equals(taxonnaam.getTaal())) {
-        taxon.setNaam(taxonDto.getNaam(getGebruikersTaalInIso639t2()));
+      if (getGebruikersTaalInIso6392t().equals(taxonnaam.getTaal())) {
+        taxon.setNaam(taxonDto.getNaam(getGebruikersTaalInIso6392t()));
         setSubTitel(getTekst(TIT_UPDATE,
-                    getTaxonnaam(getGebruikersTaalInIso639t2())));
+                    getTaxonnaam(getGebruikersTaalInIso6392t())));
       }
       taxonnaam = new Taxonnaam();
       redirect(TAXON_REDIRECT);
@@ -290,10 +290,10 @@ public class TaxonController extends Natuur {
     try {
       setActieveTab(TAB_KINDEREN);
       taxonDto    = getTaxonService().taxon(taxonId);
-      taxon       = new Taxon(taxonDto, getGebruikersTaalInIso639t2());
+      taxon       = new Taxon(taxonDto, getGebruikersTaalInIso6392t());
       bepaalOuder(taxon.getParentId());
       setAktie(PersistenceConstants.RETRIEVE);
-      setSubTitel(getTaxonnaam(getGebruikersTaalInIso639t2()));
+      setSubTitel(getTaxonnaam(getGebruikersTaalInIso6392t()));
       setReturnTo(ec, TAXA_REDIRECT);
       redirect(TAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -352,7 +352,7 @@ public class TaxonController extends Natuur {
           bepaalOuder(taxon.getParentId());
           setActieveTab(TAB_KINDEREN);
           addInfo(PersistenceConstants.CREATED,
-                  getTaxonnaam(getGebruikersTaalInIso639t2()));
+                  getTaxonnaam(getGebruikersTaalInIso6392t()));
           update();
           break;
         case PersistenceConstants.UPDATE:
@@ -361,7 +361,7 @@ public class TaxonController extends Natuur {
           bepaalOuder(taxon.getParentId());
           setActieveTab(TAB_KINDEREN);
           addInfo(PersistenceConstants.UPDATED,
-                  getTaxonnaam(getGebruikersTaalInIso639t2()));
+                  getTaxonnaam(getGebruikersTaalInIso6392t()));
           if (!latijnsenaam.equals(taxonDto.getLatijnsenaam())) {
             var gewijzigd = wijzigKinderen(latijnsenaam,
                                            taxonDto.getLatijnsenaam(),
@@ -411,7 +411,7 @@ public class TaxonController extends Natuur {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           taxonDto.addNaam(taxonnaamDto);
-          if (getGebruikersTaalInIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso6392t().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
@@ -420,7 +420,7 @@ public class TaxonController extends Natuur {
           break;
         case PersistenceConstants.UPDATE:
           taxonDto.addNaam(taxonnaamDto);
-          if (getGebruikersTaalInIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso6392t().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
@@ -459,7 +459,7 @@ public class TaxonController extends Natuur {
     rijen.addAll(getTaxonService().getOuders(niveau));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
-                               rij.getNaam(getGebruikersTaalInIso639t2()) + " ("
+                               rij.getNaam(getGebruikersTaalInIso6392t()) + " ("
                                 + rij.getLatijnsenaam() + ")")));
 
     return items;
@@ -468,7 +468,7 @@ public class TaxonController extends Natuur {
   public List<SelectItem> selectSoorten() {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
-    rijen.addAll(getTaxonService().getSoorten(getGebruikersTaalInIso639t2()));
+    rijen.addAll(getTaxonService().getSoorten(getGebruikersTaalInIso6392t()));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
                                rij.getNaam() + " ("
@@ -507,7 +507,7 @@ public class TaxonController extends Natuur {
     setActieveTab(TAB_KINDEREN);
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE,
-                         getTaxonnaam(getGebruikersTaalInIso639t2())));
+                         getTaxonnaam(getGebruikersTaalInIso6392t())));
   }
 
   public void uploading() {

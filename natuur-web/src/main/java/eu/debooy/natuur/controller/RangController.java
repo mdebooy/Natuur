@@ -86,7 +86,7 @@ public class RangController extends Natuur {
     }
 
     rangnaam    = new Rangnaam();
-    rangnaam.setTaal(getGebruikersTaalInIso639t2());
+    rangnaam.setTaal(getGebruikersTaalInIso6392t());
     rangnaam.setRang(rang.getRang());
     rangnaamDto = new RangnaamDto();
     rangnaam.persist(rangnaamDto);
@@ -151,7 +151,7 @@ public class RangController extends Natuur {
 
   public String getGeenFotosTitel() {
     return getTekst(TIT_GEENFOTOS,
-                    geenFotos.getNaam(getGebruikersTaalInIso639t2()));
+                    geenFotos.getNaam(getGebruikersTaalInIso6392t()));
   }
 
   public Rang getRang() {
@@ -171,7 +171,7 @@ public class RangController extends Natuur {
   }
 
   public String getRangtekst(String rang) {
-    return getRangService().rang(rang).getNaam(getGebruikersTaalInIso639t2());
+    return getRangService().rang(rang).getNaam(getGebruikersTaalInIso6392t());
   }
 
   public List<SelectItem> getSelectRangen() {
@@ -201,7 +201,7 @@ public class RangController extends Natuur {
     try {
       rangDto = getRangService().rang(ec.getRequestParameterMap()
                                         .get(RangDto.COL_RANG));
-      rang    = new Rang(rangDto, getGebruikersTaalInIso639t2());
+      rang    = new Rang(rangDto, getGebruikersTaalInIso6392t());
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(rang.getNaam());
       redirect(RANG_REDIRECT);
@@ -326,14 +326,14 @@ public class RangController extends Natuur {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
-          if (getGebruikersTaalInIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso6392t().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }
           break;
         case PersistenceConstants.UPDATE:
           addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
-          if (getGebruikersTaalInIso639t2().equals(taal)) {
+          if (getGebruikersTaalInIso6392t().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }

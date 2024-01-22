@@ -396,7 +396,7 @@ public class RegiolijstController extends Natuur {
           getRegiolijstTaxonService().regiolijstTaxon(regiolijst.getRegioId(),
                                                       taxonId);
       regiolijstTaxon     = new RegiolijstTaxon(regiolijstTaxonDto,
-                                                getGebruikersTaalInIso639t2());
+                                                getGebruikersTaalInIso6392t());
       setDetailAktie(PersistenceConstants.UPDATE);
       setDetailSubTitel(getTekst(DTIT_UPDATE, regio.getNaam()));
 
@@ -469,7 +469,7 @@ public class RegiolijstController extends Natuur {
         addError(PersistenceConstants.DUPLICATE,
                   (getTaxonService().taxon(
                       regiolijstTaxon.getTaxonId())
-                                     .getNaam(getGebruikersTaalInIso639t2())));
+                                     .getNaam(getGebruikersTaalInIso6392t())));
         return;
       } catch (ObjectNotFoundException e) {
         // OK. Mag niet aanwezig zijn.
@@ -479,7 +479,7 @@ public class RegiolijstController extends Natuur {
     if (null == regiolijstTaxon.getTaxon()) {
       regiolijstTaxon.setTaxon(
           new Taxon(getTaxonService().taxon(regiolijstTaxon.getTaxonId()),
-                    getGebruikersTaalInIso639t2()));
+                    getGebruikersTaalInIso6392t()));
     }
 
     var naam  = regiolijstTaxon.getTaxon().getNaam();
@@ -538,7 +538,7 @@ public class RegiolijstController extends Natuur {
   private void taxonToJson(TaxonDto taxon, JSONObject json) {
     json.put(TaxonDto.COL_VOLGNUMMER, taxon.getVolgnummer());
     json.put("taxonnaam",
-             taxon.getTaxonnaam(getGebruikersTaalInIso639t2()).getNaam());
+             taxon.getTaxonnaam(getGebruikersTaalInIso6392t()).getNaam());
     json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
     json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
   }
