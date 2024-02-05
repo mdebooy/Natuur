@@ -575,17 +575,17 @@ public class RegiolijstController extends Natuur {
         var deel  = invoer.readLine().split(",", -1);
         String  latijnsenaam;
         String  status;
-        latijnsenaam  = deel[0].replaceAll("(?:^\")|(?:\"$)", "")
-                               .replace("\"\"", "\"")
-                               .trim();
+        latijnsenaam  = DoosUtils.stripBeginEnEind(deel[0], "\"")
+                                 .replace("\"\"", "\"")
+                                 .trim();
         if (DoosUtils.isBlankOrNull(latijnsenaam)) {
           continue;
         }
 
         if (deel.length > 1) {
-          status      = deel[1].replaceAll("(?:^\")|(?:\"$)", "")
-                               .replace("\"\"", "\"")
-                               .trim();
+          status      = DoosUtils.stripBeginEnEind(deel[1], "\"")
+                                 .replace("\"\"", "\"")
+                                 .trim();
         } else {
           status      = "";
         }
