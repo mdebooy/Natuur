@@ -216,6 +216,7 @@
           initTabs();
           switchToTab('#{natuurTaxon.actieveTab}');
         }
+        addPdfButton('taxaTabel', 'formTaxon', '#{i18nTeksten.tekst('img.PDF')}');
       } );
     </script>
   </ui:define>
@@ -290,6 +291,7 @@
                     <h:commandLink id="addTaxa" class="is-hidden" action="#{natuurTaxon.create}">
                       <f:param name="taxonId" value="XX" />
                     </h:commandLink>
+                    <h:commandLink id="pdfTaxa" class="is-hidden" action="#{natuurTaxon.parameters}" />
                   </div>
                   <div id="conNamen" class="tab-detail is-hidden">
                     <table id="taxonnamenTabel" class="table is-striped is-narrow #{natuurTaxon.user ? 'is-hoverable' : ''}" aria-describedby="taxonnamenTabel" />

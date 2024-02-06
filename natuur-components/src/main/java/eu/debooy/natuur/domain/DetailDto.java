@@ -55,14 +55,17 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
+@NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.rang in ('so', 'oso')")
 @NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regioId=:regioId")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  PAR_REGIOID = "regioId";
+  public static final String  PAR_PARENTID  = "parentId";
+  public static final String  PAR_REGIOID   = "regioId";
 
   public static final String  QRY_SOORTMETKLASSE  = "detailSoortMetKlasse";
+  public static final String  QRY_SOORTMETPARENT  = "detailSoortMetParent";
   public static final String  QRY_VANREGIIOLIJST  = "detailVanRegiolijst";
   public static final String  QRY_WAARGENOMEN     = "detailWaargenomen";
 
@@ -125,7 +128,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "nl";
+    private String  taal  = "nld";
 
     public void setTaal(String taal) {
       this.taal = taal;
@@ -141,6 +144,30 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
                                            detailDto2.getVolgnummer())
                                    .append(detailDto1.getNaam(taal),
                                            detailDto2.getNaam(taal))
+                                   .toComparison();
+    }
+  }
+
+  public static class NaamComparator
+      implements Comparator<DetailDto>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    private String  taal  = "???";
+
+    public void setTaal(String taal) {
+      this.taal = taal;
+    }
+
+    @Override
+    public int compare(DetailDto detailDto1, DetailDto detailDto2) {
+      return new CompareToBuilder().append(detailDto1.getParentnaam(taal),
+                                           detailDto2.getParentnaam(taal))
+                                   .append(detailDto1.getNaam(taal),
+                                           detailDto2.getNaam(taal))
+                                   .append(detailDto1.getParentVolgnummer(),
+                                           detailDto2.getParentVolgnummer())
+                                   .append(detailDto1.getVolgnummer(),
+                                           detailDto2.getVolgnummer())
                                    .toComparison();
     }
   }
@@ -175,7 +202,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "nl";
+    private String  taal  = "nld";
 
     public void setTaal(String taal) {
       this.taal = taal;

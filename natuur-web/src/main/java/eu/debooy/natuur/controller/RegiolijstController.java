@@ -28,6 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
@@ -233,13 +234,16 @@ public class RegiolijstController extends Natuur {
   }
 
   private String getNaam(DetailDto detail, String taal) {
-    var naam  = detail.getNaam(taal);
+    if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+        && detail.hasParentnaam(taal)) {
+      return detail.getNaam(taal);
+    }
 
-    if (naam.equals(detail.getLatijnsenaam())) {
+    if (!detail.hasTaxonnaam(taal)) {
       return "";
     }
 
-    return naam;
+    return detail.getNaam(taal);
   }
 
   public JSONArray getNieuw() {

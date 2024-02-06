@@ -55,6 +55,13 @@ public class DetailDao extends Dao<DetailDto> {
     return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
   }
 
+  public List<DetailDto> getSoortenMetParent(Long parentId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(DetailDto.PAR_PARENTID, parentId);
+
+    return namedQuery(DetailDto.QRY_SOORTMETPARENT, params);
+  }
+
   public List<DetailDto> getVanRegiolijst(Long regioId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(DetailDto.PAR_REGIOID, regioId);

@@ -16,16 +16,22 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doos.component.Export;
+import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
+import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.NatuurConstants;
+import static eu.debooy.natuur.controller.RegiolijstController.PAR_LIJSTTAAL;
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.Lijstparameter;
 import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
@@ -42,6 +48,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -72,10 +79,15 @@ public class TaxonController extends Natuur {
   private static final  String  TAB_NAMEN     = "Namen";
 
   private static final  String  TAG_ERROR     = "error";
+  private static final  String  TAG_LATIJN    = "lat";
   private static final  String  TAG_NIEUW     = "nieuw";
   private static final  String  TAG_OUD       = "oud";
+  private static final  String  TAG_TAAL1     = "taal1";
+  private static final  String  TAG_TAAL2     = "taal2";
+  private static final  String  TAG_TAAL3     = "taal3";
 
-  private final JSONArray resultaat = new JSONArray();
+  private final Lijstparameter  lijstparameters = new Lijstparameter();
+  private final JSONArray       resultaat       = new JSONArray();
 
   private UploadedFile  bestand;
   private Taxon         ouder;
@@ -235,12 +247,63 @@ public class TaxonController extends Natuur {
     return bestand;
   }
 
+  private String getBoolean(boolean schakelaar) {
+    if (schakelaar) {
+      return "☑";
+    }
+
+    return "☐";
+  }
+
   public Taxon getOuder() {
     return ouder;
   }
 
+  private String getNaam(DetailDto detail, String taal) {
+    if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+        && detail.hasParentnaam(taal)) {
+      return detail.getNaam(taal);
+    }
+
+    if (!detail.hasTaxonnaam(taal)) {
+      return "";
+    }
+
+    return detail.getNaam(taal);
+  }
+
+  private String getNaam(TaxonDto taxon, String taal) {
+    if (!taxon.hasTaxonnaam(taal)) {
+      return taxon.getLatijnsenaam();
+    }
+
+    return taxon.getNaam(taal);
+  }
+
   public Long getOuderNiveau() {
     return ouderNiveau;
+  }
+
+  public Lijstparameter getParameters() {
+    return lijstparameters;
+  }
+
+  private String  getParent(String latijnsenaam,
+                            String taal1, String taal2, String taal3) {
+    var parent  = new StringBuilder();
+
+    parent.append(latijnsenaam);
+    if (!taal1.equals(latijnsenaam)) {
+      parent.append("/").append(taal1);
+    }
+    if (!taal2.equals(latijnsenaam)) {
+      parent.append("/").append(taal2);
+    }
+    if (!taal3.equals(latijnsenaam)) {
+      parent.append("/").append(taal3);
+    }
+
+    return parent.toString();
   }
 
   public Taxon getTaxon() {
@@ -292,6 +355,37 @@ public class TaxonController extends Natuur {
 
   public boolean getWijzigen() {
     return wijzigen;
+  }
+
+  private boolean isTePrinten(DetailDto taxon, String compleet,
+                              String taal1, String taal2, String taal3) {
+    switch (compleet) {
+      case TaxonDto.COL_LATIJNSENAAM:
+        return true;
+      case TAG_TAAL1:
+        return taxon.hasTaxonnaam(taal1);
+      case TAG_TAAL2:
+        return taxon.hasTaxonnaam(taal2);
+      case TAG_TAAL3:
+        return taxon.hasTaxonnaam(taal3);
+      default:
+        return false;
+    }
+  }
+
+  public void parameters() {
+    if (!isGerechtigd()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    lijstparameters.setCompleet(TaxonDto.COL_LATIJNSENAAM);
+    lijstparameters.setSortering(TaxonDto.COL_VOLGNUMMER);
+    lijstparameters.setTaal1(getParameter(PAR_LIJSTTAAL + "1"));
+    lijstparameters.setTaal2(getParameter(PAR_LIJSTTAAL + "2"));
+    lijstparameters.setTaal3(getParameter(PAR_LIJSTTAAL + "3"));
+
+    redirect(TAXALIJSTPARAMS_REDIRECT);
   }
 
   public void retrieve() {
@@ -467,6 +561,18 @@ public class TaxonController extends Natuur {
     }
   }
 
+  public List<SelectItem> selectCompleet() {
+    List<SelectItem>  items = new LinkedList<>();
+
+    items.add(new SelectItem(TaxonDto.COL_LATIJNSENAAM,
+                             getTekst("label.latijnsenaam")));
+    items.add(new SelectItem(TAG_TAAL1, getTekst("label.taal.1")));
+    items.add(new SelectItem(TAG_TAAL2, getTekst("label.taal.2")));
+    items.add(new SelectItem(TAG_TAAL3, getTekst("label.taal.3")));
+
+    return items;
+  }
+
   public List<SelectItem> selectOuders(String rang) {
     Long              niveau;
 
@@ -499,12 +605,106 @@ public class TaxonController extends Natuur {
     return items;
   }
 
+  public List<SelectItem> selectSortering() {
+    List<SelectItem>  items = new LinkedList<>();
+
+    items.add(new SelectItem(TaxonDto.COL_VOLGNUMMER,
+                             getTekst("label.volgnummer")));
+    items.add(new SelectItem(TAG_LATIJN, getTekst("label.latijnsenaam")));
+    items.add(new SelectItem(TAG_TAAL1,  getTekst("label.taal.1")));
+    items.add(new SelectItem(TAG_TAAL2,  getTekst("label.taal.2")));
+    items.add(new SelectItem(TAG_TAAL3,  getTekst("label.taal.3")));
+
+    return items;
+  }
+
   public void setBestand(UploadedFile bestand) {
     this.bestand  = bestand;
   }
 
+  private TreeSet<DetailDto> setSortering() {
+    String  sortering;
+    switch (lijstparameters.getSortering()) {
+      case TaxonDto.COL_VOLGNUMMER:
+        return new TreeSet<>(new DetailDto.VolgnummerComparator());
+      case TAG_TAAL1:
+        sortering = lijstparameters.getTaal1();
+        break;
+      case TAG_TAAL2:
+        sortering = lijstparameters.getTaal2();
+        break;
+      case TAG_TAAL3:
+        sortering = lijstparameters.getTaal3();
+        break;
+      default:
+        sortering = TAG_LATIJN;
+    }
+
+    var comparator  = new DetailDto.NaamComparator();
+    comparator.setTaal(sortering);
+
+    return new TreeSet<>(comparator);
+  }
+
   public void setWijzigen(boolean wijzigen) {
     this.wijzigen = wijzigen;
+  }
+
+  public void taxalijst() {
+    if (!isGerechtigd()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var exportData  = new ExportData();
+    var compleet    = lijstparameters.getCompleet();
+    var gezien      = lijstparameters.getGezien();
+    var taal1       = lijstparameters.getTaal1();
+    var taal2       = lijstparameters.getTaal2();
+    var taal3       = lijstparameters.getTaal3();
+
+    exportData.addMetadata("application", getApplicatieNaam());
+    exportData.addMetadata("auteur",      getGebruikerNaam());
+    exportData.addMetadata("lijstnaam",   "taxalijst");
+    exportData.setParameters(getLijstParameters());
+
+    exportData.setKolommen(new String[] { "klasse", "gezien",
+                                          TaxonDto.COL_LATIJNSENAAM,
+                                          TAG_TAAL1, TAG_TAAL2, TAG_TAAL3 });
+    exportData.setType(getType());
+    exportData.addVeld("ReportTitel",
+            getParent(taxonDto.getLatijnsenaam(),
+                      getNaam(taxonDto, taal1),
+                      getNaam(taxonDto, taal2),
+                      getNaam(taxonDto, taal3)));
+    exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
+    exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
+    exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
+    exportData.addVeld("LabelTaal3",        iso6392tNaam(taal3, taal3));
+
+    var rijen       = setSortering();
+    rijen.addAll(getDetailService().getSoortenMetParent(taxon.getTaxonId()));
+    rijen.stream().filter(rij -> isTePrinten(rij, compleet,
+                                             taal1, taal2, taal3))
+         .forEachOrdered((rij ->
+      exportData.addData(
+          new String[] {"",
+                        getBoolean(Boolean.TRUE.equals(gezien)
+                                    && rij.isGezien()),
+                        rij.getLatijnsenaam(),
+                        getNaam(rij, taal1), getNaam(rij, taal2),
+                        getNaam(rij, taal3)})
+    ));
+
+    var response  =
+        (HttpServletResponse) FacesContext.getCurrentInstance()
+                                          .getExternalContext().getResponse();
+    try {
+      Export.export(response, exportData);
+      FacesContext.getCurrentInstance().responseComplete();
+    } catch (IllegalArgumentException | TechnicalException e) {
+      generateExceptionMessage(e);
+    }
   }
 
   private void taxonToJson(TaxonDto taxon, JSONObject json) {

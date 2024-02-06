@@ -119,6 +119,8 @@ public class Natuur extends DoosBean {
       "natuur.taxon.status";
   protected static final  String  TAXA_REDIRECT             =
       "/taxa/taxa.xhtml";
+  protected static final  String  TAXALIJSTPARAMS_REDIRECT  =
+      "/taxa/taxalijstparameters.xhtml";
   protected static final  String  TAXON_REDIRECT            =
       "/taxa/taxon.xhtml";
   protected static final  String  TAXONNAAM_REDIRECT        =

@@ -79,6 +79,20 @@ public class DetailService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<DetailDto> getSoortenMetParent(Long parentId) {
+    List<DetailDto> soorten = new ArrayList<>();
+
+    try {
+      soorten.addAll(detailDao.getSoortenMetParent(parentId));
+      setGezien(soorten);
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<DetailDto> getVanRegiolijst(Long regioId) {
     List<DetailDto> soorten = new ArrayList<>();
 

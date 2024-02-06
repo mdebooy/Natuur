@@ -1,0 +1,70 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+  xmlns:t="http://myfaces.apache.org/tomahawk"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="body">
+    <div class="columns is-centered content">
+      <div class="column is-8">
+        <h:form id="formRegiolijstparameters">
+          <d:titel titel="#{i18nTeksten.tekst('natuur.titel.taxalijst.parameters')}" />
+
+          <div class="columns is-centered">
+            <div class="column">
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.gesorteerd')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="sortering" value="#{natuurTaxon.parameters.sortering}" fullwidth="true" required="true" items="#{natuurTaxon.selectSortering()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.taal.allenamen')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="compleet" value="#{natuurTaxon.parameters.compleet}" fullwidth="true" required="true" items="#{natuurTaxon.selectCompleet()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.taal.1')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="taal1" value="#{natuurTaxon.parameters.taal1}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.taal.2')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="taal2" value="#{natuurTaxon.parameters.taal2}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal2)}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.taal.3')}" />
+                <div class="field-body is-normal">
+                  <d:listbox id="taal3" value="#{natuurTaxon.parameters.taal3}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal3)}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.gezien')}" />
+                <div class="field-body is-normal">
+                  <d:selectBooleanCheckbox id="metGezien" value="#{natuurTaxon.parameters.gezien}" />
+                </div>
+              </div>
+
+              <div class="field is-grouped">
+                <p class="control">
+                  <h:commandLink id="pdfTaxalijst" action="#{natuurTaxon.taxalijst}" styleClass="button is-primary is-small">#{i18nTeksten.tekst('button.confirm')}
+                    <f:setPropertyActionListener target="#{natuurTaxon.type}" value="PDF" />
+                  </h:commandLink>
+                </p>
+                <p class="control">
+                  <d:cancel returnto="#{natuur.path}/taxa/taxon.xhtml" aktie="${natuurTaxon.aktie}"/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </h:form>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>
