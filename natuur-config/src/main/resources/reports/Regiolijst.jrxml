@@ -5,7 +5,7 @@
 	<property name="ireport.y" value="0"/>
 	<style name="Column Header" mode="Opaque" forecolor="#FFFFFF" backcolor="#000000" fontName="DejaVu Sans" fontSize="12" isBold="true"/>
 	<style name="Footer" mode="Opaque" forecolor="#000000" backcolor="#FFFFFF" fontName="DejaVu Sans" fontSize="8" isItalic="true"/>
-	<style name="Row" mode="Transparent" fontName="DejaVu Sans" fontSize="10" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
+	<style name="Row" mode="Transparent" fontName="DejaVu Sans" fontSize="9" pdfFontName="DejaVu Sans" pdfEncoding="Identity-H" isPdfEmbedded="true">
 		<conditionalStyle>
 			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
 			<style backcolor="#777777"/>
@@ -25,6 +25,7 @@
 	<field name="taal2" class="java.lang.String"/>
 	<field name="taal3" class="java.lang.String"/>
   <group name="klasseLatijnsenaam" keepTogether="true">
+    <printWhenExpression><![CDATA[$F{klasse} != ""]]></printWhenExpression>
     <groupExpression><![CDATA[$F{klasse}]]></groupExpression>
     <groupHeader>
       <band height="16">

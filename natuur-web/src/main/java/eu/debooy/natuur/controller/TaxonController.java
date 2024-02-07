@@ -27,6 +27,7 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.NatuurConstants;
+import eu.debooy.natuur.NatuurUtils;
 import static eu.debooy.natuur.controller.RegiolijstController.PAR_LIJSTTAAL;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -247,37 +248,8 @@ public class TaxonController extends Natuur {
     return bestand;
   }
 
-  private String getBoolean(boolean schakelaar) {
-    if (schakelaar) {
-      return "☑";
-    }
-
-    return "☐";
-  }
-
   public Taxon getOuder() {
     return ouder;
-  }
-
-  private String getNaam(DetailDto detail, String taal) {
-    if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
-        && detail.hasParentnaam(taal)) {
-      return detail.getNaam(taal);
-    }
-
-    if (!detail.hasTaxonnaam(taal)) {
-      return "";
-    }
-
-    return detail.getNaam(taal);
-  }
-
-  private String getNaam(TaxonDto taxon, String taal) {
-    if (!taxon.hasTaxonnaam(taal)) {
-      return taxon.getLatijnsenaam();
-    }
-
-    return taxon.getNaam(taal);
   }
 
   public Long getOuderNiveau() {
@@ -286,24 +258,6 @@ public class TaxonController extends Natuur {
 
   public Lijstparameter getParameters() {
     return lijstparameters;
-  }
-
-  private String  getParent(String latijnsenaam,
-                            String taal1, String taal2, String taal3) {
-    var parent  = new StringBuilder();
-
-    parent.append(latijnsenaam);
-    if (!taal1.equals(latijnsenaam)) {
-      parent.append("/").append(taal1);
-    }
-    if (!taal2.equals(latijnsenaam)) {
-      parent.append("/").append(taal2);
-    }
-    if (!taal3.equals(latijnsenaam)) {
-      parent.append("/").append(taal3);
-    }
-
-    return parent.toString();
   }
 
   public Taxon getTaxon() {
@@ -673,10 +627,11 @@ public class TaxonController extends Natuur {
                                           TAG_TAAL1, TAG_TAAL2, TAG_TAAL3 });
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
-            getParent(taxonDto.getLatijnsenaam(),
-                      getNaam(taxonDto, taal1),
-                      getNaam(taxonDto, taal2),
-                      getNaam(taxonDto, taal3)));
+            NatuurUtils.getSubtitel(taxonDto.getLatijnsenaam(),
+                                    taxonDto.isUitgestorven(),
+                                    NatuurUtils.getNaam(taxonDto, taal1),
+                                    NatuurUtils.getNaam(taxonDto, taal2),
+                                    NatuurUtils.getNaam(taxonDto, taal3)));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
     exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
     exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
@@ -689,11 +644,13 @@ public class TaxonController extends Natuur {
          .forEachOrdered((rij ->
       exportData.addData(
           new String[] {"",
-                        getBoolean(Boolean.TRUE.equals(gezien)
-                                    && rij.isGezien()),
-                        rij.getLatijnsenaam(),
-                        getNaam(rij, taal1), getNaam(rij, taal2),
-                        getNaam(rij, taal3)})
+                        NatuurUtils.getBoolean(Boolean.TRUE.equals(gezien)
+                                                && rij.isGezien()),
+                        NatuurUtils.getLatijnsenaam(rij.getLatijnsenaam(),
+                                                    rij.isUitgestorven()),
+                        NatuurUtils.getNaam(rij, taal1),
+                        NatuurUtils.getNaam(rij, taal2),
+                        NatuurUtils.getNaam(rij, taal3)})
     ));
 
     var response  =

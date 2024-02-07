@@ -28,7 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
-import eu.debooy.natuur.NatuurConstants;
+import eu.debooy.natuur.NatuurUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
@@ -203,47 +203,8 @@ public class RegiolijstController extends Natuur {
     return bestand;
   }
 
-  private String getBoolean(boolean schakelaar) {
-    if (schakelaar) {
-      return "☑";
-    }
-
-    return "☐";
-  }
-
   public JSONArray getDubbel() {
     return dubbel;
-  }
-
-  private String  getKlasse(String latijnsenaam,
-                            String taal1, String taal2, String taal3) {
-    var resultaat = new StringBuilder();
-
-    resultaat.append(latijnsenaam);
-    if (!taal1.equals(latijnsenaam)) {
-      resultaat.append("/").append(taal1);
-    }
-    if (!taal2.equals(latijnsenaam)) {
-      resultaat.append("/").append(taal2);
-    }
-    if (!taal3.equals(latijnsenaam)) {
-      resultaat.append("/").append(taal3);
-    }
-
-    return resultaat.toString();
-  }
-
-  private String getNaam(DetailDto detail, String taal) {
-    if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
-        && detail.hasParentnaam(taal)) {
-      return detail.getNaam(taal);
-    }
-
-    if (!detail.hasTaxonnaam(taal)) {
-      return "";
-    }
-
-    return detail.getNaam(taal);
   }
 
   public JSONArray getNieuw() {
@@ -328,13 +289,17 @@ public class RegiolijstController extends Natuur {
     rijen.addAll(getDetailService().getVanRegiolijst(regiolijst.getRegioId()));
     rijen.forEach(rij ->
       exportData.addData(
-          new String[] {getKlasse(rij.getParentLatijnsenaam(),
-                                  rij.getParentnaam(taal1),
-                                  rij.getParentnaam(taal2),
-                                  rij.getParentnaam(taal3)),
-                        getBoolean(rij.isGezien()), rij.getLatijnsenaam(),
-                        getNaam(rij, taal1), getNaam(rij, taal2),
-                        getNaam(rij, taal3)})
+          new String[] {NatuurUtils.getSubtitel(rij.getParentLatijnsenaam(),
+                                                rij.isUitgestorven(),
+                                                rij.getParentnaam(taal1),
+                                                rij.getParentnaam(taal2),
+                                                rij.getParentnaam(taal3)),
+                        NatuurUtils.getBoolean(rij.isGezien()),
+                        NatuurUtils.getLatijnsenaam(rij.getLatijnsenaam(),
+                                                    rij.isUitgestorven()),
+                        NatuurUtils.getNaam(rij, taal1),
+                        NatuurUtils.getNaam(rij, taal2),
+                        NatuurUtils.getNaam(rij, taal3)})
     );
 
     var response  =
