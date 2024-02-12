@@ -28,11 +28,15 @@ public final class NatuurConstants {
 
   public static final String  DEF_TAAL          = "nld";
 
+  public static final String  RANG_FAMILIE      = "fa";
+  public static final String  RANG_GESLACHT     = "ge";
   public static final String  RANG_KLASSE       = "kl";
+  public static final String  RANG_ORDE         = "or";
   public static final String  RANG_ONDERSOORT   = "oso";
   public static final String  RANG_SOORT        = "so";
 
   public static final String  LAT_VOGELS        = "Aves";
+  public static final String  LAT_ZOOGDIEREN    = "Mammalia";
 
   public static final String  UITGESTORVEN      = "†";
 

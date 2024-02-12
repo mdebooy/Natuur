@@ -31,6 +31,12 @@ public final class NatuurUtils {
     throw new IllegalStateException("Utility class");
   }
 
+  public static String formatLatijnsenaam(String latijnsenaam) {
+    return (latijnsenaam.substring(0, 1).toUpperCase()
+            + latijnsenaam.substring(1).toLowerCase())
+                .replaceAll(NatuurConstants.UITGESTORVEN, "").trim();
+  }
+
   public static String getBoolean(boolean schakelaar) {
     if (schakelaar) {
       return "☑";
@@ -81,11 +87,15 @@ public final class NatuurUtils {
     resultaat.append(NatuurUtils.getLatijnsenaam(latijnsenaam, uitgestorven));
 
     Arrays.asList(talen).stream()
-                        .filter(taal -> DoosUtils.isNotBlankOrNull(taal))
+                        .filter(DoosUtils::isNotBlankOrNull)
                         .filter(taal -> !taal.equals(latijnsenaam))
                         .forEachOrdered(taal ->
                                 resultaat.append("/").append(taal));
 
     return resultaat.toString();
+  }
+
+  public static Boolean isUitgestorven(String latijnsenaam) {
+    return latijnsenaam.endsWith(NatuurConstants.UITGESTORVEN);
   }
 }
