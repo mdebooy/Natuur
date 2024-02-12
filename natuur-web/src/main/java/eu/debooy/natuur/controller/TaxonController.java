@@ -76,6 +76,8 @@ public class TaxonController extends Natuur {
 
   private static final  String  FMT_NAAM      = "%s (%s)";
 
+  private static final  String  LBL_LATIJSENAAM = "label.latijnsenaam";
+
   private static final  String  TAB_KINDEREN  = "Kinderen";
   private static final  String  TAB_NAMEN     = "Namen";
 
@@ -414,7 +416,6 @@ public class TaxonController extends Natuur {
     }
 
     try {
-      var latijnsenaam  = taxon.getLatijnsenaam();
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           taxon.persist(taxonDto);
@@ -427,6 +428,7 @@ public class TaxonController extends Natuur {
           update();
           break;
         case PersistenceConstants.UPDATE:
+          var latijnsenaam  = taxonDto.getLatijnsenaam();
           taxon.persist(taxonDto);
           getTaxonService().save(taxonDto);
           bepaalOuder(taxon.getParentId());
@@ -519,7 +521,7 @@ public class TaxonController extends Natuur {
     List<SelectItem>  items = new LinkedList<>();
 
     items.add(new SelectItem(TaxonDto.COL_LATIJNSENAAM,
-                             getTekst("label.latijnsenaam")));
+                             getTekst(LBL_LATIJSENAAM)));
     items.add(new SelectItem(TAG_TAAL1, getTekst("label.taal.1")));
     items.add(new SelectItem(TAG_TAAL2, getTekst("label.taal.2")));
     items.add(new SelectItem(TAG_TAAL3, getTekst("label.taal.3")));
@@ -564,7 +566,7 @@ public class TaxonController extends Natuur {
 
     items.add(new SelectItem(TaxonDto.COL_VOLGNUMMER,
                              getTekst("label.volgnummer")));
-    items.add(new SelectItem(TAG_LATIJN, getTekst("label.latijnsenaam")));
+    items.add(new SelectItem(TAG_LATIJN, getTekst(LBL_LATIJSENAAM)));
     items.add(new SelectItem(TAG_TAAL1,  getTekst("label.taal.1")));
     items.add(new SelectItem(TAG_TAAL2,  getTekst("label.taal.2")));
     items.add(new SelectItem(TAG_TAAL3,  getTekst("label.taal.3")));
@@ -632,7 +634,7 @@ public class TaxonController extends Natuur {
                                     NatuurUtils.getNaam(taxonDto, taal1),
                                     NatuurUtils.getNaam(taxonDto, taal2),
                                     NatuurUtils.getNaam(taxonDto, taal3)));
-    exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
+    exportData.addVeld("LabelLatijnsenaam", getTekst(LBL_LATIJSENAAM));
     exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
     exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
     exportData.addVeld("LabelTaal3",        iso6392tNaam(taal3, taal3));
@@ -780,16 +782,15 @@ public class TaxonController extends Natuur {
     var json  = new JSONObject();
 
     if (item.hasTaxonnaam(taal)) {
-      if (!item.getTaxonnaam(taal).getNaam().equals(naam)) {
-        if (wijzigen) {
-          taxonToJson(item, taal, naam, json);
-          json.put(TAG_OUD, item.getTaxonnaam(taal).getNaam());
-          resultaat.add(json);
+      if (!item.getTaxonnaam(taal).getNaam().equals(naam)
+          && wijzigen) {
+        taxonToJson(item, taal, naam, json);
+        json.put(TAG_OUD, item.getTaxonnaam(taal).getNaam());
+        resultaat.add(json);
 
-          item.getTaxonnaam(taal).setNaam(naam);
+        item.getTaxonnaam(taal).setNaam(naam);
 
-          return true;
-        }
+        return true;
       }
 
       return false;
