@@ -175,7 +175,7 @@ public class TaxonController extends Natuur {
       var parentId  = Long.valueOf(ec.getRequestParameterMap()
                                      .get(TaxonDto.COL_TAXONID));
       taxon.setParent(getTaxonService().taxon(parentId));
-      ouderNiveau   = taxon.getParentNiveau();
+      bepaalOuder(parentId);
     } else {
       taxon.setRang(new Rang(getRangService().rang(getParameter(DEF_RANG))));
     }
@@ -544,8 +544,9 @@ public class TaxonController extends Natuur {
     rijen.addAll(getTaxonService().getOuders(niveau));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
-                               String.format(FMT_NAAM, rij.getNaam(getGebruikersTaalInIso6392t()),
-                                                       rij.getLatijnsenaam()))));
+                               String.format(FMT_NAAM,
+                                  rij.getNaam(getGebruikersTaalInIso6392t()),
+                                             rij.getLatijnsenaam()))));
 
     return items;
   }
