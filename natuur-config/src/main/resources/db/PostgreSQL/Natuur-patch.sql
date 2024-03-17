@@ -117,6 +117,9 @@ ADD CONSTRAINT CHK_RNM_TAAL  CHECK (TAAL = LOWER(TAAL));
 ALTER TABLE NATUUR.TAXONNAMEN
  ADD CONSTRAINT CHK_TNM_TAAL  CHECK (TAAL = LOWER(TAAL));
 
+CREATE INDEX IX_TAX_PARENT_ID
+  ON NATUUR.TAXA USING (PARENT_ID);
+
 GRANT SELECT                         ON TABLE NATUUR.DETAILS          TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT   TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.OVERZICHT        TO NATUUR_SEL;
@@ -127,6 +130,9 @@ GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT   TO NATUUR_
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO        TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.OVERZICHT        TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE        TO NATUUR_UPD;
+
+COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s gemaakt bij de waarnemingen.';
+COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar de waarnemingen zijn gedaan.';
 
 COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';

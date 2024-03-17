@@ -309,6 +309,9 @@ ALTER TABLE NATUUR.WAARNEMINGEN
   ON UPDATE RESTRICT;
 
 -- Indexen
+CREATE INDEX IX_TAX_PARENT_ID
+  ON NATUUR.TAXA USING (PARENT_ID);
+
 CREATE UNIQUE INDEX UK_WNM_DATUM_GEBIED_TAXON
   ON NATUUR.WAARNEMINGEN (DATUM, GEBIED_ID, TAXON_ID);
 
@@ -375,14 +378,14 @@ COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.RANG                IS 'Dit is de rang v
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_SEQ           IS 'Dit is het volgnummer van de foto van deze taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.TAXON_ID            IS 'De sleutel van de taxon.';
 COMMENT ON COLUMN NATUUR.FOTO_OVERZICHT.VOLGNUMMER          IS 'Het volgnummer van de taxon.';
-COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s.';
+COMMENT ON TABLE  NATUUR.FOTOS                              IS 'Deze tabel bevat alle foto''s gemaakt bij de waarnemingen.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_BESTAND                 IS 'Het bestand met de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_DETAIL                  IS 'Detail van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.FOTO_ID                      IS 'De sleutel van de foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.OPMERKING                    IS 'Een opmerking voor deze foto.';
 COMMENT ON COLUMN NATUUR.FOTOS.TAXON_SEQ                    IS 'Een volgnummer voor de foto voor de betreffende taxon.';
 COMMENT ON COLUMN NATUUR.FOTOS.WAARNEMING_ID                IS 'De sleutel van de waarneming.';
-COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar foto''s gemaakt zijn.';
+COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat alle gebieden waar de waarnemingen zijn gedaan.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.GEBIED_ID                 IS 'De sleutel van het gebied.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.LAND_ID                   IS 'De sleutel van het land waarin dit gebied ligt.';
 COMMENT ON COLUMN NATUUR.GEBIEDEN.LATITUDE                  IS 'De latitude (N of S).';
