@@ -37,14 +37,14 @@ public final class GebiedValidator extends NatuurValidator {
   protected static final  String  ERR_LAT_MIN     =
       "_I18N.error.latitude.minuten";
   protected static final  String  ERR_LAT_SEC     =
-      "_I18N.error.latitude.secondes";
+      "_I18N.error.latitude.seconden";
   protected static final  String  ERR_LONGITUDE   = "_I18N.error.longitude";
   protected static final  String  ERR_LONG_GRD    =
       "_I18N.error.longitude.graden";
   protected static final  String  ERR_LONG_MIN    =
       "_I18N.error.longitude.minuten";
   protected static final  String  ERR_LONG_SEC    =
-      "_I18N.error.longitude.secondes";
+      "_I18N.error.longitude.seconden";
   protected static final  String  LBL_LAND        = "_I18N.label.land";
 
   private GebiedValidator() {}
