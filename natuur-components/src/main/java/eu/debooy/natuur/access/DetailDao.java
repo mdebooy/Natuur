@@ -62,6 +62,10 @@ public class DetailDao extends Dao<DetailDto> {
     return namedQuery(DetailDto.QRY_SOORTMETPARENT, params);
   }
 
+  public List<DetailDto> getUitgestorvenPerKlasse() {
+    return namedQuery(DetailDto.QRY_UITGESTORVENPERKLASSE);
+  }
+
   public List<DetailDto> getVanRegiolijst(Long regioId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(DetailDto.PAR_REGIOID, regioId);

@@ -160,3 +160,12 @@ function getTaxonnaam(taxon, taal) {
 
   return(taxon.taxonnamen[naam].naam);
 }
+
+function taxonnaam(taxonnamen, taal, defaultnaam='') {
+  var naam = taxonnamen.findIndex(i => i.taal === taal);
+  if (naam < 0) {
+    return defaultnaam;
+  }
+
+  return(taxonnamen[naam].naam);
+}

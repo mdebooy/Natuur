@@ -128,6 +128,8 @@ public class Natuur extends DoosBean {
   protected static final  String  TAXONNAMENUPLOAD_REDIRECT =
       "/taxa/taxonnaamupload.xhtml";
   protected static final  String  USER_ROLE                 = "natuur-user";
+  protected static final  String  UITGESTORVEN_REDIRECT     =
+      "/statistieken/uitgestorven.xhtml";
   protected static final  String  VIEW_ROLE                 = "natuur-view";
   protected static final  String  WAARNEMING_REDIRECT       =
       "/waarnemingen/waarneming.xhtml";
@@ -169,6 +171,8 @@ public class Natuur extends DoosBean {
                                           "menu.waarnemingen.per.land");
       addDropdownmenuitem(DD_STATS, AANTALPERREGIO_REDIRECT,
                                           "menu.aantal.per.regiolijst");
+      addDropdownmenuitem(DD_STATS, UITGESTORVEN_REDIRECT,
+                                          "menu.uitgestorven");
     }
   }
 

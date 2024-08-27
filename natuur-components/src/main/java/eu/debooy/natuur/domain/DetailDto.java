@@ -56,6 +56,7 @@ import org.apache.openjpa.persistence.ReadOnly;
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
 @NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.rang in ('so', 'oso')")
+@NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.uitgestorven = 'J'")
 @NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regioId=:regioId")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
@@ -64,10 +65,15 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   public static final String  PAR_PARENTID  = "parentId";
   public static final String  PAR_REGIOID   = "regioId";
 
-  public static final String  QRY_SOORTMETKLASSE  = "detailSoortMetKlasse";
-  public static final String  QRY_SOORTMETPARENT  = "detailSoortMetParent";
-  public static final String  QRY_VANREGIIOLIJST  = "detailVanRegiolijst";
-  public static final String  QRY_WAARGENOMEN     = "detailWaargenomen";
+  public static final String  QRY_SOORTMETKLASSE        =
+      "detailSoortMetKlasse";
+  public static final String  QRY_SOORTMETPARENT        =
+      "detailSoortMetParent";
+  public static final String  QRY_UITGESTORVENPERKLASSE =
+      "detailUitgestorvenPerKlasse";
+  public static final String  QRY_VANREGIIOLIJST        =
+      "detailVanRegiolijst";
+  public static final String  QRY_WAARGENOMEN           = "detailWaargenomen";
 
   @Transient
   private boolean gezien              = false;

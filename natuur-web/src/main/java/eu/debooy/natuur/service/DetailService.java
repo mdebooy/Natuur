@@ -93,6 +93,18 @@ public class DetailService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<DetailDto> getUitgestorvenPerKlasse() {
+    List<DetailDto> soorten = new ArrayList<>();
+
+    try {
+      soorten.addAll(detailDao.getUitgestorvenPerKlasse());
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
+  }
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<DetailDto> getVanRegiolijst(Long regioId) {
     List<DetailDto> soorten = new ArrayList<>();
 
@@ -127,6 +139,18 @@ public class DetailService {
   }
 
   @GET
+  @Path("/uitgestorven")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response uitgestorven() {
+    try {
+      return Response.ok().entity(detailDao.getUitgestorvenPerKlasse()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/uitgestorven")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response waarnemingen() {
     try {
