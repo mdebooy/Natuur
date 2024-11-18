@@ -363,6 +363,11 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return gezien;
   }
 
+  @Transient
+  public boolean isOpFoto(){
+    return opFoto.equals(1);
+  }
+
   public boolean isUitgestorven() {
     return getUitgestorven();
   }
