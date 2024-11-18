@@ -207,6 +207,14 @@ public class RegiolijstController extends Natuur {
     return dubbel;
   }
 
+  private String getGezien(boolean gezien, boolean opFoto) {
+    if (opFoto) {
+      return NatuurUtils.getCamera(true);
+    }
+
+    return NatuurUtils.getBoolean(gezien);
+  }
+
   public JSONArray getNieuw() {
     return nieuw;
   }
@@ -294,7 +302,7 @@ public class RegiolijstController extends Natuur {
                                                 rij.getParentnaam(taal1),
                                                 rij.getParentnaam(taal2),
                                                 rij.getParentnaam(taal3)),
-                        NatuurUtils.getBoolean(rij.isGezien()),
+                        getGezien(rij.isGezien(), rij.isOpFoto()),
                         NatuurUtils.getLatijnsenaam(rij.getLatijnsenaam(),
                                                     rij.isUitgestorven()),
                         NatuurUtils.getNaam(rij, taal1),
