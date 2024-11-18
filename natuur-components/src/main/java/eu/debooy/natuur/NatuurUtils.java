@@ -45,6 +45,14 @@ public final class NatuurUtils {
     return "☐";
   }
 
+  public static String getCamera(boolean schakelaar) {
+    if (schakelaar) {
+      return "☒";
+    }
+
+    return "";
+  }
+
   public static String getLatijnsenaam(String latijnsenaam,
                                        Boolean uitgestorven) {
     if (Boolean.FALSE.equals(uitgestorven)) {
@@ -59,12 +67,13 @@ public final class NatuurUtils {
       return detail.getNaam(taal);
     }
 
+    var naam  = "";
     if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
         && detail.hasParentnaam(taal)) {
-      return detail.getNaam(taal);
+      naam  = detail.getNaam(taal);
     }
 
-    return "";
+    return naam.equals(detail.getLatijnsenaam()) ? "" : naam;
   }
 
   public static String getNaam(TaxonDto taxon, String taal) {
@@ -72,12 +81,13 @@ public final class NatuurUtils {
       return taxon.getNaam(taal);
   }
 
+    var naam  = "";
   if (taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
       && taxon.hasParentnaam(taal)) {
-      return taxon.getNaam(taal);
+      naam  = taxon.getNaam(taal);
     }
 
-    return "";
+    return naam.equals(taxon.getLatijnsenaam()) ? "" : naam;
   }
 
   public static String getSubtitel(String latijnsenaam, boolean uitgestorven,
