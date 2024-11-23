@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
@@ -37,10 +38,18 @@ public final class WaarnemingValidator extends NatuurValidator {
   private WaarnemingValidator() {}
 
   public static List<Message> valideer(WaarnemingDto waarneming) {
+    if (null == waarneming) {
+      return ComponentsUtils.objectIsNull(WaarnemingDto.class.getSimpleName());
+    }
+
     return valideer(new Waarneming(waarneming));
   }
 
   public static List<Message> valideer(Waarneming waarneming) {
+    if (null == waarneming) {
+      return ComponentsUtils.objectIsNull(Waarneming.class.getSimpleName());
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerAantal(waarneming.getAantal(), fouten);

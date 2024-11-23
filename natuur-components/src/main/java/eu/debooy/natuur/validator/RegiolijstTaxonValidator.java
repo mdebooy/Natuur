@@ -17,6 +17,7 @@
 
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -38,10 +39,20 @@ public class RegiolijstTaxonValidator {
   private RegiolijstTaxonValidator() {}
 
   public static List<Message> valideer(RegiolijstTaxonDto regiolijstTaxon) {
-    return valideer(new RegiolijstTaxon(regiolijstTaxon));
+     if (null == regiolijstTaxon) {
+      return
+        ComponentsUtils.objectIsNull(RegiolijstTaxonDto.class.getSimpleName());
+    }
+
+   return valideer(new RegiolijstTaxon(regiolijstTaxon));
   }
 
   public static List<Message> valideer(RegiolijstTaxon regiolijstTaxon) {
+    if (null == regiolijstTaxon) {
+      return
+        ComponentsUtils.objectIsNull(RegiolijstTaxon.class.getSimpleName());
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerRegioId(regiolijstTaxon.getRegioId(), fouten);

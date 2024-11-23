@@ -17,6 +17,7 @@
 
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
@@ -40,10 +41,18 @@ public class RegiolijstValidator extends NatuurValidator {
   private RegiolijstValidator() {}
 
   public static List<Message> valideer(RegiolijstDto regiolijst) {
+    if (null == regiolijst) {
+      return ComponentsUtils.objectIsNull(RegiolijstDto.class.getSimpleName());
+    }
+
     return valideer(new Regiolijst(regiolijst));
   }
 
   public static List<Message> valideer(Regiolijst regiolijst) {
+    if (null == regiolijst) {
+      return ComponentsUtils.objectIsNull(Regiolijst.class.getSimpleName());
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerDatum(regiolijst.getDatum(), fouten);

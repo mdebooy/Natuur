@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -50,10 +51,18 @@ public final class GebiedValidator extends NatuurValidator {
   private GebiedValidator() {}
 
   public static List<Message> valideer(GebiedDto gebied) {
+    if (null == gebied) {
+      return ComponentsUtils.objectIsNull(GebiedDto.class.getSimpleName());
+    }
+
     return valideer(new Gebied(gebied));
   }
 
   public static List<Message> valideer(Gebied gebied) {
+    if (null == gebied) {
+      return ComponentsUtils.objectIsNull(Gebied.class.getSimpleName());
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerLandId(gebied.getLandId(), fouten);

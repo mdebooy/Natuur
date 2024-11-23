@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -32,10 +33,18 @@ public final class TaxonnaamValidator extends NatuurValidator {
   private TaxonnaamValidator() {}
 
   public static List<Message> valideer(TaxonnaamDto taxonnaam) {
+    if (null == taxonnaam) {
+      return ComponentsUtils.objectIsNull(TaxonnaamDto.class.getSimpleName());
+    }
+
     return valideer(new Taxonnaam(taxonnaam));
   }
 
   public static List<Message> valideer(Taxonnaam taxonnaam) {
+    if (null == taxonnaam) {
+      return ComponentsUtils.objectIsNull(Taxonnaam.class.getSimpleName());
+    }
+
     List<Message> fouten  = new ArrayList<>();
 
     valideerNaam(DoosUtils.nullToEmpty(taxonnaam.getNaam()), fouten);
@@ -56,13 +65,13 @@ public final class TaxonnaamValidator extends NatuurValidator {
     }
 
     if (naam.length() > 255) {
-    fouten.add(new Message.Builder()
-                          .setAttribute(TaxonnaamDto.COL_NAAM)
-                          .setSeverity(Message.ERROR)
-                          .setMessage(PersistenceConstants.MAXLENGTH)
-                          .setParams(new Object[]{NatuurValidator.LBL_NAAM,
-                                                  255})
-                          .build());
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_NAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{NatuurValidator.LBL_NAAM,
+                                                    255})
+                            .build());
     }
   }
 
@@ -78,12 +87,13 @@ public final class TaxonnaamValidator extends NatuurValidator {
     }
 
     if (taal.length() != 3) {
-    fouten.add(new Message.Builder()
-                          .setAttribute(TaxonnaamDto.COL_TAAL)
-                          .setSeverity(Message.ERROR)
-                          .setMessage(PersistenceConstants.FIXLENGTH)
-                          .setParams(new Object[]{NatuurValidator.LBL_TAAL, 3})
-                          .build());
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_TAAL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.FIXLENGTH)
+                            .setParams(new Object[]
+                                          {NatuurValidator.LBL_TAAL, 3})
+                            .build());
     }
   }
 }

@@ -51,7 +51,7 @@ public final class TaxonValidator extends NatuurValidator {
 
   public static List<Message> valideer(TaxonDto taxon) {
     if (null == taxon) {
-      return ComponentsUtils.objectIsNull("TaxonDto");
+      return ComponentsUtils.objectIsNull(TaxonDto.class.getSimpleName());
     }
 
     return valideer(new Taxon(taxon));
@@ -59,7 +59,7 @@ public final class TaxonValidator extends NatuurValidator {
 
   public static List<Message> valideer(Taxon taxon) {
     if (null == taxon) {
-      return ComponentsUtils.objectIsNull("Taxon");
+      return ComponentsUtils.objectIsNull(Taxon.class.getSimpleName());
     }
 
     List<Message> fouten  = new ArrayList<>();

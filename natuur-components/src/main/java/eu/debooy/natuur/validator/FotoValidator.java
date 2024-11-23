@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.validator;
 
+import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -36,11 +37,19 @@ public final class FotoValidator extends NatuurValidator {
   private FotoValidator() {}
 
   public static List<Message> valideer(FotoDto foto) {
+    if (null == foto) {
+      return ComponentsUtils.objectIsNull(FotoDto.class.getSimpleName());
+    }
+
     return valideer(new Foto(foto));
   }
 
   public static List<Message> valideer(Foto foto) {
     List<Message> fouten  = new ArrayList<>();
+    if (null == foto) {
+      return ComponentsUtils.objectIsNull(Foto.class.getSimpleName());
+    }
+
 
     valideerFotoBestand(DoosUtils.nullToEmpty(foto.getFotoBestand()), fouten);
     valideerFotoDetail(DoosUtils.nullToEmpty(foto.getFotoDetail()), fouten);
