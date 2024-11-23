@@ -63,6 +63,28 @@ public class TaxonnaamValidatorTest {
                  .build();
 
   @Test
+  public void testNullTaxonnaam() {
+    Taxonnaam     taxonnaam = null;
+    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Taxonnaam.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullTaxonnaamDto() {
+    TaxonnaamDto  taxonnaam = null;
+    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(TaxonnaamDto.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
   public void testValideerFouteTaxonnaam() {
     Taxonnaam     taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();

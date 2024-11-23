@@ -75,6 +75,26 @@ public class FotoValidatorTest {
   }
 
   @Test
+  public void testNullFoto() {
+    Foto          foto    = null;
+    List<Message> result  = FotoValidator.valideer(foto);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Foto.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullFotoDto() {
+    FotoDto       foto    = null;
+    List<Message> result  = FotoValidator.valideer(foto);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(FotoDto.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
   public void testValideerFouteFoto() {
     Foto          foto      = new Foto();
     List<Message> expResult = new ArrayList<>();

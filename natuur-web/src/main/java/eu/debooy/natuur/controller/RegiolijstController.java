@@ -28,6 +28,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.RegiolijstDto;
@@ -40,6 +41,7 @@ import eu.debooy.natuur.form.Regiolijstparameter;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.validator.RegiolijstTaxonValidator;
 import eu.debooy.natuur.validator.RegiolijstValidator;
+import eu.debooy.natuur.validator.RegiolijstparameterValidator;
 import eu.debooy.sedes.component.entity.Regio;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -77,7 +79,6 @@ public class RegiolijstController extends Natuur {
       "natuur.titel.regiolijsttaxon.update";
   private static final  String  DTIT_UPLOAD   =
       "natuur.titel.regiolijst.upload";
-  public  static final  String  PAR_LIJSTTAAL = "natuur.regiolijst.taal.";
   private static final  String  TIT_CREATE    =
       "natuur.titel.regiolijst.create";
   private static final  String  TIT_RETRIEVE  =
@@ -259,9 +260,12 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    regiolijstparameters.setTaal1(getParameter(PAR_LIJSTTAAL + "1"));
-    regiolijstparameters.setTaal2(getParameter(PAR_LIJSTTAAL + "2"));
-    regiolijstparameters.setTaal3(getParameter(PAR_LIJSTTAAL + "3"));
+    regiolijstparameters.setTaal1(getParameter(NatuurConstants.PAR_LIJSTTAAL
+                                                + "1"));
+    regiolijstparameters.setTaal2(getParameter(NatuurConstants.PAR_LIJSTTAAL
+                                                + "2"));
+    regiolijstparameters.setTaal3(getParameter(NatuurConstants.PAR_LIJSTTAAL
+                                                + "3"));
 
     redirect(REGIOLIJSTPARAMS_REDIRECT);
   }
@@ -269,6 +273,12 @@ public class RegiolijstController extends Natuur {
   public void regiolijst() {
     if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var messages  = RegiolijstparameterValidator.valideer(regiolijstparameters);
+    if (!messages.isEmpty()) {
+      addMessage(messages);
       return;
     }
 

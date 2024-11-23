@@ -63,6 +63,27 @@ public class RangnaamValidatorTest {
                  .build();
 
   @Test
+  public void testNullRangnaam() {
+    Rangnaam      rangnaam  = null;
+    List<Message> result    = RangnaamValidator.valideer(rangnaam);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Rangnaam.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullRangnaamDto() {
+    RangnaamDto   rangnaam  = null;
+    List<Message> result    = RangnaamValidator.valideer(rangnaam);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(RangnaamDto.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
   public void testValideerFouteRangnaam() {
     Rangnaam      rangnaam  = new Rangnaam();
     List<Message> expResult = new ArrayList<>();

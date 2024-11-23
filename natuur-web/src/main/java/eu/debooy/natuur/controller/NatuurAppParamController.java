@@ -18,6 +18,7 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.controller.AppParamController;
 import eu.debooy.natuur.Natuur;
+import eu.debooy.natuur.NatuurConstants;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
@@ -35,9 +36,9 @@ public class NatuurAppParamController extends AppParamController {
     addSpeciaal(Natuur.DEF_GEBIEDID);
     addSpeciaal(Natuur.DEF_LANDID);
     addSpeciaal(Natuur.DEF_RANG);
-    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "1");
-    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "2");
-    addSpeciaal(RegiolijstController.PAR_LIJSTTAAL + "3");
+    addSpeciaal(NatuurConstants.PAR_LIJSTTAAL + "1");
+    addSpeciaal(NatuurConstants.PAR_LIJSTTAAL + "2");
+    addSpeciaal(NatuurConstants.PAR_LIJSTTAAL + "3");
   }
 
   public Long getGebiedId() {

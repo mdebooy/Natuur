@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Marco de Booij
+ * Copyright (c) 2024 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -17,24 +17,23 @@
 
 package eu.debooy.natuur.form;
 
+import eu.debooy.natuur.TestConstants;
+import static org.junit.Assert.assertEquals;
+import org.junit.Test;
+
 
 /**
  * @author Marco de Booij
  */
-public class AantalPerId {
-  private final Long  aantal;
-  private final Long  id;
+public class AantalPerRegioTest {
+  @Test
+  public void testInit() {
+    var instance  = new AantalPerRegio(TestConstants.REGIOID,
+                                       TestConstants.AANTAL,
+                                       TestConstants.GEZIEN);
 
-  public AantalPerId(Long id, Long aantal) {
-    this.aantal = aantal;
-    this.id     = id;
-  }
-
-  public Long getAantal() {
-    return aantal;
-  }
-
-  public Long getId() {
-    return id;
+    assertEquals(TestConstants.AANTAL, instance.getAantal());
+    assertEquals(TestConstants.GEZIEN, instance.getGezien());
+    assertEquals(TestConstants.REGIOID, instance.getRegioId());
   }
 }

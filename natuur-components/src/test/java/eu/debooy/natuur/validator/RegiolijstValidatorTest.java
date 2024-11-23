@@ -208,4 +208,26 @@ public class RegiolijstValidatorTest {
     List<Message> result    = RegiolijstValidator.valideer(instance);
     assertEquals(expResult.toString(), result.toString());
   }
+
+  @Test
+  public void testNullRegiolijst() {
+    Regiolijst    instance  = null;
+    List<Message> result    = RegiolijstValidator.valideer(instance);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Regiolijst.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullRegiolijstDto() {
+    RegiolijstDto instance  = null;
+    List<Message> result    = RegiolijstValidator.valideer(instance);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(RegiolijstDto.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Marco de Booij
+ * Copyright (c) 2020 Marco de Booij
  *
  * Licensed under the EUPL, Version 1.2 or - as soon they will be approved by
  * the European Commission - subsequent versions of the EUPL (the "Licence");
@@ -14,27 +14,24 @@
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
-
-package eu.debooy.natuur.form;
+package eu.debooy.natuur;
 
 
 /**
  * @author Marco de Booij
  */
-public class AantalPerId {
-  private final Long  aantal;
-  private final Long  id;
+public final class TestConstants {
+  public static final Long    AANTAL    = Long.valueOf(10);
+  public static final Long    GEZIEN    = Long.valueOf(8);
+  public static final Long    ID        = Long.valueOf(2112);
+  public static final Long    REGIOID   = Long.valueOf(126);
+  public static final String  SORTERING = "sortering";
+  public static final String  TAAL      = "nld";
+  public static final String  TAAL_FOUT = "xxxx";
+  public static final String  TAAL_GR   = "por";
+  public static final String  TAAL_KL   = "eng";
 
-  public AantalPerId(Long id, Long aantal) {
-    this.aantal = aantal;
-    this.id     = id;
-  }
-
-  public Long getAantal() {
-    return aantal;
-  }
-
-  public Long getId() {
-    return id;
+  private TestConstants() {
+    throw new IllegalStateException("Utility class");
   }
 }

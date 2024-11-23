@@ -16,15 +16,8 @@
  */
 package eu.debooy.natuur.form;
 
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.OPFOTO;
-import static eu.debooy.natuur.TestConstants.PCTOPFOTO;
-import static eu.debooy.natuur.TestConstants.TAXONID;
-import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
-import static eu.debooy.natuur.TestConstants.TOTAAL;
-import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
-import static eu.debooy.natuur.TestConstants.WAARGENOMEN;
+import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.domain.OverzichtDto;
 import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -52,12 +45,14 @@ public class RangtotaalTest {
     leeg.setWaargenomen(0);
 
     rangtotaal  = new Rangtotaal();
-    rangtotaal.setLatijnsenaam(LATIJNSENAAM);
-    rangtotaal.setTaxonId(TAXONID);
-    rangtotaal.setTotaal(TOTAAL);
-    rangtotaal.setOpFoto(OPFOTO);
-    rangtotaal.setVolgnummer(VOLGNUMMER);
-    rangtotaal.setWaargenomen(WAARGENOMEN);
+    rangtotaal.setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    rangtotaal.setNaam(TestConstants.RANGNAAM);
+    rangtotaal.setOpFoto(TestConstants.OPFOTO);
+    rangtotaal.setRang(TestConstants.RANG);
+    rangtotaal.setTaxonId(TestConstants.TAXONID);
+    rangtotaal.setTotaal(TestConstants.TOTAAL);
+    rangtotaal.setVolgnummer(TestConstants.VOLGNUMMER);
+    rangtotaal.setWaargenomen(TestConstants.WAARGENOMEN);
   }
 
   @Test
@@ -65,8 +60,8 @@ public class RangtotaalTest {
     var instance  = new Rangtotaal(leeg);
 
     assertEquals(Integer.valueOf(0), instance.getOpFoto());
-    instance.addOpFoto(OPFOTO);
-    assertEquals(OPFOTO, instance.getOpFoto());
+    instance.addOpFoto(TestConstants.OPFOTO);
+    assertEquals(TestConstants.OPFOTO, instance.getOpFoto());
   }
 
   @Test
@@ -74,8 +69,8 @@ public class RangtotaalTest {
     var instance  = new Rangtotaal(leeg);
 
     assertEquals(Integer.valueOf(0), instance.getTotaal());
-    instance.addTotaal(TOTAAL);
-    assertEquals(TOTAAL, instance.getTotaal());
+    instance.addTotaal(TestConstants.TOTAAL);
+    assertEquals(TestConstants.TOTAAL, instance.getTotaal());
   }
 
   @Test
@@ -83,8 +78,8 @@ public class RangtotaalTest {
     var instance  = new Rangtotaal(leeg);
 
     assertEquals(Integer.valueOf(0), instance.getWaargenomen());
-    instance.addWaargenomen(WAARGENOMEN);
-    assertEquals(WAARGENOMEN, instance.getWaargenomen());
+    instance.addWaargenomen(TestConstants.WAARGENOMEN);
+    assertEquals(TestConstants.WAARGENOMEN, instance.getWaargenomen());
   }
 
   @Test
@@ -93,7 +88,7 @@ public class RangtotaalTest {
     var groter  = new Rangtotaal(leeg);
     var kleiner = new Rangtotaal(leeg);
 
-    gelijk.setTaxonId(TAXONID);
+    gelijk.setTaxonId(TestConstants.TAXONID);
     groter.setTaxonId(rangtotaal.getTaxonId() + 1);
     kleiner.setTaxonId(rangtotaal.getTaxonId() - 1);
 
@@ -108,7 +103,7 @@ public class RangtotaalTest {
 
     assertEquals(rangtotaal, rangtotaal);
     assertNotEquals(rangtotaal, null);
-    assertNotEquals(rangtotaal, NAAM);
+    assertNotEquals(rangtotaal, TestConstants.RANGNAAM);
     assertNotEquals(rangtotaal, instance);
 
     instance.setTaxonId(rangtotaal.getTaxonId());
@@ -119,52 +114,84 @@ public class RangtotaalTest {
 
   @Test
   public void testGetLatijnsenaam() {
-    assertEquals(LATIJNSENAAM, rangtotaal.getLatijnsenaam());
+    assertEquals(TestConstants.LATIJNSENAAM, rangtotaal.getLatijnsenaam());
   }
 
   @Test
   public void testGetNaam() {
-    assertNull(rangtotaal.getNaam());
+    assertEquals(TestConstants.RANGNAAM, rangtotaal.getNaam());
   }
 
   @Test
   public void testGetOpFoto() {
-    assertEquals(OPFOTO, rangtotaal.getOpFoto());
+    assertEquals(TestConstants.OPFOTO, rangtotaal.getOpFoto());
   }
 
   @Test
   public void testGetPctOpFoto() {
-    assertEquals(PCTOPFOTO, rangtotaal.getPctOpFoto());
+    assertEquals(TestConstants.PCTOPFOTO, rangtotaal.getPctOpFoto());
+  }
+
+  @Test
+  public void testGetRang() {
+    assertEquals(TestConstants.RANG, rangtotaal.getRang());
   }
 
   @Test
   public void testGetTaxonId() {
-    assertEquals(TAXONID, rangtotaal.getTaxonId());
+    assertEquals(TestConstants.TAXONID, rangtotaal.getTaxonId());
   }
 
   @Test
   public void testGetTotaal() {
-    assertEquals(TOTAAL, rangtotaal.getTotaal());
+    assertEquals(TestConstants.TOTAAL, rangtotaal.getTotaal());
   }
 
   @Test
   public void testGetVolgnummer() {
-    assertEquals(VOLGNUMMER, rangtotaal.getVolgnummer());
+    assertEquals(TestConstants.VOLGNUMMER, rangtotaal.getVolgnummer());
   }
 
   @Test
   public void testGetWaargenomen() {
-    assertEquals(WAARGENOMEN, rangtotaal.getWaargenomen());
+    assertEquals(TestConstants.WAARGENOMEN, rangtotaal.getWaargenomen());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TAXONID_HASH, rangtotaal.hashCode());
+    assertEquals(TestConstants.TAXONID_HASH, rangtotaal.hashCode());
   }
 
   @Test
   public void testInit1() {
     var instance  = new Rangtotaal();
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpFoto());
+    assertNull(instance.getRang());
+    assertNull(instance.getTaxonId());
+    assertNull(instance.getTotaal());
+    assertNull(instance.getVolgnummer());
+    assertNull(instance.getWaargenomen());
+  }
+
+  @Test
+  public void testInit2() {
+    var instance  = new Rangtotaal(new OverzichtDto());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getOpFoto());
+    assertNull(instance.getTaxonId());
+    assertNull(instance.getTotaal());
+    assertNull(instance.getVolgnummer());
+    assertNull(instance.getWaargenomen());
+  }
+
+  @Test
+  public void testInit3() {
+    var instance  = new Rangtotaal(new OverzichtDto(), TestConstants.TAAL);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -182,6 +209,7 @@ public class RangtotaalTest {
     assertEquals(rangtotaal.getLatijnsenaam(), instance.getLatijnsenaam());
     assertEquals(rangtotaal.getNaam(), instance.getNaam());
     assertEquals(rangtotaal.getOpFoto(), instance.getOpFoto());
+    assertEquals(rangtotaal.getRang(), instance.getRang());
     assertEquals(rangtotaal.getTaxonId(), instance.getTaxonId());
     assertEquals(rangtotaal.getTotaal(), instance.getTotaal());
     assertEquals(rangtotaal.getVolgnummer(), instance.getVolgnummer());
@@ -194,76 +222,78 @@ public class RangtotaalTest {
 
     assertEquals(0, instance.getPctOpFoto());
 
-    instance.setOpFoto(OPFOTO);
+    instance.setOpFoto(TestConstants.OPFOTO);
     assertEquals(0, instance.getPctOpFoto());
 
     instance.setWaargenomen(0);
     assertEquals(0, instance.getPctOpFoto());
 
-    instance.setWaargenomen(WAARGENOMEN);
-    assertEquals(PCTOPFOTO, instance.getPctOpFoto());
+    instance.setWaargenomen(TestConstants.WAARGENOMEN);
+    assertEquals(TestConstants.PCTOPFOTO, instance.getPctOpFoto());
   }
 
   @Test
   public void testSetLatijnsenaam() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(LATIJNSENAAM, instance.getLatijnsenaam());
-    instance.setLatijnsenaam(LATIJNSENAAM);
+    Assert.assertNotEquals(TestConstants.LATIJNSENAAM,
+                           instance.getLatijnsenaam());
+    instance.setLatijnsenaam(TestConstants.LATIJNSENAAM);
 
-    assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
+    assertEquals(TestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
   }
 
   @Test
   public void testSetNaam() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(NAAM, instance.getNaam());
-    instance.setNaam(NAAM);
+    Assert.assertNotEquals(TestConstants.RANGNAAM, instance.getNaam());
+    instance.setNaam(TestConstants.RANGNAAM);
 
-    assertEquals(NAAM, instance.getNaam());
+    assertEquals(TestConstants.RANGNAAM, instance.getNaam());
   }
 
   @Test
   public void testSetOpFoto() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(OPFOTO, instance.getOpFoto());
-    instance.setOpFoto(OPFOTO);
+    Assert.assertNotEquals(TestConstants.OPFOTO, instance.getOpFoto());
+    instance.setOpFoto(TestConstants.OPFOTO);
 
-    assertEquals(OPFOTO, instance.getOpFoto());
+    assertEquals(TestConstants.OPFOTO, instance.getOpFoto());
   }
 
   @Test
   public void testSetTaxonId() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(TAXONID, instance.getTaxonId());
-    instance.setTaxonId(TAXONID);
+    Assert.assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
+    instance.setTaxonId(TestConstants.TAXONID);
 
-    assertEquals(TAXONID, instance.getTaxonId());
+    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test
   public void testSetTotaal() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(TOTAAL, instance.getTotaal());
-    instance.setTotaal(TOTAAL);
+    Assert.assertNotEquals(TestConstants.TOTAAL, instance.getTotaal());
+    instance.setTotaal(TestConstants.TOTAAL);
 
-    assertEquals(TOTAAL, instance.getTotaal());
+    assertEquals(TestConstants.TOTAAL, instance.getTotaal());
   }
 
   @Test
   public void testSetVolgnummer() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(VOLGNUMMER, instance.getVolgnummer());
-    instance.setVolgnummer(VOLGNUMMER);
+    Assert.assertNotEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
+    instance.setVolgnummer(TestConstants.VOLGNUMMER);
 
-    assertEquals(VOLGNUMMER, instance.getVolgnummer());
+    assertEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
   }
 
   @Test
   public void testSetWaargenomen() {
     Rangtotaal  instance  = new Rangtotaal(leeg);
-    Assert.assertNotEquals(WAARGENOMEN, instance.getWaargenomen());
-    instance.setWaargenomen(WAARGENOMEN);
+    Assert.assertNotEquals(TestConstants.WAARGENOMEN,
+                           instance.getWaargenomen());
+    instance.setWaargenomen(TestConstants.WAARGENOMEN);
 
-    assertEquals(WAARGENOMEN, instance.getWaargenomen());
+    assertEquals(TestConstants.WAARGENOMEN, instance.getWaargenomen());
   }
 }

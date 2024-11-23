@@ -38,6 +38,8 @@ public final class NatuurConstants {
   public static final String  LAT_VOGELS        = "Aves";
   public static final String  LAT_ZOOGDIEREN    = "Mammalia";
 
+  public static final String  PAR_LIJSTTAAL     = "natuur.regiolijst.taal.";
+
   public static final String  UITGESTORVEN      = "†";
 
   public static final Integer VOLGNUMMERFACTOR  = 10000000;

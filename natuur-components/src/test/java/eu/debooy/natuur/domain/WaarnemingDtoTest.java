@@ -84,6 +84,7 @@ public class WaarnemingDtoTest {
 
     assertEquals(1, instance.getAantalFotos());
     assertEquals(fotoDto, instance.getFoto(TAXONSEQ));
+    assertEquals(instance.getFoto(TAXONSEQ), fotoDto);
   }
 
   @Test
@@ -104,6 +105,42 @@ public class WaarnemingDtoTest {
 
     assertEquals(1, instance.getAantalFotos());
     assertEquals(WAARNEMINGID, result.getWaarnemingId());
+    assertEquals(instance.getFoto(TAXONSEQ), fotoDto);
+  }
+
+  @Test
+  public void testAddFoto3() {
+    var fotoDto   = new FotoDto();
+    var instance  = new WaarnemingDto();
+
+    fotoDto.setFotoBestand(FOTOBESTAND);
+    fotoDto.setFotoDetail(FOTODETAIL);
+    fotoDto.setFotoId(FOTOID);
+    fotoDto.setOpmerking(OPMERKING);
+    fotoDto.setTaxonSeq(TAXONSEQ);
+    fotos.put(TAXONSEQ, fotoDto);
+
+    instance.setWaarnemingId(WAARNEMINGID);
+    instance.addFoto(fotoDto);
+    var result  = instance.getFoto(TAXONSEQ);
+
+    assertEquals(1, instance.getAantalFotos());
+    assertEquals(WAARNEMINGID, result.getWaarnemingId());
+    assertEquals(instance.getFoto(TAXONSEQ), fotoDto);
+
+    var foto  = new FotoDto();
+
+    foto.setFotoBestand(FOTOBESTAND);
+    foto.setFotoDetail(FOTODETAIL);
+    foto.setFotoId(FOTOID);
+    foto.setOpmerking(OPMERKING);
+    foto.setTaxonSeq(TAXONSEQ + 1);
+    instance.addFoto(foto);
+    result  = instance.getFoto(TAXONSEQ + 1);
+
+    assertEquals(1, instance.getAantalFotos());
+    assertEquals(WAARNEMINGID, result.getWaarnemingId());
+    assertEquals(instance.getFoto(TAXONSEQ + 1), foto);
   }
 
   @Test

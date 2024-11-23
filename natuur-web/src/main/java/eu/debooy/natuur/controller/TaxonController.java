@@ -28,7 +28,6 @@ import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurUtils;
-import static eu.debooy.natuur.controller.RegiolijstController.PAR_LIJSTTAAL;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
@@ -337,9 +336,9 @@ public class TaxonController extends Natuur {
 
     lijstparameters.setCompleet(TaxonDto.COL_LATIJNSENAAM);
     lijstparameters.setSortering(TaxonDto.COL_VOLGNUMMER);
-    lijstparameters.setTaal1(getParameter(PAR_LIJSTTAAL + "1"));
-    lijstparameters.setTaal2(getParameter(PAR_LIJSTTAAL + "2"));
-    lijstparameters.setTaal3(getParameter(PAR_LIJSTTAAL + "3"));
+    lijstparameters.setTaal1(getParameter(NatuurConstants.PAR_LIJSTTAAL + "1"));
+    lijstparameters.setTaal2(getParameter(NatuurConstants.PAR_LIJSTTAAL + "2"));
+    lijstparameters.setTaal3(getParameter(NatuurConstants.PAR_LIJSTTAAL + "3"));
 
     redirect(TAXALIJSTPARAMS_REDIRECT);
   }

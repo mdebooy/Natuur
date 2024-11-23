@@ -102,6 +102,28 @@ public class WaarnemingValidatorTest {
   }
 
   @Test
+  public void testNullWaarneming() {
+    Waarneming    waarneming  = null;
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Waarneming.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullWaarnemingDto() {
+    WaarnemingDto waarneming  = null;
+    List<Message> result      = WaarnemingValidator.valideer(waarneming);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(WaarnemingDto.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
   public void testValideerFouteWaarneming() {
     Waarneming    waarneming  = new Waarneming();
     List<Message> expResult   = new ArrayList<>();

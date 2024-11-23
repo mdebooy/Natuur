@@ -1,5 +1,3 @@
-package eu.debooy.natuur.domain;
-
 /*
  * Copyright (c) 2021 Marco de Booij
  *
@@ -16,6 +14,7 @@ package eu.debooy.natuur.domain;
  * See the Licence for the specific language governing permissions and
  * limitations under the Licence.
  */
+package eu.debooy.natuur.domain;
 
 import static eu.debooy.natuur.TestConstants.NAAM;
 import static eu.debooy.natuur.TestConstants.NAAM_GR;

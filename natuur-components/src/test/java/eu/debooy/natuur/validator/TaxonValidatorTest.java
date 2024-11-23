@@ -76,6 +76,7 @@ public class TaxonValidatorTest {
 
     assertEquals(1, result.size());
     assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Taxon.class.getSimpleName(), result.get(0).getAttribute());
   }
 
   @Test
@@ -85,6 +86,7 @@ public class TaxonValidatorTest {
 
     assertEquals(1, result.size());
     assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(TaxonDto.class.getSimpleName(), result.get(0).getAttribute());
   }
 
   @Test

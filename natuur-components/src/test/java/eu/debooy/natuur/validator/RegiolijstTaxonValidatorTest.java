@@ -162,4 +162,27 @@ public class RegiolijstTaxonValidatorTest {
     List<Message> result    = RegiolijstTaxonValidator.valideer(instance);
     assertEquals(expResult.toString(), result.toString());
   }
+
+  @Test
+  public void testNullRegiolijstTaxon() {
+    RegiolijstTaxon instance  = null;
+    List<Message>   result    =
+        RegiolijstTaxonValidator.valideer(instance);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(RegiolijstTaxon.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullWaarnemingDto() {
+    RegiolijstTaxonDto  instance  = null;
+    List<Message>       result    = RegiolijstTaxonValidator.valideer(instance);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(RegiolijstTaxonDto.class.getSimpleName(),
+                 result.get(0).getAttribute());
+  }
 }

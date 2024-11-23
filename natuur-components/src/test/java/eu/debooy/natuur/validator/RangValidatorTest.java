@@ -47,6 +47,26 @@ public class RangValidatorTest {
                  .build();
 
   @Test
+  public void testNullRang() {
+    Rang          rang    = null;
+    List<Message> result  = RangValidator.valideer(rang);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(Rang.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testNullRangDto() {
+    RangDto       rang    = null;
+    List<Message> result  = RangValidator.valideer(rang);
+
+    assertEquals(1, result.size());
+    assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
+    assertEquals(RangDto.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
   public void testValideerGoedeRang() {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();

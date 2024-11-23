@@ -183,6 +183,17 @@ public class RangTest {
   }
 
   @Test
+  public void testSetNaam() {
+    var instance  = new Rang();
+    assertNotEquals(RANGNAAM, instance.getNaam());
+    instance.setNaam(RANGNAAM);
+
+    assertEquals(RANGNAAM, instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getRang());
+  }
+
+  @Test
   public void testSetNiveau() {
     var instance  = new Rang();
     assertNotEquals(NIVEAU, instance.getNiveau());
