@@ -48,6 +48,10 @@ public class Rangtotaal
   }
 
   public Rangtotaal(OverzichtDto overzicht, String taal) {
+    if (null == overzicht) {
+      return;
+    }
+
     latijnsenaam  = overzicht.getParentLatijnsenaam();
     if (DoosUtils.isNotBlankOrNull(taal)) {
       naam        = overzicht.getNaam(taal);
