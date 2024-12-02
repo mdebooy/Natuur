@@ -31,13 +31,20 @@ public final class TestConstants {
   public static final Integer AANTALFOTOS             = 0;
   public static final String  COORDINATEN             =
       "N 30 31 33,210 - E 40 41 43,210";
-  public static final int     DETAILPK_HASH           = -2147460291;
+  public static final int     DETAILPK_HASH           = 27871;
   public static final String  FOTOBESTAND             = "fotobestand";
   public static final String  FOTODETAIL              = "fotodetail";
   public static final Long    FOTOID                  = Long.MAX_VALUE - 8;
   public static final int     FOTOID_HASH             = -2147483011;
   public static final Long    GEBIEDID                = Long.MAX_VALUE - 9;
   public static final int     GEBIEDID_HASH           = -2147483010;
+  public static final String  GRANDPARENTLATIJNSENAAM = "Phalacrocoracidae";
+  public static final String  GRANDPARENTNAAM         = "familie";
+  public static final Long    GRANDPARENTNIVEAU       = 18L;
+  public static final Long    GRANDPARENTTAXONID      = Long.MAX_VALUE - 4163;
+  public static final String  GRANDPARENTRANG         = "fa";
+  public static final String  GRANDPARENTRANGNAAM     = "familie";
+  public static final Long    GRANDPARENTVOLGNUMMER   = 3800L;
   public static final Long    LANDID                  = 4L;
   public static final String  LATIJNSENAAM            = "Phalacrocorax carbo";
   public static final String  LATIJNSENAAM_GR         = "Rynchops flavirostris";
@@ -57,20 +64,24 @@ public final class TestConstants {
   public static final String  NAAM                    = "naam";
   public static final String  NAAM_GR                 = "onaam";
   public static final String  NAAM_KL                 = "mnaam";
-  public static final Long    NIVEAU                  = 3L;
+  public static final Long    NIVEAU                  = 24L;
   public static final Integer OPFOTO                  = 1;
   public static final String  OPMERKING               = "opmerking";
   public static final String  OMSCHRIJVING            =
       "Dit is een omschrijving.";
-  public static final int     OVERZICHTPK_HASH        = 989393;
-  public static final Long    PARENTID                = 2L;
+  public static final int     OVERZICHTPK_HASH        = -2146327237;
   public static final String  PARENTLATIJNSENAAM      = "Phalacrocorax";
-  public static final String  PARENTNAAM              = "b_Aalscholvers";
-  public static final String  PARENTNAAM_GR           = "c_Corvo-marinho";
-  public static final String  PARENTNAAM_KL           = "a_Old World cormorants";
+  public static final String  PARENTNAAM              = "Aalscholvers";
+  public static final String  PARENTNAAM_GR           = "Corvo-marinho";
+  public static final String  PARENTNAAM_KL           =
+      ".Cormorants, Shags";
+  public static final Long    PARENTNIVEAU            = 22L;
+  public static final String  PARENTOPMERKING         = "p opmerking";
   public static final String  PARENTRANG              = "ge";
   public static final String  PARENTRANG_GR           = "oge";
   public static final String  PARENTRANG_KL           = "fa";
+  public static final String  PARENTRANGNAAM          = "genus";
+  public static final Long    PARENTTAXONID           = Long.MAX_VALUE - 124;
   public static final Long    PARENTVOLGNUMMER        = 5000L;
   public static final int     PCTOPFOTO               = 20;
   public static final String  RANG                    = "so";
@@ -93,10 +104,10 @@ public final class TestConstants {
   public static final String  TAAL_KL                 = "eng";
   public static final Long    TAXONID                 = Long.MAX_VALUE - 10;
   public static final int     TAXONID_HASH            = -2147483009;
-  public static final String  TAXONNAAM               = "b_Aalscholver";
-  public static final String  TAXONNAAM_GR            = "c_Cormorão";
+  public static final String  TAXONNAAM               = "Aalscholver";
+  public static final String  TAXONNAAM_GR            = "Cormorão";
   public static final int     TAXONNAAM_HASH          = -2147350847;
-  public static final String  TAXONNAAM_KL            = "a_Great cormorant";
+  public static final String  TAXONNAAM_KL            = ".Great cormorant";
   public static final Long    TAXONSEQ                = 5L;
   public static final Integer TOTAAL                  = 10;
   public static final Long    VOLGNUMMER              = 800L;

@@ -34,6 +34,18 @@ public class RangtotaalTest {
   private static  Rangtotaal  leeg;
   private static  Rangtotaal  rangtotaal;
 
+  private void leegRangtotaal(Rangtotaal rangtotaal) {
+    assertNull(rangtotaal.getLatijnsenaam());
+    assertNull(rangtotaal.getNaam());
+    assertNull(rangtotaal.getOpFoto());
+    assertEquals(0, rangtotaal.getPctOpFoto());
+    assertNull(rangtotaal.getRang());
+    assertNull(rangtotaal.getTaxonId());
+    assertNull(rangtotaal.getTotaal());
+    assertNull(rangtotaal.getVolgnummer());
+    assertNull(rangtotaal.getWaargenomen());
+  }
+
   @BeforeClass
   public static void setUpClass() {
     leeg  = new Rangtotaal();
@@ -166,40 +178,21 @@ public class RangtotaalTest {
   public void testInit1() {
     var instance  = new Rangtotaal();
 
-    assertNull(instance.getLatijnsenaam());
-    assertNull(instance.getNaam());
-    assertNull(instance.getOpFoto());
-    assertNull(instance.getRang());
-    assertNull(instance.getTaxonId());
-    assertNull(instance.getTotaal());
-    assertNull(instance.getVolgnummer());
-    assertNull(instance.getWaargenomen());
+    leegRangtotaal(instance);
   }
 
   @Test
   public void testInit2() {
     var instance  = new Rangtotaal(new OverzichtDto());
 
-    assertNull(instance.getLatijnsenaam());
-    assertNull(instance.getNaam());
-    assertNull(instance.getOpFoto());
-    assertNull(instance.getTaxonId());
-    assertNull(instance.getTotaal());
-    assertNull(instance.getVolgnummer());
-    assertNull(instance.getWaargenomen());
+    leegRangtotaal(instance);
   }
 
   @Test
   public void testInit3() {
     var instance  = new Rangtotaal(new OverzichtDto(), TestConstants.TAAL);
 
-    assertNull(instance.getLatijnsenaam());
-    assertNull(instance.getNaam());
-    assertNull(instance.getOpFoto());
-    assertNull(instance.getTaxonId());
-    assertNull(instance.getTotaal());
-    assertNull(instance.getVolgnummer());
-    assertNull(instance.getWaargenomen());
+    leegRangtotaal(instance);
   }
 
   @Test
@@ -214,6 +207,14 @@ public class RangtotaalTest {
     assertEquals(rangtotaal.getTotaal(), instance.getTotaal());
     assertEquals(rangtotaal.getVolgnummer(), instance.getVolgnummer());
     assertEquals(rangtotaal.getWaargenomen(), instance.getWaargenomen());
+  }
+
+  @Test
+  public void testNullOverzichtDto() {
+    OverzichtDto  overzicht = null;
+    var           instance  = new Rangtotaal(overzicht);
+
+    leegRangtotaal(instance);
   }
 
   @Test

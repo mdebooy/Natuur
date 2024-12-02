@@ -64,7 +64,7 @@ public class Taxon
     parentNaam          = taxon.getParentNaam();
     parentNiveau        = taxon.getParentNiveau();
     parentRang          = taxon.getParentRang();
-    parentRangnaam      = taxon.getParentNaam();
+    parentRangnaam      = taxon.getParentRangnaam();
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
     rangnaam            = taxon.getRangnaam();
@@ -86,6 +86,7 @@ public class Taxon
     parentId              = taxonDto.getParentId();
     if (null != taxonDto.getParent()) {
       parentLatijnsenaam  = taxonDto.getParent().getLatijnsenaam();
+      parentRang          = taxonDto.getParent().getRang();
       parentVolgnummer    = taxonDto.getParent().getVolgnummer();
     }
     rang                  = taxonDto.getRang();
@@ -334,7 +335,7 @@ public class Taxon
     parentNiveau            = parent.getNiveau();
     parentRang              = parent.getRang();
     parentRangnaam          = parent.getRangnaam();
-    parentVolgnummer        = parent.getParentVolgnummer();
+    parentVolgnummer        = parent.getVolgnummer();
   }
 
   public void setParent(TaxonDto parent) {

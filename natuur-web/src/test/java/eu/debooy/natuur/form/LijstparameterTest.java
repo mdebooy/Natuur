@@ -34,9 +34,9 @@ public class LijstparameterTest {
 
     assertNull(instance.getCompleet());
 
-    instance.setTaal1(TestConstants.TAAL);
+    instance.setCompleet(TestConstants.COMPLEET);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal1());
+    assertEquals(TestConstants.COMPLEET, instance.getCompleet());
   }
 
   @Test

@@ -16,15 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.OVERZICHTPK_HASH;
-import static eu.debooy.natuur.TestConstants.PARENTID;
-import static eu.debooy.natuur.TestConstants.PARENTRANG;
-import static eu.debooy.natuur.TestConstants.PARENTRANG_GR;
-import static eu.debooy.natuur.TestConstants.PARENTRANG_KL;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANG_GR;
-import static eu.debooy.natuur.TestConstants.RANG_KL;
+import eu.debooy.natuur.TestConstants;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -38,18 +30,18 @@ import org.junit.Test;
  */
 public class OverzichtPKTest {
   private static final String TOSTRING  =
-      "OverzichtPK (parentId=" + PARENTID
-             + ", parentRang=" + PARENTRANG
-                   + ", rang=" + RANG + ")";
+      "OverzichtPK (parentId=" + TestConstants.PARENTTAXONID
+             + ", parentRang=" + TestConstants.PARENTRANG
+                   + ", rang=" + TestConstants.RANG + ")";
 
   private static  OverzichtPK overzichtPK;
 
   @BeforeClass
   public static void setUpClass() {
     overzichtPK = new OverzichtPK();
-    overzichtPK.setParentId(PARENTID);
-    overzichtPK.setParentRang(PARENTRANG);
-    overzichtPK.setRang(RANG);
+    overzichtPK.setParentId(TestConstants.PARENTTAXONID);
+    overzichtPK.setParentRang(TestConstants.PARENTRANG);
+    overzichtPK.setRang(TestConstants.RANG);
   }
 
   @Test
@@ -61,10 +53,10 @@ public class OverzichtPKTest {
     gelijk.setParentRang(overzichtPK.getParentRang());
     gelijk.setParentId(overzichtPK.getParentId());
     gelijk.setRang(overzichtPK.getRang());
-    groter.setParentRang(PARENTRANG_GR);
+    groter.setParentRang(TestConstants.PARENTRANG_GR);
     groter.setParentId(overzichtPK.getParentId());
     groter.setRang(overzichtPK.getRang());
-    kleiner.setParentRang(PARENTRANG_KL);
+    kleiner.setParentRang(TestConstants.PARENTRANG_KL);
     kleiner.setParentId(overzichtPK.getParentId());
     kleiner.setRang(overzichtPK.getRang());
 
@@ -84,9 +76,9 @@ public class OverzichtPKTest {
     assertTrue(overzichtPK.compareTo(kleiner) > 0);
 
     groter.setParentId(overzichtPK.getParentId());
-    groter.setRang(RANG_GR);
+    groter.setRang(TestConstants.RANG_GR);
     kleiner.setParentId(overzichtPK.getParentId());
-    kleiner.setRang(RANG_KL);
+    kleiner.setRang(TestConstants.RANG_KL);
 
     assertTrue(overzichtPK.compareTo(groter) < 0);
     assertEquals(0, overzichtPK.compareTo(gelijk));
@@ -99,34 +91,36 @@ public class OverzichtPKTest {
 
     assertEquals(overzichtPK, overzichtPK);
     assertNotEquals(overzichtPK, null);
-    assertNotEquals(overzichtPK, NAAM);
+    assertNotEquals(overzichtPK, TestConstants.RANG);
     assertNotEquals(overzichtPK, instance);
 
-    instance  = new OverzichtPK(PARENTID, PARENTRANG, RANG);
+    instance  = new OverzichtPK(TestConstants.PARENTTAXONID,
+                                TestConstants.PARENTRANG,
+                                TestConstants.RANG);
     assertEquals(overzichtPK, instance);
 
-    instance.setParentId(PARENTID - 1);
+    instance.setParentId(TestConstants.PARENTTAXONID - 1);
     assertNotEquals(overzichtPK, instance);
   }
 
   @Test
   public void testGetParentId() {
-    assertEquals(PARENTID, overzichtPK.getParentId());
+    assertEquals(TestConstants.PARENTTAXONID, overzichtPK.getParentId());
   }
 
   @Test
   public void testGetParentRang() {
-    assertEquals(PARENTRANG, overzichtPK.getParentRang());
+    assertEquals(TestConstants.PARENTRANG, overzichtPK.getParentRang());
   }
 
   @Test
   public void testGetRang() {
-    assertEquals(RANG, overzichtPK.getRang());
+    assertEquals(TestConstants.RANG, overzichtPK.getRang());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(OVERZICHTPK_HASH, overzichtPK.hashCode());
+    assertEquals(TestConstants.OVERZICHTPK_HASH, overzichtPK.hashCode());
   }
 
   @Test
@@ -140,20 +134,22 @@ public class OverzichtPKTest {
 
   @Test
   public void testInit2() {
-    var instance  = new OverzichtPK(PARENTID, PARENTRANG, RANG);
+    var instance  = new OverzichtPK(TestConstants.PARENTTAXONID,
+                                    TestConstants.PARENTRANG,
+                                    TestConstants.RANG);
 
-    assertEquals(PARENTID, instance.getParentId());
-    assertEquals(PARENTRANG, instance.getParentRang());
-    assertEquals(RANG, instance.getRang());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertEquals(TestConstants.RANG, instance.getRang());
   }
 
   @Test
   public void testSetParentId() {
     var instance  = new OverzichtPK();
-    assertNotEquals(PARENTID, instance.getParentId());
-    instance.setParentId(PARENTID);
+    assertNotEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    instance.setParentId(TestConstants.PARENTTAXONID);
 
-    assertEquals(PARENTID, instance.getParentId());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
     assertNull(instance.getParentRang());
     assertNull(instance.getRang());
   }
@@ -161,23 +157,23 @@ public class OverzichtPKTest {
   @Test
   public void testSetParentRang() {
     var instance  = new OverzichtPK();
-    assertNotEquals(PARENTRANG, instance.getParentRang());
-    instance.setParentRang(PARENTRANG);
+    assertNotEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    instance.setParentRang(TestConstants.PARENTRANG);
 
     assertNull(instance.getParentId());
-    assertEquals(PARENTRANG, instance.getParentRang());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
     assertNull(instance.getRang());
   }
 
   @Test
   public void testSetRang() {
     var instance  = new OverzichtPK();
-    assertNotEquals(RANG, instance.getRang());
-    instance.setRang(RANG);
+    assertNotEquals(TestConstants.RANG, instance.getRang());
+    instance.setRang(TestConstants.RANG);
 
     assertNull(instance.getParentId());
     assertNull(instance.getParentRang());
-    assertEquals(RANG, instance.getRang());
+    assertEquals(TestConstants.RANG, instance.getRang());
   }
 
   @Test

@@ -121,7 +121,7 @@ public class RegiolijstDtoTest {
   }
 
   @Test
-  public void testSetOMschrijving() {
+  public void testSetOmschrijving() {
     var instance  = new RegiolijstDto();
     assertNotEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
 

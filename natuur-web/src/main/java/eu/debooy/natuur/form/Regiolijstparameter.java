@@ -26,9 +26,9 @@ import java.io.Serializable;
 public class Regiolijstparameter implements Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  public static String COL_TAAL1  = "taal1";
-  public static String COL_TAAL2  = "taal2";
-  public static String COL_TAAL3  = "taal3";
+  public static final String  COL_TAAL1 = "taal1";
+  public static final String  COL_TAAL2 = "taal2";
+  public static final String  COL_TAAL3 = "taal3";
 
   private String  taal1;
   private String  taal2;

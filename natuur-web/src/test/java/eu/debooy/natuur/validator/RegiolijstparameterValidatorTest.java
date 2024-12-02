@@ -130,7 +130,25 @@ public class RegiolijstparameterValidatorTest {
     result    = RegiolijstparameterValidator.valideer(instance);
 
     assertTrue(result.isEmpty());
-}
+  }
+
+  @Test
+  public void testEmpty() {
+    var instance  = new Regiolijstparameter();
+
+    instance.setTaal3(TestConstants.TAAL_KL);
+
+    List<Message> result    = RegiolijstparameterValidator.valideer(instance);
+    assertTrue(result.isEmpty());
+    instance.setTaal2(TestConstants.TAAL_GR);
+
+    result    = RegiolijstparameterValidator.valideer(instance);
+    assertTrue(result.isEmpty());
+    instance.setTaal1(TestConstants.TAAL);
+
+    result    = RegiolijstparameterValidator.valideer(instance);
+    assertTrue(result.isEmpty());
+  }
 
   @Test
   public void testNullRegiolijstparameter() {

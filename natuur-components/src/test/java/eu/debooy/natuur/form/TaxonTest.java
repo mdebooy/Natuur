@@ -17,27 +17,7 @@
 package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.DoosConstants;
-import static eu.debooy.doosutils.DoosConstants.ONWAAR;
-import static eu.debooy.doosutils.DoosConstants.WAAR;
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM_GR;
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM_KL;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.NAAM_GR;
-import static eu.debooy.natuur.TestConstants.NAAM_KL;
-import static eu.debooy.natuur.TestConstants.OPMERKING;
-import static eu.debooy.natuur.TestConstants.PARENTID;
-import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM_GR;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM_KL;
-import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANGNAAM;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAXONID;
-import static eu.debooy.natuur.TestConstants.TAXONID_HASH;
-import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
+import eu.debooy.natuur.TestConstants;
 import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import java.util.Set;
@@ -70,9 +50,9 @@ public class TaxonTest {
     var kleiner = new Taxon();
 
     groter.setNaam(taxon.getNaam());
-    groter.setParentNaam(PARENTNAAM_GR);
+    groter.setParentNaam(TestConstants.PARENTNAAM_GR);
     kleiner.setNaam(taxon.getNaam());
-    kleiner.setParentNaam(PARENTNAAM_KL);
+    kleiner.setParentNaam(TestConstants.PARENTNAAM_KL);
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.AlfabetischeComparator());
     taxa.add(groter);
@@ -91,9 +71,9 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setNaam(NAAM_GR);
+    groter.setNaam(TestConstants.NAAM_GR);
     groter.setParentNaam(taxon.getParentNaam());
-    kleiner.setNaam(NAAM_KL);
+    kleiner.setNaam(TestConstants.NAAM_KL);
     kleiner.setParentNaam(taxon.getParentNaam());
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.AlfabetischeComparator());
@@ -128,7 +108,7 @@ public class TaxonTest {
 
     assertEquals(taxon, taxon);
     assertNotEquals(taxon, null);
-    assertNotEquals(taxon, NAAM);
+    assertNotEquals(taxon, TestConstants.NAAM);
     assertNotEquals(taxon, instance);
 
     instance.setTaxonId(taxon.getTaxonId());
@@ -143,57 +123,63 @@ public class TaxonTest {
 
   @Test
   public void testGetLatijnsenaam() {
-    assertEquals(LATIJNSENAAM, taxon.getLatijnsenaam());
+    assertEquals(TestConstants.LATIJNSENAAM, taxon.getLatijnsenaam());
   }
 
   @Test
   public void testGetNaam() {
-    assertEquals(NAAM, taxon.getNaam());
+    assertEquals(TestConstants.NAAM, taxon.getNaam());
   }
 
   @Test
   public void testGetOpmerking() {
-    assertEquals(OPMERKING, taxon.getOpmerking());
+    assertEquals(TestConstants.OPMERKING, taxon.getOpmerking());
   }
 
   @Test
   public void testGetParentId() {
-    assertEquals(PARENTID, taxon.getParentId());
+    assertEquals(TestConstants.PARENTTAXONID, taxon.getParentId());
   }
 
   @Test
   public void testGetParentLatijnsenaam() {
-    assertEquals(PARENTLATIJNSENAAM, taxon.getParentLatijnsenaam());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 taxon.getParentLatijnsenaam());
   }
 
   @Test
   public void testGetParentNaam() {
-    assertEquals(PARENTNAAM, taxon.getParentNaam());
+    assertEquals(TestConstants.PARENTNAAM, taxon.getParentNaam());
+  }
+
+  @Test
+  public void testGetParentRang() {
+    assertEquals(TestConstants.PARENTRANG, taxon.getParentRang());
   }
 
   @Test
   public void testGetParentVolgnummer() {
-    assertEquals(PARENTVOLGNUMMER, taxon.getParentVolgnummer());
+    assertEquals(TestConstants.PARENTVOLGNUMMER, taxon.getParentVolgnummer());
   }
 
   @Test
   public void testGetRang() {
-    assertEquals(RANG, taxon.getRang());
+    assertEquals(TestConstants.RANG, taxon.getRang());
   }
 
   @Test
   public void testGetTaxonId() {
-    assertEquals(TAXONID, taxon.getTaxonId());
+    assertEquals(TestConstants.TAXONID, taxon.getTaxonId());
   }
 
   @Test
   public void testGetVolgnummer() {
-    assertEquals(VOLGNUMMER, taxon.getVolgnummer());
+    assertEquals(TestConstants.VOLGNUMMER, taxon.getVolgnummer());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TAXONID_HASH, taxon.hashCode());
+    assertEquals(TestConstants.TAXONID_HASH, taxon.hashCode());
   }
 
   @Test
@@ -247,17 +233,16 @@ public class TaxonTest {
     assertEquals(taxonDto.getRang(), instance.getRang());
     assertNull(instance.getRangnaam());
     assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
-    assertEquals(taxonDto.getUitgestorven(),
-                 instance.getUitgestorven().equals(DoosConstants.WAAR));
+    assertEquals(taxonDto.getUitgestorven(), instance.getUitgestorven());
     assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
   }
 
   @Test
   public void testInit4() {
-    var instance  = new Taxon(taxonDto, TAAL);
+    var instance  = new Taxon(taxonDto, TestConstants.TAAL);
 
     assertEquals(taxonDto.getLatijnsenaam(), instance.getLatijnsenaam());
-    assertEquals(taxonDto.getNaam(TAAL), instance.getNaam());
+    assertEquals(taxonDto.getNaam(TestConstants.TAAL), instance.getNaam());
     assertEquals(taxonDto.getOpmerking(), instance.getOpmerking());
     assertEquals(taxonDto.getParentId(), instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
@@ -266,19 +251,18 @@ public class TaxonTest {
     assertEquals(taxonDto.getRang(), instance.getRang());
     assertNull(instance.getRangnaam());
     assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
-    assertEquals(taxonDto.getUitgestorven(),
-                 instance.getUitgestorven().equals(DoosConstants.WAAR));
+    assertEquals(taxonDto.getUitgestorven(), instance.getUitgestorven());
     assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
   }
 
   @Test
   public void testInit5() {
-    var instance  = new Taxon(taxonDto, TAAL);
+    var instance  = new Taxon(taxonDto, TestConstants.TAAL);
 
     instance.setUitgestorven(!taxonDto.isUitgestorven());
 
     assertEquals(taxonDto.getLatijnsenaam(), instance.getLatijnsenaam());
-    assertEquals(taxonDto.getNaam(TAAL), instance.getNaam());
+    assertEquals(taxonDto.getNaam(TestConstants.TAAL), instance.getNaam());
     assertEquals(taxonDto.getOpmerking(), instance.getOpmerking());
     assertEquals(taxonDto.getParentId(), instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
@@ -297,8 +281,8 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setLatijnsenaam(LATIJNSENAAM_GR);
-    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LatijnsenaamComparator());
     taxa.add(groter);
@@ -343,11 +327,11 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setParentNaam(PARENTNAAM_GR);
+    groter.setParentNaam(TestConstants.PARENTNAAM_GR);
     groter.setParentVolgnummer(taxon.getParentVolgnummer());
     groter.setNaam(taxon.getNaam());
     groter.setVolgnummer(taxon.getVolgnummer());
-    kleiner.setParentNaam(PARENTNAAM_KL);
+    kleiner.setParentNaam(TestConstants.PARENTNAAM_KL);
     kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
     kleiner.setNaam(taxon.getNaam());
     kleiner.setVolgnummer(taxon.getVolgnummer());
@@ -397,11 +381,11 @@ public class TaxonTest {
 
     groter.setParentNaam(taxon.getParentNaam());
     groter.setParentVolgnummer(taxon.getParentVolgnummer());
-    groter.setNaam(NAAM_GR);
+    groter.setNaam(TestConstants.NAAM_GR);
     groter.setVolgnummer(taxon.getVolgnummer());
     kleiner.setParentNaam(taxon.getParentNaam());
     kleiner.setParentVolgnummer(taxon.getParentVolgnummer());
-    kleiner.setNaam(NAAM_KL);
+    kleiner.setNaam(TestConstants.NAAM_KL);
     kleiner.setVolgnummer(taxon.getVolgnummer());
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.LijstComparator());
@@ -422,9 +406,9 @@ public class TaxonTest {
     var kleiner = new Taxon();
 
     groter.setLatijnsenaam(taxon.getLatijnsenaam());
-    groter.setNaam(NAAM_GR);
+    groter.setNaam(TestConstants.NAAM_GR);
     kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
-    kleiner.setNaam(NAAM_KL);
+    kleiner.setNaam(TestConstants.NAAM_KL);
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.NaamComparator());
     taxa.add(groter);
@@ -443,9 +427,9 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
     groter.setNaam(taxon.getNaam());
-    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
     kleiner.setNaam(taxon.getNaam());
 
     Set<Taxon>  taxa  = new TreeSet<>(new Taxon.NaamComparator());
@@ -479,15 +463,19 @@ public class TaxonTest {
   @Test
   public void testSetLatijnsenaam() {
     var instance  = new Taxon();
-    assertNotEquals(LATIJNSENAAM, instance.getLatijnsenaam());
-    instance.setLatijnsenaam(LATIJNSENAAM);
+    assertNull(instance.getLatijnsenaam());
+    instance.setLatijnsenaam(TestConstants.LATIJNSENAAM);
 
-    assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
-    assertEquals(LATIJNSENAAM, instance.getNaam());
+    assertEquals(TestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
+    assertEquals(TestConstants.LATIJNSENAAM, instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -499,15 +487,19 @@ public class TaxonTest {
   @Test
   public void testSetNaam() {
     var instance  = new Taxon();
-    assertNotEquals(NAAM, instance.getNaam());
-    instance.setNaam(NAAM);
+    assertNull(instance.getNaam());
+    instance.setNaam(TestConstants.NAAM);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals(NAAM, instance.getNaam());
+    assertEquals(TestConstants.NAAM, instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -515,23 +507,51 @@ public class TaxonTest {
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
-    instance.setLatijnsenaam(LATIJNSENAAM);
-    assertEquals(LATIJNSENAAM, instance.getLatijnsenaam());
-    assertEquals(NAAM, instance.getNaam());
+    instance.setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    assertEquals(TestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
+    assertEquals(TestConstants.NAAM, instance.getNaam());
+  }
+
+  @Test
+  public void testSetNiveau() {
+    var instance  = new Taxon();
+    assertNull(instance.getNiveau());
+    instance.setNiveau(TestConstants.NIVEAU);
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertEquals(TestConstants.NIVEAU, instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
 
   @Test
   public void testSetOpmerking() {
     var instance  = new Taxon();
-    assertNotEquals(OPMERKING, instance.getOpmerking());
-    instance.setOpmerking(OPMERKING);
+    assertNull(instance.getOpmerking());
+    instance.setOpmerking(TestConstants.OPMERKING);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
-    assertEquals(OPMERKING, instance.getOpmerking());
+    assertNull(instance.getNiveau());
+    assertEquals(TestConstants.OPMERKING, instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -543,15 +563,19 @@ public class TaxonTest {
   @Test
   public void testSetParentId() {
     var instance  = new Taxon();
-    assertNotEquals(PARENTID, instance.getParentId());
-    instance.setParentId(PARENTID);
+    assertNull(instance.getParentId());
+    instance.setParentId(TestConstants.PARENTTAXONID);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
-    assertEquals(PARENTID, instance.getParentId());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -563,16 +587,20 @@ public class TaxonTest {
   @Test
   public void testSetParentLatijnsenaam() {
     var instance  = new Taxon();
-    assertNotEquals(PARENTLATIJNSENAAM,
-                           instance.getParentLatijnsenaam());
-    instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
+    assertNull(instance.getParentLatijnsenaam());
+    instance.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(PARENTLATIJNSENAAM, instance.getParentLatijnsenaam());
-    assertEquals(PARENTLATIJNSENAAM, instance.getParentNaam());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 instance.getParentLatijnsenaam());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM, instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -584,15 +612,19 @@ public class TaxonTest {
   @Test
   public void testSetParentNaam() {
     var instance  = new Taxon();
-    assertNotEquals(PARENTNAAM, instance.getParentNaam());
-    instance.setParentNaam(PARENTNAAM);
+    assertNull(instance.getParentNaam());
+    instance.setParentNaam(TestConstants.PARENTNAAM);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
-    assertEquals(PARENTNAAM, instance.getParentNaam());
+    assertEquals(TestConstants.PARENTNAAM, instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -600,24 +632,29 @@ public class TaxonTest {
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
-    instance.setParentLatijnsenaam(PARENTLATIJNSENAAM);
-    assertEquals(PARENTLATIJNSENAAM, instance.getParentLatijnsenaam());
-    assertEquals(PARENTNAAM, instance.getParentNaam());
+    instance.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 instance.getParentLatijnsenaam());
+    assertEquals(TestConstants.PARENTNAAM, instance.getParentNaam());
   }
 
   @Test
-  public void testSetParentVolgnummer() {
+  public void testSetParentNiveau() {
     var instance  = new Taxon();
-    assertNotEquals(PARENTVOLGNUMMER, instance.getParentVolgnummer());
-    instance.setParentVolgnummer(PARENTVOLGNUMMER);
+    assertNull(instance.getParentNiveau());
+    instance.setParentNiveau(TestConstants.PARENTNIVEAU);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
-    assertEquals(PARENTVOLGNUMMER, instance.getParentVolgnummer());
+    assertEquals(TestConstants.PARENTNIVEAU, instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
@@ -626,20 +663,251 @@ public class TaxonTest {
   }
 
   @Test
-  public void testSetRang() {
+  public void testSetParentRang1() {
     var instance  = new Taxon();
-    assertNotEquals(RANG, instance.getRang());
-    instance.setRang(RANG);
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    instance.setParentRang(TestConstants.PARENTRANG);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
-    assertEquals(RANG, instance.getRang());
+    assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetParentRang2() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    instance.setParentRang(TestUtils.getParentRang());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertEquals(TestConstants.PARENTNIVEAU, instance.getParentNiveau());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertEquals(TestConstants.PARENTRANGNAAM, instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetParent1() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    instance.setParent(TestUtils.getParentTaxon());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 instance.getParentLatijnsenaam());
+    assertEquals(TestConstants.PARENTNAAM, instance.getParentNaam());
+    assertEquals(TestConstants.PARENTNIVEAU, instance.getParentNiveau());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertEquals(TestConstants.PARENTRANGNAAM, instance.getParentRangnaam());
+    assertEquals(TestConstants.PARENTVOLGNUMMER,
+                 instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetParent2() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    instance.setParent(TestUtils.getParentTaxonDto());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 instance.getParentLatijnsenaam());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM, instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertEquals(TestConstants.PARENTVOLGNUMMER,
+                 instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetParent3() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    instance.setTaxonId(TestConstants.TAXONID);
+    instance.setParent(TestUtils.getParentTaxonDto(), TestConstants.TAAL);
+    System.out.println(TestUtils.getParentTaxonDto().toString());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(TestConstants.PARENTLATIJNSENAAM,
+                 instance.getParentLatijnsenaam());
+    assertEquals(TestConstants.TAXONNAAM, instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertEquals(TestConstants.PARENTVOLGNUMMER,
+                 instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetParentRangnaam() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentRangnaam());
+    instance.setParentRangnaam(TestConstants.PARENTRANGNAAM);
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertEquals(TestConstants.PARENTRANGNAAM, instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetRangVolgnummer() {
+    var instance  = new Taxon();
+    assertNull(instance.getParentVolgnummer());
+    instance.setParentVolgnummer(TestConstants.PARENTVOLGNUMMER);
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertEquals(TestConstants.PARENTVOLGNUMMER,
+                 instance.getParentVolgnummer());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetRang1() {
+    var instance  = new Taxon();
+    assertNull(instance.getNiveau());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    instance.setRang(TestConstants.RANG);
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertNull(instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    assertEquals(TestConstants.RANG, instance.getRang());
+    assertNull(instance.getRangnaam());
+    assertNull(instance.getTaxonId());
+    assertFalse(instance.getUitgestorven());
+    assertEquals(Long.valueOf(0), instance.getVolgnummer());
+  }
+
+  @Test
+  public void testSetRang2() {
+    var instance  = new Taxon();
+    assertNull(instance.getNiveau());
+    assertNull(instance.getRang());
+    assertNull(instance.getRangnaam());
+    instance.setRang(TestUtils.getRang());
+
+    assertNull(instance.getLatijnsenaam());
+    assertNull(instance.getNaam());
+    assertEquals(TestConstants.NIVEAU, instance.getNiveau());
+    assertNull(instance.getOpmerking());
+    assertNull(instance.getParentId());
+    assertNull(instance.getParentLatijnsenaam());
+    assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
+    assertNull(instance.getParentVolgnummer());
+    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(TestConstants.RANGNAAM, instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -648,8 +916,8 @@ public class TaxonTest {
   @Test
   public void testSetRangnaam() {
     var instance  = new Taxon();
-    assertNotEquals(RANGNAAM, instance.getRangnaam());
-    instance.setRangnaam(RANGNAAM);
+    assertNotEquals(TestConstants.RANGNAAM, instance.getRangnaam());
+    instance.setRangnaam(TestConstants.RANGNAAM);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -657,9 +925,12 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
-    assertEquals(RANGNAAM, instance.getRangnaam());
+    assertEquals(TestConstants.RANGNAAM, instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -668,8 +939,8 @@ public class TaxonTest {
   @Test
   public void testSetTaxonId() {
     var instance  = new Taxon();
-    assertNotEquals(TAXONID, instance.getTaxonId());
-    instance.setTaxonId(TAXONID);
+    assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
+    instance.setTaxonId(TestConstants.TAXONID);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -677,10 +948,13 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
-    assertEquals(TAXONID, instance.getTaxonId());
+    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
@@ -691,7 +965,7 @@ public class TaxonTest {
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
 
-    instance.setUitgestorven(WAAR);
+    instance.setUitgestorven(DoosConstants.WAAR);
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
@@ -700,6 +974,9 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -711,11 +988,11 @@ public class TaxonTest {
   @Test
   public void testSetUitgestorven2() {
     var instance  = new Taxon();
-    instance.setUitgestorven(WAAR);
+    instance.setUitgestorven(DoosConstants.WAAR);
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
 
-    instance.setUitgestorven(ONWAAR);
+    instance.setUitgestorven(DoosConstants.ONWAAR);
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
@@ -724,6 +1001,9 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -747,6 +1027,9 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -771,6 +1054,9 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
@@ -782,8 +1068,8 @@ public class TaxonTest {
   @Test
   public void testSetVolgnummer() {
     var instance  = new Taxon();
-    assertNotEquals(VOLGNUMMER, instance.getVolgnummer());
-    instance.setVolgnummer(VOLGNUMMER);
+    assertNotEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
+    instance.setVolgnummer(TestConstants.VOLGNUMMER);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -791,12 +1077,15 @@ public class TaxonTest {
     assertNull(instance.getParentId());
     assertNull(instance.getParentLatijnsenaam());
     assertNull(instance.getParentNaam());
+    assertNull(instance.getParentNiveau());
+    assertNull(instance.getParentRang());
+    assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
-    assertEquals(VOLGNUMMER, instance.getVolgnummer());
+    assertEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
   }
 
   @Test
@@ -830,9 +1119,9 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
     groter.setVolgnummer(taxon.getVolgnummer());
-    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
     kleiner.setVolgnummer(taxon.getVolgnummer());
 
     Set<Taxon>  taxa  =
@@ -889,10 +1178,10 @@ public class TaxonTest {
     var kleiner = new Taxon();
 
     groter.setLatijnsenaam(taxon.getLatijnsenaam());
-    groter.setNaam(NAAM_GR);
+    groter.setNaam(TestConstants.NAAM_GR);
     groter.setVolgnummer(taxon.getVolgnummer());
     kleiner.setLatijnsenaam(taxon.getLatijnsenaam());
-    kleiner.setNaam(NAAM_KL);
+    kleiner.setNaam(TestConstants.NAAM_KL);
     kleiner.setVolgnummer(taxon.getVolgnummer());
 
     Set<Taxon>  taxa  =
@@ -913,10 +1202,10 @@ public class TaxonTest {
     var groter  = new Taxon();
     var kleiner = new Taxon();
 
-    groter.setLatijnsenaam(LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
     groter.setNaam(taxon.getNaam());
     groter.setVolgnummer(taxon.getVolgnummer());
-    kleiner.setLatijnsenaam(LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
     kleiner.setNaam(taxon.getNaam());
     kleiner.setVolgnummer(taxon.getVolgnummer());
 

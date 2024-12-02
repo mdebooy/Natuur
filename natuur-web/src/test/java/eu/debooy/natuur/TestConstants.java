@@ -22,6 +22,7 @@ package eu.debooy.natuur;
  */
 public final class TestConstants {
   public static final Long    AANTAL    = Long.valueOf(10);
+  public static final String  COMPLEET  = "compleet";
   public static final Long    GEZIEN    = Long.valueOf(8);
   public static final Long    ID        = Long.valueOf(2112);
   public static final Long    REGIOID   = Long.valueOf(126);

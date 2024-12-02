@@ -16,44 +16,13 @@
  */
 package eu.debooy.natuur;
 
-import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
-import static eu.debooy.natuur.TestConstants.FOTODETAIL;
-import static eu.debooy.natuur.TestConstants.FOTOID;
-import static eu.debooy.natuur.TestConstants.GEBIEDID;
-import static eu.debooy.natuur.TestConstants.LANDID;
-import static eu.debooy.natuur.TestConstants.LATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.LATITUDE;
-import static eu.debooy.natuur.TestConstants.LATITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_MINUTEN;
-import static eu.debooy.natuur.TestConstants.LATITUDE_SECONDEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_GRADEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_MINUTEN;
-import static eu.debooy.natuur.TestConstants.LONGITUDE_SECONDEN;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.OPMERKING;
-import static eu.debooy.natuur.TestConstants.PARENTID;
-import static eu.debooy.natuur.TestConstants.PARENTLATIJNSENAAM;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM;
-import static eu.debooy.natuur.TestConstants.PARENTNAAM_KL;
-import static eu.debooy.natuur.TestConstants.PARENTVOLGNUMMER;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANGNAAM;
-import static eu.debooy.natuur.TestConstants.RANGNAAM_KL;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAAL_KL;
-import static eu.debooy.natuur.TestConstants.TAXONID;
-import static eu.debooy.natuur.TestConstants.TAXONNAAM;
-import static eu.debooy.natuur.TestConstants.TAXONNAAM_KL;
-import static eu.debooy.natuur.TestConstants.TAXONSEQ;
-import static eu.debooy.natuur.TestConstants.VOLGNUMMER;
-import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Gebied;
+import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Taxon;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,74 +38,123 @@ public final class TestUtils {
     var                 fotoDto = new FotoDto();
     Map<Long, FotoDto>  fotos   = new HashMap<>();
 
-    fotoDto.setFotoBestand(FOTOBESTAND);
-    fotoDto.setFotoDetail(FOTODETAIL);
-    fotoDto.setFotoId(FOTOID);
-    fotoDto.setOpmerking(OPMERKING);
-    fotoDto.setTaxonSeq(TAXONSEQ);
-    fotoDto.setWaarnemingId(WAARNEMINGID);
-    fotos.put(TAXONSEQ, fotoDto);
+    fotoDto.setFotoBestand(TestConstants.FOTOBESTAND);
+    fotoDto.setFotoDetail(TestConstants.FOTODETAIL);
+    fotoDto.setFotoId(TestConstants.FOTOID);
+    fotoDto.setOpmerking(TestConstants.OPMERKING);
+    fotoDto.setTaxonSeq(TestConstants.TAXONSEQ);
+    fotoDto.setWaarnemingId(TestConstants.WAARNEMINGID);
+    fotos.put(TestConstants.TAXONSEQ, fotoDto);
 
     fotoDto = new FotoDto();
-    fotoDto.setFotoBestand(FOTOBESTAND);
-    fotoDto.setFotoDetail(FOTODETAIL);
-    fotoDto.setFotoId(FOTOID + 1);
-    fotoDto.setOpmerking(OPMERKING);
-    fotoDto.setTaxonSeq(TAXONSEQ + 1);
-    fotoDto.setWaarnemingId(WAARNEMINGID);
-    fotos.put(TAXONSEQ + 1, fotoDto);
+    fotoDto.setFotoBestand(TestConstants.FOTOBESTAND);
+    fotoDto.setFotoDetail(TestConstants.FOTODETAIL);
+    fotoDto.setFotoId(TestConstants.FOTOID + 1);
+    fotoDto.setOpmerking(TestConstants.OPMERKING);
+    fotoDto.setTaxonSeq(TestConstants.TAXONSEQ + 1);
+    fotoDto.setWaarnemingId(TestConstants.WAARNEMINGID);
+    fotos.put(TestConstants.TAXONSEQ + 1, fotoDto);
 
     return fotos;
   }
 
   public static Gebied getGebied() {
     Gebied  gebied  = new Gebied();
-    gebied.setGebiedId(GEBIEDID);
-    gebied.setLandId(LANDID);
-    gebied.setLatitude(LATITUDE);
-    gebied.setLatitudeGraden(LATITUDE_GRADEN);
-    gebied.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebied.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebied.setLongitude(LONGITUDE);
-    gebied.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebied.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebied.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebied.setNaam(NAAM);
+    gebied.setGebiedId(TestConstants.GEBIEDID);
+    gebied.setLandId(TestConstants.LANDID);
+    gebied.setLatitude(TestConstants.LATITUDE);
+    gebied.setLatitudeGraden(TestConstants.LATITUDE_GRADEN);
+    gebied.setLatitudeMinuten(TestConstants.LATITUDE_MINUTEN);
+    gebied.setLatitudeSeconden(TestConstants.LATITUDE_SECONDEN);
+    gebied.setLongitude(TestConstants.LONGITUDE);
+    gebied.setLongitudeGraden(TestConstants.LONGITUDE_GRADEN);
+    gebied.setLongitudeMinuten(TestConstants.LONGITUDE_MINUTEN);
+    gebied.setLongitudeSeconden(TestConstants.LONGITUDE_SECONDEN);
+    gebied.setNaam(TestConstants.NAAM);
 
     return gebied;
   }
 
   public static GebiedDto getGebiedDto() {
-    GebiedDto gebiedDto = new GebiedDto();
-    gebiedDto.setGebiedId(GEBIEDID);
-    gebiedDto.setLandId(LANDID);
-    gebiedDto.setLatitude(LATITUDE);
-    gebiedDto.setLatitudeGraden(LATITUDE_GRADEN);
-    gebiedDto.setLatitudeMinuten(LATITUDE_MINUTEN);
-    gebiedDto.setLatitudeSeconden(LATITUDE_SECONDEN);
-    gebiedDto.setLongitude(LONGITUDE);
-    gebiedDto.setLongitudeGraden(LONGITUDE_GRADEN);
-    gebiedDto.setLongitudeMinuten(LONGITUDE_MINUTEN);
-    gebiedDto.setLongitudeSeconden(LONGITUDE_SECONDEN);
-    gebiedDto.setNaam(NAAM);
+    var gebied    = getGebied();
+    var gebiedDto = new GebiedDto();
+
+    gebied.persist(gebiedDto);
 
     return gebiedDto;
+  }
+
+  public static Rang getParentRang() {
+    var rang  = new Rang();
+
+    rang.setNaam(TestConstants.PARENTRANGNAAM);
+    rang.setNiveau(TestConstants.PARENTNIVEAU);
+    rang.setRang(TestConstants.PARENTRANG);
+
+    return rang;
+  }
+
+  public static Taxon getParentTaxon() {
+    Taxon taxon = new Taxon();
+
+    taxon.setLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
+    taxon.setNaam(TestConstants.PARENTNAAM);
+    taxon.setNiveau(TestConstants.PARENTNIVEAU);
+    taxon.setOpmerking(TestConstants.PARENTOPMERKING);
+    taxon.setParentId(TestConstants.GRANDPARENTTAXONID);
+    taxon.setParentLatijnsenaam(TestConstants.GRANDPARENTLATIJNSENAAM);
+    taxon.setParentNaam(TestConstants.GRANDPARENTNAAM);
+    taxon.setParentNiveau(TestConstants.GRANDPARENTNIVEAU);
+    taxon.setParentRang(TestConstants.GRANDPARENTRANG);
+    taxon.setParentRangnaam(TestConstants.GRANDPARENTRANGNAAM);
+    taxon.setParentVolgnummer(TestConstants.GRANDPARENTVOLGNUMMER);
+    taxon.setRang(TestConstants.PARENTRANG);
+    taxon.setRangnaam(TestConstants.PARENTRANGNAAM);
+    taxon.setTaxonId(TestConstants.PARENTTAXONID);
+    taxon.setVolgnummer(TestConstants.PARENTVOLGNUMMER);
+
+    return taxon;
+  }
+
+  public static TaxonDto getParentTaxonDto() {
+    var taxon     = getParentTaxon();
+    var taxonDto  = new TaxonDto();
+
+    taxon.persist(taxonDto);
+    taxon.persist(taxonDto);
+    getTaxonnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxonDto.addNaam(taxonnaam);
+    });
+
+
+    return taxonDto;
+  }
+
+  public static Rang getRang() {
+    var rang  = new Rang();
+
+    rang.setNaam(TestConstants.RANGNAAM);
+    rang.setNiveau(TestConstants.NIVEAU);
+    rang.setRang(TestConstants.RANG);
+
+    return rang;
   }
 
   public static Map<String, RangnaamDto> getRangnamen() {
     var                       rangnaamDto = new RangnaamDto();
     Map<String, RangnaamDto>  rangnamen   = new HashMap<>();
 
-    rangnaamDto.setTaal(TAAL);
-    rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam(RANGNAAM);
-    rangnamen.put(TAAL, rangnaamDto);
+    rangnaamDto.setTaal(TestConstants.TAAL);
+    rangnaamDto.setRang(TestConstants.RANG);
+    rangnaamDto.setNaam(TestConstants.RANGNAAM);
+    rangnamen.put(TestConstants.TAAL, rangnaamDto);
 
     rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(TAAL_KL);
-    rangnaamDto.setRang(RANG);
-    rangnaamDto.setNaam(RANGNAAM_KL);
-    rangnamen.put(TAAL_KL, rangnaamDto);
+    rangnaamDto.setTaal(TestConstants.TAAL_KL);
+    rangnaamDto.setRang(TestConstants.RANG);
+    rangnaamDto.setNaam(TestConstants.RANGNAAM_KL);
+    rangnamen.put(TestConstants.TAAL_KL, rangnaamDto);
 
     return rangnamen;
   }
@@ -144,29 +162,32 @@ public final class TestUtils {
   public static Taxon getTaxon() {
     Taxon taxon = new Taxon();
 
-    taxon.setLatijnsenaam(LATIJNSENAAM);
-    taxon.setNaam(NAAM);
-    taxon.setOpmerking(OPMERKING);
-    taxon.setParentId(PARENTID);
-    taxon.setParentLatijnsenaam(PARENTLATIJNSENAAM);
-    taxon.setParentNaam(PARENTNAAM);
-    taxon.setParentVolgnummer(PARENTVOLGNUMMER);
-    taxon.setRang(RANG);
-    taxon.setTaxonId(TAXONID);
-    taxon.setVolgnummer(VOLGNUMMER);
+    taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    taxon.setNaam(TestConstants.NAAM);
+    taxon.setOpmerking(TestConstants.OPMERKING);
+    taxon.setParentId(TestConstants.PARENTTAXONID);
+    taxon.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
+    taxon.setParentNaam(TestConstants.PARENTNAAM);
+    taxon.setParentNiveau(TestConstants.PARENTNIVEAU);
+    taxon.setParentRang(TestConstants.PARENTRANG);
+    taxon.setParentVolgnummer(TestConstants.PARENTVOLGNUMMER);
+    taxon.setRang(TestConstants.RANG);
+    taxon.setRangnaam(TestConstants.RANGNAAM);
+    taxon.setTaxonId(TestConstants.TAXONID);
+    taxon.setVolgnummer(TestConstants.VOLGNUMMER);
 
     return taxon;
   }
 
   public static TaxonDto getTaxonDto() {
-    TaxonDto  taxonDto  = new TaxonDto();
-    taxonDto.setLatijnsenaam(LATIJNSENAAM);
-    taxonDto.setOpmerking(OPMERKING);
-    taxonDto.setParentId(PARENTID);
-    taxonDto.setRang(RANG);
-    taxonDto.setTaxonId(TAXONID);
-    taxonDto.setTaxonnamen(getTaxonnamen());
-    taxonDto.setVolgnummer(VOLGNUMMER);
+    var taxon     = getTaxon();
+    var taxonDto  = new TaxonDto();
+
+    taxon.persist(taxonDto);
+    getTaxonnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxonDto.addNaam(taxonnaam);
+    });
 
     return taxonDto;
   }
@@ -175,16 +196,16 @@ public final class TestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TAAL);
-    taxonnaamDto.setTaxonId(TAXONID);
-    taxonnaamDto.setNaam(TAXONNAAM);
-    taxonnamen.put(TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setTaxonId(TestConstants.TAXONID);
+    taxonnaamDto.setNaam(TestConstants.TAXONNAAM);
+    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TAAL_KL);
-    taxonnaamDto.setTaxonId(TAXONID);
-    taxonnaamDto.setNaam(TAXONNAAM_KL);
-    taxonnamen.put(TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(TestConstants.TAXONID);
+    taxonnaamDto.setNaam(TestConstants.TAXONNAAM_KL);
+    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -193,16 +214,16 @@ public final class TestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TAAL);
-    taxonnaamDto.setTaxonId(PARENTID);
-    taxonnaamDto.setNaam(PARENTNAAM);
-    taxonnamen.put(TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setTaxonId(TestConstants.PARENTTAXONID);
+    taxonnaamDto.setNaam(TestConstants.PARENTNAAM);
+    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TAAL_KL);
-    taxonnaamDto.setTaxonId(PARENTID);
-    taxonnaamDto.setNaam(PARENTNAAM_KL);
-    taxonnamen.put(TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(TestConstants.PARENTTAXONID);
+    taxonnaamDto.setNaam(TestConstants.PARENTNAAM_KL);
+    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
