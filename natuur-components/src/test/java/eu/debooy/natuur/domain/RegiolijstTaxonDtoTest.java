@@ -177,8 +177,8 @@ public class RegiolijstTaxonDtoTest {
 
     var tabel = new TaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertTrue(kleiner.getVolgnummer().equals(tabel[0].getVolgnummer()));
-    assertTrue(groter.getVolgnummer().equals(tabel[1].getVolgnummer()));
+    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
+    assertEquals(groter.getVolgnummer(), tabel[1].getVolgnummer());
     assertEquals(tabel[0].getLatijnsenaam(), tabel[1].getLatijnsenaam());
   }
 
@@ -198,7 +198,7 @@ public class RegiolijstTaxonDtoTest {
 
     var tabel = new TaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertTrue(tabel[0].getVolgnummer().equals(tabel[1].getVolgnummer()));
+    assertEquals(tabel[0].getVolgnummer(), tabel[1].getVolgnummer());
     assertEquals(TestConstants.LATIJNSENAAM_KL, tabel[0].getLatijnsenaam());
     assertEquals(TestConstants.LATIJNSENAAM_GR, tabel[1].getLatijnsenaam());
   }
