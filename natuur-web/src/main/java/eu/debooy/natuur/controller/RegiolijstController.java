@@ -308,7 +308,7 @@ public class RegiolijstController extends Natuur {
     rijen.forEach(rij ->
       exportData.addData(
           new String[] {NatuurUtils.getSubtitel(rij.getParentLatijnsenaam(),
-                                                rij.isUitgestorven(),
+                                                rij.getParentUitgestorven(),
                                                 rij.getParentnaam(taal1),
                                                 rij.getParentnaam(taal2),
                                                 rij.getParentnaam(taal3)),

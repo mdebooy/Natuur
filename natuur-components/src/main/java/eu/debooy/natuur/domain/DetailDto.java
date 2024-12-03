@@ -99,6 +99,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="PARENT_RANG", insertable= false, updatable=false)
   private String  parentRang;
+  @Column(name="PARENT_UITGESTORVEN", length=1, nullable=false)
+  private String  parentUitgestorven;
   @ReadOnly
   @Column(name="PARENT_VOLGNUMMER", insertable= false, updatable=false)
   private Long    parentVolgnummer;
@@ -308,6 +310,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return parentRang;
   }
 
+  public boolean getParentUitgestorven() {
+    return parentUitgestorven.equals(DoosConstants.WAAR);
+  }
+
   public Long getParentVolgnummer() {
     return parentVolgnummer;
   }
@@ -366,6 +372,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Transient
   public boolean isOpFoto(){
     return opFoto.equals(1);
+  }
+
+  public boolean isParentUitgestorven() {
+    return getParentUitgestorven();
   }
 
   public boolean isUitgestorven() {

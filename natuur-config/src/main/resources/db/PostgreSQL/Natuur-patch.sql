@@ -59,8 +59,8 @@ ORDER BY Q.BREADCRUMB;
 CREATE OR REPLACE VIEW NATUUR.DETAILS AS
 SELECT   P.TAXON_ID AS PARENT_ID, P.VOLGNUMMER AS PARENT_VOLGNUMMER,
          P.RANG AS PARENT_RANG, P.LATIJNSENAAM AS PARENT_LATIJNSENAAM,
-         R.NIVEAU, T.TAXON_ID, T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM,
-         T.OPMERKING, T.UITGESTORVEN,
+         P.UITGESTORVEN AS PARENT_UITGESTORVEN, R.NIVEAU, T.TAXON_ID,
+         T.VOLGNUMMER, T.RANG, T.LATIJNSENAAM, T.OPMERKING, T.UITGESTORVEN,
          CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
 FROM     NATUUR.TAXONOMIE T
            JOIN NATUUR.TAXA P
@@ -122,8 +122,8 @@ CREATE INDEX IX_TAX_PARENT_ID
 
 GRANT SELECT                         ON TABLE NATUUR.DETAILS          TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT   TO NATUUR_SEL;
-GRANT SELECT                         ON TABLE NATUUR.OVERZICHT        TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO        TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.OVERZICHT        TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE        TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.DETAILS          TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT   TO NATUUR_UPD;
@@ -136,9 +136,10 @@ COMMENT ON TABLE  NATUUR.GEBIEDEN                           IS 'Deze tabel bevat
 
 COMMENT ON VIEW   NATUUR.DETAILS                            IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
-COMMENT ON COLUMN NATUUR.DETAILS.PARENT_VOLGNUMMER          IS 'Het volgnummer van de parent van de taxon.';
-COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_LATIJNSENAAM        IS 'De latijnse naam van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                IS 'De rang van de parent van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_UITGESTORVEN        IS 'Is de parent van de taxon uitgestorven?';
+COMMENT ON COLUMN NATUUR.DETAILS.PARENT_VOLGNUMMER          IS 'Het volgnummer van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.NIVEAU                     IS 'Het niveau van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.TAXON_ID                   IS 'De sleutel van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.VOLGNUMMER                 IS 'Het volgnummer van de taxon.';
