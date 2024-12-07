@@ -16,7 +16,9 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.access.JsonBestand;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
+import eu.debooy.doosutils.exception.BestandException;
 import eu.debooy.natuur.TestConstants;
 import eu.debooy.natuur.TestUtils;
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import org.json.simple.JSONObject;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -171,6 +174,51 @@ public class TaxonDtoTest {
   }
 
   @Test
+  public void testInit2a() {
+    try {
+      var json  = new JsonBestand.Builder()
+              .setBestand(TestConstants.TAXON_JSON)
+              .setClassLoader(TaxonDtoTest.class.getClassLoader())
+              .build();
+      var init  = (JSONObject) json.read();
+      var taxon = new TaxonDto(init);
+
+      assertEquals(TestConstants.LATIJNSENAAM, taxon.getLatijnsenaam());
+      assertEquals(TestConstants.OPMERKING, taxon.getOpmerking());
+      assertEquals(TestConstants.PARENTTAXONID, taxon.getParentId());
+      assertEquals(TestConstants.RANG, taxon.getRang());
+      assertEquals(TestConstants.TAXONID, taxon.getTaxonId());
+      assertFalse(taxon.isUitgestorven());
+      assertEquals(TestConstants.VOLGNUMMER, taxon.getVolgnummer());
+    } catch (BestandException ex) {
+      fail("Er had geen BestandException mogen wezen.");
+    }
+  }
+
+  @Test
+  public void testInit2b() {
+    try {
+      var json  =
+          new JsonBestand.Builder()
+                         .setBestand(TestConstants.LEEG_JSON)
+                         .setClassLoader(TaxonDtoTest.class.getClassLoader())
+                         .build();
+      var init  = (JSONObject) json.read();
+      var taxon = new TaxonDto(init);
+
+      assertNull(taxon.getLatijnsenaam());
+      assertNull(taxon.getOpmerking());
+      assertNull(taxon.getParentId());
+      assertNull(taxon.getRang());
+      assertNull(taxon.getTaxonId());
+      assertFalse(taxon.isUitgestorven());
+      assertEquals(Long.valueOf(0), taxon.getVolgnummer());
+    } catch (BestandException ex) {
+      fail("Er had geen BestandException mogen wezen.");
+    }
+  }
+
+  @Test
   public void testLatijnsenaamComparator() {
     var groter  = new TaxonDto();
     var kleiner = new TaxonDto();
@@ -248,6 +296,41 @@ public class TaxonDtoTest {
     kleiner.addNaam(taxonnaam);
 
     Set<TaxonDto> taxa  = new TreeSet<>(new TaxonDto.NaamComparator());
+    taxa.add(groter);
+    taxa.add(taxonDto);
+    taxa.add(kleiner);
+
+    var tabel = new TaxonDto[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxonDto.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
+  }
+
+  @Test
+  public void testNaamComparator3() {
+    var groter    = new TaxonDto();
+    var kleiner   = new TaxonDto();
+    var taxonnaam = new TaxonnaamDto();
+
+    taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
+    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaxonId(taxonDto.getTaxonId());
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setTaxonId(taxonDto.getTaxonId());
+    groter.addNaam(taxonnaam);
+
+    taxonnaam = new TaxonnaamDto();
+    taxonnaam.setNaam(TestConstants.TAXONNAAM_KL);
+    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaxonId(taxonDto.getTaxonId());
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setTaxonId(taxonDto.getTaxonId());
+    kleiner.addNaam(taxonnaam);
+
+    var           comparator  = new TaxonDto.NaamComparator();
+    comparator.setTaal(TestConstants.TAAL_GR);
+    Set<TaxonDto> taxa        = new TreeSet<>(comparator);
     taxa.add(groter);
     taxa.add(taxonDto);
     taxa.add(kleiner);
@@ -560,8 +643,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testVolgnummerNaamComparator1() {
-    var groter  = new TaxonDto();
-    var kleiner = new TaxonDto();
+    var groter    = new TaxonDto();
+    var kleiner   = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
     taxonnaam.setNaam(TestConstants.NAAM);
@@ -595,8 +678,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testVolgnummerNaamComparator2() {
-    var groter  = new TaxonDto();
-    var kleiner = new TaxonDto();
+    var groter    = new TaxonDto();
+    var kleiner   = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
     taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
@@ -658,6 +741,46 @@ public class TaxonDtoTest {
 
     Set<TaxonDto> taxa  =
         new TreeSet<>(new TaxonDto.VolgnummerNaamComparator());
+    taxa.add(groter);
+    taxa.add(taxonDto);
+    taxa.add(kleiner);
+
+    var tabel = new TaxonDto[taxa.size()];
+    System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
+    assertEquals(kleiner.getLatijnsenaam(), tabel[0].getLatijnsenaam());
+    assertEquals(taxonDto.getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(groter.getLatijnsenaam(), tabel[2].getLatijnsenaam());
+  }
+
+  @Test
+  public void testVolgnummerNaamComparator4() {
+    var groter  = new TaxonDto();
+    var kleiner = new TaxonDto();
+    var taxonnaam = new TaxonnaamDto();
+
+    taxonnaam.setNaam(TestConstants.NAAM_GR);
+    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaxonId(taxonDto.getTaxonId());
+
+    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setRang(taxonDto.getRang());
+    groter.setTaxonId(taxonDto.getTaxonId());
+    groter.setVolgnummer(taxonDto.getVolgnummer() + 1);
+    groter.addNaam(taxonnaam);
+
+    taxonnaam = new TaxonnaamDto();
+    taxonnaam.setNaam(TestConstants.NAAM_KL);
+    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaxonId(taxonDto.getTaxonId());
+    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setRang(taxonDto.getRang());
+    kleiner.setTaxonId(taxonDto.getTaxonId());
+    kleiner.setVolgnummer(taxonDto.getVolgnummer() - 1);
+    kleiner.addNaam(taxonnaam);
+
+    var           comparator  = new TaxonDto.VolgnummerNaamComparator();
+    comparator.setTaal(TestConstants.TAAL_GR);
+    Set<TaxonDto> taxa        = new TreeSet<>(comparator);
     taxa.add(groter);
     taxa.add(taxonDto);
     taxa.add(kleiner);

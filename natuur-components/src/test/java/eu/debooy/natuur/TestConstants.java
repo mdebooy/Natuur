@@ -31,13 +31,15 @@ public final class TestConstants {
   public static final Integer AANTALFOTOS             = 0;
   public static final String  COORDINATEN             =
       "N 30 31 33,210 - E 40 41 43,210";
-  public static final int     DETAILPK_HASH           = 27871;
+  public static final int     DETAILPK_HASH           = 28871;
   public static final String  FOTOBESTAND             = "fotobestand";
   public static final String  FOTODETAIL              = "fotodetail";
   public static final Long    FOTOID                  = Long.MAX_VALUE - 8;
   public static final int     FOTOID_HASH             = -2147483011;
   public static final Long    GEBIEDID                = Long.MAX_VALUE - 9;
   public static final int     GEBIEDID_HASH           = -2147483010;
+  public static final int     GEENFOTO_HASH           = -2140800512;
+  public static final int     GEENFOTOPK_HASH         = 1153745;
   public static final String  GRANDPARENTLATIJNSENAAM = "Phalacrocoracidae";
   public static final String  GRANDPARENTNAAM         = "familie";
   public static final Long    GRANDPARENTNIVEAU       = 18L;
@@ -56,6 +58,7 @@ public final class TestConstants {
   public static final Integer LATITUDE_GRADEN         = 30;
   public static final Integer LATITUDE_MINUTEN        = 31;
   public static final Double  LATITUDE_SECONDEN       = 33.21;
+  public static final String  LEEG_JSON               = "leeg.json";
   public static final String  LONGITUDE               = "E";
   public static final String  LONGITUDE2              = "W";
   public static final Integer LONGITUDE_GRADEN        = 40;
@@ -69,7 +72,14 @@ public final class TestConstants {
   public static final String  OPMERKING               = "opmerking";
   public static final String  OMSCHRIJVING            =
       "Dit is een omschrijving.";
-  public static final int     OVERZICHTPK_HASH        = -2146327237;
+  public static final String  ONDERSOORTLATIJNSENAAM  =
+      "Phalacrocorax carbo sinensis";
+  public static final String  ONDERSOORTNAAM          =
+      "Aalscholver ssp sinensis";
+  public static final Long    ONDERSOORTNIVEAU        = 25L;
+  public static final Long    ONDERSOORTTAXONID       = 6834L;
+  public static final Long    ONDERSOORTVOLGNUMMER    = 65789L;
+  public static final int     OVERZICHTPK_HASH        = 1156411;
   public static final String  PARENTLATIJNSENAAM      = "Phalacrocorax";
   public static final String  PARENTNAAM              = "Aalscholvers";
   public static final String  PARENTNAAM_GR           = "Corvo-marinho";
@@ -81,7 +91,7 @@ public final class TestConstants {
   public static final String  PARENTRANG_GR           = "oge";
   public static final String  PARENTRANG_KL           = "fa";
   public static final String  PARENTRANGNAAM          = "genus";
-  public static final Long    PARENTTAXONID           = Long.MAX_VALUE - 124;
+  public static final Long    PARENTTAXONID           = 124L;
   public static final Long    PARENTVOLGNUMMER        = 5000L;
   public static final int     PCTOPFOTO               = 20;
   public static final String  RANG                    = "so";
@@ -95,18 +105,19 @@ public final class TestConstants {
   public static final String  RANGNAAM_KL             = "orde";
   public static final Long    REGIOID                 = 101L;
   public static final int     REGIOLIJST_HASH         = 730;
-  public static final int     REGIOLIJSTTAXON_HASH    = -2147456628;
-  public static final int     REGIOLIJSTTAXONPK_HASH  = -2147456628;
+  public static final int     REGIOLIJSTTAXON_HASH    = 28020;
+  public static final int     REGIOLIJSTTAXONPK_HASH  = 28020;
   public static final String  TAAL                    = "nld";
   public static final String  STATUS                  = "st";
   public static final String  TAAL_FOUT               = "xxxx";
   public static final String  TAAL_GR                 = "por";
   public static final String  TAAL_KL                 = "eng";
-  public static final Long    TAXONID                 = Long.MAX_VALUE - 10;
-  public static final int     TAXONID_HASH            = -2147483009;
+  public static final String  TAXON_JSON              = "taxon.json";
+  public static final Long    TAXONID                 = 1010L;
+  public static final int     TAXONID_HASH            = 1639;
   public static final String  TAXONNAAM               = "Aalscholver";
   public static final String  TAXONNAAM_GR            = "Cormorão";
-  public static final int     TAXONNAAM_HASH          = -2147350847;
+  public static final int     TAXONNAAM_HASH          = 169801;
   public static final String  TAXONNAAM_KL            = ".Great cormorant";
   public static final Long    TAXONSEQ                = 5L;
   public static final Integer TOTAAL                  = 10;

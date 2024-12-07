@@ -20,12 +20,15 @@ import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.TestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 
@@ -39,6 +42,38 @@ public class TaxonValidatorTest {
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.MAXLENGTH)
                  .setParams(new Object[]{TaxonValidator.LBL_LATIJNSENAAM, 255})
+                 .build();
+  private static final  Message ERR_ONDERSOORT1   =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMONDERSOORT)
+                 .build();
+  private static final  Message ERR_ONDERSOORT2   =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMFOUT)
+                 .build();
+  private static final  Message ERR_RANG          =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_RANG)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_PARENTNIVEAU)
+                 .setParams(new Object[]{TestConstants.RANGNAAM,
+                                         TestConstants.PARENTRANGNAAM})
+                 .build();
+  private static final  Message ERR_SOORT1        =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMSOORT)
+                 .build();
+  private static final  Message ERR_SOORT2        =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMFOUT)
                  .build();
   private static final  Message REQ_LATIJNSENAAM  =
       new Message.Builder()
@@ -87,6 +122,66 @@ public class TaxonValidatorTest {
     assertEquals(1, result.size());
     assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
     assertEquals(TaxonDto.class.getSimpleName(), result.get(0).getAttribute());
+  }
+
+  @Test
+  public void testValideerFouteOndersoort1() {
+    var ondersoort  = TestUtils.getTaxon();
+
+    ondersoort.setRang(NatuurConstants.RANG_ONDERSOORT);
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_ONDERSOORT1.toString(), result.get(0).toString());
+  }
+
+  @Test
+  public void testValideerFouteOndersoort2() {
+    var ondersoort  = TestUtils.getTaxonOndersoort();
+
+    ondersoort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_ONDERSOORT2.toString(), result.get(0).toString());
+  }
+
+  @Test
+  public void testValideerFouteRang() {
+    var soort = TestUtils.getTaxon();
+
+    soort.setParentNiveau(TestConstants.ONDERSOORTNIVEAU);
+
+    var result  = TaxonValidator.valideer(soort);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_RANG.toString(), result.get(0).toString());
+  }
+
+  @Test
+  public void testValideerFouteSoort1() {
+    var ondersoort  = TestUtils.getParentTaxon();
+
+    ondersoort.setRang(NatuurConstants.RANG_SOORT);
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_SOORT1.toString(), result.get(0).toString());
+  }
+
+  @Test
+  public void testValideerFouteSoort2() {
+    var ondersoort  = TestUtils.getTaxonOndersoort();
+
+    ondersoort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_SOORT2.toString(), result.get(0).toString());
   }
 
   @Test
@@ -217,5 +312,46 @@ public class TaxonValidatorTest {
 
     var           result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerOndersoort1() {
+    var ondersoort  = TestUtils.getTaxonOndersoort();
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertTrue(result.isEmpty());
+  }
+
+  @Test
+  public void testValideerOndersoort2() {
+    var ondersoort  = TestUtils.getTaxonOndersoort();
+
+    ondersoort.setParentLatijnsenaam(null);
+
+    var result  = TaxonValidator.valideer(ondersoort);
+
+    assertTrue(result.isEmpty());
+  }
+
+  @Test
+  public void testValideerRang() {
+    var soort = TestUtils.getTaxon();
+
+    var result  = TaxonValidator.valideer(soort);
+
+    assertTrue(result.isEmpty());
+
+    soort.setParentNiveau(null);
+
+    result  = TaxonValidator.valideer(soort);
+
+    assertTrue(result.isEmpty());
+
+    soort.setNiveau(null);
+
+    result  = TaxonValidator.valideer(soort);
+
+    assertTrue(result.isEmpty());
   }
 }

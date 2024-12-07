@@ -790,7 +790,6 @@ public class TaxonTest {
     assertNull(instance.getParentVolgnummer());
     instance.setTaxonId(TestConstants.TAXONID);
     instance.setParent(TestUtils.getParentTaxonDto(), TestConstants.TAAL);
-    System.out.println(TestUtils.getParentTaxonDto().toString());
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -799,7 +798,7 @@ public class TaxonTest {
     assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
     assertEquals(TestConstants.PARENTLATIJNSENAAM,
                  instance.getParentLatijnsenaam());
-    assertEquals(TestConstants.TAXONNAAM, instance.getParentNaam());
+    assertEquals(TestConstants.PARENTNAAM, instance.getParentNaam());
     assertNull(instance.getParentNiveau());
     assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
     assertNull(instance.getParentRangnaam());

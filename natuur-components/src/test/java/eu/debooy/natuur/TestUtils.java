@@ -95,7 +95,7 @@ public final class TestUtils {
   }
 
   public static Taxon getParentTaxon() {
-    Taxon taxon = new Taxon();
+    var taxon = new Taxon();
 
     taxon.setLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
     taxon.setNaam(TestConstants.PARENTNAAM);
@@ -121,12 +121,10 @@ public final class TestUtils {
     var taxonDto  = new TaxonDto();
 
     taxon.persist(taxonDto);
-    taxon.persist(taxonDto);
-    getTaxonnamen().forEach((taal, taxonnaam) -> {
+    getTaxonParentnamen().forEach((taal, taxonnaam) -> {
       taxonnaam.setTaxonId(taxon.getTaxonId());
       taxonDto.addNaam(taxonnaam);
     });
-
 
     return taxonDto;
   }
@@ -160,16 +158,18 @@ public final class TestUtils {
   }
 
   public static Taxon getTaxon() {
-    Taxon taxon = new Taxon();
+    var taxon = new Taxon();
 
     taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
     taxon.setNaam(TestConstants.NAAM);
+    taxon.setNiveau(TestConstants.NIVEAU);
     taxon.setOpmerking(TestConstants.OPMERKING);
     taxon.setParentId(TestConstants.PARENTTAXONID);
     taxon.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
     taxon.setParentNaam(TestConstants.PARENTNAAM);
     taxon.setParentNiveau(TestConstants.PARENTNIVEAU);
     taxon.setParentRang(TestConstants.PARENTRANG);
+    taxon.setParentRangnaam(TestConstants.PARENTRANGNAAM);
     taxon.setParentVolgnummer(TestConstants.PARENTVOLGNUMMER);
     taxon.setRang(TestConstants.RANG);
     taxon.setRangnaam(TestConstants.RANGNAAM);
@@ -208,6 +208,21 @@ public final class TestUtils {
     taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
+  }
+
+  public static Taxon getTaxonOndersoort() {
+    var taxon = new Taxon();
+
+    taxon.setLatijnsenaam(TestConstants.ONDERSOORTLATIJNSENAAM);
+    taxon.setNaam(TestConstants.ONDERSOORTNAAM);
+    taxon.setOpmerking(TestConstants.OPMERKING);
+    taxon.setParent(getTaxon());
+    taxon.setRang(NatuurConstants.RANG_ONDERSOORT);
+    taxon.setRangnaam(TestConstants.RANGNAAM);
+    taxon.setTaxonId(TestConstants.ONDERSOORTTAXONID);
+    taxon.setVolgnummer(TestConstants.ONDERSOORTVOLGNUMMER);
+
+    return taxon;
   }
 
   public static Map<String, TaxonnaamDto> getTaxonParentnamen() {

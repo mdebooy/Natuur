@@ -27,6 +27,11 @@ import java.util.Arrays;
  * @author Marco de Booij
  */
 public final class NatuurUtils {
+  public static final String  BOOLEANFALSE = "☐";
+  public static final String  BOOLEANTRUE  = "☑";
+  public static final String  CAMERAFALSE  = "";
+  public static final String  CAMERATRUE   = "☒";
+
   private NatuurUtils() {
     throw new IllegalStateException("Utility class");
   }
@@ -38,19 +43,11 @@ public final class NatuurUtils {
   }
 
   public static String getBoolean(boolean schakelaar) {
-    if (schakelaar) {
-      return "☑";
-    }
-
-    return "☐";
+    return schakelaar ? BOOLEANTRUE : BOOLEANFALSE;
   }
 
   public static String getCamera(boolean schakelaar) {
-    if (schakelaar) {
-      return "☒";
-    }
-
-    return "";
+    return schakelaar ? CAMERATRUE : CAMERAFALSE;
   }
 
   public static String getLatijnsenaam(String latijnsenaam,
@@ -79,10 +76,10 @@ public final class NatuurUtils {
   public static String getNaam(TaxonDto taxon, String taal) {
     if (taxon.hasTaxonnaam(taal)) {
       return taxon.getNaam(taal);
-  }
+    }
 
     var naam  = "";
-  if (taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+    if (taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
       && taxon.hasParentnaam(taal)) {
       naam  = taxon.getNaam(taal);
     }
@@ -106,6 +103,6 @@ public final class NatuurUtils {
   }
 
   public static Boolean isUitgestorven(String latijnsenaam) {
-    return latijnsenaam.endsWith(NatuurConstants.UITGESTORVEN);
+    return latijnsenaam.trim().endsWith(NatuurConstants.UITGESTORVEN);
   }
 }

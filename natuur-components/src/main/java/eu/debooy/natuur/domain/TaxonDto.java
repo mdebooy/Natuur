@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import javax.json.JsonObject;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -47,6 +46,7 @@ import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.json.simple.JSONObject;
 
 
 /**
@@ -195,19 +195,22 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public TaxonDto() {}
 
-  public TaxonDto(JsonObject json) {
-    latijnsenaam  = json.getString(COL_LATIJNSENAAM);
-    opmerking     = json.getString(COL_OPMERKING);
-    parentId      = json.getJsonNumber(COL_PARENTID).longValue();
-    if (parentId.equals(0L)) {
-      parentId    = null;
+  public TaxonDto(JSONObject json) {
+    latijnsenaam    = (String) json.get(COL_LATIJNSENAAM);
+    opmerking       = (String) json.get(COL_OPMERKING);
+    if (json.containsKey(COL_PARENTID)) {
+      parentId      = Long.valueOf(json.get(COL_PARENTID).toString());
     }
-    rang          = json.getString(COL_RANG);
+    rang            = (String) json.get(COL_RANG);
     if (json.containsKey(COL_TAXONID)) {
-      taxonId     = json.getJsonNumber(COL_TAXONID).longValue();
+      taxonId       = Long.valueOf(json.get(COL_TAXONID).toString());
     }
-    uitgestorven  = json.getString(COL_UITGESTORVEN);
-    volgnummer    = json.getJsonNumber(COL_VOLGNUMMER).longValue();
+    if (json.containsKey(COL_UITGESTORVEN)) {
+      uitgestorven  = (String) json.get(COL_UITGESTORVEN);
+    }
+    if (json.containsKey(COL_VOLGNUMMER)) {
+      volgnummer    = Long.valueOf(json.get(COL_VOLGNUMMER).toString());
+    }
   }
 
   public void addNaam(TaxonnaamDto taxonnaamDto) {

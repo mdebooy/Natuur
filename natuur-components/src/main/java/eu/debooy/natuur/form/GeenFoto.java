@@ -110,14 +110,17 @@ public class GeenFoto
 
   public void setParent(Taxon parent) {
     this.parent     = new Taxon(parent);
+    parentRang      = parent.getRang();
   }
 
   public void setParent(TaxonDto parent) {
     this.parent     = new Taxon(parent);
+    parentRang      = parent.getRang();
   }
 
   public void setParent(TaxonDto parent, String taal) {
     this.parent     = new Taxon(parent, taal);
+    parentRang      = parent.getRang();
   }
 
   public void setParentRang(String parentRang) {

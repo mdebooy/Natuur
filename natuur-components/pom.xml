@@ -27,6 +27,10 @@
     </dependency>
     <dependency>
       <groupId>eu.debooy.doosutils</groupId>
+      <artifactId>doosutils-file</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>eu.debooy.doosutils</groupId>
       <artifactId>doosutils-persistence</artifactId>
     </dependency>
     <dependency>
