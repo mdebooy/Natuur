@@ -76,6 +76,8 @@ public final class TestConstants {
       "Phalacrocorax carbo sinensis";
   public static final String  ONDERSOORTNAAM          =
       "Aalscholver ssp sinensis";
+  public static final String  ONDERSOORTNAAM_KL       =
+      ".Eastern Great cormorant";
   public static final Long    ONDERSOORTNIVEAU        = 25L;
   public static final Long    ONDERSOORTTAXONID       = 6834L;
   public static final Long    ONDERSOORTVOLGNUMMER    = 65789L;

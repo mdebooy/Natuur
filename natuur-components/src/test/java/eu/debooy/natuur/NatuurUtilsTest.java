@@ -82,6 +82,26 @@ public class NatuurUtilsTest {
   }
 
   @Test
+  public void testGetNaam2() {
+    var taxon = TestUtils.getParentTaxonDto();
+
+    assertEquals(TestConstants.PARENTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+  }
+
+  @Test
+  public void testGetNaam3() {
+    var taxon = TestUtils.getOndersoortTaxonDto();
+
+    assertEquals(TestConstants.ONDERSOORTNAAM,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+  }
+
+  @Test
   public void testGetSubtitel() {
     var resultaat1  = String.format("%s %s/%s/%s/%s",
                                     TestConstants.LATIJNSENAAM,

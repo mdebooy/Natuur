@@ -148,7 +148,7 @@ public class RegiolijstTaxonDtoTest {
 
     instance.setTaxon(null);
 
-    assertNull( instance.getTaxon());
+    assertNull(instance.getTaxon());
   }
 
   @Test
@@ -163,43 +163,55 @@ public class RegiolijstTaxonDtoTest {
 
   @Test
   public void testVolgnummerLatijnsenaamComparator1() {
-    var groter  = new TaxonDto();
-    var kleiner = new TaxonDto();
+    var groter  = new RegiolijstTaxonDto();
+    var kleiner = new RegiolijstTaxonDto();
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    groter.setVolgnummer(100L);
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    kleiner.setVolgnummer(12L);
-    Set<TaxonDto>   taxa  =
-        new TreeSet<>(new TaxonDto.VolgnummerLatijnsenaamComparator());
+    groter.setTaxon(TestUtils.getTaxonDto());
+    kleiner.setTaxon(TestUtils.getTaxonDto());
+
+    groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    groter.getTaxon().setVolgnummer(100L);
+    kleiner.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    kleiner.getTaxon().setVolgnummer(12L);
+    Set<RegiolijstTaxonDto> taxa  = new TreeSet<>
+        (new RegiolijstTaxonDto.VolgnummerLatijnsenaamComparator());
     taxa.add(groter);
     taxa.add(kleiner);
 
-    var tabel = new TaxonDto[taxa.size()];
+    var tabel = new RegiolijstTaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(kleiner.getVolgnummer(), tabel[0].getVolgnummer());
-    assertEquals(groter.getVolgnummer(), tabel[1].getVolgnummer());
-    assertEquals(tabel[0].getLatijnsenaam(), tabel[1].getLatijnsenaam());
+    assertEquals(kleiner.getTaxon().getVolgnummer(),
+                 tabel[0].getTaxon().getVolgnummer());
+    assertEquals(groter.getTaxon().getVolgnummer(),
+                 tabel[1].getTaxon().getVolgnummer());
+    assertEquals(tabel[0].getTaxon().getLatijnsenaam(),
+                 tabel[1].getTaxon().getLatijnsenaam());
   }
 
   @Test
   public void testVolgnummerLatijnsenaamComparator2() {
-    var groter  = new TaxonDto();
-    var kleiner = new TaxonDto();
+    var groter  = new RegiolijstTaxonDto();
+    var kleiner = new RegiolijstTaxonDto();
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
-    groter.setVolgnummer(12L);
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
-    kleiner.setVolgnummer(12L);
-    Set<TaxonDto>   taxa  =
-        new TreeSet<>(new TaxonDto.VolgnummerLatijnsenaamComparator());
+    groter.setTaxon(TestUtils.getTaxonDto());
+    kleiner.setTaxon(TestUtils.getTaxonDto());
+
+    groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.getTaxon().setVolgnummer(12L);
+    kleiner.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.getTaxon().setVolgnummer(12L);
+    Set<RegiolijstTaxonDto> taxa  = new TreeSet<>
+        (new RegiolijstTaxonDto.VolgnummerLatijnsenaamComparator());
     taxa.add(groter);
     taxa.add(kleiner);
 
-    var tabel = new TaxonDto[taxa.size()];
+    var tabel = new RegiolijstTaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(tabel[0].getVolgnummer(), tabel[1].getVolgnummer());
-    assertEquals(TestConstants.LATIJNSENAAM_KL, tabel[0].getLatijnsenaam());
-    assertEquals(TestConstants.LATIJNSENAAM_GR, tabel[1].getLatijnsenaam());
+    assertEquals(tabel[0].getTaxon().getVolgnummer(),
+                 tabel[1].getTaxon().getVolgnummer());
+    assertEquals(TestConstants.LATIJNSENAAM_KL,
+                 tabel[0].getTaxon().getLatijnsenaam());
+    assertEquals(TestConstants.LATIJNSENAAM_GR,
+                 tabel[1].getTaxon().getLatijnsenaam());
   }
 }

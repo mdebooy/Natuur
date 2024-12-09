@@ -84,6 +84,20 @@ public final class TestUtils {
     return gebiedDto;
   }
 
+  public static TaxonDto getOndersoortTaxonDto() {
+    var taxon = getParentTaxonDto();
+
+    taxon.setLatijnsenaam(TestConstants.ONDERSOORTLATIJNSENAAM);
+    taxon.setRang(NatuurConstants.RANG_ONDERSOORT);
+    taxon.setTaxonId(TestConstants.ONDERSOORTTAXONID);
+    getTaxonOndersoortnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxon.addNaam(taxonnaam);
+    });
+
+    return taxon;
+  }
+
   public static Rang getParentRang() {
     var rang  = new Rang();
 
@@ -223,6 +237,24 @@ public final class TestUtils {
     taxon.setVolgnummer(TestConstants.ONDERSOORTVOLGNUMMER);
 
     return taxon;
+  }
+
+  public static Map<String, TaxonnaamDto> getTaxonOndersoortnamen() {
+    var                       taxonnaamDto  = new TaxonnaamDto();
+    Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
+
+    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setTaxonId(TestConstants.ONDERSOORTTAXONID);
+    taxonnaamDto.setNaam(TestConstants.ONDERSOORTNAAM);
+    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+
+    taxonnaamDto = new TaxonnaamDto();
+    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(TestConstants.ONDERSOORTTAXONID);
+    taxonnaamDto.setNaam(TestConstants.ONDERSOORTNAAM_KL);
+    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+
+    return taxonnamen;
   }
 
   public static Map<String, TaxonnaamDto> getTaxonParentnamen() {

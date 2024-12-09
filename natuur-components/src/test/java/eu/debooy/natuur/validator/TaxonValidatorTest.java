@@ -162,11 +162,11 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteSoort1() {
-    var ondersoort  = TestUtils.getParentTaxon();
+    var soort = TestUtils.getParentTaxon();
 
-    ondersoort.setRang(NatuurConstants.RANG_SOORT);
+    soort.setRang(NatuurConstants.RANG_SOORT);
 
-    var result  = TaxonValidator.valideer(ondersoort);
+    var result  = TaxonValidator.valideer(soort);
 
     assertEquals(1, result.size());
     assertEquals(ERR_SOORT1.toString(), result.get(0).toString());
@@ -174,11 +174,11 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteSoort2() {
-    var ondersoort  = TestUtils.getTaxonOndersoort();
+    var soort = TestUtils.getTaxon();
 
-    ondersoort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    soort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR.split(" ")[0]);
 
-    var result  = TaxonValidator.valideer(ondersoort);
+    var result  = TaxonValidator.valideer(soort);
 
     assertEquals(1, result.size());
     assertEquals(ERR_SOORT2.toString(), result.get(0).toString());

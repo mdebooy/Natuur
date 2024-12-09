@@ -20,7 +20,9 @@ package eu.debooy.natuur.form;
 import eu.debooy.natuur.TestConstants;
 import eu.debooy.natuur.TestUtils;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -36,6 +38,65 @@ public class GeenFotoTest {
 
     geenFoto.setParent(TestUtils.getParentTaxon());
     geenFoto.setTaxon(TestUtils.getTaxon());
+  }
+
+  @Test
+  public void testCompareTo1() {
+    var gelijk  = new GeenFoto(geenFoto);
+    var groter  = new GeenFoto(geenFoto);
+    var kleiner = new GeenFoto(geenFoto);
+
+    groter.getParent().setVolgnummer(Long.MAX_VALUE);
+    kleiner.getParent().setVolgnummer(Long.MIN_VALUE);
+
+    assertTrue(geenFoto.compareTo(groter) < 0);
+    assertEquals(0, geenFoto.compareTo(gelijk));
+    assertTrue(geenFoto.compareTo(kleiner) > 0);
+  }
+
+  @Test
+  public void testCompareTo2() {
+    var gelijk  = new GeenFoto(geenFoto);
+    var groter  = new GeenFoto(geenFoto);
+    var kleiner = new GeenFoto(geenFoto);
+
+    groter.getParent().setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    kleiner.getParent().setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+
+    assertTrue(geenFoto.compareTo(groter) < 0);
+    assertEquals(0, geenFoto.compareTo(gelijk));
+    assertTrue(geenFoto.compareTo(kleiner) > 0);
+  }
+
+  @Test
+  public void testCompareTo3() {
+    var gelijk  = new GeenFoto(geenFoto);
+    var groter  = new GeenFoto(geenFoto);
+    var kleiner = new GeenFoto(geenFoto);
+
+    groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    kleiner.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+
+    assertTrue(geenFoto.compareTo(groter) < 0);
+    assertEquals(0, geenFoto.compareTo(gelijk));
+    assertTrue(geenFoto.compareTo(kleiner) > 0);
+  }
+
+  @Test
+  public void testEquals() {
+    var instance  = new GeenFoto();
+
+    instance.setParent(TestUtils.getTaxon());
+    instance.setTaxon(TestUtils.getParentTaxon());
+
+    assertEquals(geenFoto, geenFoto);
+    assertNotEquals(geenFoto, null);
+    assertNotEquals(geenFoto, TestConstants.NAAM);
+    assertNotEquals(geenFoto, instance);
+
+    instance.setParent(TestUtils.getParentTaxon());
+    instance.setTaxon(TestUtils.getTaxon());
+    assertEquals(geenFoto, instance);
   }
 
   @Test

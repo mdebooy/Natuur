@@ -134,8 +134,21 @@ public class TaxonDtoTest {
   }
 
   @Test
-  public void testGetNaam() {
+  public void testGetNaam1() {
     assertEquals(TestConstants.TAXONNAAM, taxonDto.getNaam(TestConstants.TAAL));
+  }
+
+  @Test
+  public void testGetNaam2() {
+    var taxon = TestUtils.getOndersoortTaxonDto();
+
+    assertEquals(TestConstants.ONDERSOORTNAAM,
+                 taxon.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.ONDERSOORTLATIJNSENAAM,
+                 taxon.getNaam(TestConstants.TAAL_GR));
+    assertEquals(TestConstants.ONDERSOORTLATIJNSENAAM, taxon.getLatijnsenaam());
+    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+                 taxon.getNaam(TestConstants.TAAL_KL));
   }
 
   @Test
