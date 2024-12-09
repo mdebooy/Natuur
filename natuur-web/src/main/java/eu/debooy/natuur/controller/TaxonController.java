@@ -149,7 +149,7 @@ public class TaxonController extends Natuur {
         try {
           getDoosRemote().getTaalIso6392t(talen[i]);
         } catch (ObjectNotFoundException e) {
-          addError(PersistenceConstants.NOTFOUND, talen[i]);
+          addError(NatuurConstants.ERR_TAALONBEKEND, talen[i]);
           correct = false;
         }
       }

@@ -28,6 +28,8 @@ public final class NatuurConstants {
 
   public static final String  DEF_TAAL          = "nld";
 
+  public static final String  ERR_TAALONBEKEND  = "errors.taal.onbekend";
+
   public static final String  RANG_FAMILIE      = "fa";
   public static final String  RANG_GESLACHT     = "ge";
   public static final String  RANG_KLASSE       = "kl";
