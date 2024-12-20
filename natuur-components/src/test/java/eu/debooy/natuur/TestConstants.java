@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.domain.GebiedDto;
@@ -94,6 +95,7 @@ public final class TestConstants {
   public static final String  PARENTRANG_KL           = "fa";
   public static final String  PARENTRANGNAAM          = "genus";
   public static final Long    PARENTTAXONID           = 124L;
+  public static final String  PARENTUITGESTORVEN      = DoosConstants.ONWAAR;
   public static final Long    PARENTVOLGNUMMER        = 5000L;
   public static final int     PCTOPFOTO               = 20;
   public static final String  RANG                    = "so";
@@ -123,6 +125,7 @@ public final class TestConstants {
   public static final String  TAXONNAAM_KL            = ".Great cormorant";
   public static final Long    TAXONSEQ                = 5L;
   public static final Integer TOTAAL                  = 10;
+  public static final String  UITGESTORVEN            = DoosConstants.ONWAAR;
   public static final Long    VOLGNUMMER              = 800L;
   public static final Long    WAARNEMINGID            = 1100L;
   public static final int     WAARNEMINGID_HASH       = 1729;

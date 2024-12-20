@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur;
 
+import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangnaamDto;
@@ -33,6 +34,63 @@ import java.util.Map;
  */
 public final class TestUtils {
   private TestUtils() {}
+
+  public static DetailDto getDetailDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var detailDto = new DetailDto();
+
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_LATIJNSENAAM, TestConstants.LATIJNSENAAM);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_NIVEAU, TestConstants.NIVEAU);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_PARENTID, TestConstants.PARENTTAXONID);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_PARENTLATIJNSENAAM,
+                TestConstants.PARENTLATIJNSENAAM);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_PARENTRANG, TestConstants.PARENTRANG);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_PARENTUITGESTORVEN,
+                TestConstants.PARENTUITGESTORVEN);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_PARENTVOLGNUMMER, TestConstants.PARENTVOLGNUMMER);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_RANG, TestConstants.RANG);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_TAXONID, TestConstants.TAXONID);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto,
+                DetailDto.COL_VOLGNUMMER, TestConstants.VOLGNUMMER);
+
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto, "parentnamen", getTaxonParentnamen());
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto, "taxonnamen", getTaxonnamen());
+    eu.debooy.doosutils.test.TestUtils
+      .setField(detailDto, "taxon", getTaxonDto());
+
+    return detailDto;
+  }
 
   public static Map<Long, FotoDto> getFotos() {
     var                 fotoDto = new FotoDto();
@@ -59,7 +117,7 @@ public final class TestUtils {
   }
 
   public static Gebied getGebied() {
-    Gebied  gebied  = new Gebied();
+    var gebied  = new Gebied();
     gebied.setGebiedId(TestConstants.GEBIEDID);
     gebied.setLandId(TestConstants.LANDID);
     gebied.setLatitude(TestConstants.LATITUDE);

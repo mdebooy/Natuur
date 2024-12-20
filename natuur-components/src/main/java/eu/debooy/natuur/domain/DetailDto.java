@@ -62,6 +62,20 @@ import org.apache.openjpa.persistence.ReadOnly;
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_LATIJNSENAAM        = "latijnsenaam";
+  public static final String  COL_NIVEAU              = "niveau";
+  public static final String  COL_OPFOTO              = "opFoto";
+  public static final String  COL_OPMERKING           = "opmerking";
+  public static final String  COL_PARENTID            = "parentId";
+  public static final String  COL_PARENTLATIJNSENAAM  = "parentLatijnsenaam";
+  public static final String  COL_PARENTRANG          = "parentRang";
+  public static final String  COL_PARENTUITGESTORVEN  = "parentUitgestorven";
+  public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
+  public static final String  COL_RANG                = "rang";
+  public static final String  COL_TAXONID             = "taxonId";
+  public static final String  COL_UITGESTORVEN        = "uitgestorven";
+  public static final String  COL_VOLGNUMMER          = "volgnummer";
+
   public static final String  PAR_PARENTID  = "parentId";
   public static final String  PAR_REGIOID   = "regioId";
 
