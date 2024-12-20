@@ -19,8 +19,8 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.access.JsonBestand;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.exception.BestandException;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +45,7 @@ public class TaxonDtoTest {
 
   @BeforeClass
   public static void setUpClass() {
-    taxonDto  = TestUtils.getTaxonDto();
+    taxonDto  = NatuurTestUtils.getTaxonDto();
   }
 
   @Test
@@ -139,8 +139,10 @@ public class TaxonDtoTest {
   }
 
   @Test
-  public void testGetNaam2() {
-    var taxon = TestUtils.getOndersoortTaxonDto();
+  public void testGetNaam2()
+      throws java.lang.IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
 
     assertEquals(TestConstants.ONDERSOORTNAAM,
                  taxon.getNaam(TestConstants.TAAL));
@@ -233,8 +235,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testLatijnsenaamComparator() {
-    var groter  = new TaxonDto();
-    var kleiner = new TaxonDto();
+    var groter    = NatuurTestUtils.getTaxonDto();
+    var kleiner   = NatuurTestUtils.getTaxonDto();
 
     groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
     kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
@@ -253,8 +255,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testNaamComparator1() {
-    var groter    = new TaxonDto();
-    var kleiner   = new TaxonDto();
+    var groter    = NatuurTestUtils.getTaxonDto();
+    var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
     taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
@@ -289,8 +291,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testNaamComparator2() {
-    var groter    = new TaxonDto();
-    var kleiner   = new TaxonDto();
+    var groter    = NatuurTestUtils.getTaxonDto();
+    var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
     taxonnaam.setNaam(TestConstants.TAXONNAAM);
@@ -322,8 +324,8 @@ public class TaxonDtoTest {
 
   @Test
   public void testNaamComparator3() {
-    var groter    = new TaxonDto();
-    var kleiner   = new TaxonDto();
+    var groter    = NatuurTestUtils.getTaxonDto();
+    var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
     taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);

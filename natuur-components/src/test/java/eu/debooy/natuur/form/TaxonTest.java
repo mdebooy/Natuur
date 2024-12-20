@@ -18,7 +18,7 @@ package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import java.util.Set;
 import java.util.TreeSet;
@@ -40,8 +40,8 @@ public class TaxonTest {
 
   @BeforeClass
   public static void setUpClass() {
-    taxon     = TestUtils.getTaxon();
-    taxonDto  = TestUtils.getTaxonDto();
+    taxon     = NatuurTestUtils.getTaxon();
+    taxonDto  = NatuurTestUtils.getTaxonDto();
   }
 
   @Test
@@ -694,7 +694,7 @@ public class TaxonTest {
     assertNull(instance.getParentNiveau());
     assertNull(instance.getParentRang());
     assertNull(instance.getParentRangnaam());
-    instance.setParentRang(TestUtils.getParentRang());
+    instance.setParentRang(NatuurTestUtils.getParentRang());
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -724,7 +724,7 @@ public class TaxonTest {
     assertNull(instance.getParentRang());
     assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
-    instance.setParent(TestUtils.getParentTaxon());
+    instance.setParent(NatuurTestUtils.getParentTaxon());
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -756,7 +756,7 @@ public class TaxonTest {
     assertNull(instance.getParentRang());
     assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
-    instance.setParent(TestUtils.getParentTaxonDto());
+    instance.setParent(NatuurTestUtils.getParentTaxonDto());
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -789,7 +789,7 @@ public class TaxonTest {
     assertNull(instance.getParentRangnaam());
     assertNull(instance.getParentVolgnummer());
     instance.setTaxonId(TestConstants.TAXONID);
-    instance.setParent(TestUtils.getParentTaxonDto(), TestConstants.TAAL);
+    instance.setParent(NatuurTestUtils.getParentTaxonDto(), TestConstants.TAAL);
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());
@@ -892,7 +892,7 @@ public class TaxonTest {
     assertNull(instance.getNiveau());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
-    instance.setRang(TestUtils.getRang());
+    instance.setRang(NatuurTestUtils.getRang());
 
     assertNull(instance.getLatijnsenaam());
     assertNull(instance.getNaam());

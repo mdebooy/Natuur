@@ -80,6 +80,9 @@ public final class TestConstants {
   public static final String  ONDERSOORTNAAM_KL       =
       ".Eastern Great cormorant";
   public static final Long    ONDERSOORTNIVEAU        = 25L;
+  public static final String  ONDERSOORTOPMERKING     = "oso opmerking";
+  public static final String  ONDERSOORTRANG          = "oso";
+  public static final String  ONDERSOORTRANGNAAM      = "ondersoort";
   public static final Long    ONDERSOORTTAXONID       = 6834L;
   public static final Long    ONDERSOORTVOLGNUMMER    = 65789L;
   public static final int     OVERZICHTPK_HASH        = 1156411;
@@ -89,7 +92,7 @@ public final class TestConstants {
   public static final String  PARENTNAAM_KL           =
       ".Cormorants, Shags";
   public static final Long    PARENTNIVEAU            = 22L;
-  public static final String  PARENTOPMERKING         = "p opmerking";
+  public static final String  PARENTOPMERKING         = "ge opmerking";
   public static final String  PARENTRANG              = "ge";
   public static final String  PARENTRANG_GR           = "oge";
   public static final String  PARENTRANG_KL           = "fa";
@@ -103,8 +106,8 @@ public final class TestConstants {
   public static final String  RANG_GR                 = "ta";
   public static final int     RANG_HASH               = 4305;
   public static final String  RANG_KL                 = "or";
-  public static final String  RANGNAAM                = "rang";
-  public static final String  RANGNAAM_GR             = "soort";
+  public static final String  RANGNAAM                = "soort";
+  public static final String  RANGNAAM_GR             = "stoort";
   public static final int     RANGNAAM_HASH           = 268443;
   public static final String  RANGNAAM_KL             = "orde";
   public static final Long    REGIOID                 = 101L;

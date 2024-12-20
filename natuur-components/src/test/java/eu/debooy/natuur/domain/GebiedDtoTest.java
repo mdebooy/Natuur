@@ -17,7 +17,7 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Locale;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -37,7 +37,7 @@ public class GebiedDtoTest {
     // Voor de juiste decimal point.
     Locale.setDefault(new Locale("nl"));
 
-    gebiedDto = TestUtils.getGebiedDto();
+    gebiedDto = NatuurTestUtils.getGebiedDto();
   }
 
   @Test

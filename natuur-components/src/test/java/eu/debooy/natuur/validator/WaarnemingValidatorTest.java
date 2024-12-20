@@ -24,7 +24,7 @@ import static eu.debooy.natuur.TestConstants.ERR_OPMERKING;
 import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.REQ_GEBIEDID;
 import static eu.debooy.natuur.TestConstants.REQ_TAXONID;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
@@ -80,9 +80,9 @@ public class WaarnemingValidatorTest {
                            .setParams(new Object[]{Datum.fromDate(morgen)})
                            .build();
 
-    gebied    = TestUtils.getGebied();
-    gebiedDto = TestUtils.getGebiedDto();
-    taxon     = TestUtils.getTaxon();
+    gebied    = NatuurTestUtils.getGebied();
+    gebiedDto = NatuurTestUtils.getGebiedDto();
+    taxon     = NatuurTestUtils.getTaxon();
     taxonDto  = new TaxonDto();
     taxon.persist(taxonDto);
   }

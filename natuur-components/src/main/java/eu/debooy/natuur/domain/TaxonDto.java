@@ -17,12 +17,12 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.DoosConstants;
-import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
 import eu.debooy.natuur.NatuurConstants;
+import eu.debooy.natuur.NatuurUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -256,18 +256,8 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   @Transient
   public String getNaam(String taal) {
-    if (hasTaxonnaam(taal)) {
-      return getTaxonnaam(taal).getNaam();
-    }
-
-    if (DoosUtils.nullToEmpty(getRang())
-                 .equals(NatuurConstants.RANG_ONDERSOORT)
-        && hasParentnaam(taal)) {
-      return String.format("%s ssp %s", getParentnaam(taal).getNaam(),
-                           latijnsenaam.split(" ")[2]);
-    }
-
-    return getLatijnsenaam();
+    return NatuurUtils.getNaam(taxonnamen, parentnamen, latijnsenaam, rang,
+                               taal);
   }
 
   public String getOpmerking() {

@@ -18,7 +18,7 @@
 package eu.debooy.natuur.form;
 
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -36,8 +36,8 @@ public class GeenFotoTest {
   public static void setUpClass() {
     geenFoto  = new GeenFoto();
 
-    geenFoto.setParent(TestUtils.getParentTaxon());
-    geenFoto.setTaxon(TestUtils.getTaxon());
+    geenFoto.setParent(NatuurTestUtils.getParentTaxon());
+    geenFoto.setTaxon(NatuurTestUtils.getTaxon());
   }
 
   @Test
@@ -86,16 +86,16 @@ public class GeenFotoTest {
   public void testEquals() {
     var instance  = new GeenFoto();
 
-    instance.setParent(TestUtils.getTaxon());
-    instance.setTaxon(TestUtils.getParentTaxon());
+    instance.setParent(NatuurTestUtils.getTaxon());
+    instance.setTaxon(NatuurTestUtils.getParentTaxon());
 
     assertEquals(geenFoto, geenFoto);
     assertNotEquals(geenFoto, null);
     assertNotEquals(geenFoto, TestConstants.NAAM);
     assertNotEquals(geenFoto, instance);
 
-    instance.setParent(TestUtils.getParentTaxon());
-    instance.setTaxon(TestUtils.getTaxon());
+    instance.setParent(NatuurTestUtils.getParentTaxon());
+    instance.setTaxon(NatuurTestUtils.getTaxon());
     assertEquals(geenFoto, instance);
   }
 
@@ -146,7 +146,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getParent());
 
-    instance.setParent(TestUtils.getParentTaxon());
+    instance.setParent(NatuurTestUtils.getParentTaxon());
 
     assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
     assertEquals(TestConstants.PARENTTAXONID,
@@ -160,7 +160,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getParent());
 
-    instance.setParent(TestUtils.getParentTaxonDto());
+    instance.setParent(NatuurTestUtils.getParentTaxonDto());
 
     assertEquals(TestConstants.PARENTLATIJNSENAAM,
                  instance.getParent().getNaam());
@@ -176,7 +176,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getParent());
 
-    instance.setParent(TestUtils.getParentTaxonDto(), TestConstants.TAAL_KL);
+    instance.setParent(NatuurTestUtils.getParentTaxonDto(), TestConstants.TAAL_KL);
 
     assertEquals(TestConstants.PARENTNAAM_KL,
                  instance.getParent().getNaam());
@@ -205,7 +205,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getTaxon());
 
-    instance.setTaxon(TestUtils.getTaxon());
+    instance.setTaxon(NatuurTestUtils.getTaxon());
 
     assertNull(instance.getParent());
     assertNull(instance.getParentRang());
@@ -218,7 +218,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getTaxon());
 
-    instance.setTaxon(TestUtils.getTaxonDto());
+    instance.setTaxon(NatuurTestUtils.getTaxonDto());
 
     assertNull(instance.getParent());
     assertNull(instance.getParentRang());
@@ -231,7 +231,7 @@ public class GeenFotoTest {
 
     assertNull(instance.getTaxon());
 
-    instance.setTaxon(TestUtils.getTaxonDto(), TestConstants.TAAL_KL);
+    instance.setTaxon(NatuurTestUtils.getTaxonDto(), TestConstants.TAAL_KL);
 
     assertNull(instance.getParent());
     assertNull(instance.getParentRang());

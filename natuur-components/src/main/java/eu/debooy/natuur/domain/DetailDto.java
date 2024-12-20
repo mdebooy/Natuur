@@ -17,9 +17,9 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.DoosConstants;
-import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.natuur.NatuurConstants;
+import eu.debooy.natuur.NatuurUtils;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Comparator;
@@ -276,15 +276,8 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   @Transient
   public String getNaam(String taal) {
-    if (hasTaxonnaam(taal)) {
-      return getTaxonnaam(taal).getNaam();
-    }
-
-    if (DoosUtils.nullToEmpty(rang).equals(NatuurConstants.RANG_ONDERSOORT)) {
-      return taxon.getNaam(taal);
-    }
-
-    return getLatijnsenaam();
+    return NatuurUtils.getNaam(taxonnamen, parentnamen, latijnsenaam, rang,
+                               taal);
   }
 
   public Long getNiveau() {

@@ -19,7 +19,7 @@ package eu.debooy.natuur.form;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import java.util.Date;
@@ -47,8 +47,8 @@ public class WaarnemingTest {
   @BeforeClass
   public static void setUpClass() {
     datum         = new Date();
-    gebied        = TestUtils.getGebied();
-    taxon         = TestUtils.getTaxon();
+    gebied        = NatuurTestUtils.getGebied();
+    taxon         = NatuurTestUtils.getTaxon();
     taxonDto      = new TaxonDto();
     taxon.persist(taxonDto);
 
@@ -63,7 +63,7 @@ public class WaarnemingTest {
     waarnemingDto = new WaarnemingDto();
     waarnemingDto.setAantal(TestConstants.AANTAL);
     waarnemingDto.setDatum(datum);
-    waarnemingDto.setGebied(TestUtils.getGebiedDto());
+    waarnemingDto.setGebied(NatuurTestUtils.getGebiedDto());
     waarnemingDto.setOpmerking(TestConstants.OPMERKING);
     waarnemingDto.setTaxon(taxonDto);
     waarnemingDto.setWaarnemingId(TestConstants.WAARNEMINGID);

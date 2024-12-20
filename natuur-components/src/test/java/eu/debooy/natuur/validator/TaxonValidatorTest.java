@@ -22,7 +22,7 @@ import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
@@ -126,7 +126,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteOndersoort1() {
-    var ondersoort  = TestUtils.getTaxon();
+    var ondersoort  = NatuurTestUtils.getTaxon();
 
     ondersoort.setRang(NatuurConstants.RANG_ONDERSOORT);
 
@@ -138,7 +138,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteOndersoort2() {
-    var ondersoort  = TestUtils.getTaxonOndersoort();
+    var ondersoort  = NatuurTestUtils.getTaxonOndersoort();
 
     ondersoort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
 
@@ -150,7 +150,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteRang() {
-    var soort = TestUtils.getTaxon();
+    var soort = NatuurTestUtils.getTaxon();
 
     soort.setParentNiveau(TestConstants.ONDERSOORTNIVEAU);
 
@@ -162,7 +162,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteSoort1() {
-    var soort = TestUtils.getParentTaxon();
+    var soort = NatuurTestUtils.getParentTaxon();
 
     soort.setRang(NatuurConstants.RANG_SOORT);
 
@@ -174,7 +174,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerFouteSoort2() {
-    var soort = TestUtils.getTaxon();
+    var soort = NatuurTestUtils.getTaxon();
 
     soort.setParentLatijnsenaam(TestConstants.LATIJNSENAAM_GR.split(" ")[0]);
 
@@ -316,7 +316,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerOndersoort1() {
-    var ondersoort  = TestUtils.getTaxonOndersoort();
+    var ondersoort  = NatuurTestUtils.getTaxonOndersoort();
 
     var result  = TaxonValidator.valideer(ondersoort);
 
@@ -325,7 +325,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerOndersoort2() {
-    var ondersoort  = TestUtils.getTaxonOndersoort();
+    var ondersoort  = NatuurTestUtils.getTaxonOndersoort();
 
     ondersoort.setParentLatijnsenaam(null);
 
@@ -336,7 +336,7 @@ public class TaxonValidatorTest {
 
   @Test
   public void testValideerRang() {
-    var soort = TestUtils.getTaxon();
+    var soort = NatuurTestUtils.getTaxon();
 
     var result  = TaxonValidator.valideer(soort);
 

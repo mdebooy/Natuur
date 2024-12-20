@@ -20,7 +20,9 @@ package eu.debooy.natuur;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.domain.TaxonnaamDto;
 import java.util.Arrays;
+import java.util.Map;
 
 
 /**
@@ -59,32 +61,32 @@ public final class NatuurUtils {
     return String.format("%s %s", latijnsenaam, NatuurConstants.UITGESTORVEN);
   }
 
+  public static String getNaam(String naam, String latijnsenaam) {
+    return naam.equals(latijnsenaam) ? "" : naam;
+  }
+
   public static String getNaam(DetailDto detail, String taal) {
-    if (detail.hasTaxonnaam(taal)) {
-      return detail.getNaam(taal);
-    }
-
-    var naam  = "";
-    if (detail.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
-        && detail.hasParentnaam(taal)) {
-      naam  = detail.getNaam(taal);
-    }
-
-    return naam.equals(detail.getLatijnsenaam()) ? "" : naam;
+    return getNaam(detail.getNaam(taal), detail.getLatijnsenaam());
   }
 
   public static String getNaam(TaxonDto taxon, String taal) {
-    if (taxon.hasTaxonnaam(taal)) {
-      return taxon.getNaam(taal);
+    return getNaam(taxon.getNaam(taal), taxon.getLatijnsenaam());
+  }
+
+  public static String getNaam(Map<String, TaxonnaamDto> taxonnamen,
+                               Map<String, TaxonnaamDto> parentnamen,
+                               String latijnsenaam, String rang, String taal) {
+    if (taxonnamen.containsKey(taal)) {
+      return taxonnamen.get(taal).getNaam();
     }
 
-    var naam  = "";
-    if (taxon.getRang().equals(NatuurConstants.RANG_ONDERSOORT)
-      && taxon.hasParentnaam(taal)) {
-      naam  = taxon.getNaam(taal);
+    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)
+        && parentnamen.containsKey(taal)) {
+      return String.format("%s ssp %s", parentnamen.get(taal).getNaam(),
+                           latijnsenaam.split(" ")[2]);
     }
 
-    return naam.equals(taxon.getLatijnsenaam()) ? "" : naam;
+    return latijnsenaam;
   }
 
   public static String getSubtitel(String latijnsenaam, boolean uitgestorven,

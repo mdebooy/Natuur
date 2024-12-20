@@ -20,7 +20,7 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 import java.util.ArrayList;
@@ -158,7 +158,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testEqual() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     assertEquals(gebied, gebied);
   }
 
@@ -195,7 +195,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten1() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitude(null);
@@ -208,7 +208,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten2() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitudeGraden(null);
@@ -221,7 +221,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten3() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitudeMinuten(null);
@@ -234,7 +234,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten4() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitudeSeconden(null);
@@ -247,7 +247,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten5() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLongitude(null);
@@ -260,7 +260,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten6() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLongitudeGraden(null);
@@ -273,7 +273,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten7() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLongitudeMinuten(null);
@@ -286,7 +286,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerFouteCoordinaten8() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLongitudeSeconden(null);
@@ -321,7 +321,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerGoedeCoordinaten1() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitudeGraden(null);
@@ -337,7 +337,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerGoedeCoordinaten2() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     gebied.setLatitude(TestConstants.LATITUDE2);
@@ -381,7 +381,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerGoedGebied1() {
-    Gebied        gebied    = TestUtils.getGebied();
+    Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
     List<Message> result    = GebiedValidator.valideer(gebied);
@@ -404,7 +404,7 @@ public class GebiedValidatorTest {
 
   @Test
   public void testValideerGoedGebiedDto1() {
-    GebiedDto     gebied    = TestUtils.getGebiedDto();
+    GebiedDto     gebied    = NatuurTestUtils.getGebiedDto();
     List<Message> expResult = new ArrayList<>();
 
     List<Message> result    = GebiedValidator.valideer(gebied);

@@ -23,7 +23,7 @@ import static eu.debooy.natuur.TestConstants.RANG_GR;
 import static eu.debooy.natuur.TestConstants.RANG_HASH;
 import static eu.debooy.natuur.TestConstants.RANG_KL;
 import static eu.debooy.natuur.TestConstants.TAAL;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.RangDto;
 import java.util.Set;
 import java.util.TreeSet;
@@ -51,7 +51,7 @@ public class RangTest {
     rangDto = new RangDto();
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);
-    rangDto.setRangnamen(TestUtils.getRangnamen());
+    rangDto.setRangnamen(NatuurTestUtils.getRangnamen());
   }
 
   @Test

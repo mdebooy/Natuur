@@ -26,7 +26,7 @@ import static eu.debooy.natuur.TestConstants.OPMERKING;
 import static eu.debooy.natuur.TestConstants.TAXONSEQ;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
 import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Date;
 import java.util.Map;
 import org.junit.Assert;
@@ -51,9 +51,9 @@ public class WaarnemingDtoTest {
   @BeforeClass
   public static void beforeClass() {
     datum         = new Date();
-    fotos         = TestUtils.getFotos();
-    gebiedDto     = TestUtils.getGebiedDto();
-    taxonDto      = TestUtils.getTaxonDto();
+    fotos         = NatuurTestUtils.getFotos();
+    gebiedDto     = NatuurTestUtils.getGebiedDto();
+    taxonDto      = NatuurTestUtils.getTaxonDto();
 
     waarnemingDto = new WaarnemingDto();
 
@@ -191,7 +191,7 @@ public class WaarnemingDtoTest {
 
   @Test
   public void testGetFoto() {
-    assertEquals(TestUtils.getFotos().get(TAXONSEQ),
+    assertEquals(NatuurTestUtils.getFotos().get(TAXONSEQ),
                  waarnemingDto.getFoto(TAXONSEQ));
     assertEquals(new FotoDto(), waarnemingDto.getFoto(TAXONSEQ - 1));
   }
@@ -226,7 +226,7 @@ public class WaarnemingDtoTest {
     var instance  = new WaarnemingDto();
 
     instance.setWaarnemingId(WAARNEMINGID);
-    instance.setFotos(TestUtils.getFotos());
+    instance.setFotos(NatuurTestUtils.getFotos());
 
     assertEquals(2, instance.getFotos().size());
     instance.removeFoto(TAXONSEQ);
@@ -287,7 +287,7 @@ public class WaarnemingDtoTest {
     var instance  = new WaarnemingDto();
     assertTrue(instance.getFotos().isEmpty());
 
-    instance.setFotos(TestUtils.getFotos());
+    instance.setFotos(NatuurTestUtils.getFotos());
 
     assertNull(instance.getAantal());
     assertNull(instance.getDatum());
@@ -303,7 +303,7 @@ public class WaarnemingDtoTest {
     var instance  = new WaarnemingDto();
     assertTrue(instance.getFotos().isEmpty());
 
-    instance.setFotos(TestUtils.getFotos().values());
+    instance.setFotos(NatuurTestUtils.getFotos().values());
 
     assertNull(instance.getAantal());
     assertNull(instance.getDatum());

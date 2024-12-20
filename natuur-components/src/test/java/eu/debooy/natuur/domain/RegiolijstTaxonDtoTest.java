@@ -17,7 +17,7 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
+import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Set;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
@@ -139,7 +139,7 @@ public class RegiolijstTaxonDtoTest {
   @Test
   public void testSetTaxon() {
     var instance  = new RegiolijstTaxonDto();
-    var taxon     = TestUtils.getTaxonDto();
+    var taxon     = NatuurTestUtils.getTaxonDto();
     assertNull( instance.getTaxon());
 
     instance.setTaxon(taxon);
@@ -166,8 +166,8 @@ public class RegiolijstTaxonDtoTest {
     var groter  = new RegiolijstTaxonDto();
     var kleiner = new RegiolijstTaxonDto();
 
-    groter.setTaxon(TestUtils.getTaxonDto());
-    kleiner.setTaxon(TestUtils.getTaxonDto());
+    groter.setTaxon(NatuurTestUtils.getTaxonDto());
+    kleiner.setTaxon(NatuurTestUtils.getTaxonDto());
 
     groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM);
     groter.getTaxon().setVolgnummer(100L);
@@ -193,8 +193,8 @@ public class RegiolijstTaxonDtoTest {
     var groter  = new RegiolijstTaxonDto();
     var kleiner = new RegiolijstTaxonDto();
 
-    groter.setTaxon(TestUtils.getTaxonDto());
-    kleiner.setTaxon(TestUtils.getTaxonDto());
+    groter.setTaxon(NatuurTestUtils.getTaxonDto());
+    kleiner.setTaxon(NatuurTestUtils.getTaxonDto());
 
     groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
     groter.getTaxon().setVolgnummer(12L);

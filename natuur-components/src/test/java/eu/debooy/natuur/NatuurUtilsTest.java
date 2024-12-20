@@ -71,7 +71,7 @@ public class NatuurUtilsTest {
 
   @Test
   public void testGetNaam1() {
-    var taxon = TestUtils.getParentTaxonDto();
+    var taxon = NatuurTestUtils.getParentTaxonDto();
 
     assertEquals(TestConstants.PARENTNAAM_KL,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
@@ -83,7 +83,7 @@ public class NatuurUtilsTest {
 
   @Test
   public void testGetNaam2() {
-    var taxon = TestUtils.getParentTaxonDto();
+    var taxon = NatuurTestUtils.getParentTaxonDto();
 
     assertEquals(TestConstants.PARENTNAAM_KL,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
@@ -91,8 +91,10 @@ public class NatuurUtilsTest {
   }
 
   @Test
-  public void testGetNaam3() {
-    var taxon = TestUtils.getOndersoortTaxonDto();
+  public void testGetNaam3()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
 
     assertEquals(TestConstants.ONDERSOORTNAAM,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL));

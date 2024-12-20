@@ -17,8 +17,8 @@
 
 package eu.debooy.natuur.domain;
 
+import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.TestConstants;
-import eu.debooy.natuur.TestUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -36,12 +36,22 @@ public class DetailDtoTest {
   public static void setUpClass()
       throws IllegalAccessException, IllegalArgumentException,
              NoSuchFieldException {
-    detailDto = TestUtils.getDetailDto();
+    detailDto = NatuurTestUtils.getSoortDetailDto();
   }
 
   @Test
   public void testGetLatijnsenaam() {
     assertEquals(TestConstants.LATIJNSENAAM, detailDto.getLatijnsenaam());
+  }
+
+  @Test
+  public void testGetNaam() {
+    assertEquals(TestConstants.TAXONNAAM,
+                 detailDto.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.TAXONNAAM_KL,
+                 detailDto.getNaam(TestConstants.TAAL_KL));
+    assertEquals(TestConstants.LATIJNSENAAM,
+                 detailDto.getNaam(TestConstants.TAAL_GR));
   }
 
   @Test
@@ -166,5 +176,19 @@ public class DetailDtoTest {
   @Test
   public void testIsUitgestorven() {
     assertFalse(detailDto.isUitgestorven());
+  }
+
+  @Test
+  public void testOndersoort()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var instance  = NatuurTestUtils.getOndersoortDetailDto();
+
+    assertEquals(TestConstants.ONDERSOORTNAAM,
+                 instance.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+                 instance.getNaam(TestConstants.TAAL_KL));
+    assertEquals(TestConstants.ONDERSOORTLATIJNSENAAM,
+                 instance.getNaam(TestConstants.TAAL_GR));
   }
 }
