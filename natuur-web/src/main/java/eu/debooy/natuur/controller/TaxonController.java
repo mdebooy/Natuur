@@ -169,7 +169,6 @@ public class TaxonController extends Natuur {
 
     var ec      = FacesContext.getCurrentInstance().getExternalContext();
 
-    // TODO check ouderniveau bijkeuze voor rang.
     setActieveTab(TAB_KINDEREN);
     taxon       = new Taxon();
     taxonDto    = new TaxonDto();
