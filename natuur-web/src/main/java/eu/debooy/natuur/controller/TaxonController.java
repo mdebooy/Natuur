@@ -67,6 +67,9 @@ public class TaxonController extends Natuur {
       LoggerFactory.getLogger(TaxonController.class);
 
   private static final  String  DTIT_CREATE   = "natuur.titel.taxonnaam.create";
+  private static final  String  DTIT_DELETE   = "natuur.titel.taxonnaam.delete";
+  private static final  String  DTIT_RETRIEVE =
+      "natuur.titel.taxonnaam.retrieve";
   private static final  String  DTIT_UPDATE   = "natuur.titel.taxonnaam.update";
   private static final  String  HERBENOEMD    =
       "natuur.latijnsenamen.herbenoemd";
@@ -194,7 +197,8 @@ public class TaxonController extends Natuur {
     taxonnaam     = new Taxonnaam();
     taxonnaam.setTaal(getGebruikersTaalInIso6392t());
     setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel(DTIT_CREATE);
+    setDetailSubTitel(getTekst(DTIT_CREATE,
+                         getTaxonnaam(getGebruikersTaalInIso6392t())));
     redirect(TAXONNAAM_REDIRECT);
   }
 
@@ -230,9 +234,12 @@ public class TaxonController extends Natuur {
       getTaxonService().save(taxonDto);
       addInfo(PersistenceConstants.DELETED, "'" + taxonnaam.getTaal() + "'");
       if (getGebruikersTaalInIso6392t().equals(taxonnaam.getTaal())) {
-        taxon.setNaam(taxonDto.getNaam(getGebruikersTaalInIso6392t()));
-        setSubTitel(getTekst(TIT_UPDATE,
-                    getTaxonnaam(getGebruikersTaalInIso6392t())));
+        taxon.setNaam(null);
+        if (getAktie().isWijzig()) {
+          setSubTitel(getTekst(TIT_UPDATE, taxon.getLatijnsenaam()));
+        } else {
+          setSubTitel(taxon.getLatijnsenaam());
+        }
       }
       taxonnaam = new Taxonnaam();
       redirect(TAXON_REDIRECT);
@@ -247,6 +254,10 @@ public class TaxonController extends Natuur {
 
   public UploadedFile getBestand() {
     return bestand;
+  }
+
+  public String getDeleteTitel() {
+    return getTekst(DTIT_DELETE, getTaxonnaam(getGebruikersTaalInIso6392t()));
   }
 
   public Taxon getOuder() {
@@ -391,8 +402,13 @@ public class TaxonController extends Natuur {
       taxonnaam   =
           new Taxonnaam(taxonDto.getTaxonnaam(ec.getRequestParameterMap()
                                                 .get(TaxonnaamDto.COL_TAAL)));
-      setDetailAktie(PersistenceConstants.UPDATE);
-      setDetailSubTitel(DTIT_UPDATE);
+      if (getAktie().isWijzig()) {
+        updateDetail();
+      } else {
+        setDetailAktie(PersistenceConstants.RETRIEVE);
+        setDetailSubTitel(
+          getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
+      }
 
       redirect(TAXONNAAM_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -689,6 +705,17 @@ public class TaxonController extends Natuur {
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE,
                          getTaxonnaam(getGebruikersTaalInIso6392t())));
+  }
+
+  public void updateDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    setDetailAktie(PersistenceConstants.UPDATE);
+    setDetailSubTitel(
+        getTekst(DTIT_UPDATE, getTaxonnaam(getGebruikersTaalInIso6392t())));
   }
 
   public void uploading() {
