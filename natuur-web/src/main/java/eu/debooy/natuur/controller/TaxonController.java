@@ -503,6 +503,7 @@ public class TaxonController extends Natuur {
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
           getTaxonService().save(taxonDto);
+          setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.CREATED, "'" + taal + "'");
           break;
         case PersistenceConstants.UPDATE:
@@ -512,6 +513,7 @@ public class TaxonController extends Natuur {
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
           getTaxonService().save(taxonDto);
+          setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
           break;
         default:
