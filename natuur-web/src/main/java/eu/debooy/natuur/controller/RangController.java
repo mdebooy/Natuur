@@ -52,8 +52,11 @@ public class RangController extends Natuur {
       LoggerFactory.getLogger(RangController.class);
 
   private static final  String  DTIT_CREATE   = "natuur.titel.rangnaam.create";
+  private static final  String  DTIT_DELETE   = "natuur.titel.rangnaam.delete";
   private static final  String  DTIT_RETRIEVE =
       "natuur.titel.rangnaam.retrieve";
+  private static final  String  DTIT_UPDATE   =
+      "natuur.titel.rangnaam.update";
   private static final  String  TIT_CREATE    = "natuur.titel.rang.create";
   private static final  String  TIT_GEENFOTOS = "natuur.titel.geenfotos";
   private static final  String  TIT_UPDATE    = "natuur.titel.rang.update";
@@ -91,7 +94,7 @@ public class RangController extends Natuur {
     rangnaamDto = new RangnaamDto();
     rangnaam.persist(rangnaamDto);
     setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel(getTekst(DTIT_CREATE));
+    setDetailSubTitel(getTekst(DTIT_CREATE, rang.getNaam()));
     redirect(RANGNAAM_REDIRECT);
   }
 
@@ -128,9 +131,17 @@ public class RangController extends Natuur {
     try {
       rangDto.removeRangnaam(taal);
       getRangService().save(rangDto);
-      rangnaam    = new Rangnaam();
       rangnaamDto = new RangnaamDto();
       addInfo(PersistenceConstants.DELETED, "'" + taal + "'");
+      if (getGebruikersTaalInIso6392t().equals(rangnaam.getTaal())) {
+        rang.setNaam(null);
+        if (getAktie().isWijzig()) {
+          setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
+        } else {
+          setSubTitel(rang.getNaam());
+        }
+      }
+      rangnaam    = new Rangnaam();
       redirect(RANG_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taal);
@@ -143,6 +154,10 @@ public class RangController extends Natuur {
 
   public Aktie getGeenFotosAktie() {
     return geenFotoAktie;
+  }
+
+  public String getDeleteTitel() {
+    return getTekst(DTIT_DELETE, rang.getNaam());
   }
 
   public Long getGeenFotosTaxonId() {
@@ -227,8 +242,8 @@ public class RangController extends Natuur {
       rangnaamDto  = rangDto.getRangnaam(ec.getRequestParameterMap()
                                            .get(RangnaamDto.COL_TAAL));
       rangnaam     = new Rangnaam(rangnaamDto);
-      setDetailAktie(PersistenceConstants.UPDATE);
-      setDetailSubTitel(getTekst(DTIT_RETRIEVE));
+      setDetailAktie(PersistenceConstants.RETRIEVE);
+      setDetailSubTitel(getTekst(DTIT_RETRIEVE, rang.getNaam()));
       redirect(RANGNAAM_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAAL));
@@ -321,22 +336,26 @@ public class RangController extends Natuur {
     try {
       rangnaamDto  = new RangnaamDto();
       rangnaam.persist(rangnaamDto);
-      rangDto.addNaam(rangnaamDto);
-      getRangService().save(rangDto);
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
-          addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
+          rangDto.addNaam(rangnaamDto);
+          getRangService().save(rangDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }
+          setDetailAktie(PersistenceConstants.RETRIEVE);
+          addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
           break;
         case PersistenceConstants.UPDATE:
-          addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
+          rangDto.addNaam(rangnaamDto);
+          getRangService().save(rangDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
             rang.setNaam(rangDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
           }
+          setDetailAktie(PersistenceConstants.RETRIEVE);
+          addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
           break;
         default:
           addError(ComponentsConstants.WRONGREDIRECT,
@@ -373,5 +392,15 @@ public class RangController extends Natuur {
 
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE, rang.getNaam()));
+  }
+
+  public void updateDetail() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    setDetailAktie(PersistenceConstants.UPDATE);
+    setDetailSubTitel(getTekst(DTIT_UPDATE, rang.getNaam()));
   }
 }

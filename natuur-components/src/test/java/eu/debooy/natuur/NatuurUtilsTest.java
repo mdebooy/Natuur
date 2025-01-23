@@ -107,13 +107,12 @@ public class NatuurUtilsTest {
   public void testGetNaam4()
       throws IllegalArgumentException, IllegalAccessException,
              NoSuchFieldException {
-    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
-    taxon.setRang(NatuurConstants.RANG_VARIETEIT);
+    var taxon = NatuurTestUtils.getVarieteitTaxonDto();
 
     assertEquals(TestConstants.VARIETEITNAAM,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL));
     assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
-    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+    assertEquals(TestConstants.VARIETEITNAAM_KL,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
   }
 
@@ -121,13 +120,12 @@ public class NatuurUtilsTest {
   public void testGetNaam5()
       throws IllegalArgumentException, IllegalAccessException,
              NoSuchFieldException {
-    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
-    taxon.setRang(NatuurConstants.RANG_VORM);
+    var taxon = NatuurTestUtils.getVormTaxonDto();
 
     assertEquals(TestConstants.VORMNAAM,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL));
     assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
-    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+    assertEquals(TestConstants.VORMNAAM_KL,
                  NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
   }
 

@@ -14,12 +14,6 @@
           <div class="columns is-centered">
             <div class="column">
               <div class="field is-horizontal">
-                <d:label label="#{i18nTeksten.tekst('label.rang')}" />
-                <div class="field-body is-normal">
-                  <d:inputText id="rang" value="#{natuurRang.rang.rang}" maxlength="3" size="3" required="true" readonly="true" />
-                </div>
-              </div>
-              <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal')}" />
                 <div class="field-body is-normal">
                   <d:listbox id="taal" value="#{natuurRang.rangnaam.taal}" fullwidth="true" required="true" readonly="#{!natuurRang.detailAktie.nieuw}" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRang.rangnaam.taal)}" />
@@ -40,6 +34,6 @@
     </div>
   </ui:define>
   <ui:define name="modal">
-    <d:confirmatie titel="#{i18nTeksten.tekst('natuur.titel.rangnaam.delete')}" />
+    <d:confirmatie titel="#{natuurRang.deleteTitel}" />
   </ui:define>
 </ui:composition>
