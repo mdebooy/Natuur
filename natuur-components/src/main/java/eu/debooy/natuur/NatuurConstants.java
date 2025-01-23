@@ -36,6 +36,8 @@ public final class NatuurConstants {
   public static final String  RANG_ORDE         = "or";
   public static final String  RANG_ONDERSOORT   = "oso";
   public static final String  RANG_SOORT        = "so";
+  public static final String  RANG_VARIETEIT    = "var";
+  public static final String  RANG_VORM         = "frm";
 
   public static final String  LAT_VOGELS        = "Aves";
   public static final String  LAT_ZOOGDIEREN    = "Mammalia";

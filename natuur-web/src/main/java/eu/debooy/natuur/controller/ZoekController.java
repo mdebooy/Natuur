@@ -37,7 +37,7 @@ public class ZoekController extends Natuur {
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam = naam.strip();
   }
 
   public void zoek() {

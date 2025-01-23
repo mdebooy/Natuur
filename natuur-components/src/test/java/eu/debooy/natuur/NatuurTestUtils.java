@@ -36,92 +36,6 @@ import java.util.Map;
 public final class NatuurTestUtils {
   private NatuurTestUtils() {}
 
-  public static DetailDto getOndersoortDetailDto()
-      throws IllegalAccessException, IllegalArgumentException,
-             NoSuchFieldException {
-    var detailDto = new DetailDto();
-
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.ONDERSOORTLATIJNSENAAM);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.ONDERSOORTNIVEAU);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.UITGESTORVEN);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.VOLGNUMMER);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.ONDERSOORTRANG);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.ONDERSOORTTAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_VOLGNUMMER,
-                       TestConstants.ONDERSOORTVOLGNUMMER);
-
-    TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
-    TestUtils.setField(detailDto, "taxonnamen", getTaxonOndersoortnamen());
-    TestUtils.setField(detailDto, "taxon", getTaxonDto());
-
-    return detailDto;
-  }
-
-  public static DetailDto getSoortDetailDto()
-      throws IllegalAccessException, IllegalArgumentException,
-             NoSuchFieldException {
-    var detailDto = new DetailDto();
-
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.NIVEAU);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.PARENTTAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.PARENTLATIJNSENAAM);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.PARENTRANG);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.PARENTUITGESTORVEN);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.PARENTVOLGNUMMER);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.RANG);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.TAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_VOLGNUMMER, TestConstants.VOLGNUMMER);
-
-    TestUtils.setField(detailDto, "parentnamen", getTaxonParentnamen());
-    TestUtils.setField(detailDto, "taxonnamen", getTaxonnamen());
-
-    return detailDto;
-  }
-
   public static Map<Long, FotoDto> getFotos() {
     var                 fotoDto = new FotoDto();
     Map<Long, FotoDto>  fotos   = new HashMap<>();
@@ -170,6 +84,50 @@ public final class NatuurTestUtils {
     gebied.persist(gebiedDto);
 
     return gebiedDto;
+  }
+
+  public static DetailDto getOndersoortDetailDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var detailDto = new DetailDto();
+
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_LATIJNSENAAM,
+                       TestConstants.ONDERSOORTLATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_NIVEAU, TestConstants.ONDERSOORTNIVEAU);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTLATIJNSENAAM,
+                       TestConstants.LATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTUITGESTORVEN,
+                       TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTVOLGNUMMER,
+                       TestConstants.VOLGNUMMER);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_RANG, TestConstants.ONDERSOORTRANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_TAXONID, TestConstants.ONDERSOORTTAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_VOLGNUMMER,
+                       TestConstants.ONDERSOORTVOLGNUMMER);
+
+    TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
+    TestUtils.setField(detailDto, "taxonnamen", getTaxonOndersoortnamen());
+    TestUtils.setField(detailDto, "taxon", getOndersoortTaxonDto());
+
+    return detailDto;
   }
 
   public static Taxon getOndersoortTaxon() {
@@ -284,6 +242,48 @@ public final class NatuurTestUtils {
     return rangnamen;
   }
 
+  public static DetailDto getSoortDetailDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var detailDto = new DetailDto();
+
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_LATIJNSENAAM,
+                       TestConstants.LATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_NIVEAU, TestConstants.NIVEAU);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTID, TestConstants.PARENTTAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTLATIJNSENAAM,
+                       TestConstants.PARENTLATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTRANG, TestConstants.PARENTRANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTUITGESTORVEN,
+                       TestConstants.PARENTUITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTVOLGNUMMER,
+                       TestConstants.PARENTVOLGNUMMER);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_RANG, TestConstants.RANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_TAXONID, TestConstants.TAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_VOLGNUMMER, TestConstants.VOLGNUMMER);
+
+    TestUtils.setField(detailDto, "parentnamen", getTaxonParentnamen());
+    TestUtils.setField(detailDto, "taxonnamen", getTaxonnamen());
+
+    return detailDto;
+  }
+
   public static Taxon getTaxon() {
     var taxon = new Taxon();
 
@@ -380,5 +380,208 @@ public final class NatuurTestUtils {
     taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
+  }
+
+  public static Map<String, TaxonnaamDto> getTaxonVarieteitnamen() {
+    var                       taxonnaamDto  = new TaxonnaamDto();
+    Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
+
+    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setTaxonId(TestConstants.VARIETEITTAXONID);
+    taxonnaamDto.setNaam(TestConstants.VARIETEITNAAM);
+    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+
+    taxonnaamDto = new TaxonnaamDto();
+    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(TestConstants.VARIETEITTAXONID);
+    taxonnaamDto.setNaam(TestConstants.VARIETEITNAAM_KL);
+    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+
+    return taxonnamen;
+  }
+
+  public static Map<String, TaxonnaamDto> getTaxonVormnamen() {
+    var                       taxonnaamDto  = new TaxonnaamDto();
+    Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
+
+    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setTaxonId(TestConstants.VORMTAXONID);
+    taxonnaamDto.setNaam(TestConstants.VORMNAAM);
+    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+
+    taxonnaamDto = new TaxonnaamDto();
+    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(TestConstants.VORMTAXONID);
+    taxonnaamDto.setNaam(TestConstants.VORMNAAM_KL);
+    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+
+    return taxonnamen;
+  }
+
+  public static DetailDto getVarieteitDetailDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var detailDto = new DetailDto();
+
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_LATIJNSENAAM,
+                       TestConstants.VARIETEITLATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_NIVEAU, TestConstants.VARIETEITNIVEAU);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPMERKING,
+                       TestConstants.VARIETEITOPMERKING);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTLATIJNSENAAM,
+                       TestConstants.LATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTUITGESTORVEN,
+                       TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTVOLGNUMMER,
+                       TestConstants.VOLGNUMMER);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_RANG, TestConstants.VARIETEITRANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_TAXONID, TestConstants.VARIETEITTAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_VOLGNUMMER,
+                       TestConstants.VARIETEITVOLGNUMMER);
+
+    TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
+    TestUtils.setField(detailDto, "taxonnamen", getTaxonVarieteitnamen());
+    TestUtils.setField(detailDto, "taxon", getVarieteitTaxonDto());
+
+    return detailDto;
+  }
+
+  public static Taxon getVarieteitTaxon() {
+    var taxon = new Taxon();
+
+    taxon.setLatijnsenaam(TestConstants.VARIETEITLATIJNSENAAM);
+    taxon.setNaam(TestConstants.VARIETEITNAAM);
+    taxon.setNiveau(TestConstants.VARIETEITNIVEAU);
+    taxon.setOpmerking(TestConstants.VARIETEITOPMERKING);
+    taxon.setParentId(TestConstants.TAXONID);
+    taxon.setParentLatijnsenaam(TestConstants.LATIJNSENAAM);
+    taxon.setParentNaam(TestConstants.TAXONNAAM);
+    taxon.setParentNiveau(TestConstants.NIVEAU);
+    taxon.setParentRang(TestConstants.RANG);
+    taxon.setParentRangnaam(TestConstants.RANGNAAM);
+    taxon.setParentVolgnummer(TestConstants.VOLGNUMMER);
+    taxon.setRang(TestConstants.VARIETEITRANG);
+    taxon.setRangnaam(TestConstants.VARIETEITRANGNAAM);
+    taxon.setTaxonId(TestConstants.VARIETEITTAXONID);
+    taxon.setVolgnummer(TestConstants.VARIETEITVOLGNUMMER);
+
+    return taxon;
+  }
+
+  public static TaxonDto getVarieteitTaxonDto()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon     = getVarieteitTaxon();
+    var taxonDto  = new TaxonDto();
+
+    taxon.persist(taxonDto);
+    getTaxonVarieteitnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxonDto.addNaam(taxonnaam);
+    });
+    TestUtils.setField(taxonDto, "parentnamen", getTaxonVarieteitnamen());
+    TestUtils.setField(taxonDto, "parent", getTaxonDto());
+
+    return taxonDto;
+  }
+
+  public static DetailDto getVormDetailDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var detailDto = new DetailDto();
+
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_LATIJNSENAAM,
+                       TestConstants.VORMLATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_NIVEAU, TestConstants.VORMNIVEAU);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_OPMERKING, TestConstants.VORMOPMERKING);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTLATIJNSENAAM,
+                       TestConstants.LATIJNSENAAM);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTUITGESTORVEN,
+                       TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_PARENTVOLGNUMMER,
+                       TestConstants.VOLGNUMMER);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_RANG, TestConstants.VORMRANG);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_TAXONID, TestConstants.VORMTAXONID);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+    TestUtils.setField(detailDto,
+                       DetailDto.COL_VOLGNUMMER,
+                       TestConstants.VORMVOLGNUMMER);
+
+    TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
+    TestUtils.setField(detailDto, "taxonnamen", getTaxonVormnamen());
+    TestUtils.setField(detailDto, "taxon", getVormTaxonDto());
+
+    return detailDto;
+  }
+
+  public static Taxon getVormTaxon() {
+    var taxon = new Taxon();
+
+    taxon.setLatijnsenaam(TestConstants.VORMLATIJNSENAAM);
+    taxon.setNaam(TestConstants.VORMNAAM);
+    taxon.setNiveau(TestConstants.VORMNIVEAU);
+    taxon.setOpmerking(TestConstants.VORMOPMERKING);
+    taxon.setParentId(TestConstants.TAXONID);
+    taxon.setParentLatijnsenaam(TestConstants.LATIJNSENAAM);
+    taxon.setParentNaam(TestConstants.TAXONNAAM);
+    taxon.setParentNiveau(TestConstants.NIVEAU);
+    taxon.setParentRang(TestConstants.RANG);
+    taxon.setParentRangnaam(TestConstants.RANGNAAM);
+    taxon.setParentVolgnummer(TestConstants.VOLGNUMMER);
+    taxon.setRang(TestConstants.VORMRANG);
+    taxon.setRangnaam(TestConstants.VORMRANGNAAM);
+    taxon.setTaxonId(TestConstants.VORMTAXONID);
+    taxon.setVolgnummer(TestConstants.VORMVOLGNUMMER);
+
+    return taxon;
+  }
+
+  public static TaxonDto getVormTaxonDto()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon     = getVormTaxon();
+    var taxonDto  = new TaxonDto();
+
+    taxon.persist(taxonDto);
+    getTaxonVormnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxonDto.addNaam(taxonnaam);
+    });
+    TestUtils.setField(taxonDto, "parentnamen", getTaxonnamen());
+    TestUtils.setField(taxonDto, "parent", getTaxonDto());
+
+    return taxonDto;
   }
 }

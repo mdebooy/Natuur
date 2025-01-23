@@ -45,13 +45,22 @@ public class DetailDtoTest {
   }
 
   @Test
-  public void testGetNaam() {
+  public void testGetNaam1() {
     assertEquals(TestConstants.TAXONNAAM,
                  detailDto.getNaam(TestConstants.TAAL));
     assertEquals(TestConstants.TAXONNAAM_KL,
                  detailDto.getNaam(TestConstants.TAAL_KL));
-    assertEquals(TestConstants.LATIJNSENAAM,
-                 detailDto.getNaam(TestConstants.TAAL_GR));
+    assertEquals("", detailDto.getNaam(TestConstants.TAAL_GR));
+  }
+
+  @Test
+  public void testGetNaam2() {
+    var instance  = NatuurTestUtils.getTaxonDto();
+    assertEquals(TestConstants.TAXONNAAM,
+                 instance.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.TAXONNAAM_KL,
+                 instance.getNaam(TestConstants.TAAL_KL));
+    assertEquals("", instance.getNaam(TestConstants.TAAL_GR));
   }
 
   @Test
@@ -188,7 +197,32 @@ public class DetailDtoTest {
                  instance.getNaam(TestConstants.TAAL));
     assertEquals(TestConstants.ONDERSOORTNAAM_KL,
                  instance.getNaam(TestConstants.TAAL_KL));
-    assertEquals(TestConstants.ONDERSOORTLATIJNSENAAM,
-                 instance.getNaam(TestConstants.TAAL_GR));
+    assertEquals("", instance.getNaam(TestConstants.TAAL_GR));
+  }
+
+  @Test
+  public void testVarieteit()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var instance  = NatuurTestUtils.getVarieteitDetailDto();
+
+    assertEquals(TestConstants.VARIETEITNAAM,
+                 instance.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.VARIETEITNAAM_KL,
+                 instance.getNaam(TestConstants.TAAL_KL));
+    assertEquals("", instance.getNaam(TestConstants.TAAL_GR));
+  }
+
+  @Test
+  public void testVorm()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var instance  = NatuurTestUtils.getVormDetailDto();
+
+    assertEquals(TestConstants.VORMNAAM,
+                 instance.getNaam(TestConstants.TAAL));
+    assertEquals(TestConstants.VORMNAAM_KL,
+                 instance.getNaam(TestConstants.TAAL_KL));
+    assertEquals("", instance.getNaam(TestConstants.TAAL_GR));
   }
 }

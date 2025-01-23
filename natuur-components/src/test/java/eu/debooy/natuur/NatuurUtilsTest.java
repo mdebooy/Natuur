@@ -104,6 +104,34 @@ public class NatuurUtilsTest {
   }
 
   @Test
+  public void testGetNaam4()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
+    taxon.setRang(NatuurConstants.RANG_VARIETEIT);
+
+    assertEquals(TestConstants.VARIETEITNAAM,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+  }
+
+  @Test
+  public void testGetNaam5()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon = NatuurTestUtils.getOndersoortTaxonDto();
+    taxon.setRang(NatuurConstants.RANG_VORM);
+
+    assertEquals(TestConstants.VORMNAAM,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+  }
+
+  @Test
   public void testGetSubtitel() {
     var resultaat1  = String.format("%s %s/%s/%s/%s",
                                     TestConstants.LATIJNSENAAM,

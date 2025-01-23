@@ -49,6 +49,9 @@ import org.apache.openjpa.persistence.ReadOnly;
  * Deze Entity is enkel read-only. Het voorziet in de mogelijkheid om enkel
  * bepaalde rangen te laten zien. Bijvoorbeeld een soort met zijn klasse.
  *
+ * Let Op!
+ * De parent hoeft niet de directe parent te zijn.
+ *
  * @author Marco de Booij
  */
 @Entity
@@ -276,6 +279,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   @Transient
   public String getNaam(String taal) {
+    if (null != taxon) {
+      return taxon.getNaam(taal);
+    }
+
     return NatuurUtils.getNaam(taxonnamen, parentnamen, latijnsenaam, rang,
                                taal);
   }
@@ -391,7 +398,9 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   @PostLoad
   private void onPostLoad() {
-    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)) {
+    if (getRang().equals(NatuurConstants.RANG_ONDERSOORT)
+        || getRang().equals(NatuurConstants.RANG_VARIETEIT)
+        || getRang().equals(NatuurConstants.RANG_VORM)) {
       getPostLoadTaxon();
     }
   }

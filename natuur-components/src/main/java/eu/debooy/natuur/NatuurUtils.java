@@ -80,13 +80,23 @@ public final class NatuurUtils {
       return taxonnamen.get(taal).getNaam();
     }
 
-    if (rang.equals(NatuurConstants.RANG_ONDERSOORT)
-        && parentnamen.containsKey(taal)) {
-      return String.format("%s ssp %s", parentnamen.get(taal).getNaam(),
-                           latijnsenaam.split(" ")[2]);
+    if (parentnamen.containsKey(taal)) {
+      switch (rang) {
+        case NatuurConstants.RANG_ONDERSOORT:
+          return String.format("%s ssp. %s", parentnamen.get(taal).getNaam(),
+                               latijnsenaam.split(" ")[2]);
+        case NatuurConstants.RANG_VARIETEIT:
+          return String.format("%s var. %s", parentnamen.get(taal).getNaam(),
+                               latijnsenaam.split(" ")[2]);
+        case NatuurConstants.RANG_VORM:
+          return String.format("%s f. %s", parentnamen.get(taal).getNaam(),
+                               latijnsenaam.split(" ")[2]);
+        default:
+          break;
+      }
     }
 
-    return latijnsenaam;
+    return "";
   }
 
   public static String getSubtitel(String latijnsenaam, boolean uitgestorven,
@@ -102,6 +112,12 @@ public final class NatuurUtils {
                                 resultaat.append("/").append(taal));
 
     return resultaat.toString();
+  }
+
+  private static Boolean isSpecialeRang(String rang) {
+    return (rang.equals(NatuurConstants.RANG_ONDERSOORT)
+            || rang.equals(NatuurConstants.RANG_VARIETEIT)
+            || rang.equals(NatuurConstants.RANG_VORM));
   }
 
   public static Boolean isUitgestorven(String latijnsenaam) {

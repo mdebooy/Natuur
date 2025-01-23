@@ -52,8 +52,6 @@ public final class TestConstants {
   public static final String  LATIJNSENAAM            = "Phalacrocorax carbo";
   public static final String  LATIJNSENAAM_GR         = "Rynchops flavirostris";
   public static final String  LATIJNSENAAM_KL         = "Emberiza flaviventris";
-  public static final String  LATIJNSENAAM_OSO        =
-      "Phalacrocorax carbo maroccanus";
   public static final String  LATITUDE                = "N";
   public static final String  LATITUDE2               = "S";
   public static final Integer LATITUDE_GRADEN         = 30;
@@ -76,9 +74,9 @@ public final class TestConstants {
   public static final String  ONDERSOORTLATIJNSENAAM  =
       "Phalacrocorax carbo sinensis";
   public static final String  ONDERSOORTNAAM          =
-      "Aalscholver ssp sinensis";
+      "Aalscholver ssp. sinensis";
   public static final String  ONDERSOORTNAAM_KL       =
-      ".Eastern Great cormorant";
+      ".Eastern Great Cormorant";
   public static final Long    ONDERSOORTNIVEAU        = 25L;
   public static final String  ONDERSOORTOPMERKING     = "oso opmerking";
   public static final String  ONDERSOORTRANG          = "oso";
@@ -129,6 +127,30 @@ public final class TestConstants {
   public static final Long    TAXONSEQ                = 5L;
   public static final Integer TOTAAL                  = 10;
   public static final String  UITGESTORVEN            = DoosConstants.ONWAAR;
+  public static final String  VARIETEITLATIJNSENAAM  =
+      "Phalacrocorax carbo novaehollandiae";
+  public static final String  VARIETEITNAAM           =
+      "Aalscholver var. novaehollandiae";
+  public static final String  VARIETEITNAAM_KL        =
+      ".Black Cormorant";
+  public static final Long    VARIETEITNIVEAU         = 26L;
+  public static final String  VARIETEITOPMERKING      = "oso variëteit";
+  public static final String  VARIETEITRANG           = "var";
+  public static final String  VARIETEITRANGNAAM       = "variëteit";
+  public static final Long    VARIETEITTAXONID        = 6862L;
+  public static final Long    VARIETEITVOLGNUMMER     = 65790L;
+  public static final String  VORMLATIJNSENAAM        =
+      "Phalacrocorax carbo hanedae";
+  public static final String  VORMNAAM                =
+      "Aalscholver f. hanedae";
+  public static final String  VORMNAAM_KL             =
+      ".Japanese Great Cormorant";
+  public static final Long    VORMNIVEAU              = 27L;
+  public static final String  VORMOPMERKING           = "oso vorm";
+  public static final String  VORMRANG                = "frm";
+  public static final String  VORMRANGNAAM            = "vorm";
+  public static final Long    VORMTAXONID             = 6594L;
+  public static final Long    VORMVOLGNUMMER          = 65791L;
   public static final Long    VOLGNUMMER              = 800L;
   public static final Long    WAARNEMINGID            = 1100L;
   public static final int     WAARNEMINGID_HASH       = 1729;
