@@ -498,21 +498,21 @@ public class TaxonController extends Natuur {
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
           taxonDto.addNaam(taxonnaamDto);
+          getTaxonService().save(taxonDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
-          getTaxonService().save(taxonDto);
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.CREATED, "'" + taal + "'");
           break;
         case PersistenceConstants.UPDATE:
           taxonDto.addNaam(taxonnaamDto);
+          getTaxonService().save(taxonDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
             taxon.setNaam(taxonDto.getNaam(taal));
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
-          getTaxonService().save(taxonDto);
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
           break;
