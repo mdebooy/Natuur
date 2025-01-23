@@ -203,21 +203,6 @@ GROUP BY D.PARENT_ID, D.PARENT_VOLGNUMMER, D.PARENT_LATIJNSENAAM, D.PARENT_RANG,
 
 -- Constraints
 ALTER TABLE NATUUR.FOTOS
-  ADD CONSTRAINT UK_FOT_NIVEAU UNIQUE (TAXON_ID, TAXON_SEQ);
-
-ALTER TABLE NATUUR.FOTOS
-  ADD CONSTRAINT FK_FOT_GEBIED_ID FOREIGN KEY (GEBIED_ID)
-  REFERENCES NATUUR.GEBIEDEN (GEBIED_ID)
-  ON DELETE RESTRICT
-  ON UPDATE RESTRICT;
-
-ALTER TABLE NATUUR.FOTOS
-  ADD CONSTRAINT FK_FOT_TAXON_ID FOREIGN KEY (TAXON_ID)
-  REFERENCES NATUUR.TAXA (TAXON_ID)
-  ON DELETE RESTRICT
-  ON UPDATE RESTRICT;
-
-ALTER TABLE NATUUR.FOTOS
   ADD CONSTRAINT FK_FOT_WAARNEMING_ID FOREIGN KEY (WAARNEMING_ID)
   REFERENCES NATUUR.WAARNEMINGEN (WAARNEMING_ID)
   ON DELETE CASCADE
@@ -310,7 +295,7 @@ ALTER TABLE NATUUR.WAARNEMINGEN
 
 -- Indexen
 CREATE INDEX IX_TAX_PARENT_ID
-  ON NATUUR.TAXA USING (PARENT_ID);
+  ON NATUUR.TAXA (PARENT_ID);
 
 CREATE UNIQUE INDEX UK_WNM_DATUM_GEBIED_TAXON
   ON NATUUR.WAARNEMINGEN (DATUM, GEBIED_ID, TAXON_ID);
@@ -462,8 +447,8 @@ INSERT INTO DOOS.I18N_LIJSTEN
  VALUES ('natuur.taxon.status', 'Lijst met de statussen van de taxa.');
 
 INSERT INTO NATUUR.GEBIEDEN
-        (GEBIED_ID, LAND_ID, NAAM)
- VALUES (0,0,'Onbekend');
+        (LAND_ID, NAAM)
+ VALUES (1,'Onbekend');
 
 INSERT INTO NATUUR.RANGEN
   VALUES (1 , 'le'),
@@ -492,7 +477,8 @@ INSERT INTO NATUUR.RANGEN
          (24, 'so'),
          (25, 'oso');
 
-INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domein',        'nld'),
          ('fa' , 'Familie',       'nld'),
          ('ge' , 'Geslacht',      'nld'),
@@ -519,7 +505,8 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
          ('st' , 'Stam',          'nld'),
          ('ta' , 'Tak',           'nld');
 
-INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domain',      'eng'),
          ('fa' , 'Family',      'eng'),
          ('ge' , 'Genus',       'eng'),
@@ -546,7 +533,8 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
          ('st' , 'Phylum',      'eng'),
          ('ta' , 'Tribe',       'eng');
 
-INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domäne',        'deu'),
          ('fa' , 'Familie',       'deu'),
          ('ge' , 'Gattung',       'deu'),
@@ -572,3 +560,4 @@ INSERT INTO NATUUR.RANGNAMEN (RANG, NAAM, TAAL)
          ('sor', 'Superordnung',  'deu'),
          ('st' , 'Stamm',         'deu'),
          ('ta' , 'Tribus',        'deu');
+
