@@ -18,7 +18,7 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.form.Rang;
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class RangValidatorTest {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG);
+    rang.setRang(NatuurTestConstants.RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -83,9 +83,9 @@ public class RangValidatorTest {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG_FOUT);
+    rang.setRang(NatuurTestConstants.RANG_FOUT);
     rang.setNiveau(Long.MIN_VALUE);
-    expResult.add(TestConstants.ERR_RANG);
+    expResult.add(NatuurTestConstants.ERR_RANG);
     expResult.add(ERR_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -97,7 +97,7 @@ public class RangValidatorTest {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    expResult.add(TestConstants.REQ_RANG);
+    expResult.add(NatuurTestConstants.REQ_RANG);
     expResult.add(REQ_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -109,7 +109,7 @@ public class RangValidatorTest {
     var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG);
+    rang.setRang(NatuurTestConstants.RANG);
     rang.setNiveau(1L);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -121,9 +121,9 @@ public class RangValidatorTest {
     var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG_FOUT);
+    rang.setRang(NatuurTestConstants.RANG_FOUT);
     rang.setNiveau(0L);
-    expResult.add(TestConstants.ERR_RANG);
+    expResult.add(NatuurTestConstants.ERR_RANG);
     expResult.add(ERR_NIVEAU);
 
     List<Message> result    = RangValidator.valideer(rang);
@@ -134,7 +134,7 @@ public class RangValidatorTest {
   public void testValideerLegeRangDto() {
     var           rang      = new RangDto();
     List<Message> expResult = new ArrayList<>();
-    expResult.add(TestConstants.REQ_RANG);
+    expResult.add(NatuurTestConstants.REQ_RANG);
     expResult.add(REQ_NIVEAU);
     List<Message> result    = RangValidator.valideer(rang);
     assertEquals(expResult.toString(), result.toString());
@@ -145,7 +145,7 @@ public class RangValidatorTest {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG);
+    rang.setRang(NatuurTestConstants.RANG);
     rang.setNiveau(Long.MIN_VALUE);
     expResult.add(ERR_NIVEAU);
 
@@ -158,9 +158,9 @@ public class RangValidatorTest {
     var           rang      = new Rang();
     List<Message> expResult = new ArrayList<>();
 
-    rang.setRang(TestConstants.RANG_FOUT);
+    rang.setRang(NatuurTestConstants.RANG_FOUT);
     rang.setNiveau(1L);
-    expResult.add(TestConstants.ERR_RANG);
+    expResult.add(NatuurTestConstants.ERR_RANG);
 
     List<Message> result    = RangValidator.valideer(rang);
     assertEquals(expResult.toString(), result.toString());

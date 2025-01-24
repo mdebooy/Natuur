@@ -177,7 +177,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       implements Comparator<DetailDto>, Serializable {
     private static final  long  serialVersionUID  = 1L;
 
-    private String  taal  = "???";
+    private String  taal  = NatuurConstants.DEF_TAAL;
 
     public void setTaal(String taal) {
       this.taal = taal;

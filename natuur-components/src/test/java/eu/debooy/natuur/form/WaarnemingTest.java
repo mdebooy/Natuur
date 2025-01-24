@@ -18,7 +18,7 @@ package eu.debooy.natuur.form;
 
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosConstants;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
@@ -53,20 +53,20 @@ public class WaarnemingTest {
     taxon.persist(taxonDto);
 
     waarneming    = new Waarneming();
-    waarneming.setAantal(TestConstants.AANTAL);
+    waarneming.setAantal(NatuurTestConstants.AANTAL);
     waarneming.setDatum(datum);
     waarneming.setGebied(gebied);
-    waarneming.setOpmerking(TestConstants.OPMERKING);
+    waarneming.setOpmerking(NatuurTestConstants.OPMERKING);
     waarneming.setTaxon(taxon);
-    waarneming.setWaarnemingId(TestConstants.WAARNEMINGID);
+    waarneming.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
 
     waarnemingDto = new WaarnemingDto();
-    waarnemingDto.setAantal(TestConstants.AANTAL);
+    waarnemingDto.setAantal(NatuurTestConstants.AANTAL);
     waarnemingDto.setDatum(datum);
     waarnemingDto.setGebied(NatuurTestUtils.getGebiedDto());
-    waarnemingDto.setOpmerking(TestConstants.OPMERKING);
+    waarnemingDto.setOpmerking(NatuurTestConstants.OPMERKING);
     waarnemingDto.setTaxon(taxonDto);
-    waarnemingDto.setWaarnemingId(TestConstants.WAARNEMINGID);
+    waarnemingDto.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
   }
 
   @Test
@@ -111,7 +111,7 @@ public class WaarnemingTest {
 
     assertEquals(waarneming, waarneming);
     assertNotEquals(waarneming, null);
-    assertNotEquals(waarneming, TestConstants.RANGNAAM);
+    assertNotEquals(waarneming, NatuurTestConstants.RANGNAAM);
     assertNotEquals(waarneming, instance);
 
     instance.setWaarnemingId(waarneming.getWaarnemingId());
@@ -124,18 +124,18 @@ public class WaarnemingTest {
     instance  = new Waarneming(waarnemingDto);
     assertEquals(waarneming, instance);
 
-    instance  = new Waarneming(waarnemingDto, TestConstants.TAAL);
+    instance  = new Waarneming(waarnemingDto, NatuurTestConstants.TAAL);
     assertEquals(waarneming, instance);
   }
 
   @Test
   public void testGetAantal() {
-    assertEquals(TestConstants.AANTAL, waarneming.getAantal());
+    assertEquals(NatuurTestConstants.AANTAL, waarneming.getAantal());
   }
 
   @Test
   public void testGetAantalFotos() {
-    assertEquals(TestConstants.AANTALFOTOS, waarneming.getAantalFotos());
+    assertEquals(NatuurTestConstants.AANTALFOTOS, waarneming.getAantalFotos());
   }
 
   @Test
@@ -145,12 +145,12 @@ public class WaarnemingTest {
 
   @Test
   public void testGetGebied() {
-    assertEquals(TestConstants.GEBIEDID, waarneming.getGebied().getGebiedId());
+    assertEquals(NatuurTestConstants.GEBIEDID, waarneming.getGebied().getGebiedId());
   }
 
   @Test
   public void testGetOpmerking() {
-    assertEquals(TestConstants.OPMERKING, waarneming.getOpmerking());
+    assertEquals(NatuurTestConstants.OPMERKING, waarneming.getOpmerking());
   }
 
   @Test
@@ -161,17 +161,17 @@ public class WaarnemingTest {
 
   @Test
   public void testGetTaxon() {
-    assertEquals(TestConstants.TAXONID, waarneming.getTaxon().getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, waarneming.getTaxon().getTaxonId());
   }
 
   @Test
   public void testGetWaarnemingId() {
-    assertEquals(TestConstants.WAARNEMINGID, waarneming.getWaarnemingId());
+    assertEquals(NatuurTestConstants.WAARNEMINGID, waarneming.getWaarnemingId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.WAARNEMINGID_HASH, waarneming.hashCode());
+    assertEquals(NatuurTestConstants.WAARNEMINGID_HASH, waarneming.hashCode());
   }
 
   @Test
@@ -214,10 +214,10 @@ public class WaarnemingTest {
   @Test
   public void testSetAantal() {
     var instance  = new Waarneming();
-    assertNotEquals(TestConstants.AANTAL, instance.getAantal());
-    instance.setAantal(TestConstants.AANTAL);
+    assertNotEquals(NatuurTestConstants.AANTAL, instance.getAantal());
+    instance.setAantal(NatuurTestConstants.AANTAL);
 
-    assertEquals(TestConstants.AANTAL, instance.getAantal());
+    assertEquals(NatuurTestConstants.AANTAL, instance.getAantal());
   }
 
   @Test
@@ -247,16 +247,16 @@ public class WaarnemingTest {
     assertNull(instance.getGebied());
     instance.setGebied(gebied);
 
-    assertEquals(TestConstants.GEBIEDID, instance.getGebied().getGebiedId());
+    assertEquals(NatuurTestConstants.GEBIEDID, instance.getGebied().getGebiedId());
   }
 
   @Test
   public void testSetOpmerking() {
     var instance  = new Waarneming();
-    assertNotEquals(TestConstants.OPMERKING, instance.getOpmerking());
-    instance.setOpmerking(TestConstants.OPMERKING);
+    assertNotEquals(NatuurTestConstants.OPMERKING, instance.getOpmerking());
+    instance.setOpmerking(NatuurTestConstants.OPMERKING);
 
-    assertEquals(TestConstants.OPMERKING, instance.getOpmerking());
+    assertEquals(NatuurTestConstants.OPMERKING, instance.getOpmerking());
   }
 
   @Test
@@ -265,15 +265,15 @@ public class WaarnemingTest {
     assertNull(instance.getTaxon());
     instance.setTaxon(taxon);
 
-    assertEquals(TestConstants.TAXONID, instance.getTaxon().getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxon().getTaxonId());
   }
 
   @Test
   public void testSetWaarnemingId() {
     var instance  = new Waarneming();
-    assertNotEquals(TestConstants.WAARNEMINGID, instance.getWaarnemingId());
-    instance.setWaarnemingId(TestConstants.WAARNEMINGID);
+    assertNotEquals(NatuurTestConstants.WAARNEMINGID, instance.getWaarnemingId());
+    instance.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
 
-    assertEquals(TestConstants.WAARNEMINGID, instance.getWaarnemingId());
+    assertEquals(NatuurTestConstants.WAARNEMINGID, instance.getWaarnemingId());
   }
 }

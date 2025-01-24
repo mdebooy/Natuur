@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.form.RegiolijstTaxon;
@@ -71,9 +71,9 @@ public class RegiolijstTaxonValidatorTest {
     regiolijstTaxon     = new RegiolijstTaxon();
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
 
-    regiolijstTaxon.setRegioId(TestConstants.REGIOID);
-    regiolijstTaxon.setStatus(TestConstants.STATUS);
-    regiolijstTaxon.setTaxonId(TestConstants.TAXONID);
+    regiolijstTaxon.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijstTaxon.setStatus(NatuurTestConstants.STATUS);
+    regiolijstTaxon.setTaxonId(NatuurTestConstants.TAXONID);
 
     regiolijstTaxon.persist(regiolijstTaxonDto);
   }
@@ -114,7 +114,7 @@ public class RegiolijstTaxonValidatorTest {
   public void testGoedeRegiolijstTaxon2() {
     var           instance  = new RegiolijstTaxon(regiolijstTaxonDto);
 
-    instance.setStatus(DoosUtils.stringMetLengte(TestConstants.STATUS, 2, "X"));
+    instance.setStatus(DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
     List<Message> result    = RegiolijstTaxonValidator.valideer(instance);
 
     assertTrue(result.isEmpty());
@@ -135,7 +135,7 @@ public class RegiolijstTaxonValidatorTest {
     var           instance  = new RegiolijstTaxonDto();
 
     regiolijstTaxon.persist(instance);
-    instance.setStatus(DoosUtils.stringMetLengte(TestConstants.STATUS, 2, "X"));
+    instance.setStatus(DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
     List<Message> result    = RegiolijstTaxonValidator.valideer(instance);
 
     assertTrue(result.isEmpty());

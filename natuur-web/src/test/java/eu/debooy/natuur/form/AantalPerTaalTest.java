@@ -17,7 +17,7 @@
 
 package eu.debooy.natuur.form;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -28,9 +28,10 @@ import org.junit.Test;
 public class AantalPerTaalTest {
   @Test
   public void testInit() {
-    var instance  = new AantalPerTaal(TestConstants.TAAL, TestConstants.AANTAL);
+    var instance  = new AantalPerTaal(NatuurTestConstants.TAAL,
+                                      NatuurTestConstants.AANTAL);
 
-    assertEquals(TestConstants.AANTAL, instance.getAantal());
-    assertEquals(TestConstants.TAAL, instance.getTaal());
+    assertEquals(NatuurTestConstants.AANTAL, instance.getAantal());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal());
   }
 }

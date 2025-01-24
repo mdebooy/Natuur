@@ -17,15 +17,15 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
-import static eu.debooy.natuur.TestConstants.AANTAL;
-import static eu.debooy.natuur.TestConstants.FOTOBESTAND;
-import static eu.debooy.natuur.TestConstants.FOTODETAIL;
-import static eu.debooy.natuur.TestConstants.FOTOID;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.OPMERKING;
-import static eu.debooy.natuur.TestConstants.TAXONSEQ;
-import static eu.debooy.natuur.TestConstants.WAARNEMINGID;
-import static eu.debooy.natuur.TestConstants.WAARNEMINGID_HASH;
+import static eu.debooy.natuur.NatuurTestConstants.AANTAL;
+import static eu.debooy.natuur.NatuurTestConstants.FOTOBESTAND;
+import static eu.debooy.natuur.NatuurTestConstants.FOTODETAIL;
+import static eu.debooy.natuur.NatuurTestConstants.FOTOID;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM;
+import static eu.debooy.natuur.NatuurTestConstants.OPMERKING;
+import static eu.debooy.natuur.NatuurTestConstants.TAXONSEQ;
+import static eu.debooy.natuur.NatuurTestConstants.WAARNEMINGID;
+import static eu.debooy.natuur.NatuurTestConstants.WAARNEMINGID_HASH;
 import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Date;
 import java.util.Map;

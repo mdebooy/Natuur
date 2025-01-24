@@ -114,12 +114,6 @@ public final class NatuurUtils {
     return resultaat.toString();
   }
 
-  private static Boolean isSpecialeRang(String rang) {
-    return (rang.equals(NatuurConstants.RANG_ONDERSOORT)
-            || rang.equals(NatuurConstants.RANG_VARIETEIT)
-            || rang.equals(NatuurConstants.RANG_VORM));
-  }
-
   public static Boolean isUitgestorven(String latijnsenaam) {
     return latijnsenaam.trim().endsWith(NatuurConstants.UITGESTORVEN);
   }

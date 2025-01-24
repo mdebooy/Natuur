@@ -16,15 +16,15 @@
  */
 package eu.debooy.natuur.domain;
 
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.NAAM_GR;
-import static eu.debooy.natuur.TestConstants.NAAM_KL;
-import static eu.debooy.natuur.TestConstants.RANGNAAM;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAAL_GR;
-import static eu.debooy.natuur.TestConstants.TAAL_KL;
-import static eu.debooy.natuur.TestConstants.TAXONID;
-import static eu.debooy.natuur.TestConstants.TAXONNAAM_HASH;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM_GR;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM_KL;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_GR;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_KL;
+import static eu.debooy.natuur.NatuurTestConstants.TAXONID;
+import static eu.debooy.natuur.NatuurTestConstants.TAXONNAAM_HASH;
 import java.util.Set;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;

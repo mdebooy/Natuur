@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;
@@ -32,9 +32,9 @@ public class RegiolijstparameterTest {
 
     assertNull(instance.getTaal1());
 
-    instance.setTaal1(TestConstants.TAAL);
+    instance.setTaal1(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal1());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal1());
   }
 
   @Test
@@ -43,9 +43,9 @@ public class RegiolijstparameterTest {
 
     assertNull(instance.getTaal2());
 
-    instance.setTaal2(TestConstants.TAAL);
+    instance.setTaal2(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal2());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal2());
   }
 
   @Test
@@ -54,8 +54,8 @@ public class RegiolijstparameterTest {
 
     assertNull(instance.getTaal3());
 
-    instance.setTaal3(TestConstants.TAAL);
+    instance.setTaal3(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal3());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal3());
   }
 }

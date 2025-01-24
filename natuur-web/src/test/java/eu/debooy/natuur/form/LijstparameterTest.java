@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
@@ -34,9 +34,9 @@ public class LijstparameterTest {
 
     assertNull(instance.getCompleet());
 
-    instance.setCompleet(TestConstants.COMPLEET);
+    instance.setCompleet(NatuurTestConstants.COMPLEET);
 
-    assertEquals(TestConstants.COMPLEET, instance.getCompleet());
+    assertEquals(NatuurTestConstants.COMPLEET, instance.getCompleet());
   }
 
   @Test
@@ -60,9 +60,9 @@ public class LijstparameterTest {
 
     assertNull(instance.getSortering());
 
-    instance.setSortering(TestConstants.SORTERING);
+    instance.setSortering(NatuurTestConstants.SORTERING);
 
-    assertEquals(TestConstants.SORTERING, instance.getSortering());
+    assertEquals(NatuurTestConstants.SORTERING, instance.getSortering());
   }
 
   @Test
@@ -71,9 +71,9 @@ public class LijstparameterTest {
 
     assertNull(instance.getTaal1());
 
-    instance.setTaal1(TestConstants.TAAL);
+    instance.setTaal1(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal1());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal1());
   }
 
   @Test
@@ -82,9 +82,9 @@ public class LijstparameterTest {
 
     assertNull(instance.getTaal2());
 
-    instance.setTaal2(TestConstants.TAAL);
+    instance.setTaal2(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal2());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal2());
   }
 
   @Test
@@ -93,8 +93,8 @@ public class LijstparameterTest {
 
     assertNull(instance.getTaal3());
 
-    instance.setTaal3(TestConstants.TAAL);
+    instance.setTaal3(NatuurTestConstants.TAAL);
 
-    assertEquals(TestConstants.TAAL, instance.getTaal3());
+    assertEquals(NatuurTestConstants.TAAL, instance.getTaal3());
   }
 }

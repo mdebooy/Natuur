@@ -20,7 +20,7 @@ import eu.debooy.doosutils.access.JsonBestand;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.exception.BestandException;
 import eu.debooy.natuur.NatuurTestUtils;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,16 +54,16 @@ public class TaxonDtoTest {
     var taxonnaam = new TaxonnaamDto();
 
     instance.setTaxonId(10L);
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
     taxonnaam.setTaxonId(instance.getTaxonId());
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam);
 
-    assertEquals(TestConstants.TAXONNAAM,
-                 instance.getTaxonnaam(TestConstants.TAAL).getNaam());
+    assertEquals(NatuurTestConstants.TAXONNAAM,
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL).getNaam());
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL).getTaxonId());
-    assertNull(instance.getTaxonnaam(TestConstants.TAAL_GR).getTaxonId());
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL).getTaxonId());
+    assertNull(instance.getTaxonnaam(NatuurTestConstants.TAAL_GR).getTaxonId());
   }
 
   @Test
@@ -72,15 +72,15 @@ public class TaxonDtoTest {
     var taxonnaam = new TaxonnaamDto();
 
     instance.setTaxonId(10L);
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam);
 
-    assertEquals(TestConstants.TAXONNAAM,
-                 instance.getTaxonnaam(TestConstants.TAAL).getNaam());
+    assertEquals(NatuurTestConstants.TAXONNAAM,
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL).getNaam());
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL).getTaxonId());
-    assertNull(instance.getTaxonnaam(TestConstants.TAAL_GR).getTaxonId());
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL).getTaxonId());
+    assertNull(instance.getTaxonnaam(NatuurTestConstants.TAAL_GR).getTaxonId());
   }
 
   @Test
@@ -89,8 +89,8 @@ public class TaxonDtoTest {
     var taxonnaam = new TaxonnaamDto();
 
     instance.setTaxonId(10L);
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(11L);
     try {
       instance.addNaam(taxonnaam);
@@ -121,7 +121,7 @@ public class TaxonDtoTest {
 
     assertEquals(taxonDto, taxonDto);
     assertNotEquals(taxonDto, null);
-    assertNotEquals(taxonDto, TestConstants.NAAM);
+    assertNotEquals(taxonDto, NatuurTestConstants.NAAM);
     assertNotEquals(taxonDto, instance);
 
     instance.setTaxonId(taxonDto.getTaxonId());
@@ -130,12 +130,12 @@ public class TaxonDtoTest {
 
   @Test
   public void testGetLatijnsenaam() {
-    assertEquals(TestConstants.LATIJNSENAAM, taxonDto.getLatijnsenaam());
+    assertEquals(NatuurTestConstants.LATIJNSENAAM, taxonDto.getLatijnsenaam());
   }
 
   @Test
   public void testGetNaam1() {
-    assertEquals(TestConstants.TAXONNAAM, taxonDto.getNaam(TestConstants.TAAL));
+    assertEquals(NatuurTestConstants.TAXONNAAM, taxonDto.getNaam(NatuurTestConstants.TAAL));
   }
 
   @Test
@@ -144,32 +144,32 @@ public class TaxonDtoTest {
              NoSuchFieldException {
     var taxon = NatuurTestUtils.getOndersoortTaxonDto();
 
-    assertEquals(TestConstants.ONDERSOORTNAAM,
-                 taxon.getNaam(TestConstants.TAAL));
-    assertEquals("", taxon.getNaam(TestConstants.TAAL_GR));
-    assertEquals(TestConstants.ONDERSOORTLATIJNSENAAM, taxon.getLatijnsenaam());
-    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
-                 taxon.getNaam(TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.ONDERSOORTNAAM,
+                 taxon.getNaam(NatuurTestConstants.TAAL));
+    assertEquals("", taxon.getNaam(NatuurTestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.ONDERSOORTLATIJNSENAAM, taxon.getLatijnsenaam());
+    assertEquals(NatuurTestConstants.ONDERSOORTNAAM_KL,
+                 taxon.getNaam(NatuurTestConstants.TAAL_KL));
   }
 
   @Test
   public void testGetOpmerking() {
-    assertEquals(TestConstants.OPMERKING, taxonDto.getOpmerking());
+    assertEquals(NatuurTestConstants.OPMERKING, taxonDto.getOpmerking());
   }
 
   @Test
   public void testGetParentId() {
-    assertEquals(TestConstants.PARENTTAXONID, taxonDto.getParentId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, taxonDto.getParentId());
   }
 
   @Test
   public void testGetRang() {
-    assertEquals(TestConstants.RANG, taxonDto.getRang());
+    assertEquals(NatuurTestConstants.RANG, taxonDto.getRang());
   }
 
   @Test
   public void testGetTaxonId() {
-    assertEquals(TestConstants.TAXONID, taxonDto.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, taxonDto.getTaxonId());
   }
 
   @Test
@@ -179,31 +179,31 @@ public class TaxonDtoTest {
 
   @Test
   public void testGetVolgnummer() {
-    assertEquals(TestConstants.VOLGNUMMER, taxonDto.getVolgnummer());
+    assertEquals(NatuurTestConstants.VOLGNUMMER, taxonDto.getVolgnummer());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.TAXONID_HASH, taxonDto.hashCode());
+    assertEquals(NatuurTestConstants.TAXONID_HASH, taxonDto.hashCode());
   }
 
   @Test
   public void testInit2a() {
     try {
       var json  = new JsonBestand.Builder()
-              .setBestand(TestConstants.TAXON_JSON)
+              .setBestand(NatuurTestConstants.TAXON_JSON)
               .setClassLoader(TaxonDtoTest.class.getClassLoader())
               .build();
       var init  = (JSONObject) json.read();
       var taxon = new TaxonDto(init);
 
-      assertEquals(TestConstants.LATIJNSENAAM, taxon.getLatijnsenaam());
-      assertEquals(TestConstants.OPMERKING, taxon.getOpmerking());
-      assertEquals(TestConstants.PARENTTAXONID, taxon.getParentId());
-      assertEquals(TestConstants.RANG, taxon.getRang());
-      assertEquals(TestConstants.TAXONID, taxon.getTaxonId());
+      assertEquals(NatuurTestConstants.LATIJNSENAAM, taxon.getLatijnsenaam());
+      assertEquals(NatuurTestConstants.OPMERKING, taxon.getOpmerking());
+      assertEquals(NatuurTestConstants.PARENTTAXONID, taxon.getParentId());
+      assertEquals(NatuurTestConstants.RANG, taxon.getRang());
+      assertEquals(NatuurTestConstants.TAXONID, taxon.getTaxonId());
       assertFalse(taxon.isUitgestorven());
-      assertEquals(TestConstants.VOLGNUMMER, taxon.getVolgnummer());
+      assertEquals(NatuurTestConstants.VOLGNUMMER, taxon.getVolgnummer());
     } catch (BestandException ex) {
       fail("Er had geen BestandException mogen wezen.");
     }
@@ -214,7 +214,7 @@ public class TaxonDtoTest {
     try {
       var json  =
           new JsonBestand.Builder()
-                         .setBestand(TestConstants.LEEG_JSON)
+                         .setBestand(NatuurTestConstants.LEEG_JSON)
                          .setClassLoader(TaxonDtoTest.class.getClassLoader())
                          .build();
       var init  = (JSONObject) json.read();
@@ -237,8 +237,8 @@ public class TaxonDtoTest {
     var groter    = NatuurTestUtils.getTaxonDto();
     var kleiner   = NatuurTestUtils.getTaxonDto();
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
 
     Set<TaxonDto> taxa  = new TreeSet<>(new TaxonDto.LatijnsenaamComparator());
     taxa.add(groter);
@@ -258,16 +258,16 @@ public class TaxonDtoTest {
     var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_GR);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
     groter.setLatijnsenaam(taxonDto.getLatijnsenaam());
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.addNaam(taxonnaam);
 
     taxonnaam = new TaxonnaamDto();
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
     kleiner.setLatijnsenaam(taxonDto.getLatijnsenaam());
     kleiner.setTaxonId(taxonDto.getTaxonId());
@@ -280,12 +280,12 @@ public class TaxonDtoTest {
 
     var tabel = new TaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(kleiner.getNaam(TestConstants.TAAL),
-                 tabel[0].getNaam(TestConstants.TAAL));
-    assertEquals(taxonDto.getNaam(TestConstants.TAAL),
-                 tabel[1].getNaam(TestConstants.TAAL));
-    assertEquals(groter.getNaam(TestConstants.TAAL),
-                 tabel[2].getNaam(TestConstants.TAAL));
+    assertEquals(kleiner.getNaam(NatuurTestConstants.TAAL),
+                 tabel[0].getNaam(NatuurTestConstants.TAAL));
+    assertEquals(taxonDto.getNaam(NatuurTestConstants.TAAL),
+                 tabel[1].getNaam(NatuurTestConstants.TAAL));
+    assertEquals(groter.getNaam(NatuurTestConstants.TAAL),
+                 tabel[2].getNaam(NatuurTestConstants.TAAL));
   }
 
   @Test
@@ -294,18 +294,18 @@ public class TaxonDtoTest {
     var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.addNaam(taxonnaam);
 
     taxonnaam = new TaxonnaamDto();
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.setTaxonId(taxonDto.getTaxonId());
     kleiner.addNaam(taxonnaam);
 
@@ -327,23 +327,23 @@ public class TaxonDtoTest {
     var kleiner   = NatuurTestUtils.getTaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_GR);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.addNaam(taxonnaam);
 
     taxonnaam = new TaxonnaamDto();
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.setTaxonId(taxonDto.getTaxonId());
     kleiner.addNaam(taxonnaam);
 
     var           comparator  = new TaxonDto.NaamComparator();
-    comparator.setTaal(TestConstants.TAAL_GR);
+    comparator.setTaal(NatuurTestConstants.TAAL_GR);
     Set<TaxonDto> taxa        = new TreeSet<>(comparator);
     taxa.add(groter);
     taxa.add(taxonDto);
@@ -359,15 +359,15 @@ public class TaxonDtoTest {
   @Test
   public void testSetLatijnsenaam() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
-    instance.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    instance.setRang(TestConstants.RANG);
+    assertNotEquals(NatuurTestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
+    instance.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    instance.setRang(NatuurTestConstants.RANG);
 
-    assertEquals(TestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals(NatuurTestConstants.LATIJNSENAAM, instance.getLatijnsenaam());
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.isUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -376,15 +376,15 @@ public class TaxonDtoTest {
   @Test
   public void testSetOpmerking() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.OPMERKING, instance.getOpmerking());
-    instance.setOpmerking(TestConstants.OPMERKING);
-    instance.setRang(TestConstants.RANG);
+    assertNotEquals(NatuurTestConstants.OPMERKING, instance.getOpmerking());
+    instance.setOpmerking(NatuurTestConstants.OPMERKING);
+    instance.setRang(NatuurTestConstants.RANG);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
-    assertEquals(TestConstants.OPMERKING, instance.getOpmerking());
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
+    assertEquals(NatuurTestConstants.OPMERKING, instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -393,15 +393,15 @@ public class TaxonDtoTest {
   @Test
   public void testSetParentId() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.PARENTTAXONID, instance.getParentId());
-    instance.setParentId(TestConstants.PARENTTAXONID);
-    instance.setRang(TestConstants.RANG);
+    assertNotEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
+    instance.setParentId(NatuurTestConstants.PARENTTAXONID);
+    instance.setRang(NatuurTestConstants.RANG);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
-    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -410,14 +410,14 @@ public class TaxonDtoTest {
   @Test
   public void testSetRang() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.RANG, instance.getRang());
-    instance.setRang(TestConstants.RANG);
+    assertNotEquals(NatuurTestConstants.RANG, instance.getRang());
+    instance.setRang(NatuurTestConstants.RANG);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -426,16 +426,16 @@ public class TaxonDtoTest {
   @Test
   public void testSetTaxonId1() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
-    instance.setRang(TestConstants.RANG);
-    instance.setTaxonId(TestConstants.TAXONID);
+    assertNotEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    instance.setRang(NatuurTestConstants.RANG);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
     assertFalse(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
   }
@@ -445,17 +445,17 @@ public class TaxonDtoTest {
     var instance  = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam);
 
     assertNull(instance.getTaxonId());
-    assertNull(instance.getTaxonnaam(TestConstants.TAAL).getTaxonId());
+    assertNull(instance.getTaxonnaam(NatuurTestConstants.TAAL).getTaxonId());
 
-    instance.setTaxonId(TestConstants.TAXONID);
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
-    assertEquals(TestConstants.TAXONID,
-                 instance.getTaxonnaam(TestConstants.TAAL).getTaxonId());
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID,
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL).getTaxonId());
   }
 
   @Test
@@ -466,34 +466,34 @@ public class TaxonDtoTest {
     var                       taxonnaam3  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen  = new HashMap<>();
 
-    instance.setTaxonId(TestConstants.TAXONID);
-    taxonnaam1.setNaam(TestConstants.TAXONNAAM);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
+    taxonnaam1.setNaam(NatuurTestConstants.TAXONNAAM);
     taxonnaam1.setTaxonId(instance.getTaxonId());
-    taxonnaam1.setTaal(TestConstants.TAAL);
+    taxonnaam1.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam1);
 
     assertEquals(1, instance.getTaxonnamen().size());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_GR));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_GR));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_KL));
 
-    taxonnaam2.setNaam(TestConstants.TAXONNAAM_GR);
-    taxonnaam2.setTaal(TestConstants.TAAL_GR);
-    taxonnaam3.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnaam3.setTaal(TestConstants.TAAL_KL);
+    taxonnaam2.setNaam(NatuurTestConstants.TAXONNAAM_GR);
+    taxonnaam2.setTaal(NatuurTestConstants.TAAL_GR);
+    taxonnaam3.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnaam3.setTaal(NatuurTestConstants.TAAL_KL);
     taxonnamen.put(taxonnaam2.getTaal(), taxonnaam2);
     taxonnamen.put(taxonnaam3.getTaal(), taxonnaam3);
     instance.setTaxonnamen(taxonnamen);
 
     assertEquals(2, instance.getTaxonnamen().size());
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL));
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL_GR));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL_GR));
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL_GR).getTaxonId());
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL_KL));
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL_GR).getTaxonId());
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL_KL));
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL_KL).getTaxonId());
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL_KL).getTaxonId());
   }
 
   @Test
@@ -504,34 +504,34 @@ public class TaxonDtoTest {
     var                 taxonnaam3  = new TaxonnaamDto();
     List<TaxonnaamDto>  taxonnamen  = new ArrayList<>();
 
-    instance.setTaxonId(TestConstants.TAXONID);
-    taxonnaam1.setNaam(TestConstants.TAXONNAAM);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
+    taxonnaam1.setNaam(NatuurTestConstants.TAXONNAAM);
     taxonnaam1.setTaxonId(instance.getTaxonId());
-    taxonnaam1.setTaal(TestConstants.TAAL);
+    taxonnaam1.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam1);
 
     assertEquals(1, instance.getTaxonnamen().size());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_GR));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_GR));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_KL));
 
-    taxonnaam2.setNaam(TestConstants.TAXONNAAM_GR);
-    taxonnaam2.setTaal(TestConstants.TAAL_GR);
-    taxonnaam3.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnaam3.setTaal(TestConstants.TAAL_KL);
+    taxonnaam2.setNaam(NatuurTestConstants.TAXONNAAM_GR);
+    taxonnaam2.setTaal(NatuurTestConstants.TAAL_GR);
+    taxonnaam3.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnaam3.setTaal(NatuurTestConstants.TAAL_KL);
     taxonnamen.add(taxonnaam2);
     taxonnamen.add(taxonnaam3);
     instance.setTaxonnamen(taxonnamen);
 
     assertEquals(2, instance.getTaxonnamen().size());
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL));
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL_GR));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL_GR));
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL_GR).getTaxonId());
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL_KL));
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL_GR).getTaxonId());
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL_KL));
     assertEquals(instance.getTaxonId(),
-                 instance.getTaxonnaam(TestConstants.TAAL_KL).getTaxonId());
+                 instance.getTaxonnaam(NatuurTestConstants.TAAL_KL).getTaxonId());
   }
 
   @Test
@@ -540,22 +540,22 @@ public class TaxonDtoTest {
     var                 taxonnaam   = new TaxonnaamDto();
     List<TaxonnaamDto>  taxonnamen  = new ArrayList<>();
 
-    instance.setTaxonId(TestConstants.TAXONID);
-    taxonnaam.setNaam(TestConstants.TAXONNAAM);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM);
     taxonnaam.setTaxonId(instance.getTaxonId());
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     instance.addNaam(taxonnaam);
 
     assertEquals(1, instance.getTaxonnamen().size());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
-    assertTrue(instance.hasTaxonnaam(TestConstants.TAAL));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_GR));
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    assertTrue(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_GR));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL_KL));
 
     instance.setTaxonnamen(taxonnamen);
 
     assertEquals(0, instance.getTaxonnamen().size());
-    assertFalse(instance.hasTaxonnaam(TestConstants.TAAL));
+    assertFalse(instance.hasTaxonnaam(NatuurTestConstants.TAAL));
   }
 
   @Test
@@ -564,22 +564,22 @@ public class TaxonDtoTest {
     assertFalse(instance.isUitgestorven());
 
     instance.setUitgestorven(true);
-    instance.setRang(TestConstants.RANG);
+    instance.setRang(NatuurTestConstants.RANG);
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertTrue(instance.isUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
     instance.setUitgestorven(false);
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.isUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -588,18 +588,18 @@ public class TaxonDtoTest {
   @Test
   public void testSetVolgnummer() {
     var instance  = new TaxonDto();
-    assertNotEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
-    instance.setVolgnummer(TestConstants.VOLGNUMMER);
-    instance.setRang(TestConstants.RANG);
+    assertNotEquals(NatuurTestConstants.VOLGNUMMER, instance.getVolgnummer());
+    instance.setVolgnummer(NatuurTestConstants.VOLGNUMMER);
+    instance.setRang(NatuurTestConstants.RANG);
 
     assertNull(instance.getLatijnsenaam());
-    assertEquals("", instance.getNaam(TestConstants.TAAL));
+    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.RANG, instance.getRang());
+    assertEquals(NatuurTestConstants.RANG, instance.getRang());
     assertNull(instance.getTaxonId());
     assertFalse(instance.isUitgestorven());
-    assertEquals(TestConstants.VOLGNUMMER, instance.getVolgnummer());
+    assertEquals(NatuurTestConstants.VOLGNUMMER, instance.getVolgnummer());
   }
 
   @Test
@@ -632,11 +632,11 @@ public class TaxonDtoTest {
     var groter  = new TaxonDto();
     var kleiner = new TaxonDto();
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.setRang(taxonDto.getRang());
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.setVolgnummer(taxonDto.getVolgnummer());
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.setRang(taxonDto.getRang());
     kleiner.setTaxonId(taxonDto.getTaxonId());
     kleiner.setVolgnummer(taxonDto.getVolgnummer());
@@ -660,8 +660,8 @@ public class TaxonDtoTest {
     var kleiner   = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.NAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
 
     groter.setLatijnsenaam(taxonDto.getLatijnsenaam());
@@ -695,8 +695,8 @@ public class TaxonDtoTest {
     var kleiner   = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_GR);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_GR);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
     groter.setLatijnsenaam(taxonDto.getLatijnsenaam());
     groter.setRang(taxonDto.getRang());
@@ -705,8 +705,8 @@ public class TaxonDtoTest {
     groter.addNaam(taxonnaam);
 
     taxonnaam = new TaxonnaamDto();
-    taxonnaam.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
     kleiner.setLatijnsenaam(taxonDto.getLatijnsenaam());
     kleiner.setRang(taxonDto.getRang());
@@ -722,12 +722,12 @@ public class TaxonDtoTest {
 
     var tabel = new TaxonDto[taxa.size()];
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
-    assertEquals(kleiner.getNaam(TestConstants.TAAL),
-                 tabel[0].getNaam(TestConstants.TAAL));
-    assertEquals(taxonDto.getNaam(TestConstants.TAAL),
-                 tabel[1].getNaam(TestConstants.TAAL));
-    assertEquals(groter.getNaam(TestConstants.TAAL),
-                 tabel[2].getNaam(TestConstants.TAAL));
+    assertEquals(kleiner.getNaam(NatuurTestConstants.TAAL),
+                 tabel[0].getNaam(NatuurTestConstants.TAAL));
+    assertEquals(taxonDto.getNaam(NatuurTestConstants.TAAL),
+                 tabel[1].getNaam(NatuurTestConstants.TAAL));
+    assertEquals(groter.getNaam(NatuurTestConstants.TAAL),
+                 tabel[2].getNaam(NatuurTestConstants.TAAL));
   }
 
   @Test
@@ -736,17 +736,17 @@ public class TaxonDtoTest {
     var kleiner = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.NAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.setRang(taxonDto.getRang());
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.setVolgnummer(taxonDto.getVolgnummer() + 1);
     groter.addNaam(taxonnaam);
 
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.setRang(taxonDto.getRang());
     kleiner.setTaxonId(taxonDto.getTaxonId());
     kleiner.setVolgnummer(taxonDto.getVolgnummer() - 1);
@@ -771,28 +771,28 @@ public class TaxonDtoTest {
     var kleiner = new TaxonDto();
     var taxonnaam = new TaxonnaamDto();
 
-    taxonnaam.setNaam(TestConstants.NAAM_GR);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM_GR);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
 
-    groter.setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.setRang(taxonDto.getRang());
     groter.setTaxonId(taxonDto.getTaxonId());
     groter.setVolgnummer(taxonDto.getVolgnummer() + 1);
     groter.addNaam(taxonnaam);
 
     taxonnaam = new TaxonnaamDto();
-    taxonnaam.setNaam(TestConstants.NAAM_KL);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM_KL);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
     taxonnaam.setTaxonId(taxonDto.getTaxonId());
-    kleiner.setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.setRang(taxonDto.getRang());
     kleiner.setTaxonId(taxonDto.getTaxonId());
     kleiner.setVolgnummer(taxonDto.getVolgnummer() - 1);
     kleiner.addNaam(taxonnaam);
 
     var           comparator  = new TaxonDto.VolgnummerNaamComparator();
-    comparator.setTaal(TestConstants.TAAL_GR);
+    comparator.setTaal(NatuurTestConstants.TAAL_GR);
     Set<TaxonDto> taxa        = new TreeSet<>(comparator);
     taxa.add(groter);
     taxa.add(taxonDto);

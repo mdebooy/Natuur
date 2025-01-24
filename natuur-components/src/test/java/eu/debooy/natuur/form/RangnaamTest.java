@@ -16,16 +16,16 @@
  */
 package eu.debooy.natuur.form;
 
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.NAAM_GR;
-import static eu.debooy.natuur.TestConstants.NAAM_KL;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANGNAAM_HASH;
-import static eu.debooy.natuur.TestConstants.RANG_GR;
-import static eu.debooy.natuur.TestConstants.RANG_KL;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAAL_GR;
-import static eu.debooy.natuur.TestConstants.TAAL_KL;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM_GR;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM_KL;
+import static eu.debooy.natuur.NatuurTestConstants.RANG;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM_HASH;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_GR;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_KL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_GR;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_KL;
 import eu.debooy.natuur.domain.RangnaamDto;
 import java.util.Set;
 import java.util.TreeSet;

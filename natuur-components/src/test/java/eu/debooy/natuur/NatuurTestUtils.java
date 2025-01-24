@@ -40,39 +40,39 @@ public final class NatuurTestUtils {
     var                 fotoDto = new FotoDto();
     Map<Long, FotoDto>  fotos   = new HashMap<>();
 
-    fotoDto.setFotoBestand(TestConstants.FOTOBESTAND);
-    fotoDto.setFotoDetail(TestConstants.FOTODETAIL);
-    fotoDto.setFotoId(TestConstants.FOTOID);
-    fotoDto.setOpmerking(TestConstants.OPMERKING);
-    fotoDto.setTaxonSeq(TestConstants.TAXONSEQ);
-    fotoDto.setWaarnemingId(TestConstants.WAARNEMINGID);
-    fotos.put(TestConstants.TAXONSEQ, fotoDto);
+    fotoDto.setFotoBestand(NatuurTestConstants.FOTOBESTAND);
+    fotoDto.setFotoDetail(NatuurTestConstants.FOTODETAIL);
+    fotoDto.setFotoId(NatuurTestConstants.FOTOID);
+    fotoDto.setOpmerking(NatuurTestConstants.OPMERKING);
+    fotoDto.setTaxonSeq(NatuurTestConstants.TAXONSEQ);
+    fotoDto.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
+    fotos.put(NatuurTestConstants.TAXONSEQ, fotoDto);
 
     fotoDto = new FotoDto();
-    fotoDto.setFotoBestand(TestConstants.FOTOBESTAND);
-    fotoDto.setFotoDetail(TestConstants.FOTODETAIL);
-    fotoDto.setFotoId(TestConstants.FOTOID + 1);
-    fotoDto.setOpmerking(TestConstants.OPMERKING);
-    fotoDto.setTaxonSeq(TestConstants.TAXONSEQ + 1);
-    fotoDto.setWaarnemingId(TestConstants.WAARNEMINGID);
-    fotos.put(TestConstants.TAXONSEQ + 1, fotoDto);
+    fotoDto.setFotoBestand(NatuurTestConstants.FOTOBESTAND);
+    fotoDto.setFotoDetail(NatuurTestConstants.FOTODETAIL);
+    fotoDto.setFotoId(NatuurTestConstants.FOTOID + 1);
+    fotoDto.setOpmerking(NatuurTestConstants.OPMERKING);
+    fotoDto.setTaxonSeq(NatuurTestConstants.TAXONSEQ + 1);
+    fotoDto.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
+    fotos.put(NatuurTestConstants.TAXONSEQ + 1, fotoDto);
 
     return fotos;
   }
 
   public static Gebied getGebied() {
     var gebied  = new Gebied();
-    gebied.setGebiedId(TestConstants.GEBIEDID);
-    gebied.setLandId(TestConstants.LANDID);
-    gebied.setLatitude(TestConstants.LATITUDE);
-    gebied.setLatitudeGraden(TestConstants.LATITUDE_GRADEN);
-    gebied.setLatitudeMinuten(TestConstants.LATITUDE_MINUTEN);
-    gebied.setLatitudeSeconden(TestConstants.LATITUDE_SECONDEN);
-    gebied.setLongitude(TestConstants.LONGITUDE);
-    gebied.setLongitudeGraden(TestConstants.LONGITUDE_GRADEN);
-    gebied.setLongitudeMinuten(TestConstants.LONGITUDE_MINUTEN);
-    gebied.setLongitudeSeconden(TestConstants.LONGITUDE_SECONDEN);
-    gebied.setNaam(TestConstants.NAAM);
+    gebied.setGebiedId(NatuurTestConstants.GEBIEDID);
+    gebied.setLandId(NatuurTestConstants.LANDID);
+    gebied.setLatitude(NatuurTestConstants.LATITUDE);
+    gebied.setLatitudeGraden(NatuurTestConstants.LATITUDE_GRADEN);
+    gebied.setLatitudeMinuten(NatuurTestConstants.LATITUDE_MINUTEN);
+    gebied.setLatitudeSeconden(NatuurTestConstants.LATITUDE_SECONDEN);
+    gebied.setLongitude(NatuurTestConstants.LONGITUDE);
+    gebied.setLongitudeGraden(NatuurTestConstants.LONGITUDE_GRADEN);
+    gebied.setLongitudeMinuten(NatuurTestConstants.LONGITUDE_MINUTEN);
+    gebied.setLongitudeSeconden(NatuurTestConstants.LONGITUDE_SECONDEN);
+    gebied.setNaam(NatuurTestConstants.NAAM);
 
     return gebied;
   }
@@ -93,35 +93,38 @@ public final class NatuurTestUtils {
 
     TestUtils.setField(detailDto,
                        DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.ONDERSOORTLATIJNSENAAM);
+                       NatuurTestConstants.ONDERSOORTLATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.ONDERSOORTNIVEAU);
+                       DetailDto.COL_NIVEAU,
+                       NatuurTestConstants.ONDERSOORTNIVEAU);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+                       DetailDto.COL_OPFOTO, NatuurTestConstants.OPFOTO);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
+                       DetailDto.COL_OPMERKING, NatuurTestConstants.OPMERKING);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+                       DetailDto.COL_PARENTID, NatuurTestConstants.TAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
+                       NatuurTestConstants.LATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+                       DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.UITGESTORVEN);
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.VOLGNUMMER);
+                       NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.ONDERSOORTRANG);
+                       DetailDto.COL_RANG, NatuurTestConstants.ONDERSOORTRANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.ONDERSOORTTAXONID);
+                       DetailDto.COL_TAXONID,
+                       NatuurTestConstants.ONDERSOORTTAXONID);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+                       DetailDto.COL_UITGESTORVEN,
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
-                       TestConstants.ONDERSOORTVOLGNUMMER);
+                       NatuurTestConstants.ONDERSOORTVOLGNUMMER);
 
     TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
     TestUtils.setField(detailDto, "taxonnamen", getTaxonOndersoortnamen());
@@ -133,21 +136,21 @@ public final class NatuurTestUtils {
   public static Taxon getOndersoortTaxon() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.ONDERSOORTLATIJNSENAAM);
-    taxon.setNaam(TestConstants.ONDERSOORTNAAM);
-    taxon.setNiveau(TestConstants.ONDERSOORTNIVEAU);
-    taxon.setOpmerking(TestConstants.ONDERSOORTOPMERKING);
-    taxon.setParentId(TestConstants.TAXONID);
-    taxon.setParentLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxon.setParentNaam(TestConstants.TAXONNAAM);
-    taxon.setParentNiveau(TestConstants.NIVEAU);
-    taxon.setParentRang(TestConstants.RANG);
-    taxon.setParentRangnaam(TestConstants.RANGNAAM);
-    taxon.setParentVolgnummer(TestConstants.VOLGNUMMER);
-    taxon.setRang(TestConstants.ONDERSOORTRANG);
-    taxon.setRangnaam(TestConstants.ONDERSOORTRANGNAAM);
-    taxon.setTaxonId(TestConstants.ONDERSOORTTAXONID);
-    taxon.setVolgnummer(TestConstants.ONDERSOORTVOLGNUMMER);
+    taxon.setLatijnsenaam(NatuurTestConstants.ONDERSOORTLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.ONDERSOORTNAAM);
+    taxon.setNiveau(NatuurTestConstants.ONDERSOORTNIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.ONDERSOORTOPMERKING);
+    taxon.setParentId(NatuurTestConstants.TAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.TAXONNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.NIVEAU);
+    taxon.setParentRang(NatuurTestConstants.RANG);
+    taxon.setParentRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setParentVolgnummer(NatuurTestConstants.VOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.ONDERSOORTRANG);
+    taxon.setRangnaam(NatuurTestConstants.ONDERSOORTRANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.ONDERSOORTTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.ONDERSOORTVOLGNUMMER);
 
     return taxon;
   }
@@ -172,9 +175,9 @@ public final class NatuurTestUtils {
   public static Rang getParentRang() {
     var rang  = new Rang();
 
-    rang.setNaam(TestConstants.PARENTRANGNAAM);
-    rang.setNiveau(TestConstants.PARENTNIVEAU);
-    rang.setRang(TestConstants.PARENTRANG);
+    rang.setNaam(NatuurTestConstants.PARENTRANGNAAM);
+    rang.setNiveau(NatuurTestConstants.PARENTNIVEAU);
+    rang.setRang(NatuurTestConstants.PARENTRANG);
 
     return rang;
   }
@@ -182,21 +185,21 @@ public final class NatuurTestUtils {
   public static Taxon getParentTaxon() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
-    taxon.setNaam(TestConstants.PARENTNAAM);
-    taxon.setNiveau(TestConstants.PARENTNIVEAU);
-    taxon.setOpmerking(TestConstants.PARENTOPMERKING);
-    taxon.setParentId(TestConstants.GRANDPARENTTAXONID);
-    taxon.setParentLatijnsenaam(TestConstants.GRANDPARENTLATIJNSENAAM);
-    taxon.setParentNaam(TestConstants.GRANDPARENTNAAM);
-    taxon.setParentNiveau(TestConstants.GRANDPARENTNIVEAU);
-    taxon.setParentRang(TestConstants.GRANDPARENTRANG);
-    taxon.setParentRangnaam(TestConstants.GRANDPARENTRANGNAAM);
-    taxon.setParentVolgnummer(TestConstants.GRANDPARENTVOLGNUMMER);
-    taxon.setRang(TestConstants.PARENTRANG);
-    taxon.setRangnaam(TestConstants.PARENTRANGNAAM);
-    taxon.setTaxonId(TestConstants.PARENTTAXONID);
-    taxon.setVolgnummer(TestConstants.PARENTVOLGNUMMER);
+    taxon.setLatijnsenaam(NatuurTestConstants.PARENTLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.PARENTNAAM);
+    taxon.setNiveau(NatuurTestConstants.PARENTNIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.PARENTOPMERKING);
+    taxon.setParentId(NatuurTestConstants.GRANDPARENTTAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.GRANDPARENTLATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.GRANDPARENTNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.GRANDPARENTNIVEAU);
+    taxon.setParentRang(NatuurTestConstants.GRANDPARENTRANG);
+    taxon.setParentRangnaam(NatuurTestConstants.GRANDPARENTRANGNAAM);
+    taxon.setParentVolgnummer(NatuurTestConstants.GRANDPARENTVOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.PARENTRANG);
+    taxon.setRangnaam(NatuurTestConstants.PARENTRANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.PARENTTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.PARENTVOLGNUMMER);
 
     return taxon;
   }
@@ -217,9 +220,9 @@ public final class NatuurTestUtils {
   public static Rang getRang() {
     var rang  = new Rang();
 
-    rang.setNaam(TestConstants.RANGNAAM);
-    rang.setNiveau(TestConstants.NIVEAU);
-    rang.setRang(TestConstants.RANG);
+    rang.setNaam(NatuurTestConstants.RANGNAAM);
+    rang.setNiveau(NatuurTestConstants.NIVEAU);
+    rang.setRang(NatuurTestConstants.RANG);
 
     return rang;
   }
@@ -228,16 +231,16 @@ public final class NatuurTestUtils {
     var                       rangnaamDto = new RangnaamDto();
     Map<String, RangnaamDto>  rangnamen   = new HashMap<>();
 
-    rangnaamDto.setTaal(TestConstants.TAAL);
-    rangnaamDto.setRang(TestConstants.RANG);
-    rangnaamDto.setNaam(TestConstants.RANGNAAM);
-    rangnamen.put(TestConstants.TAAL, rangnaamDto);
+    rangnaamDto.setTaal(NatuurTestConstants.TAAL);
+    rangnaamDto.setRang(NatuurTestConstants.RANG);
+    rangnaamDto.setNaam(NatuurTestConstants.RANGNAAM);
+    rangnamen.put(NatuurTestConstants.TAAL, rangnaamDto);
 
     rangnaamDto = new RangnaamDto();
-    rangnaamDto.setTaal(TestConstants.TAAL_KL);
-    rangnaamDto.setRang(TestConstants.RANG);
-    rangnaamDto.setNaam(TestConstants.RANGNAAM_KL);
-    rangnamen.put(TestConstants.TAAL_KL, rangnaamDto);
+    rangnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    rangnaamDto.setRang(NatuurTestConstants.RANG);
+    rangnaamDto.setNaam(NatuurTestConstants.RANGNAAM_KL);
+    rangnamen.put(NatuurTestConstants.TAAL_KL, rangnaamDto);
 
     return rangnamen;
   }
@@ -249,34 +252,38 @@ public final class NatuurTestUtils {
 
     TestUtils.setField(detailDto,
                        DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
+                       NatuurTestConstants.LATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.NIVEAU);
+                       DetailDto.COL_NIVEAU, NatuurTestConstants.NIVEAU);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+                       DetailDto.COL_OPFOTO, NatuurTestConstants.OPFOTO);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPMERKING, TestConstants.OPMERKING);
+                       DetailDto.COL_OPMERKING, NatuurTestConstants.OPMERKING);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.PARENTTAXONID);
+                       DetailDto.COL_PARENTID,
+                       NatuurTestConstants.PARENTTAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.PARENTLATIJNSENAAM);
+                       NatuurTestConstants.PARENTLATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.PARENTRANG);
+                       DetailDto.COL_PARENTRANG,
+                       NatuurTestConstants.PARENTRANG);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.PARENTUITGESTORVEN);
+                       NatuurTestConstants.PARENTUITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.PARENTVOLGNUMMER);
+                       NatuurTestConstants.PARENTVOLGNUMMER);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.RANG);
+                       DetailDto.COL_RANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.TAXONID);
+                       DetailDto.COL_TAXONID, NatuurTestConstants.TAXONID);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+                       DetailDto.COL_UITGESTORVEN,
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_VOLGNUMMER, TestConstants.VOLGNUMMER);
+                       DetailDto.COL_VOLGNUMMER,
+                       NatuurTestConstants.VOLGNUMMER);
 
     TestUtils.setField(detailDto, "parentnamen", getTaxonParentnamen());
     TestUtils.setField(detailDto, "taxonnamen", getTaxonnamen());
@@ -287,21 +294,21 @@ public final class NatuurTestUtils {
   public static Taxon getTaxon() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxon.setNaam(TestConstants.NAAM);
-    taxon.setNiveau(TestConstants.NIVEAU);
-    taxon.setOpmerking(TestConstants.OPMERKING);
-    taxon.setParentId(TestConstants.PARENTTAXONID);
-    taxon.setParentLatijnsenaam(TestConstants.PARENTLATIJNSENAAM);
-    taxon.setParentNaam(TestConstants.PARENTNAAM);
-    taxon.setParentNiveau(TestConstants.PARENTNIVEAU);
-    taxon.setParentRang(TestConstants.PARENTRANG);
-    taxon.setParentRangnaam(TestConstants.PARENTRANGNAAM);
-    taxon.setParentVolgnummer(TestConstants.PARENTVOLGNUMMER);
-    taxon.setRang(TestConstants.RANG);
-    taxon.setRangnaam(TestConstants.RANGNAAM);
-    taxon.setTaxonId(TestConstants.TAXONID);
-    taxon.setVolgnummer(TestConstants.VOLGNUMMER);
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.NAAM);
+    taxon.setNiveau(NatuurTestConstants.NIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
+    taxon.setParentId(NatuurTestConstants.PARENTTAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.PARENTLATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.PARENTNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.PARENTNIVEAU);
+    taxon.setParentRang(NatuurTestConstants.PARENTRANG);
+    taxon.setParentRangnaam(NatuurTestConstants.PARENTRANGNAAM);
+    taxon.setParentVolgnummer(NatuurTestConstants.PARENTVOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.RANG);
+    taxon.setRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.TAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.VOLGNUMMER);
 
     return taxon;
   }
@@ -323,16 +330,16 @@ public final class NatuurTestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TestConstants.TAAL);
-    taxonnaamDto.setTaxonId(TestConstants.TAXONID);
-    taxonnaamDto.setNaam(TestConstants.TAXONNAAM);
-    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.TAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnamen.put(NatuurTestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
-    taxonnaamDto.setTaxonId(TestConstants.TAXONID);
-    taxonnaamDto.setNaam(TestConstants.TAXONNAAM_KL);
-    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.TAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.TAXONNAAM_KL);
+    taxonnamen.put(NatuurTestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -340,14 +347,14 @@ public final class NatuurTestUtils {
   public static Taxon getTaxonOndersoort() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.ONDERSOORTLATIJNSENAAM);
-    taxon.setNaam(TestConstants.ONDERSOORTNAAM);
-    taxon.setOpmerking(TestConstants.OPMERKING);
+    taxon.setLatijnsenaam(NatuurTestConstants.ONDERSOORTLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.ONDERSOORTNAAM);
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
     taxon.setParent(getTaxon());
-    taxon.setRang(TestConstants.ONDERSOORTRANG);
-    taxon.setRangnaam(TestConstants.RANGNAAM);
-    taxon.setTaxonId(TestConstants.ONDERSOORTTAXONID);
-    taxon.setVolgnummer(TestConstants.ONDERSOORTVOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.ONDERSOORTRANG);
+    taxon.setRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.ONDERSOORTTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.ONDERSOORTVOLGNUMMER);
 
     return taxon;
   }
@@ -356,10 +363,10 @@ public final class NatuurTestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
-    taxonnaamDto.setTaxonId(TestConstants.ONDERSOORTTAXONID);
-    taxonnaamDto.setNaam(TestConstants.ONDERSOORTNAAM_KL);
-    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.ONDERSOORTTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.ONDERSOORTNAAM_KL);
+    taxonnamen.put(NatuurTestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -368,16 +375,16 @@ public final class NatuurTestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TestConstants.TAAL);
-    taxonnaamDto.setTaxonId(TestConstants.PARENTTAXONID);
-    taxonnaamDto.setNaam(TestConstants.PARENTNAAM);
-    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.PARENTTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.PARENTNAAM);
+    taxonnamen.put(NatuurTestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
-    taxonnaamDto.setTaxonId(TestConstants.PARENTTAXONID);
-    taxonnaamDto.setNaam(TestConstants.PARENTNAAM_KL);
-    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.PARENTTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.PARENTNAAM_KL);
+    taxonnamen.put(NatuurTestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -386,16 +393,16 @@ public final class NatuurTestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TestConstants.TAAL);
-    taxonnaamDto.setTaxonId(TestConstants.VARIETEITTAXONID);
-    taxonnaamDto.setNaam(TestConstants.VARIETEITNAAM);
-    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.VARIETEITTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.VARIETEITNAAM);
+    taxonnamen.put(NatuurTestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
-    taxonnaamDto.setTaxonId(TestConstants.VARIETEITTAXONID);
-    taxonnaamDto.setNaam(TestConstants.VARIETEITNAAM_KL);
-    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.VARIETEITTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.VARIETEITNAAM_KL);
+    taxonnamen.put(NatuurTestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -404,16 +411,16 @@ public final class NatuurTestUtils {
     var                       taxonnaamDto  = new TaxonnaamDto();
     Map<String, TaxonnaamDto> taxonnamen    = new HashMap<>();
 
-    taxonnaamDto.setTaal(TestConstants.TAAL);
-    taxonnaamDto.setTaxonId(TestConstants.VORMTAXONID);
-    taxonnaamDto.setNaam(TestConstants.VORMNAAM);
-    taxonnamen.put(TestConstants.TAAL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.VORMTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.VORMNAAM);
+    taxonnamen.put(NatuurTestConstants.TAAL, taxonnaamDto);
 
     taxonnaamDto = new TaxonnaamDto();
-    taxonnaamDto.setTaal(TestConstants.TAAL_KL);
-    taxonnaamDto.setTaxonId(TestConstants.VORMTAXONID);
-    taxonnaamDto.setNaam(TestConstants.VORMNAAM_KL);
-    taxonnamen.put(TestConstants.TAAL_KL, taxonnaamDto);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL_KL);
+    taxonnaamDto.setTaxonId(NatuurTestConstants.VORMTAXONID);
+    taxonnaamDto.setNaam(NatuurTestConstants.VORMNAAM_KL);
+    taxonnamen.put(NatuurTestConstants.TAAL_KL, taxonnaamDto);
 
     return taxonnamen;
   }
@@ -425,36 +432,39 @@ public final class NatuurTestUtils {
 
     TestUtils.setField(detailDto,
                        DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.VARIETEITLATIJNSENAAM);
+                       NatuurTestConstants.VARIETEITLATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.VARIETEITNIVEAU);
+                       DetailDto.COL_NIVEAU,
+                       NatuurTestConstants.VARIETEITNIVEAU);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+                       DetailDto.COL_OPFOTO, NatuurTestConstants.OPFOTO);
     TestUtils.setField(detailDto,
                        DetailDto.COL_OPMERKING,
-                       TestConstants.VARIETEITOPMERKING);
+                       NatuurTestConstants.VARIETEITOPMERKING);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+                       DetailDto.COL_PARENTID, NatuurTestConstants.TAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
+                       NatuurTestConstants.LATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+                       DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.UITGESTORVEN);
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.VOLGNUMMER);
+                       NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.VARIETEITRANG);
+                       DetailDto.COL_RANG, NatuurTestConstants.VARIETEITRANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.VARIETEITTAXONID);
+                       DetailDto.COL_TAXONID,
+                       NatuurTestConstants.VARIETEITTAXONID);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+                       DetailDto.COL_UITGESTORVEN,
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
-                       TestConstants.VARIETEITVOLGNUMMER);
+                       NatuurTestConstants.VARIETEITVOLGNUMMER);
 
     TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
     TestUtils.setField(detailDto, "taxonnamen", getTaxonVarieteitnamen());
@@ -466,21 +476,21 @@ public final class NatuurTestUtils {
   public static Taxon getVarieteitTaxon() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.VARIETEITLATIJNSENAAM);
-    taxon.setNaam(TestConstants.VARIETEITNAAM);
-    taxon.setNiveau(TestConstants.VARIETEITNIVEAU);
-    taxon.setOpmerking(TestConstants.VARIETEITOPMERKING);
-    taxon.setParentId(TestConstants.TAXONID);
-    taxon.setParentLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxon.setParentNaam(TestConstants.TAXONNAAM);
-    taxon.setParentNiveau(TestConstants.NIVEAU);
-    taxon.setParentRang(TestConstants.RANG);
-    taxon.setParentRangnaam(TestConstants.RANGNAAM);
-    taxon.setParentVolgnummer(TestConstants.VOLGNUMMER);
-    taxon.setRang(TestConstants.VARIETEITRANG);
-    taxon.setRangnaam(TestConstants.VARIETEITRANGNAAM);
-    taxon.setTaxonId(TestConstants.VARIETEITTAXONID);
-    taxon.setVolgnummer(TestConstants.VARIETEITVOLGNUMMER);
+    taxon.setLatijnsenaam(NatuurTestConstants.VARIETEITLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.VARIETEITNAAM);
+    taxon.setNiveau(NatuurTestConstants.VARIETEITNIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.VARIETEITOPMERKING);
+    taxon.setParentId(NatuurTestConstants.TAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.TAXONNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.NIVEAU);
+    taxon.setParentRang(NatuurTestConstants.RANG);
+    taxon.setParentRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setParentVolgnummer(NatuurTestConstants.VOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.VARIETEITRANG);
+    taxon.setRangnaam(NatuurTestConstants.VARIETEITRANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.VARIETEITTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.VARIETEITVOLGNUMMER);
 
     return taxon;
   }
@@ -509,35 +519,37 @@ public final class NatuurTestUtils {
 
     TestUtils.setField(detailDto,
                        DetailDto.COL_LATIJNSENAAM,
-                       TestConstants.VORMLATIJNSENAAM);
+                       NatuurTestConstants.VORMLATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_NIVEAU, TestConstants.VORMNIVEAU);
+                       DetailDto.COL_NIVEAU, NatuurTestConstants.VORMNIVEAU);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPFOTO, TestConstants.OPFOTO);
+                       DetailDto.COL_OPFOTO, NatuurTestConstants.OPFOTO);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_OPMERKING, TestConstants.VORMOPMERKING);
+                       DetailDto.COL_OPMERKING,
+                       NatuurTestConstants.VORMOPMERKING);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTID, TestConstants.TAXONID);
+                       DetailDto.COL_PARENTID, NatuurTestConstants.TAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTLATIJNSENAAM,
-                       TestConstants.LATIJNSENAAM);
+                       NatuurTestConstants.LATIJNSENAAM);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTRANG, TestConstants.RANG);
+                       DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTUITGESTORVEN,
-                       TestConstants.UITGESTORVEN);
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
-                       TestConstants.VOLGNUMMER);
+                       NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_RANG, TestConstants.VORMRANG);
+                       DetailDto.COL_RANG, NatuurTestConstants.VORMRANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, TestConstants.VORMTAXONID);
+                       DetailDto.COL_TAXONID, NatuurTestConstants.VORMTAXONID);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN, TestConstants.UITGESTORVEN);
+                       DetailDto.COL_UITGESTORVEN,
+                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
-                       TestConstants.VORMVOLGNUMMER);
+                       NatuurTestConstants.VORMVOLGNUMMER);
 
     TestUtils.setField(detailDto, "parentnamen", getTaxonnamen());
     TestUtils.setField(detailDto, "taxonnamen", getTaxonVormnamen());
@@ -549,21 +561,21 @@ public final class NatuurTestUtils {
   public static Taxon getVormTaxon() {
     var taxon = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.VORMLATIJNSENAAM);
-    taxon.setNaam(TestConstants.VORMNAAM);
-    taxon.setNiveau(TestConstants.VORMNIVEAU);
-    taxon.setOpmerking(TestConstants.VORMOPMERKING);
-    taxon.setParentId(TestConstants.TAXONID);
-    taxon.setParentLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxon.setParentNaam(TestConstants.TAXONNAAM);
-    taxon.setParentNiveau(TestConstants.NIVEAU);
-    taxon.setParentRang(TestConstants.RANG);
-    taxon.setParentRangnaam(TestConstants.RANGNAAM);
-    taxon.setParentVolgnummer(TestConstants.VOLGNUMMER);
-    taxon.setRang(TestConstants.VORMRANG);
-    taxon.setRangnaam(TestConstants.VORMRANGNAAM);
-    taxon.setTaxonId(TestConstants.VORMTAXONID);
-    taxon.setVolgnummer(TestConstants.VORMVOLGNUMMER);
+    taxon.setLatijnsenaam(NatuurTestConstants.VORMLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.VORMNAAM);
+    taxon.setNiveau(NatuurTestConstants.VORMNIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.VORMOPMERKING);
+    taxon.setParentId(NatuurTestConstants.TAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.TAXONNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.NIVEAU);
+    taxon.setParentRang(NatuurTestConstants.RANG);
+    taxon.setParentRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setParentVolgnummer(NatuurTestConstants.VOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.VORMRANG);
+    taxon.setRangnaam(NatuurTestConstants.VORMRANGNAAM);
+    taxon.setTaxonId(NatuurTestConstants.VORMTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.VORMVOLGNUMMER);
 
     return taxon;
   }

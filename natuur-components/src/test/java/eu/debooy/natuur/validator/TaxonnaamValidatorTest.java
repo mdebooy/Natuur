@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Taxonnaam;
 import java.util.ArrayList;
@@ -89,8 +89,8 @@ public class TaxonnaamValidatorTest {
     Taxonnaam     taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
-    taxonnaam.setTaal(TestConstants.TAAL_FOUT);
+    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    taxonnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(ERR_TAAL);
@@ -104,8 +104,8 @@ public class TaxonnaamValidatorTest {
     Taxonnaam     taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(TestConstants.NAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
 
     List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
@@ -128,8 +128,8 @@ public class TaxonnaamValidatorTest {
     TaxonnaamDto  taxonnaam = new TaxonnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
-    taxonnaam.setTaal(TestConstants.TAAL_FOUT);
+    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    taxonnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(ERR_TAAL);
@@ -143,8 +143,8 @@ public class TaxonnaamValidatorTest {
     TaxonnaamDto  taxonnaam = new TaxonnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(TestConstants.NAAM);
-    taxonnaam.setTaal(TestConstants.TAAL);
+    taxonnaam.setNaam(NatuurTestConstants.NAAM);
+    taxonnaam.setTaal(NatuurTestConstants.TAAL);
 
     List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());

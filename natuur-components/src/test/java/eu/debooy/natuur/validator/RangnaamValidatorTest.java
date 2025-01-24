@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.form.Rangnaam;
 import java.util.ArrayList;
@@ -88,12 +88,12 @@ public class RangnaamValidatorTest {
     Rangnaam      rangnaam  = new Rangnaam();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
-    rangnaam.setRang(TestConstants.RANG_FOUT);
-    rangnaam.setTaal(TestConstants.TAAL_FOUT);
+    rangnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    rangnaam.setRang(NatuurTestConstants.RANG_FOUT);
+    rangnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
-    expResult.add(TestConstants.ERR_RANG);
+    expResult.add(NatuurTestConstants.ERR_RANG);
     expResult.add(ERR_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -105,9 +105,9 @@ public class RangnaamValidatorTest {
     Rangnaam      rangnaam  = new Rangnaam();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(TestConstants.NAAM);
-    rangnaam.setRang(TestConstants.RANG);
-    rangnaam.setTaal(TestConstants.TAAL);
+    rangnaam.setNaam(NatuurTestConstants.NAAM);
+    rangnaam.setRang(NatuurTestConstants.RANG);
+    rangnaam.setTaal(NatuurTestConstants.TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
     assertEquals(expResult.toString(), result.toString());
@@ -119,7 +119,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
-    expResult.add(TestConstants.REQ_RANG);
+    expResult.add(NatuurTestConstants.REQ_RANG);
     expResult.add(REQ_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -131,12 +131,12 @@ public class RangnaamValidatorTest {
     RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
-    rangnaam.setRang(TestConstants.RANG_FOUT);
-    rangnaam.setTaal(TestConstants.TAAL_FOUT);
+    rangnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    rangnaam.setRang(NatuurTestConstants.RANG_FOUT);
+    rangnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
-    expResult.add(TestConstants.ERR_RANG);
+    expResult.add(NatuurTestConstants.ERR_RANG);
     expResult.add(ERR_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
@@ -148,9 +148,9 @@ public class RangnaamValidatorTest {
     RangnaamDto   rangnaam  = new RangnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    rangnaam.setNaam(TestConstants.NAAM);
-    rangnaam.setRang(TestConstants.RANG);
-    rangnaam.setTaal(TestConstants.TAAL);
+    rangnaam.setNaam(NatuurTestConstants.NAAM);
+    rangnaam.setRang(NatuurTestConstants.RANG);
+    rangnaam.setTaal(NatuurTestConstants.TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);
     assertEquals(expResult.toString(), result.toString());
@@ -162,7 +162,7 @@ public class RangnaamValidatorTest {
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
-    expResult.add(TestConstants.REQ_RANG);
+    expResult.add(NatuurTestConstants.REQ_RANG);
     expResult.add(REQ_TAAL);
 
     List<Message> result    = RangnaamValidator.valideer(rangnaam);

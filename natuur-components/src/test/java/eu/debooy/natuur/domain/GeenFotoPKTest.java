@@ -17,7 +17,7 @@
 
 package eu.debooy.natuur.domain;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -30,17 +30,17 @@ import org.junit.Test;
  */
 public class GeenFotoPKTest {
   private static final String TOSTRING  =
-      "GeenFotoPK (parentId=" + TestConstants.PARENTTAXONID
-          + ", parentRang=" + TestConstants.PARENTRANG
-          + ", taxonId=" + TestConstants.TAXONID + ")";
+      "GeenFotoPK (parentId=" + NatuurTestConstants.PARENTTAXONID
+          + ", parentRang=" + NatuurTestConstants.PARENTRANG
+          + ", taxonId=" + NatuurTestConstants.TAXONID + ")";
 
   private static  GeenFotoPK  geenFotoPK;
 
   @BeforeClass
   public static void setUpClass() {
-    geenFotoPK  = new GeenFotoPK(TestConstants.PARENTTAXONID,
-                                 TestConstants.PARENTRANG,
-                                 TestConstants.TAXONID);
+    geenFotoPK  = new GeenFotoPK(NatuurTestConstants.PARENTTAXONID,
+                                 NatuurTestConstants.PARENTRANG,
+                                 NatuurTestConstants.TAXONID);
   }
 
   @Test
@@ -53,10 +53,10 @@ public class GeenFotoPKTest {
     gelijk.setParentRang(geenFotoPK.getParentRang());
     gelijk.setTaxonId(geenFotoPK.getTaxonId());
     groter.setParentId(geenFotoPK.getParentId());
-    groter.setParentRang(TestConstants.PARENTRANG_GR);
+    groter.setParentRang(NatuurTestConstants.PARENTRANG_GR);
     groter.setTaxonId(geenFotoPK.getTaxonId());
     kleiner.setParentId(geenFotoPK.getParentId());
-    kleiner.setParentRang(TestConstants.PARENTRANG_KL);
+    kleiner.setParentRang(NatuurTestConstants.PARENTRANG_KL);
     kleiner.setTaxonId(geenFotoPK.getTaxonId());
 
     assertTrue(geenFotoPK.compareTo(groter) < 0);
@@ -64,10 +64,10 @@ public class GeenFotoPKTest {
     assertTrue(geenFotoPK.compareTo(kleiner) > 0);
 
     groter.setParentId(geenFotoPK.getParentId() + 1);
-    groter.setParentRang(TestConstants.PARENTRANG);
+    groter.setParentRang(NatuurTestConstants.PARENTRANG);
     groter.setTaxonId(geenFotoPK.getTaxonId());
     kleiner.setParentId(geenFotoPK.getParentId() - 1);
-    kleiner.setParentRang(TestConstants.PARENTRANG);
+    kleiner.setParentRang(NatuurTestConstants.PARENTRANG);
     kleiner.setTaxonId(geenFotoPK.getTaxonId());
 
     assertTrue(geenFotoPK.compareTo(groter) < 0);
@@ -75,10 +75,10 @@ public class GeenFotoPKTest {
     assertTrue(geenFotoPK.compareTo(kleiner) > 0);
 
     groter.setParentId(geenFotoPK.getParentId());
-    groter.setParentRang(TestConstants.PARENTRANG);
+    groter.setParentRang(NatuurTestConstants.PARENTRANG);
     groter.setTaxonId(geenFotoPK.getTaxonId() + 1);
     kleiner.setParentId(geenFotoPK.getParentId());
-    kleiner.setParentRang(TestConstants.PARENTRANG);
+    kleiner.setParentRang(NatuurTestConstants.PARENTRANG);
     kleiner.setTaxonId(geenFotoPK.getTaxonId() - 1);
 
     assertTrue(geenFotoPK.compareTo(groter) < 0);
@@ -92,36 +92,36 @@ public class GeenFotoPKTest {
 
     assertEquals(geenFotoPK, geenFotoPK);
     assertNotEquals(geenFotoPK, null);
-    assertNotEquals(geenFotoPK, TestConstants.NAAM);
+    assertNotEquals(geenFotoPK, NatuurTestConstants.NAAM);
     assertNotEquals(geenFotoPK, instance);
 
-    instance  = new GeenFotoPK(TestConstants.PARENTTAXONID,
-                               TestConstants.PARENTRANG,
-                               TestConstants.TAXONID);
+    instance  = new GeenFotoPK(NatuurTestConstants.PARENTTAXONID,
+                               NatuurTestConstants.PARENTRANG,
+                               NatuurTestConstants.TAXONID);
     assertEquals(geenFotoPK, instance);
 
-    instance.setParentId(TestConstants.PARENTTAXONID - 1);
+    instance.setParentId(NatuurTestConstants.PARENTTAXONID - 1);
     assertNotEquals(geenFotoPK, instance);
   }
 
   @Test
   public void getParentId() {
-    assertEquals(TestConstants.PARENTTAXONID, geenFotoPK.getParentId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, geenFotoPK.getParentId());
   }
 
   @Test
   public void getParentRang() {
-    assertEquals(TestConstants.PARENTRANG, geenFotoPK.getParentRang());
+    assertEquals(NatuurTestConstants.PARENTRANG, geenFotoPK.getParentRang());
   }
 
   @Test
   public void getTaxonId() {
-    assertEquals(TestConstants.TAXONID, geenFotoPK.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, geenFotoPK.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.GEENFOTOPK_HASH, geenFotoPK.hashCode());
+    assertEquals(NatuurTestConstants.GEENFOTOPK_HASH, geenFotoPK.hashCode());
   }
 
   @Test
@@ -134,21 +134,21 @@ public class GeenFotoPKTest {
 
   @Test
   public void testInit2() {
-    var instance  = new GeenFotoPK(TestConstants.PARENTTAXONID,
-                                   TestConstants.PARENTRANG,
-                                   TestConstants.TAXONID);
+    var instance  = new GeenFotoPK(NatuurTestConstants.PARENTTAXONID,
+                                   NatuurTestConstants.PARENTRANG,
+                                   NatuurTestConstants.TAXONID);
 
-    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test
   public void testSetParentId() {
     var instance  = new GeenFotoPK();
     assertNull(instance.getParentId());
-    instance.setParentId(TestConstants.PARENTTAXONID);
+    instance.setParentId(NatuurTestConstants.PARENTTAXONID);
 
-    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
     assertNull(instance.getTaxonId());
   }
 
@@ -156,9 +156,9 @@ public class GeenFotoPKTest {
   public void testSetParentRang() {
     var instance  = new GeenFotoPK();
     assertNull(instance.getParentRang());
-    instance.setParentRang(TestConstants.PARENTRANG);
+    instance.setParentRang(NatuurTestConstants.PARENTRANG);
 
-    assertEquals(TestConstants.PARENTRANG, instance.getParentRang());
+    assertEquals(NatuurTestConstants.PARENTRANG, instance.getParentRang());
     assertNull(instance.getTaxonId());
   }
 
@@ -166,10 +166,10 @@ public class GeenFotoPKTest {
   public void testSetTaxonId() {
     var instance  = new GeenFotoPK();
     assertNull(instance.getTaxonId());
-    instance.setTaxonId(TestConstants.TAXONID);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test

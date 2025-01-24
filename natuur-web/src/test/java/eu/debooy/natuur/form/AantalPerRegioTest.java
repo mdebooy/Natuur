@@ -17,7 +17,7 @@
 
 package eu.debooy.natuur.form;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
@@ -28,12 +28,12 @@ import org.junit.Test;
 public class AantalPerRegioTest {
   @Test
   public void testInit() {
-    var instance  = new AantalPerRegio(TestConstants.REGIOID,
-                                       TestConstants.AANTAL,
-                                       TestConstants.GEZIEN);
+    var instance  = new AantalPerRegio(NatuurTestConstants.REGIOID,
+                                       NatuurTestConstants.AANTAL,
+                                       NatuurTestConstants.GEZIEN);
 
-    assertEquals(TestConstants.AANTAL, instance.getAantal());
-    assertEquals(TestConstants.GEZIEN, instance.getGezien());
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.AANTAL, instance.getAantal());
+    assertEquals(NatuurTestConstants.GEZIEN, instance.getGezien());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
   }
 }

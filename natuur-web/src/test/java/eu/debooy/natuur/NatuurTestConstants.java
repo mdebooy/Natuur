@@ -20,7 +20,7 @@ package eu.debooy.natuur;
 /**
  * @author Marco de Booij
  */
-public final class TestConstants {
+public final class NatuurTestConstants {
   public static final Long    AANTAL    = Long.valueOf(10);
   public static final String  COMPLEET  = "compleet";
   public static final Long    GEZIEN    = Long.valueOf(8);
@@ -32,7 +32,7 @@ public final class TestConstants {
   public static final String  TAAL_GR   = "por";
   public static final String  TAAL_KL   = "eng";
 
-  private TestConstants() {
+  private NatuurTestConstants() {
     throw new IllegalStateException("Utility class");
   }
 }

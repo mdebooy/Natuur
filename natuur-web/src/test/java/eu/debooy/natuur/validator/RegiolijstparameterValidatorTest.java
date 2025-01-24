@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.form.Regiolijstparameter;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,37 +82,37 @@ public class RegiolijstparameterValidatorTest {
   public void testDubbeleTalen() {
     var instance  = new Regiolijstparameter();
 
-    instance.setTaal1(TestConstants.TAAL);
-    instance.setTaal2(TestConstants.TAAL);
-    instance.setTaal3(TestConstants.TAAL);
+    instance.setTaal1(NatuurTestConstants.TAAL);
+    instance.setTaal2(NatuurTestConstants.TAAL);
+    instance.setTaal3(NatuurTestConstants.TAAL);
     var result    = RegiolijstparameterValidator.valideer(instance);
 
     assertEquals(1, result.size());
     assertEquals(RegiolijstparameterValidator.ERR_TALEN,
                  result.get(0).getMessage());
 
-    instance.setTaal2(TestConstants.TAAL_GR);
+    instance.setTaal2(NatuurTestConstants.TAAL_GR);
     result    = RegiolijstparameterValidator.valideer(instance);
 
     assertEquals(1, result.size());
     assertEquals(RegiolijstparameterValidator.ERR_TALEN,
                  result.get(0).getMessage());
 
-    instance.setTaal3(TestConstants.TAAL_GR);
+    instance.setTaal3(NatuurTestConstants.TAAL_GR);
     result    = RegiolijstparameterValidator.valideer(instance);
 
     assertEquals(1, result.size());
     assertEquals(RegiolijstparameterValidator.ERR_TALEN,
                  result.get(0).getMessage());
 
-    instance.setTaal3(TestConstants.TAAL_GR);
+    instance.setTaal3(NatuurTestConstants.TAAL_GR);
     result    = RegiolijstparameterValidator.valideer(instance);
 
     assertEquals(1, result.size());
     assertEquals(RegiolijstparameterValidator.ERR_TALEN,
                  result.get(0).getMessage());
 
-    instance.setTaal2(TestConstants.TAAL);
+    instance.setTaal2(NatuurTestConstants.TAAL);
     result    = RegiolijstparameterValidator.valideer(instance);
 
     assertEquals(1, result.size());
@@ -136,15 +136,15 @@ public class RegiolijstparameterValidatorTest {
   public void testEmpty() {
     var instance  = new Regiolijstparameter();
 
-    instance.setTaal3(TestConstants.TAAL_KL);
+    instance.setTaal3(NatuurTestConstants.TAAL_KL);
 
     List<Message> result    = RegiolijstparameterValidator.valideer(instance);
     assertTrue(result.isEmpty());
-    instance.setTaal2(TestConstants.TAAL_GR);
+    instance.setTaal2(NatuurTestConstants.TAAL_GR);
 
     result    = RegiolijstparameterValidator.valideer(instance);
     assertTrue(result.isEmpty());
-    instance.setTaal1(TestConstants.TAAL);
+    instance.setTaal1(NatuurTestConstants.TAAL);
 
     result    = RegiolijstparameterValidator.valideer(instance);
     assertTrue(result.isEmpty());
@@ -169,16 +169,16 @@ public class RegiolijstparameterValidatorTest {
 
     setFouten(expResult);
 
-    instance.setTaal1(TestConstants.TAAL.substring(0, 1));
-    instance.setTaal2(TestConstants.TAAL_GR.substring(0, 1));
-    instance.setTaal3(TestConstants.TAAL_KL.substring(0, 1));
+    instance.setTaal1(NatuurTestConstants.TAAL.substring(0, 1));
+    instance.setTaal2(NatuurTestConstants.TAAL_GR.substring(0, 1));
+    instance.setTaal3(NatuurTestConstants.TAAL_KL.substring(0, 1));
 
     List<Message> result    = RegiolijstparameterValidator.valideer(instance);
     assertEquals(expResult.toString(), result.toString());
 
-    instance.setTaal1(DoosUtils.stringMetLengte(TestConstants.TAAL, 4, "X"));
-    instance.setTaal2(DoosUtils.stringMetLengte(TestConstants.TAAL_GR, 4, "X"));
-    instance.setTaal3(DoosUtils.stringMetLengte(TestConstants.TAAL_KL, 4, "X"));
+    instance.setTaal1(DoosUtils.stringMetLengte(NatuurTestConstants.TAAL, 4, "X"));
+    instance.setTaal2(DoosUtils.stringMetLengte(NatuurTestConstants.TAAL_GR, 4, "X"));
+    instance.setTaal3(DoosUtils.stringMetLengte(NatuurTestConstants.TAAL_KL, 4, "X"));
 
     result    = RegiolijstparameterValidator.valideer(instance);
     assertEquals(expResult.toString(), result.toString());
@@ -188,9 +188,9 @@ public class RegiolijstparameterValidatorTest {
   public void testValideerGoedeRegiolijstparameter() {
     var instance  = new Regiolijstparameter();
 
-    instance.setTaal1(TestConstants.TAAL);
-    instance.setTaal2(TestConstants.TAAL_GR);
-    instance.setTaal3(TestConstants.TAAL_KL);
+    instance.setTaal1(NatuurTestConstants.TAAL);
+    instance.setTaal2(NatuurTestConstants.TAAL_GR);
+    instance.setTaal3(NatuurTestConstants.TAAL_KL);
 
     List<Message> result    = RegiolijstparameterValidator.valideer(instance);
     assertTrue(result.isEmpty());

@@ -28,19 +28,19 @@ import org.junit.Test;
  */
 public class NatuurUtilsTest {
   private static final  String  ISUITGESTORVEN  =
-          String.format("%s %s", TestConstants.LATIJNSENAAM,
+          String.format("%s %s", NatuurTestConstants.LATIJNSENAAM,
                                  NatuurConstants.UITGESTORVEN);
 
   @Test
   public void testFormatLatijnsenaam() {
-    assertEquals(TestConstants.LATIJNSENAAM,
-                 NatuurUtils.formatLatijnsenaam(TestConstants.LATIJNSENAAM));
-    assertEquals(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
+                 NatuurUtils.formatLatijnsenaam(NatuurTestConstants.LATIJNSENAAM));
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
                  NatuurUtils.formatLatijnsenaam(ISUITGESTORVEN));
-    assertEquals(TestConstants.LATIJNSENAAM,
-                 NatuurUtils.formatLatijnsenaam(TestConstants.LATIJNSENAAM
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
+                 NatuurUtils.formatLatijnsenaam(NatuurTestConstants.LATIJNSENAAM
                     + " "));
-    assertEquals(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
                  NatuurUtils.formatLatijnsenaam(ISUITGESTORVEN + " "));
   }
 
@@ -58,14 +58,14 @@ public class NatuurUtilsTest {
 
   @Test
   public void testGetLatijnsenaam() {
-    var latijnsenaam  = String.format("%s %s", TestConstants.LATIJNSENAAM,
+    var latijnsenaam  = String.format("%s %s", NatuurTestConstants.LATIJNSENAAM,
                                                NatuurConstants.UITGESTORVEN);
 
     assertEquals(latijnsenaam,
-                 NatuurUtils.getLatijnsenaam(TestConstants.LATIJNSENAAM,
+                 NatuurUtils.getLatijnsenaam(NatuurTestConstants.LATIJNSENAAM,
                                              Boolean.TRUE));
-    assertEquals(TestConstants.LATIJNSENAAM,
-                 NatuurUtils.getLatijnsenaam(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
+                 NatuurUtils.getLatijnsenaam(NatuurTestConstants.LATIJNSENAAM,
                                              Boolean.FALSE));
   }
 
@@ -73,21 +73,21 @@ public class NatuurUtilsTest {
   public void testGetNaam1() {
     var taxon = NatuurTestUtils.getParentTaxonDto();
 
-    assertEquals(TestConstants.PARENTNAAM_KL,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.PARENTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_KL));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
 
     taxon.setRang(NatuurConstants.RANG_ONDERSOORT);
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
   }
 
   @Test
   public void testGetNaam2() {
     var taxon = NatuurTestUtils.getParentTaxonDto();
 
-    assertEquals(TestConstants.PARENTNAAM_KL,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.PARENTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_KL));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
   }
 
   @Test
@@ -96,11 +96,11 @@ public class NatuurUtilsTest {
              NoSuchFieldException {
     var taxon = NatuurTestUtils.getOndersoortTaxonDto();
 
-    assertEquals(TestConstants.ONDERSOORTNAAM,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
-    assertEquals(TestConstants.ONDERSOORTNAAM_KL,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.ONDERSOORTNAAM,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.ONDERSOORTNAAM_KL,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_KL));
   }
 
   @Test
@@ -109,11 +109,11 @@ public class NatuurUtilsTest {
              NoSuchFieldException {
     var taxon = NatuurTestUtils.getVarieteitTaxonDto();
 
-    assertEquals(TestConstants.VARIETEITNAAM,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
-    assertEquals(TestConstants.VARIETEITNAAM_KL,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.VARIETEITNAAM,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.VARIETEITNAAM_KL,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_KL));
   }
 
   @Test
@@ -122,62 +122,80 @@ public class NatuurUtilsTest {
              NoSuchFieldException {
     var taxon = NatuurTestUtils.getVormTaxonDto();
 
-    assertEquals(TestConstants.VORMNAAM,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL));
-    assertEquals("", NatuurUtils.getNaam(taxon, TestConstants.TAAL_GR));
-    assertEquals(TestConstants.VORMNAAM_KL,
-                 NatuurUtils.getNaam(taxon, TestConstants.TAAL_KL));
+    assertEquals(NatuurTestConstants.VORMNAAM,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL));
+    assertEquals("", NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_GR));
+    assertEquals(NatuurTestConstants.VORMNAAM_KL,
+                 NatuurUtils.getNaam(taxon, NatuurTestConstants.TAAL_KL));
+  }
+
+  @Test
+  public void testGetNaam6()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var instance  = NatuurTestUtils.getSoortDetailDto();
+    assertEquals(NatuurTestConstants.TAXONNAAM,
+                 NatuurUtils.getNaam(instance, NatuurTestConstants.TAAL));
+  }
+
+  @Test
+  public void testGetNaam7()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException {
+    var instance  = NatuurTestUtils.getSoortDetailDto();
+    assertEquals("",
+                 NatuurUtils.getNaam(instance, NatuurTestConstants.TAAL_GR));
   }
 
   @Test
   public void testGetSubtitel() {
     var resultaat1  = String.format("%s %s/%s/%s/%s",
-                                    TestConstants.LATIJNSENAAM,
+                                    NatuurTestConstants.LATIJNSENAAM,
                                     NatuurConstants.UITGESTORVEN,
-                                    TestConstants.TAXONNAAM,
-                                    TestConstants.TAXONNAAM_GR,
-                                    TestConstants.TAXONNAAM_KL);
+                                    NatuurTestConstants.TAXONNAAM,
+                                    NatuurTestConstants.TAXONNAAM_GR,
+                                    NatuurTestConstants.TAXONNAAM_KL);
     var resultaat2  = String.format("%s/%s/%s/%s",
-                                    TestConstants.LATIJNSENAAM,
-                                    TestConstants.TAXONNAAM,
-                                    TestConstants.TAXONNAAM_GR,
-                                    TestConstants.TAXONNAAM_KL);
+                                    NatuurTestConstants.LATIJNSENAAM,
+                                    NatuurTestConstants.TAXONNAAM,
+                                    NatuurTestConstants.TAXONNAAM_GR,
+                                    NatuurTestConstants.TAXONNAAM_KL);
     var resultaat3  = String.format("%s/%s/%s",
-                                    TestConstants.LATIJNSENAAM,
-                                    TestConstants.TAXONNAAM_GR,
-                                    TestConstants.TAXONNAAM_KL);
+                                    NatuurTestConstants.LATIJNSENAAM,
+                                    NatuurTestConstants.TAXONNAAM_GR,
+                                    NatuurTestConstants.TAXONNAAM_KL);
 
     assertEquals(resultaat1,
-                 NatuurUtils.getSubtitel(TestConstants.LATIJNSENAAM, true,
-                                         TestConstants.TAXONNAAM,
-                                         TestConstants.TAXONNAAM_GR,
-                                         TestConstants.TAXONNAAM_KL));
+                 NatuurUtils.getSubtitel(NatuurTestConstants.LATIJNSENAAM, true,
+                                         NatuurTestConstants.TAXONNAAM,
+                                         NatuurTestConstants.TAXONNAAM_GR,
+                                         NatuurTestConstants.TAXONNAAM_KL));
     assertEquals(resultaat2,
-                 NatuurUtils.getSubtitel(TestConstants.LATIJNSENAAM, false,
-                                         TestConstants.TAXONNAAM,
-                                         TestConstants.TAXONNAAM_GR,
-                                         TestConstants.TAXONNAAM_KL));
+                 NatuurUtils.getSubtitel(NatuurTestConstants.LATIJNSENAAM, false,
+                                         NatuurTestConstants.TAXONNAAM,
+                                         NatuurTestConstants.TAXONNAAM_GR,
+                                         NatuurTestConstants.TAXONNAAM_KL));
     assertEquals(resultaat3,
-                 NatuurUtils.getSubtitel(TestConstants.LATIJNSENAAM, false,
-                                         TestConstants.LATIJNSENAAM,
-                                         TestConstants.TAXONNAAM_GR,
-                                         TestConstants.TAXONNAAM_KL));
+                 NatuurUtils.getSubtitel(NatuurTestConstants.LATIJNSENAAM, false,
+                                         NatuurTestConstants.LATIJNSENAAM,
+                                         NatuurTestConstants.TAXONNAAM_GR,
+                                         NatuurTestConstants.TAXONNAAM_KL));
     assertEquals(resultaat3,
-                 NatuurUtils.getSubtitel(TestConstants.LATIJNSENAAM, false,
-                                         TestConstants.TAXONNAAM_GR,
-                                         TestConstants.LATIJNSENAAM,
-                                         TestConstants.TAXONNAAM_KL));
+                 NatuurUtils.getSubtitel(NatuurTestConstants.LATIJNSENAAM, false,
+                                         NatuurTestConstants.TAXONNAAM_GR,
+                                         NatuurTestConstants.LATIJNSENAAM,
+                                         NatuurTestConstants.TAXONNAAM_KL));
     assertEquals(resultaat3,
-                 NatuurUtils.getSubtitel(TestConstants.LATIJNSENAAM, false,
-                                         TestConstants.TAXONNAAM_GR,
-                                         TestConstants.TAXONNAAM_KL,
-                                         TestConstants.LATIJNSENAAM));
+                 NatuurUtils.getSubtitel(NatuurTestConstants.LATIJNSENAAM, false,
+                                         NatuurTestConstants.TAXONNAAM_GR,
+                                         NatuurTestConstants.TAXONNAAM_KL,
+                                         NatuurTestConstants.LATIJNSENAAM));
   }
 
   @Test
   public void testIsUitgestorven() {
     assertTrue(NatuurUtils.isUitgestorven(ISUITGESTORVEN));
     assertTrue(NatuurUtils.isUitgestorven(ISUITGESTORVEN + " "));
-    assertFalse(NatuurUtils.isUitgestorven(TestConstants.LATIJNSENAAM));
+    assertFalse(NatuurUtils.isUitgestorven(NatuurTestConstants.LATIJNSENAAM));
   }
 }

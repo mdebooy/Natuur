@@ -16,9 +16,9 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.natuur.TestConstants;
-import static eu.debooy.natuur.TestConstants.NAAM;
-import static eu.debooy.natuur.TestConstants.TAXONID;
+import eu.debooy.natuur.NatuurTestConstants;
+import static eu.debooy.natuur.NatuurTestConstants.NAAM;
+import static eu.debooy.natuur.NatuurTestConstants.TAXONID;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -32,15 +32,15 @@ import org.junit.Test;
  */
 public class RegiolijstTaxonPKTest {
   private static final String TOSTRING  =
-      "RegiolijstTaxonPK (regioId=" + TestConstants.REGIOID
-                          + ", taxonId="+ TestConstants.TAXONID + ")";
+      "RegiolijstTaxonPK (regioId=" + NatuurTestConstants.REGIOID
+                          + ", taxonId="+ NatuurTestConstants.TAXONID + ")";
 
   private static  RegiolijstTaxonPK regiolijstTaxonPK;
 
   @BeforeClass
   public static void setUpClass() {
-    regiolijstTaxonPK  = new RegiolijstTaxonPK(TestConstants.REGIOID,
-                                               TestConstants.TAXONID);
+    regiolijstTaxonPK  = new RegiolijstTaxonPK(NatuurTestConstants.REGIOID,
+                                               NatuurTestConstants.TAXONID);
   }
 
   @Test
@@ -79,8 +79,8 @@ public class RegiolijstTaxonPKTest {
     assertNotEquals(regiolijstTaxonPK, NAAM);
     assertNotEquals(regiolijstTaxonPK, instance);
 
-    instance  = new RegiolijstTaxonPK(TestConstants.REGIOID,
-                                      TestConstants.TAXONID);
+    instance  = new RegiolijstTaxonPK(NatuurTestConstants.REGIOID,
+                                      NatuurTestConstants.TAXONID);
     assertEquals(regiolijstTaxonPK, instance);
 
     instance.setTaxonId(TAXONID - 1);
@@ -89,17 +89,17 @@ public class RegiolijstTaxonPKTest {
 
   @Test
   public void getRegioId() {
-    assertEquals(TestConstants.REGIOID, regiolijstTaxonPK.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, regiolijstTaxonPK.getRegioId());
   }
 
   @Test
   public void getTaxonId() {
-    assertEquals(TestConstants.TAXONID, regiolijstTaxonPK.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, regiolijstTaxonPK.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.REGIOLIJSTTAXONPK_HASH,
+    assertEquals(NatuurTestConstants.REGIOLIJSTTAXONPK_HASH,
                  regiolijstTaxonPK.hashCode());
   }
 
@@ -113,31 +113,31 @@ public class RegiolijstTaxonPKTest {
 
   @Test
   public void testInit2() {
-    var instance  = new RegiolijstTaxonPK(TestConstants.REGIOID,
-                                          TestConstants.TAXONID);
+    var instance  = new RegiolijstTaxonPK(NatuurTestConstants.REGIOID,
+                                          NatuurTestConstants.TAXONID);
 
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
     assertEquals(TAXONID, instance.getTaxonId());
   }
 
   @Test
   public void testSetRegioId() {
     var instance  = new RegiolijstTaxonPK();
-    assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
-    instance.setRegioId(TestConstants.REGIOID);
+    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
+    instance.setRegioId(NatuurTestConstants.REGIOID);
 
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
     assertNull(instance.getTaxonId());
   }
 
   @Test
   public void testSetTaxonId() {
     var instance  = new RegiolijstTaxonPK();
-    assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
-    instance.setTaxonId(TestConstants.TAXONID);
+    assertNotEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
     assertNull(instance.getRegioId());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test

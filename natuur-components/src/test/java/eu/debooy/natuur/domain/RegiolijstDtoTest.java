@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -39,8 +39,8 @@ public class RegiolijstDtoTest {
     regiolijstDto   = new RegiolijstDto();
 
     regiolijstDto.setDatum(datum);
-    regiolijstDto.setOmschrijving(TestConstants.OMSCHRIJVING);
-    regiolijstDto.setRegioId(TestConstants.REGIOID);
+    regiolijstDto.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
+    regiolijstDto.setRegioId(NatuurTestConstants.REGIOID);
   }
 
   @Test
@@ -64,7 +64,7 @@ public class RegiolijstDtoTest {
 
     assertEquals(regiolijstDto, regiolijstDto);
     assertNotEquals(regiolijstDto, null);
-    assertNotEquals(regiolijstDto, TestConstants.RANGNAAM);
+    assertNotEquals(regiolijstDto, NatuurTestConstants.RANGNAAM);
     assertNotEquals(regiolijstDto, instance);
 
     instance.setRegioId(regiolijstDto.getRegioId());
@@ -81,17 +81,17 @@ public class RegiolijstDtoTest {
 
   @Test
   public void testGetOmschrijving() {
-    assertEquals(TestConstants.OMSCHRIJVING, regiolijstDto.getOmschrijving());
+    assertEquals(NatuurTestConstants.OMSCHRIJVING, regiolijstDto.getOmschrijving());
   }
 
   @Test
   public void testGetRegioId() {
-    assertEquals(TestConstants.REGIOID, regiolijstDto.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, regiolijstDto.getRegioId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.REGIOLIJST_HASH, regiolijstDto.hashCode());
+    assertEquals(NatuurTestConstants.REGIOLIJST_HASH, regiolijstDto.hashCode());
   }
 
   @Test
@@ -123,11 +123,11 @@ public class RegiolijstDtoTest {
   @Test
   public void testSetOmschrijving() {
     var instance  = new RegiolijstDto();
-    assertNotEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
+    assertNotEquals(NatuurTestConstants.OMSCHRIJVING, instance.getOmschrijving());
 
-    instance.setOmschrijving(TestConstants.OMSCHRIJVING);
+    instance.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
 
-    assertEquals(TestConstants.OMSCHRIJVING, instance.getOmschrijving());
+    assertEquals(NatuurTestConstants.OMSCHRIJVING, instance.getOmschrijving());
 
     instance.setOmschrijving(null);
 
@@ -138,10 +138,10 @@ public class RegiolijstDtoTest {
   public void testSetRegioId() {
     var instance    = new RegiolijstDto();
 
-    assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
 
-    instance.setRegioId(TestConstants.REGIOID);
+    instance.setRegioId(NatuurTestConstants.REGIOID);
 
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
   }
 }

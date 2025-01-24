@@ -16,13 +16,13 @@
  */
 package eu.debooy.natuur.form;
 
-import static eu.debooy.natuur.TestConstants.NIVEAU;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANGNAAM;
-import static eu.debooy.natuur.TestConstants.RANG_GR;
-import static eu.debooy.natuur.TestConstants.RANG_HASH;
-import static eu.debooy.natuur.TestConstants.RANG_KL;
-import static eu.debooy.natuur.TestConstants.TAAL;
+import static eu.debooy.natuur.NatuurTestConstants.NIVEAU;
+import static eu.debooy.natuur.NatuurTestConstants.RANG;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_GR;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_HASH;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_KL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL;
 import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.RangDto;
 import java.util.Set;

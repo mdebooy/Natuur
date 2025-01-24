@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Set;
 import java.util.TreeSet;
@@ -38,9 +38,9 @@ public class RegiolijstTaxonDtoTest {
   public static void beforeClass() {
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
 
-    regiolijstTaxonDto.setRegioId(TestConstants.REGIOID);
-    regiolijstTaxonDto.setStatus(TestConstants.STATUS);
-    regiolijstTaxonDto.setTaxonId(TestConstants.TAXONID);
+    regiolijstTaxonDto.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijstTaxonDto.setStatus(NatuurTestConstants.STATUS);
+    regiolijstTaxonDto.setTaxonId(NatuurTestConstants.TAXONID);
   }
 
   @Test
@@ -76,7 +76,7 @@ public class RegiolijstTaxonDtoTest {
 
     assertEquals(regiolijstTaxonDto, regiolijstTaxonDto);
     assertNotEquals(regiolijstTaxonDto, null);
-    assertNotEquals(regiolijstTaxonDto, TestConstants.RANGNAAM);
+    assertNotEquals(regiolijstTaxonDto, NatuurTestConstants.RANGNAAM);
     assertNotEquals(regiolijstTaxonDto, instance);
 
     instance.setRegioId(regiolijstTaxonDto.getRegioId());
@@ -93,33 +93,33 @@ public class RegiolijstTaxonDtoTest {
 
   @Test
   public void testGetRegio() {
-    assertEquals(TestConstants.REGIOID, regiolijstTaxonDto.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, regiolijstTaxonDto.getRegioId());
   }
 
   @Test
   public void testGetTaal() {
-    assertEquals(TestConstants.STATUS, regiolijstTaxonDto.getStatus());
+    assertEquals(NatuurTestConstants.STATUS, regiolijstTaxonDto.getStatus());
   }
 
   @Test
   public void testGetTaxonId() {
-    assertEquals(TestConstants.TAXONID, regiolijstTaxonDto.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, regiolijstTaxonDto.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.REGIOLIJSTTAXON_HASH,
+    assertEquals(NatuurTestConstants.REGIOLIJSTTAXON_HASH,
                  regiolijstTaxonDto.hashCode());
   }
 
   @Test
   public void testSetRegioId() {
     var instance  = new RegiolijstTaxonDto();
-    assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
 
-    instance.setRegioId(TestConstants.REGIOID);
+    instance.setRegioId(NatuurTestConstants.REGIOID);
 
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
   }
 
   @Test
@@ -127,9 +127,9 @@ public class RegiolijstTaxonDtoTest {
     var instance  = new RegiolijstTaxonDto();
     assertNull(instance.getStatus());
 
-    instance.setStatus(TestConstants.STATUS);
+    instance.setStatus(NatuurTestConstants.STATUS);
 
-    assertEquals(TestConstants.STATUS, instance.getStatus());
+    assertEquals(NatuurTestConstants.STATUS, instance.getStatus());
 
     instance.setStatus(null);
 
@@ -156,9 +156,9 @@ public class RegiolijstTaxonDtoTest {
     var instance  = new RegiolijstTaxonDto();
     assertNull(instance.getTaxonId());
 
-    instance.setTaxonId(TestConstants.TAXONID);
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test
@@ -169,9 +169,9 @@ public class RegiolijstTaxonDtoTest {
     groter.setTaxon(NatuurTestUtils.getTaxonDto());
     kleiner.setTaxon(NatuurTestUtils.getTaxonDto());
 
-    groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    groter.getTaxon().setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
     groter.getTaxon().setVolgnummer(100L);
-    kleiner.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM);
+    kleiner.getTaxon().setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
     kleiner.getTaxon().setVolgnummer(12L);
     Set<RegiolijstTaxonDto> taxa  = new TreeSet<>
         (new RegiolijstTaxonDto.VolgnummerLatijnsenaamComparator());
@@ -196,9 +196,9 @@ public class RegiolijstTaxonDtoTest {
     groter.setTaxon(NatuurTestUtils.getTaxonDto());
     kleiner.setTaxon(NatuurTestUtils.getTaxonDto());
 
-    groter.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_GR);
+    groter.getTaxon().setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR);
     groter.getTaxon().setVolgnummer(12L);
-    kleiner.getTaxon().setLatijnsenaam(TestConstants.LATIJNSENAAM_KL);
+    kleiner.getTaxon().setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_KL);
     kleiner.getTaxon().setVolgnummer(12L);
     Set<RegiolijstTaxonDto> taxa  = new TreeSet<>
         (new RegiolijstTaxonDto.VolgnummerLatijnsenaamComparator());
@@ -209,9 +209,9 @@ public class RegiolijstTaxonDtoTest {
     System.arraycopy(taxa.toArray(), 0, tabel, 0, taxa.size());
     assertEquals(tabel[0].getTaxon().getVolgnummer(),
                  tabel[1].getTaxon().getVolgnummer());
-    assertEquals(TestConstants.LATIJNSENAAM_KL,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM_KL,
                  tabel[0].getTaxon().getLatijnsenaam());
-    assertEquals(TestConstants.LATIJNSENAAM_GR,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM_GR,
                  tabel[1].getTaxon().getLatijnsenaam());
   }
 }

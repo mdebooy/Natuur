@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
@@ -38,9 +38,9 @@ public class RegiolijstTaxonTest {
   @BeforeClass
   public static void setUpClass() {
     regiolijstTaxon = new RegiolijstTaxon();
-    regiolijstTaxon.setRegioId(TestConstants.REGIOID);
-    regiolijstTaxon.setStatus(TestConstants.STATUS);
-    regiolijstTaxon.setTaxonId(TestConstants.TAXONID);
+    regiolijstTaxon.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijstTaxon.setStatus(NatuurTestConstants.STATUS);
+    regiolijstTaxon.setTaxonId(NatuurTestConstants.TAXONID);
   }
 
   @Test
@@ -77,7 +77,7 @@ public class RegiolijstTaxonTest {
 
     assertEquals(regiolijstTaxon, regiolijstTaxon);
     assertNotEquals(regiolijstTaxon, null);
-    assertNotEquals(regiolijstTaxon, TestConstants.NAAM);
+    assertNotEquals(regiolijstTaxon, NatuurTestConstants.NAAM);
     assertNotEquals(regiolijstTaxon, instance);
 
     instance.setRegioId(regiolijstTaxon.getRegioId());
@@ -90,22 +90,22 @@ public class RegiolijstTaxonTest {
 
   @Test
   public void testGetRegioId() {
-    assertEquals(TestConstants.REGIOID, regiolijstTaxon.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, regiolijstTaxon.getRegioId());
   }
 
   @Test
   public void testGetStatus() {
-    assertEquals(TestConstants.STATUS, regiolijstTaxon.getStatus());
+    assertEquals(NatuurTestConstants.STATUS, regiolijstTaxon.getStatus());
   }
 
   @Test
   public void testGetTaxonId() {
-    assertEquals(TestConstants.TAXONID, regiolijstTaxon.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, regiolijstTaxon.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.REGIOLIJSTTAXON_HASH,
+    assertEquals(NatuurTestConstants.REGIOLIJSTTAXON_HASH,
                  regiolijstTaxon.hashCode());
   }
 
@@ -124,13 +124,13 @@ public class RegiolijstTaxonTest {
   public void testInit2() {
     var dto       = new RegiolijstTaxonDto();
     dto.setGezien(true);
-    dto.setRegioId(TestConstants.REGIOID);
-    dto.setStatus(TestConstants.STATUS);
+    dto.setRegioId(NatuurTestConstants.REGIOID);
+    dto.setStatus(NatuurTestConstants.STATUS);
     var instance  = new RegiolijstTaxon(dto);
 
     assertTrue(instance.isGezien());
     assertEquals(dto.getRegioId(), instance.getRegioId());
-    assertEquals(TestConstants.STATUS, instance.getStatus());
+    assertEquals(NatuurTestConstants.STATUS, instance.getStatus());
     assertNull(instance.getTaxon().getTaxonId());
     assertNull(instance.getTaxonId());
   }
@@ -138,48 +138,48 @@ public class RegiolijstTaxonTest {
   @Test
   public void testInit3() {
     var taxonDto  = new TaxonDto();
-    taxonDto.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxonDto.setTaxonId(TestConstants.TAXONID);
+    taxonDto.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxonDto.setTaxonId(NatuurTestConstants.TAXONID);
     var dto       = new RegiolijstTaxonDto();
     dto.setGezien(true);
-    dto.setRegioId(TestConstants.REGIOID);
-    dto.setStatus(TestConstants.STATUS);
+    dto.setRegioId(NatuurTestConstants.REGIOID);
+    dto.setStatus(NatuurTestConstants.STATUS);
     dto.setTaxon(taxonDto);
     var instance  = new RegiolijstTaxon(dto);
 
     assertTrue(instance.isGezien());
     assertEquals(dto.getRegioId(), instance.getRegioId());
-    assertEquals(TestConstants.STATUS, instance.getStatus());
-    assertEquals(TestConstants.TAXONID, instance.getTaxon().getTaxonId());
-    assertEquals(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.STATUS, instance.getStatus());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxon().getTaxonId());
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
                  instance.getTaxon().getLatijnsenaam() );
-    assertEquals(TestConstants.LATIJNSENAAM, instance.getTaxon().getNaam());
+    assertEquals(NatuurTestConstants.LATIJNSENAAM, instance.getTaxon().getNaam());
     assertNull(instance.getTaxonId());
   }
 
   @Test
   public void testInit4() {
     var taxonnaamDto  = new TaxonnaamDto();
-    taxonnaamDto.setNaam(TestConstants.TAXONNAAM);
-    taxonnaamDto.setTaal(TestConstants.TAAL);
+    taxonnaamDto.setNaam(NatuurTestConstants.TAXONNAAM);
+    taxonnaamDto.setTaal(NatuurTestConstants.TAAL);
     var taxonDto      = new TaxonDto();
-    taxonDto.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxonDto.setTaxonId(TestConstants.TAXONID);
+    taxonDto.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxonDto.setTaxonId(NatuurTestConstants.TAXONID);
     taxonDto.addNaam(taxonnaamDto);
     var dto           = new RegiolijstTaxonDto();
     dto.setGezien(true);
-    dto.setRegioId(TestConstants.REGIOID);
-    dto.setStatus(TestConstants.STATUS);
+    dto.setRegioId(NatuurTestConstants.REGIOID);
+    dto.setStatus(NatuurTestConstants.STATUS);
     dto.setTaxon(taxonDto);
-    var instance      = new RegiolijstTaxon(dto, TestConstants.TAAL);
+    var instance      = new RegiolijstTaxon(dto, NatuurTestConstants.TAAL);
 
     assertTrue(instance.isGezien());
     assertEquals(dto.getRegioId(), instance.getRegioId());
-    assertEquals(TestConstants.STATUS, instance.getStatus());
-    assertEquals(TestConstants.TAXONID, instance.getTaxon().getTaxonId());
-    assertEquals(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.STATUS, instance.getStatus());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxon().getTaxonId());
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
                  instance.getTaxon().getLatijnsenaam() );
-    assertEquals(TestConstants.TAXONNAAM, instance.getTaxon().getNaam());
+    assertEquals(NatuurTestConstants.TAXONNAAM, instance.getTaxon().getNaam());
     assertNull(instance.getTaxonId());
   }
 
@@ -215,20 +215,20 @@ public class RegiolijstTaxonTest {
   public void testSetRegioId() {
     var instance  = new RegiolijstTaxon();
 
-    assertNotEquals(TestConstants.REGIOID, instance.getRegioId());
-    instance.setRegioId(TestConstants.REGIOID);
+    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
+    instance.setRegioId(NatuurTestConstants.REGIOID);
 
-    assertEquals(TestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
   }
 
   @Test
   public void testSetStatus() {
     var instance  = new RegiolijstTaxon();
 
-    assertNotEquals(TestConstants.STATUS, instance.getStatus());
-    instance.setStatus(TestConstants.STATUS);
+    assertNotEquals(NatuurTestConstants.STATUS, instance.getStatus());
+    instance.setStatus(NatuurTestConstants.STATUS);
 
-    assertEquals(TestConstants.STATUS, instance.getStatus());
+    assertEquals(NatuurTestConstants.STATUS, instance.getStatus());
   }
 
   @Test
@@ -236,24 +236,24 @@ public class RegiolijstTaxonTest {
     var instance  = new RegiolijstTaxon();
     var taxon     = new Taxon();
 
-    taxon.setLatijnsenaam(TestConstants.LATIJNSENAAM);
-    taxon.setTaxonId(TestConstants.TAXONID);
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setTaxonId(NatuurTestConstants.TAXONID);
 
     assertNull(instance.getTaxon());
     instance.setTaxon(taxon);
 
-    assertEquals(TestConstants.LATIJNSENAAM,
+    assertEquals(NatuurTestConstants.LATIJNSENAAM,
                  instance.getTaxon().getLatijnsenaam());
-    assertEquals(TestConstants.TAXONID, instance.getTaxon().getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxon().getTaxonId());
   }
 
   @Test
   public void testSetTaxonId() {
     var instance  = new RegiolijstTaxon();
 
-    assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
-    instance.setTaxonId(TestConstants.TAXONID);
+    assertNotEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 }

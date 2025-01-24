@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.form.Foto;
 import java.util.ArrayList;
@@ -65,7 +65,7 @@ public class FotoValidatorTest {
   private void setFouten(List<Message> expResult) {
     expResult.add(ERR_FOTOBESTAND);
     expResult.add(ERR_FOTODETAIL);
-    expResult.add(TestConstants.ERR_OPMERKING);
+    expResult.add(NatuurTestConstants.ERR_OPMERKING);
     expResult.add(REQ_TAXONSEQ);
     expResult.add(REQ_WAARNEMINGID);
   }
@@ -99,11 +99,11 @@ public class FotoValidatorTest {
     Foto          foto      = new Foto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(TestConstants.FOTOBESTAND,
+    foto.setFotoBestand(DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND,
                                                   256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(TestConstants.FOTODETAIL,
+    foto.setFotoDetail(DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL,
                                                  21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(TestConstants.OPMERKING,
+    foto.setOpmerking(DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING,
                                                 2001, "X"));
     foto.setTaxonSeq(null);
     foto.setWaarnemingId(null);
@@ -119,10 +119,10 @@ public class FotoValidatorTest {
     Foto          foto      = new Foto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(TestConstants.FOTOBESTAND);
-    foto.setFotoDetail(TestConstants.FOTODETAIL);
-    foto.setOpmerking(TestConstants.OPMERKING);
-    foto.setWaarnemingId(TestConstants.WAARNEMINGID);
+    foto.setFotoBestand(NatuurTestConstants.FOTOBESTAND);
+    foto.setFotoDetail(NatuurTestConstants.FOTODETAIL);
+    foto.setOpmerking(NatuurTestConstants.OPMERKING);
+    foto.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
 
     List<Message> result    = FotoValidator.valideer(foto);
     assertEquals(expResult.toString(), result.toString());
@@ -144,11 +144,11 @@ public class FotoValidatorTest {
     FotoDto       foto      = new FotoDto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(TestConstants.FOTOBESTAND,
+    foto.setFotoBestand(DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND,
                                                   256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(TestConstants.FOTODETAIL,
+    foto.setFotoDetail(DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL,
                                                  21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(TestConstants.OPMERKING,
+    foto.setOpmerking(DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING,
                                                 2001, "X"));
     foto.setTaxonSeq(null);
     foto.setWaarnemingId(null);
@@ -164,10 +164,10 @@ public class FotoValidatorTest {
     FotoDto       foto      = new FotoDto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(TestConstants.FOTOBESTAND);
-    foto.setFotoDetail(TestConstants.FOTODETAIL);
-    foto.setOpmerking(TestConstants.OPMERKING);
-    foto.setWaarnemingId(TestConstants.WAARNEMINGID);
+    foto.setFotoBestand(NatuurTestConstants.FOTOBESTAND);
+    foto.setFotoDetail(NatuurTestConstants.FOTODETAIL);
+    foto.setOpmerking(NatuurTestConstants.OPMERKING);
+    foto.setWaarnemingId(NatuurTestConstants.WAARNEMINGID);
 
     List<Message> result    = FotoValidator.valideer(foto);
     assertEquals(expResult.toString(), result.toString());

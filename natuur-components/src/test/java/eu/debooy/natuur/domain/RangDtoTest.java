@@ -17,17 +17,17 @@
 package eu.debooy.natuur.domain;
 
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
-import static eu.debooy.natuur.TestConstants.NIVEAU;
-import static eu.debooy.natuur.TestConstants.RANG;
-import static eu.debooy.natuur.TestConstants.RANGNAAM;
-import static eu.debooy.natuur.TestConstants.RANGNAAM_GR;
-import static eu.debooy.natuur.TestConstants.RANGNAAM_KL;
-import static eu.debooy.natuur.TestConstants.RANG_GR;
-import static eu.debooy.natuur.TestConstants.RANG_HASH;
-import static eu.debooy.natuur.TestConstants.RANG_KL;
-import static eu.debooy.natuur.TestConstants.TAAL;
-import static eu.debooy.natuur.TestConstants.TAAL_GR;
-import static eu.debooy.natuur.TestConstants.TAAL_KL;
+import static eu.debooy.natuur.NatuurTestConstants.NIVEAU;
+import static eu.debooy.natuur.NatuurTestConstants.RANG;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM_GR;
+import static eu.debooy.natuur.NatuurTestConstants.RANGNAAM_KL;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_GR;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_HASH;
+import static eu.debooy.natuur.NatuurTestConstants.RANG_KL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_GR;
+import static eu.debooy.natuur.NatuurTestConstants.TAAL_KL;
 import eu.debooy.natuur.NatuurTestUtils;
 import java.util.Map;
 import java.util.Set;

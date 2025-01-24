@@ -19,7 +19,7 @@ package eu.debooy.natuur.validator;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
@@ -121,7 +121,7 @@ public class GebiedValidatorTest {
     gebied.setLongitudeGraden(-1);
     gebied.setLongitudeMinuten(-1);
     gebied.setLongitudeSeconden(-0.1d);
-    gebied.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
+    gebied.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
 
     return gebied;
   }
@@ -138,7 +138,7 @@ public class GebiedValidatorTest {
     gebied.setLongitudeGraden(181);
     gebied.setLongitudeMinuten(60);
     gebied.setLongitudeSeconden(60.0d);
-    gebied.setNaam(DoosUtils.stringMetLengte(TestConstants.NAAM, 256, "X"));
+    gebied.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
 
     return gebied;
   }
@@ -340,11 +340,11 @@ public class GebiedValidatorTest {
     Gebied        gebied    = NatuurTestUtils.getGebied();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLatitude(TestConstants.LATITUDE2);
+    gebied.setLatitude(NatuurTestConstants.LATITUDE2);
     gebied.setLatitudeGraden(null);
     gebied.setLatitudeMinuten(null);
     gebied.setLatitudeSeconden(null);
-    gebied.setLongitude(TestConstants.LONGITUDE2);
+    gebied.setLongitude(NatuurTestConstants.LONGITUDE2);
     gebied.setLongitudeGraden(null);
     gebied.setLongitudeMinuten(null);
     gebied.setLongitudeSeconden(null);
@@ -393,10 +393,10 @@ public class GebiedValidatorTest {
     Gebied        gebied    = new Gebied();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(TestConstants.LANDID);
-    gebied.setLatitude(TestConstants.LATITUDE);
-    gebied.setLongitude(TestConstants.LONGITUDE);
-    gebied.setNaam(TestConstants.NAAM);
+    gebied.setLandId(NatuurTestConstants.LANDID);
+    gebied.setLatitude(NatuurTestConstants.LATITUDE);
+    gebied.setLongitude(NatuurTestConstants.LONGITUDE);
+    gebied.setNaam(NatuurTestConstants.NAAM);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());
@@ -416,10 +416,10 @@ public class GebiedValidatorTest {
     GebiedDto     gebied    = new GebiedDto();
     List<Message> expResult = new ArrayList<>();
 
-    gebied.setLandId(TestConstants.LANDID);
-    gebied.setLatitude(TestConstants.LATITUDE);
-    gebied.setLongitude(TestConstants.LONGITUDE);
-    gebied.setNaam(TestConstants.NAAM);
+    gebied.setLandId(NatuurTestConstants.LANDID);
+    gebied.setLatitude(NatuurTestConstants.LATITUDE);
+    gebied.setLongitude(NatuurTestConstants.LONGITUDE);
+    gebied.setNaam(NatuurTestConstants.NAAM);
 
     List<Message> result    = GebiedValidator.valideer(gebied);
     assertEquals(expResult.toString(), result.toString());

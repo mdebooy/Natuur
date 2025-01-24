@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.natuur.TestConstants;
+import eu.debooy.natuur.NatuurTestConstants;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
@@ -30,15 +30,15 @@ import org.junit.Test;
  */
 public class DetailPKTest {
   private static final String TOSTRING  =
-      "DetailPK (parentId=" + TestConstants.PARENTTAXONID
-          + ", taxonId=" + TestConstants.TAXONID + ")";
+      "DetailPK (parentId=" + NatuurTestConstants.PARENTTAXONID
+          + ", taxonId=" + NatuurTestConstants.TAXONID + ")";
 
   private static  DetailPK  detailPK;
 
   @BeforeClass
   public static void setUpClass() {
-    detailPK  = new DetailPK(TestConstants.PARENTTAXONID,
-                             TestConstants.TAXONID);
+    detailPK  = new DetailPK(NatuurTestConstants.PARENTTAXONID,
+                             NatuurTestConstants.TAXONID);
   }
 
   @Test
@@ -74,30 +74,30 @@ public class DetailPKTest {
 
     assertEquals(detailPK, detailPK);
     assertNotEquals(detailPK, null);
-    assertNotEquals(detailPK, TestConstants.NAAM);
+    assertNotEquals(detailPK, NatuurTestConstants.NAAM);
     assertNotEquals(detailPK, instance);
 
-    instance  = new DetailPK(TestConstants.PARENTTAXONID,
-                             TestConstants.TAXONID);
+    instance  = new DetailPK(NatuurTestConstants.PARENTTAXONID,
+                             NatuurTestConstants.TAXONID);
     assertEquals(detailPK, instance);
 
-    instance.setParentId(TestConstants.PARENTTAXONID - 1);
+    instance.setParentId(NatuurTestConstants.PARENTTAXONID - 1);
     assertNotEquals(detailPK, instance);
   }
 
   @Test
   public void getParentId() {
-    assertEquals(TestConstants.PARENTTAXONID, detailPK.getParentId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, detailPK.getParentId());
   }
 
   @Test
   public void getTaxonId() {
-    assertEquals(TestConstants.TAXONID, detailPK.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, detailPK.getTaxonId());
   }
 
   @Test
   public void testHashCode() {
-    assertEquals(TestConstants.DETAILPK_HASH, detailPK.hashCode());
+    assertEquals(NatuurTestConstants.DETAILPK_HASH, detailPK.hashCode());
   }
 
   @Test
@@ -110,31 +110,31 @@ public class DetailPKTest {
 
   @Test
   public void testInit2() {
-    var instance  = new DetailPK(TestConstants.PARENTTAXONID,
-                                 TestConstants.TAXONID);
+    var instance  = new DetailPK(NatuurTestConstants.PARENTTAXONID,
+                                 NatuurTestConstants.TAXONID);
 
-    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test
   public void testSetParentId() {
     var instance  = new DetailPK();
-    assertNotEquals(TestConstants.PARENTTAXONID, instance.getParentId());
-    instance.setParentId(TestConstants.PARENTTAXONID);
+    assertNotEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
+    instance.setParentId(NatuurTestConstants.PARENTTAXONID);
 
-    assertEquals(TestConstants.PARENTTAXONID, instance.getParentId());
+    assertEquals(NatuurTestConstants.PARENTTAXONID, instance.getParentId());
     assertNull(instance.getTaxonId());
   }
 
   @Test
   public void testSetTaxonId() {
     var instance  = new DetailPK();
-    assertNotEquals(TestConstants.TAXONID, instance.getTaxonId());
-    instance.setTaxonId(TestConstants.TAXONID);
+    assertNotEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
+    instance.setTaxonId(NatuurTestConstants.TAXONID);
 
     assertNull(instance.getParentId());
-    assertEquals(TestConstants.TAXONID, instance.getTaxonId());
+    assertEquals(NatuurTestConstants.TAXONID, instance.getTaxonId());
   }
 
   @Test
