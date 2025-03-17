@@ -19,6 +19,8 @@ package eu.debooy.natuur.access;
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
 import eu.debooy.natuur.domain.RegiolijstDto;
+import java.util.HashMap;
+import java.util.Map;
 import javax.interceptor.Interceptors;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -41,5 +43,12 @@ public class RegiolijstDao extends Dao<RegiolijstDto> {
   @Override
   protected EntityManager getEntityManager() {
     return em;
+  }
+
+  public Object getPerTaxon(Long taxonId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(RegiolijstDto.PAR_TAXONID, taxonId);
+
+    return namedQuery(RegiolijstDto.QRY_PERTAXON, params);
   }
 }

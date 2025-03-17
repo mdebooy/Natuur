@@ -180,6 +180,35 @@
             }
           ]
         } );
+        $('#regiosTabel').DataTable( {
+          ajax: { url: '/natuur/regiolijsten/taxon/#{natuurTaxon.taxon.taxonId}',
+                  dataSrc: '' },
+          order: [[0, "asc"]],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
+                return getRegionaam(data.regioId);
+              }
+            }
+          ]
+        } );
         $( '#taxaTabel tbody').on('click', 'tr', function() {
           if (taxaTabel.row(this).data() === undefined) {
             return;
@@ -280,6 +309,7 @@
                     <li id="tabNamen" class="tab-link" onclick="switchToTab('Namen')"><a>#{i18nTeksten.tekst('tab.namen')}</a></li>
                     <li id="tabWaarnemingen" class="tab-link" onclick="switchToTab('Waarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
                     <li id="tabFotos" class="tab-link" onclick="switchToTab('Fotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
+                    <li id="tabRegios" class="tab-link" onclick="switchToTab('Regios')"><a>#{i18nTeksten.tekst('tab.regios')}</a></li>
                   </ul>
                 </div>
                 <div class="tabs-details titel">
@@ -311,6 +341,9 @@
                   </div>
                   <div id="conFotos" class="tab-detail is-hidden">
                     <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
+                  </div>
+                  <div id="conRegios" class="tab-detail is-hidden">
+                    <table id="regiosTabel" class="table is-striped is-narrow" aria-describedby="regiosTabel" />
                   </div>
                 </div>
               </t:div>

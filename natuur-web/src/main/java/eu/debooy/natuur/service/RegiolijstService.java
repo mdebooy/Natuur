@@ -19,6 +19,7 @@ package eu.debooy.natuur.service;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RegiolijstDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
+import eu.debooy.natuur.domain.TaxonDto;
 import java.util.ArrayList;
 import javax.ejb.Lock;
 import javax.ejb.LockType;
@@ -84,6 +85,20 @@ public class RegiolijstService {
       return Response.ok().entity(regiolijstDao.getAll()).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<RegiolijstDto>()).build();
+    }
+  }
+
+  @GET
+  @Path("/taxon/{taxonId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getTaxonRegios(
+                      @PathParam(TaxonDto.COL_TAXONID) Long taxonId) {
+    try {
+      return Response.ok()
+                     .entity(regiolijstDao.getPerTaxon(taxonId))
+                     .build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
     }
   }
 

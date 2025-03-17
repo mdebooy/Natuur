@@ -21,6 +21,7 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -32,6 +33,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="REGIOLIJSTEN", schema="NATUUR")
+@NamedQuery(name="regiolijstenPerTaxon", query="select r from RegiolijstDto r, RegiolijstTaxonDto rt where r.regioId=rt.regioId and rt.taxonId=:taxonId")
 public class RegiolijstDto
     extends Dto implements Comparable<RegiolijstDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -39,6 +41,10 @@ public class RegiolijstDto
   public static final String  COL_DATUM         = "datum";
   public static final String  COL_OMSCHRIJVING  = "omschrijving";
   public static final String  COL_REGIOID       = "regioId";
+
+  public static final String  PAR_TAXONID = "taxonId";
+
+  public static final String  QRY_PERTAXON  = "regiolijstenPerTaxon";
 
   @Column(name="DATUM", nullable=false)
   private Date    datum;
