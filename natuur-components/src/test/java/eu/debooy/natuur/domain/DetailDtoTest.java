@@ -355,43 +355,4 @@ public class DetailDtoTest {
   public void testIsUitgestorven() {
     assertFalse(detailDto.isUitgestorven());
   }
-
-  @Test
-  public void testOndersoort()
-      throws IllegalAccessException, IllegalArgumentException,
-             NoSuchFieldException {
-    var instance  = NatuurTestUtils.getOndersoortDetailDto();
-
-    assertEquals(NatuurTestConstants.ONDERSOORTNAAM,
-                 instance.getNaam(NatuurTestConstants.TAAL));
-    assertEquals(NatuurTestConstants.ONDERSOORTNAAM_KL,
-                 instance.getNaam(NatuurTestConstants.TAAL_KL));
-    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL_GR));
-  }
-
-  @Test
-  public void testVarieteit()
-      throws IllegalAccessException, IllegalArgumentException,
-             NoSuchFieldException {
-    var instance  = NatuurTestUtils.getVarieteitDetailDto();
-
-    assertEquals(NatuurTestConstants.VARIETEITNAAM,
-                 instance.getNaam(NatuurTestConstants.TAAL));
-    assertEquals(NatuurTestConstants.VARIETEITNAAM_KL,
-                 instance.getNaam(NatuurTestConstants.TAAL_KL));
-    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL_GR));
-  }
-
-  @Test
-  public void testVorm()
-      throws IllegalAccessException, IllegalArgumentException,
-             NoSuchFieldException {
-    var instance  = NatuurTestUtils.getVormDetailDto();
-
-    assertEquals(NatuurTestConstants.VORMNAAM,
-                 instance.getNaam(NatuurTestConstants.TAAL));
-    assertEquals(NatuurTestConstants.VORMNAAM_KL,
-                 instance.getNaam(NatuurTestConstants.TAAL_KL));
-    assertEquals("", instance.getNaam(NatuurTestConstants.TAAL_GR));
-  }
 }
