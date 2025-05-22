@@ -57,6 +57,7 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Entity
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
+@NamedQuery(name="detailPerGebied", query="select distinct d from DetailDto d, WaarnemingDto w where d.taxonId=w.taxon.taxonId and d.parentRang='kl' and w.gebied.gebiedId=:gebiedId")
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
 @NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.rang in ('so', 'oso')")
 @NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.uitgestorven = 'J'")
@@ -79,9 +80,12 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   public static final String  COL_UITGESTORVEN        = "uitgestorven";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
 
+  public static final String  PAR_GEBIEDID  = "gebiedId";
   public static final String  PAR_PARENTID  = "parentId";
   public static final String  PAR_REGIOID   = "regioId";
 
+  public static final String  QRY_PERGEBIED             =
+      "detailPerGebied";
   public static final String  QRY_SOORTMETKLASSE        =
       "detailSoortMetKlasse";
   public static final String  QRY_SOORTMETPARENT        =

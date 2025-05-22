@@ -13,7 +13,7 @@
         var taxaTabel = $('#taxaTabel').DataTable( {
           ajax: { url: '/natuur/details/uitgestorven',
                   dataSrc: '' },
-          order: [[2, 'asc']],
+          order: [[0, 'asc'], [2, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength')},
           lengthChange: false,

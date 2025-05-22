@@ -51,6 +51,13 @@ public class DetailDao extends Dao<DetailDto> {
     throw new UnsupportedOperationException();
   }
 
+  public List<DetailDto> getPerGebied(Long gebiedId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(DetailDto.PAR_GEBIEDID, gebiedId);
+
+    return namedQuery(DetailDto.QRY_PERGEBIED, params);
+  }
+
   public List<DetailDto> getSoortenMetKlasse() {
     return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
   }

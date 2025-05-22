@@ -20,6 +20,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.DetailDao;
 import eu.debooy.natuur.access.WaarnemingDao;
 import eu.debooy.natuur.domain.DetailDto;
+import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Taxon;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ import javax.inject.Named;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -132,6 +134,18 @@ public class DetailService {
     return soorten;
   }
 
+  @GET
+  @Path("/gebied/{gebiedId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response perGebied(
+      @PathParam(GebiedDto.COL_GEBIEDID) Long gebiedId) {
+    try {
+      return Response.ok().entity(detailDao.getPerGebied(gebiedId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
   private void setGezien(List<DetailDto> taxa) {
     var gezien  = waarnemingDao.getTaxa();
 
@@ -150,7 +164,7 @@ public class DetailService {
   }
 
   @GET
-  @Path("/uitgestorven")
+  @Path("/waarnemingen")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response waarnemingen() {
     try {
