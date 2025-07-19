@@ -16,7 +16,6 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurUtils;
@@ -60,7 +59,7 @@ import org.apache.openjpa.persistence.ReadOnly;
 @NamedQuery(name="detailPerGebied", query="select distinct d from DetailDto d, WaarnemingDto w where d.taxonId=w.taxon.taxonId and d.parentRang='kl' and w.gebied.gebiedId=:gebiedId")
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
 @NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.rang in ('so', 'oso')")
-@NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.uitgestorven = 'J'")
+@NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.status = 'ex'")
 @NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regioId=:regioId")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
@@ -73,11 +72,11 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   public static final String  COL_PARENTID            = "parentId";
   public static final String  COL_PARENTLATIJNSENAAM  = "parentLatijnsenaam";
   public static final String  COL_PARENTRANG          = "parentRang";
-  public static final String  COL_PARENTUITGESTORVEN  = "parentUitgestorven";
+  public static final String  COL_PARENTSTATUS        = "parentStatus";
   public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
   public static final String  COL_RANG                = "rang";
+  public static final String  COL_STATUS              = "status";
   public static final String  COL_TAXONID             = "taxonId";
-  public static final String  COL_UITGESTORVEN        = "uitgestorven";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
 
   public static final String  PAR_GEBIEDID  = "gebiedId";
@@ -92,7 +91,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
       "detailSoortMetParent";
   public static final String  QRY_UITGESTORVENPERKLASSE =
       "detailUitgestorvenPerKlasse";
-  public static final String  QRY_VANREGIIOLIJST        =
+  public static final String  QRY_VANREGIOLIJST         =
       "detailVanRegiolijst";
   public static final String  QRY_WAARGENOMEN           = "detailWaargenomen";
 
@@ -120,20 +119,23 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @ReadOnly
   @Column(name="PARENT_RANG", insertable= false, updatable=false)
   private String  parentRang;
-  @Column(name="PARENT_UITGESTORVEN", length=1, nullable=false)
-  private String  parentUitgestorven;
+  @ReadOnly
+  @Column(name="PARENT_STATUS", insertable= false, updatable=false)
+  private String  parentStatus;
   @ReadOnly
   @Column(name="PARENT_VOLGNUMMER", insertable= false, updatable=false)
   private Long    parentVolgnummer;
   @ReadOnly
   @Column(name="RANG", insertable= false, updatable=false)
   private String  rang;
+  @ReadOnly
+  @Column(name="STATUS", insertable= false, updatable=false)
+  private String  status;
   @Id
   @ReadOnly
   @Column(name="TAXON_ID", insertable= false, updatable=false)
   private Long    taxonId;
-  @Column(name="UITGESTORVEN", length=1, nullable=false)
-  private String  uitgestorven;
+  @ReadOnly
   @Column(name="VOLGNUMMER")
   private Long    volgnummer;
 
@@ -328,8 +330,12 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return parentRang;
   }
 
+  public String getParentStatus() {
+    return parentStatus;
+  }
+
   public boolean getParentUitgestorven() {
-    return parentUitgestorven.equals(DoosConstants.WAAR);
+    return NatuurUtils.isStatusUitgestorven(parentStatus);
   }
 
   public Long getParentVolgnummer() {
@@ -342,6 +348,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   public String getRang() {
     return rang;
+  }
+
+  public String getStatus() {
+    return status;
   }
 
   public Long getTaxonId() {
@@ -361,7 +371,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   }
 
   public boolean getUitgestorven() {
-    return uitgestorven.equals(DoosConstants.WAAR);
+    return NatuurUtils.isStatusUitgestorven(status);
   }
 
   public Long getVolgnummer() {

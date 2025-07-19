@@ -104,14 +104,8 @@ public class Rang
   }
 
   public void persist(RangDto parameter) {
-    if (!new EqualsBuilder().append(niveau,
-                                    parameter.getNiveau()).isEquals()) {
-      parameter.setNiveau(niveau);
-    }
-    if (!new EqualsBuilder().append(rangcode,
-                                    parameter.getRang()).isEquals()) {
-      parameter.setRang(rangcode);
-    }
+    parameter.setNiveau(niveau);
+    parameter.setRang(rangcode);
   }
 
   public void setNaam(String naam) {
@@ -123,6 +117,6 @@ public class Rang
   }
 
   public void setRang(String rang) {
-    this.rangcode = rang;
+    this.rangcode = DoosUtils.stripToLowerCase(rang);
   }
 }

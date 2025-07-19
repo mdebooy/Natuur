@@ -16,9 +16,9 @@
  */
 package eu.debooy.natuur.form;
 
-import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
+import eu.debooy.natuur.NatuurUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import java.io.Serializable;
@@ -45,11 +45,12 @@ public class Taxon
   private Long    parentNiveau;
   private String  parentRang;
   private String  parentRangnaam;
+  private String  parentStatus;
   private Long    parentVolgnummer;
   private String  rang;
   private String  rangnaam;
+  private String  status;
   private Long    taxonId;
-  private Boolean uitgestorven        = Boolean.FALSE;
   private Long    volgnummer          = 0L;
 
   public Taxon() {}
@@ -65,11 +66,12 @@ public class Taxon
     parentNiveau        = taxon.getParentNiveau();
     parentRang          = taxon.getParentRang();
     parentRangnaam      = taxon.getParentRangnaam();
+    parentStatus        = taxon.getParentStatus();
     parentVolgnummer    = taxon.getParentVolgnummer();
     rang                = taxon.getRang();
     rangnaam            = taxon.getRangnaam();
+    status              = taxon.getStatus();
     taxonId             = taxon.getTaxonId();
-    uitgestorven        = taxon.getUitgestorven();
     volgnummer          = taxon.getVolgnummer();
   }
 
@@ -88,11 +90,12 @@ public class Taxon
       parentLatijnsenaam  = taxonDto.getParent().getLatijnsenaam();
       parentNaam          = taxonDto.getParent().getNaam(taal);
       parentRang          = taxonDto.getParent().getRang();
+      parentStatus        = taxonDto.getParent().getStatus();
       parentVolgnummer    = taxonDto.getParent().getVolgnummer();
     }
     rang                  = taxonDto.getRang();
+    status                = taxonDto.getStatus();
     taxonId               = taxonDto.getTaxonId();
-    uitgestorven          = taxonDto.getUitgestorven();
     volgnummer            = taxonDto.getVolgnummer();
   }
 
@@ -110,10 +113,11 @@ public class Taxon
     opmerking           = detailDto.getOpmerking();
     parentId            = detailDto.getParentId();
     parentLatijnsenaam  = detailDto.getParentLatijnsenaam();
+    parentStatus        = detailDto.getParentStatus();
     parentVolgnummer    = detailDto.getParentVolgnummer();
     rang                = detailDto.getRang();
+    status              = detailDto.getStatus();
     taxonId             = detailDto.getTaxonId();
-    uitgestorven        = detailDto.getUitgestorven();
     volgnummer          = detailDto.getVolgnummer();
  }
 
@@ -266,6 +270,10 @@ public class Taxon
     return parentRang;
   }
 
+  public String getParentStatus() {
+    return parentStatus;
+  }
+
   public String getParentRangnaam() {
     return parentRangnaam;
   }
@@ -282,12 +290,16 @@ public class Taxon
     return rangnaam;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
   public Long getTaxonId() {
     return taxonId;
   }
 
   public Boolean getUitgestorven() {
-    return uitgestorven;
+    return NatuurUtils.isStatusUitgestorven(status);
   }
 
   public Long getVolgnummer() {
@@ -308,17 +320,17 @@ public class Taxon
     parameter.setOpmerking(opmerking);
     parameter.setParentId(parentId);
     parameter.setRang(rang);
+    parameter.setStatus(status);
     parameter.setTaxonId(taxonId);
-    parameter.setUitgestorven(uitgestorven);
     parameter.setVolgnummer(volgnummer);
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam       = latijnsenaam;
+    this.latijnsenaam       = DoosUtils.strip(latijnsenaam);
   }
 
   public void setNaam(String naam) {
-    this.naam               = naam;
+    this.naam               = DoosUtils.strip(naam);
   }
 
   public void setNiveau(Long niveau) {
@@ -326,7 +338,7 @@ public class Taxon
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking          = opmerking;
+    this.opmerking          = DoosUtils.strip(opmerking);
   }
 
   public void setParent(Taxon parent) {
@@ -352,11 +364,11 @@ public class Taxon
   }
 
   public void setParentLatijnsenaam(String parentLatijnsenaam) {
-    this.parentLatijnsenaam = parentLatijnsenaam;
+    this.parentLatijnsenaam = DoosUtils.strip(parentLatijnsenaam);
   }
 
   public void setParentNaam(String parentNaam) {
-    this.parentNaam         = parentNaam;
+    this.parentNaam         = DoosUtils.strip(parentNaam);
   }
 
   public void setParentNiveau(Long parentNiveau) {
@@ -370,11 +382,15 @@ public class Taxon
   }
 
   public void setParentRang(String parentRang) {
-    this.parentRang         = parentRang;
+    this.parentRang         = DoosUtils.stripToLowerCase(parentRang);
   }
 
   public void setParentRangnaam(String parentRangnaam) {
-    this.parentRangnaam     = parentRangnaam;
+    this.parentRangnaam     = DoosUtils.strip(parentRangnaam);
+  }
+
+  public void setParentStatus(String parentStatus) {
+    this.parentStatus       = DoosUtils.stripToLowerCase(parentStatus);
   }
 
   public void setParentVolgnummer(Long parentVolgnummer) {
@@ -388,28 +404,19 @@ public class Taxon
   }
 
   public void setRang(String rang) {
-    this.rang               = rang;
+    this.rang               = DoosUtils.stripToLowerCase(rang);
   }
 
   public void setRangnaam(String rangnaam) {
-    this.rangnaam           = rangnaam;
+    this.rangnaam           = DoosUtils.strip(rangnaam);
+  }
+
+  public void setStatus(String status) {
+    this.status             = DoosUtils.stripToLowerCase(status);
   }
 
   public void setTaxonId(Long taxonId) {
     this.taxonId            = taxonId;
-  }
-
-  public void setUitgestorven(String uitgestorven) {
-    if (uitgestorven.equals(DoosConstants.WAAR)
-            || uitgestorven.equals(DoosConstants.ONWAAR)) {
-      this.uitgestorven     = uitgestorven.equals(DoosConstants.WAAR);
-    } else {
-      this.uitgestorven     = null;
-    }
-  }
-
-  public void setUitgestorven(boolean uitgestorven) {
-    this.uitgestorven       = Boolean.TRUE.equals(uitgestorven);
   }
 
   public void setVolgnummer(Long volgnummer) {

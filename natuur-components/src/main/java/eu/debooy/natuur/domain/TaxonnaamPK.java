@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import java.io.Serializable;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -76,7 +77,7 @@ public class TaxonnaamPK implements Comparable<TaxonnaamPK>, Serializable {
   }
 
   public void setTaal(String taal) {
-    this.taal = taal;
+    this.taal     = DoosUtils.stripToLowerCase(taal);
   }
 
   public void setTaxonId(Long taxonId) {

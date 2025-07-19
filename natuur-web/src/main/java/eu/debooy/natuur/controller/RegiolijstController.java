@@ -79,6 +79,7 @@ public class RegiolijstController extends Natuur {
       "natuur.titel.regiolijsttaxon.update";
   private static final  String  DTIT_UPLOAD   =
       "natuur.titel.regiolijst.upload";
+  private static final  String  FMT_NAAM      = "%s (%s)";
   private static final  String  TIT_CREATE    =
       "natuur.titel.regiolijst.create";
   private static final  String  TIT_RETRIEVE  =
@@ -243,8 +244,16 @@ public class RegiolijstController extends Natuur {
   public Collection<SelectItem> getStatussen() {
     if (statusses.isEmpty()) {
       statusses.add(new SelectItem(" ", "--"));
-      statusses.addAll(getI18nLijst(STATUSSEN, getGebruikersTaal(),
-                              new I18nSelectItem.WaardeComparator()));
+      var rijen = getI18nLijst(STATUSSEN, getGebruikersTaal(),
+                               new I18nSelectItem.WaardeComparator());
+      rijen.forEach(rij -> {
+        statusses.add(new SelectItem(rij.getValue(),
+                                     String.format(FMT_NAAM,
+                                                   rij.getLabel(),
+                                                   rij.getValue()
+                                                      .toString()
+                                                      .toUpperCase())));
+      });
     }
 
     return statusses;
@@ -527,7 +536,7 @@ public class RegiolijstController extends Natuur {
     json.put("taxonnaam",
              taxon.getTaxonnaam(getGebruikersTaalInIso6392t()).getNaam());
     json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
-    json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
+    json.put(TaxonDto.COL_STATUS, taxon.getStatus());
   }
 
   public void update() {

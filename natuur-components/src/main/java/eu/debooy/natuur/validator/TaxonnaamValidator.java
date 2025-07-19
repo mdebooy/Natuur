@@ -95,5 +95,14 @@ public final class TaxonnaamValidator extends NatuurValidator {
                                           {NatuurValidator.LBL_TAAL, 3})
                             .build());
     }
+
+    if (!taal.toLowerCase().equals(taal)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonnaamDto.COL_TAAL)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.NIETLCASE)
+                            .setParams(new Object[]{LBL_TAAL})
+                            .build());
+    }
   }
 }

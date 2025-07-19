@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -108,14 +109,14 @@ public class RangnaamDto extends Dto implements Comparable<RangnaamDto> {
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam = DoosUtils.strip(naam);
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rang = DoosUtils.stripToLowerCase(rang);
   }
 
   public void setTaal(String taal) {
-    this.taal = taal;
+    this.taal = DoosUtils.stripToLowerCase(taal);
   }
 }

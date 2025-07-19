@@ -30,6 +30,7 @@ import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Rangnaam;
 import eu.debooy.natuur.validator.RangValidator;
 import eu.debooy.natuur.validator.RangnaamValidator;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.enterprise.context.SessionScoped;
@@ -190,7 +191,7 @@ public class RangController extends Natuur {
   }
 
   public List<SelectItem> getSelectRangen() {
-    List<SelectItem>  items = new LinkedList<>();
+    List<SelectItem>  items = new ArrayList<>();
 
     getRangService().query().stream().sorted(new Rang.NiveauComparator())
                     .forEachOrdered(rij ->

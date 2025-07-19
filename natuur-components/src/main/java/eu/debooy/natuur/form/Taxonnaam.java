@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import java.io.Serializable;
@@ -100,26 +101,17 @@ public class Taxonnaam
   }
 
   public void persist(TaxonnaamDto parameter) {
-    if (!new EqualsBuilder().append(taal,
-                                    parameter.getTaal()).isEquals()) {
-      parameter.setTaal(taal);
-    }
-    if (!new EqualsBuilder().append(taxonId,
-                                    parameter.getTaxonId()).isEquals()) {
-      parameter.setTaxonId(taxonId);
-    }
-    if (!new EqualsBuilder().append(naam,
-                                    parameter.getNaam()).isEquals()) {
-      parameter.setNaam(naam);
-    }
+    parameter.setTaal(taal);
+    parameter.setTaxonId(taxonId);
+    parameter.setNaam(naam);
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam     = DoosUtils.strip(naam);
   }
 
   public void setTaal(String taal) {
-    this.taal = taal;
+    this.taal     = DoosUtils.stripToLowerCase(taal);
   }
 
   public void setTaxonId(Long taxonId) {

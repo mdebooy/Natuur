@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
-import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.NatuurTestUtils;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -259,8 +259,6 @@ public class TaxonTest {
   public void testInit5() {
     var instance  = new Taxon(taxonDto, NatuurTestConstants.TAAL);
 
-    instance.setUitgestorven(!taxonDto.isUitgestorven());
-
     assertEquals(taxonDto.getLatijnsenaam(), instance.getLatijnsenaam());
     assertEquals(taxonDto.getNaam(NatuurTestConstants.TAAL), instance.getNaam());
     assertEquals(taxonDto.getOpmerking(), instance.getOpmerking());
@@ -270,8 +268,9 @@ public class TaxonTest {
     assertNull(instance.getParentVolgnummer());
     assertEquals(taxonDto.getRang(), instance.getRang());
     assertNull(instance.getRangnaam());
+    assertEquals(taxonDto.getStatus(), instance.getStatus());
     assertEquals(taxonDto.getTaxonId(), instance.getTaxonId());
-    assertNotEquals(taxonDto.getUitgestorven(),
+    assertEquals(taxonDto.getUitgestorven(),
                     instance.getUitgestorven());
     assertEquals(taxonDto.getVolgnummer(), instance.getVolgnummer());
   }
@@ -964,7 +963,7 @@ public class TaxonTest {
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
 
-    instance.setUitgestorven(DoosConstants.WAAR);
+    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN);
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
@@ -987,11 +986,11 @@ public class TaxonTest {
   @Test
   public void testSetUitgestorven2() {
     var instance  = new Taxon();
-    instance.setUitgestorven(DoosConstants.WAAR);
+    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN);
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
 
-    instance.setUitgestorven(DoosConstants.ONWAAR);
+    instance.setStatus(NatuurTestConstants.STATUS);
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
@@ -1017,7 +1016,7 @@ public class TaxonTest {
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
 
-    instance.setUitgestorven(true);
+    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN.toUpperCase());
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());
@@ -1032,6 +1031,7 @@ public class TaxonTest {
     assertNull(instance.getParentVolgnummer());
     assertNull(instance.getRang());
     assertNull(instance.getRangnaam());
+    assertEquals(NatuurConstants.STAT_UITGESTORVEN, instance.getStatus());
     assertNull(instance.getTaxonId());
     assertTrue(instance.getUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
@@ -1040,11 +1040,11 @@ public class TaxonTest {
   @Test
   public void testSetUitgestorven4() {
     var instance  = new Taxon();
-    instance.setUitgestorven(true);
+    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN);
     assertTrue(instance.isUitgestorven());
     assertTrue(instance.getUitgestorven());
 
-    instance.setUitgestorven(false);
+    instance.setStatus(NatuurTestConstants.STATUS);
     assertFalse(instance.isUitgestorven());
     assertFalse(instance.getUitgestorven());
     assertNull(instance.getLatijnsenaam());

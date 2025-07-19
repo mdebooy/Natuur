@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import java.io.Serializable;
 import java.util.Comparator;
@@ -117,11 +118,11 @@ public class TaxonnaamDto extends Dto implements Comparable<TaxonnaamDto> {
   }
 
   public void setNaam(String naam) {
-    this.naam = naam.trim();
+    this.naam     = DoosUtils.strip(naam);
   }
 
   public void setTaal(String taal) {
-    this.taal = taal;
+    this.taal     = DoosUtils.stripToLowerCase(taal);
   }
 
   public void setTaxonId(Long taxonId) {

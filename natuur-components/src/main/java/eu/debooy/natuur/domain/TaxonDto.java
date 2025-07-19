@@ -16,7 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
-import eu.debooy.doosutils.DoosConstants;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
@@ -64,6 +64,7 @@ import org.json.simple.JSONObject;
 @NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam")
 @NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind order by t.rang, t.volgnummer")
 @NamedQuery(name="taxonSoort", query="select t from TaxonDto t where t.rang in ('so', 'oso')")
+@NamedQuery(name="taxonStatus", query="select t from TaxonDto t where t.status=:status")
 @NamedQuery(name="taxonTalen", query="select distinct t.taal from natuur.taxonnamen t")
 public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -72,18 +73,20 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  COL_OPMERKING     = "opmerking";
   public static final String  COL_PARENTID      = "parentId";
   public static final String  COL_RANG          = "rang";
+  public static final String  COL_STATUS        = "status";
   public static final String  COL_TAXONID       = "taxonId";
-  public static final String  COL_UITGESTORVEN  = "uitgestorven";
   public static final String  COL_VOLGNUMMER    = "volgnummer";
 
   public static final String  PAR_KIND          = "kind";
   public static final String  PAR_LATIJNSENAAM  = "latijnsenaam";
   public static final String  PAR_OUDER         = "ouder";
+  public static final String  PAR_STATUS        = "status";
 
   public static final String  QRY_KINDEREN      = "taxonKinderen";
   public static final String  QRY_LATIJNSENAAM  = "taxonLatijnsenaam";
   public static final String  QRY_OUDERS        = "taxonOuders";
   public static final String  QRY_SOORT         = "taxonSoort";
+  public static final String  QRY_STATUS        = "taxonStatus";
   public static final String  QRY_TALEN         = "taxonTalen";
 
   @Transient
@@ -96,12 +99,12 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   private Long    parentId;
   @Column(name="RANG", length=3, nullable=false)
   private String  rang;
+  @Column(name="STATUS", length=2)
+  private String  status;
   @Id
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="TAXON_ID", nullable=false, unique=true, updatable=false)
   private Long    taxonId;
-  @Column(name="UITGESTORVEN", length=1, nullable=false)
-  private String  uitgestorven  = DoosConstants.ONWAAR;
   @Column(name="VOLGNUMMER", nullable=false)
   private Long    volgnummer    = 0L;
 
@@ -202,11 +205,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
       parentId      = Long.valueOf(json.get(COL_PARENTID).toString());
     }
     rang            = (String) json.get(COL_RANG);
+    if (json.containsKey(COL_STATUS)) {
+      status        = (String) json.get(COL_STATUS);
+    }
     if (json.containsKey(COL_TAXONID)) {
       taxonId       = Long.valueOf(json.get(COL_TAXONID).toString());
-    }
-    if (json.containsKey(COL_UITGESTORVEN)) {
-      uitgestorven  = (String) json.get(COL_UITGESTORVEN);
     }
     if (json.containsKey(COL_VOLGNUMMER)) {
       volgnummer    = Long.valueOf(json.get(COL_VOLGNUMMER).toString());
@@ -284,6 +287,10 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
     return rang;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
   public TaxonDto getParent() {
     return parent;
   }
@@ -305,7 +312,7 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public boolean getUitgestorven() {
-    return uitgestorven.equals(DoosConstants.WAAR);
+    return NatuurUtils.isStatusUitgestorven(status);
   }
 
   public Long getVolgnummer() {
@@ -355,11 +362,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = latijnsenaam.trim();
+    this.latijnsenaam = DoosUtils.strip(latijnsenaam);
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking    = opmerking;
+    this.opmerking    = DoosUtils.strip(opmerking);
   }
 
   public void setParentId(Long parentId) {
@@ -367,7 +374,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setRang(String rang) {
-    this.rang         = rang;
+    this.rang         = DoosUtils.stripToLowerCase(rang);
+  }
+
+  public void setStatus(String status) {
+    this.status       = DoosUtils.stripToLowerCase(status);
   }
 
   @SuppressWarnings("java:S1612")
@@ -386,11 +397,6 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
 
   public void setTaxonnamen(Map<String, TaxonnaamDto> taxonnamen) {
     setTaxonnamen(taxonnamen.values());
-  }
-
-  public void setUitgestorven(boolean uitgestorven) {
-    this.uitgestorven =
-        uitgestorven ? DoosConstants.WAAR : DoosConstants.ONWAAR;
   }
 
   public void setVolgnummer(Long volgnummer) {

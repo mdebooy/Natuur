@@ -44,6 +44,8 @@ public final class NatuurConstants {
 
   public static final String  PAR_LIJSTTAAL     = "natuur.regiolijst.taal.";
 
+  public static final String  STAT_UITGESTORVEN = "ex";
+
   public static final String  UITGESTORVEN      = "†";
 
   public static final Integer VOLGNUMMERFACTOR  = 10000000;

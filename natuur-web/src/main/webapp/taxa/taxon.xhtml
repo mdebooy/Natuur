@@ -261,9 +261,9 @@
                 <d:label label="#{i18nTeksten.tekst('label.volgnummer')}" />
                 <div class="field-body is-normal">
                   <d:inputText id="volgnummer" value="#{natuurTaxon.taxon.volgnummer}" maxlength="10" size="10" required="true" readonly="#{natuurTaxon.aktie.readonly}" />
-                  <d:label label="#{i18nTeksten.tekst('label.uitgestorven')}" />
+                  <d:label label="#{i18nTeksten.tekst('label.status')}" />
                   <div class="field-body is-normal">
-                    <d:selectBooleanCheckbox id="uitgestorven" value="#{natuurTaxon.taxon.uitgestorven}" disabled="#{natuurTaxon.aktie.readonly}" />
+                    <d:listbox id="status" value="#{natuurTaxon.taxon.status}" items="#{natuurRegiolijst.statussen}" textvalue="#{natuurTaxon.status}" fullwidth="true" readonly="#{natuurTaxon.aktie.readonly}" />
                   </div>
                 </div>
               </div>

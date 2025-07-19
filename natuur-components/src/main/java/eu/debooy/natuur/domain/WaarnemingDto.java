@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosLayer;
@@ -219,7 +220,7 @@ public class WaarnemingDto
   }
 
   public void setOpmerking(String opmerking) {
-    this.opmerking    = opmerking;
+    this.opmerking    = DoosUtils.strip(opmerking);
   }
 
   public void setTaxon(TaxonDto taxon) {

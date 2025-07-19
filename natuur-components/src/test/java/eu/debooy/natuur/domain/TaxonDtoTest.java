@@ -19,8 +19,9 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.access.JsonBestand;
 import eu.debooy.doosutils.errorhandling.exception.IllegalArgumentException;
 import eu.debooy.doosutils.exception.BestandException;
-import eu.debooy.natuur.NatuurTestUtils;
+import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurTestConstants;
+import eu.debooy.natuur.NatuurTestUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -563,18 +564,19 @@ public class TaxonDtoTest {
     var instance  = new TaxonDto();
     assertFalse(instance.isUitgestorven());
 
-    instance.setUitgestorven(true);
     instance.setRang(NatuurTestConstants.RANG);
+    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN.toUpperCase());
     assertNull(instance.getLatijnsenaam());
     assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());
     assertNull(instance.getParentId());
     assertEquals(NatuurTestConstants.RANG, instance.getRang());
+    assertEquals(NatuurConstants.STAT_UITGESTORVEN, instance.getStatus());
     assertNull(instance.getTaxonId());
     assertTrue(instance.isUitgestorven());
     assertEquals(Long.valueOf(0), instance.getVolgnummer());
 
-    instance.setUitgestorven(false);
+    instance.setStatus(NatuurTestConstants.STATUS);
     assertNull(instance.getLatijnsenaam());
     assertEquals("", instance.getNaam(NatuurTestConstants.TAAL));
     assertNull(instance.getOpmerking());

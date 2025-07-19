@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RangnaamDto;
 import java.io.Serializable;
@@ -100,29 +101,20 @@ public class Rangnaam
   }
 
   public void persist(RangnaamDto parameter) {
-    if (!new EqualsBuilder().append(naam,
-                                    parameter.getNaam()).isEquals()) {
-      parameter.setNaam(naam);
-    }
-    if (!new EqualsBuilder().append(rang,
-                                    parameter.getRang()).isEquals()) {
-      parameter.setRang(rang);
-    }
-    if (!new EqualsBuilder().append(taal,
-                                    parameter.getTaal()).isEquals()) {
-      parameter.setTaal(taal);
-    }
+    parameter.setNaam(naam);
+    parameter.setRang(rang);
+    parameter.setTaal(taal);
   }
 
   public void setNaam(String naam) {
-    this.naam = naam;
+    this.naam = DoosUtils.strip(naam);
   }
 
   public void setRang(String rang) {
-    this.rang  = rang;
+    this.rang = DoosUtils.stripToLowerCase(rang);
   }
 
   public void setTaal(String taal) {
-    this.taal = taal;
+    this.taal = DoosUtils.stripToLowerCase(taal);
   }
 }

@@ -42,8 +42,8 @@ public final class TaxonValidator extends NatuurValidator {
 
   protected static final  String  LBL_LATIJNSENAAM  =
       "_I18N.label.latijnsenaam";
-  protected static final  String  LBL_UITGESTORVEN  =
-      "_I18N.label.uitgestorven";
+  protected static final  String  LBL_STATUS        =
+      "_I18N.label.status";
   protected static final  String  LBL_VOLGNUMMER    =
       "_I18N.label.volgnummer";
 
@@ -68,7 +68,7 @@ public final class TaxonValidator extends NatuurValidator {
                          fouten);
     valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
-    valideerUitgestorven(taxon.getUitgestorven(), fouten);
+    valideerStatus(DoosUtils.nullToEmpty(taxon.getStatus()), fouten);
     valideerVolgnummer(taxon.getVolgnummer(), fouten);
     var aantal  = fouten.size();
     switch (DoosUtils.nullToEmpty(taxon.getRang())) {
@@ -151,6 +151,30 @@ public final class TaxonValidator extends NatuurValidator {
     }
   }
 
+  private static void valideerStatus(String status, List<Message> fouten) {
+    if (DoosUtils.isBlankOrNull(status)) {
+      return;
+    }
+
+    if (status.length() > 2) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_STATUS)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.MAXLENGTH)
+                            .setParams(new Object[]{LBL_STATUS, 2})
+                            .build());
+    }
+
+    if (!status.toLowerCase().equals(status)) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_STATUS)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(PersistenceConstants.NIETLCASE)
+                            .setParams(new Object[]{LBL_STATUS})
+                            .build());
+    }
+  }
+
   private static void valideerSoort(Taxon taxon, List<Message> fouten) {
     var deel  = taxon.getLatijnsenaam().split(" ");
     if (deel.length != 2) {
@@ -171,18 +195,6 @@ public final class TaxonValidator extends NatuurValidator {
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(ERR_LATIJNSENAAMFOUT)
-                            .build());
-    }
-  }
-
-  private static void valideerUitgestorven(Boolean uitgestorven,
-                                           List<Message> fouten) {
-    if (null == uitgestorven) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_UITGESTORVEN)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_UITGESTORVEN})
                             .build());
     }
   }

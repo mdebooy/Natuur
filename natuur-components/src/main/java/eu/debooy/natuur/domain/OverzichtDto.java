@@ -56,6 +56,7 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
   public static final String  COL_PARENTRANG          = "parentRang";
   public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
   public static final String  COL_RANG                = "rang";
+  public static final String  COL_STATUS              = "status";
   public static final String  COL_TOTAAL              = "totaal";
   public static final String  COL_WAARGENOMEN         = "waargenomen";
 
@@ -84,6 +85,9 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
   @ReadOnly
   @Column(name="RANG", length=3, insertable=false, updatable=false)
   private String    rang;
+  @ReadOnly
+  @Column(name="STATUS", length=2, insertable=false, updatable=false)
+  private String    status;
   @ReadOnly
   @Column(name="TOTAAL", insertable=false, updatable=false)
   private Integer   totaal;
@@ -159,6 +163,10 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
 
   public String getRang() {
     return rang;
+  }
+
+  public String getStatus() {
+    return status;
   }
 
   public Integer getTotaal() {

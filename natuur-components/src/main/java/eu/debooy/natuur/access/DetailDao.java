@@ -77,7 +77,7 @@ public class DetailDao extends Dao<DetailDto> {
     Map<String, Object> params  = new HashMap<>();
     params.put(DetailDto.PAR_REGIOID, regioId);
 
-    return namedQuery(DetailDto.QRY_VANREGIIOLIJST, params);
+    return namedQuery(DetailDto.QRY_VANREGIOLIJST, params);
   }
 
   public List<DetailDto> getWaargenomen() {

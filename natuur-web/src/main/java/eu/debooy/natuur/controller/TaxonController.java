@@ -271,6 +271,16 @@ public class TaxonController extends Natuur {
     return lijstparameters;
   }
 
+  public String getStatus() {
+    var status  = taxon.getStatus();
+    if (DoosUtils.isBlankOrNull(status)) {
+      return "";
+    }
+
+    return String.format(FMT_NAAM, getTekst(STATUSSEN + "." + status),
+                         status.toUpperCase());
+  }
+
   public Taxon getTaxon() {
     return taxon;
   }
@@ -686,7 +696,7 @@ public class TaxonController extends Natuur {
   private void taxonToJson(TaxonDto taxon, JSONObject json) {
     json.put(TaxonDto.COL_VOLGNUMMER,   taxon.getVolgnummer());
     json.put(TaxonDto.COL_LATIJNSENAAM, taxon.getLatijnsenaam());
-    json.put(TaxonDto.COL_UITGESTORVEN, taxon.isUitgestorven());
+    json.put(TaxonDto.COL_STATUS, taxon.getStatus());
   }
 
   private void taxonToJson(TaxonDto taxon, String taal, String naam,

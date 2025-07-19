@@ -106,6 +106,7 @@ public class DetailService {
 
     return soorten;
   }
+
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<DetailDto> getVanRegiolijst(Long regioId) {
     List<DetailDto> soorten = new ArrayList<>();

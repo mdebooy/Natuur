@@ -16,7 +16,6 @@
  */
 package eu.debooy.natuur.validator;
 
-import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -81,13 +80,6 @@ public class TaxonValidatorTest {
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
                  .setParams(new Object[]{TaxonValidator.LBL_LATIJNSENAAM})
-                 .build();
-  private static final  Message REQ_UITGESTORVEN  =
-      new Message.Builder()
-                 .setAttribute(TaxonDto.COL_UITGESTORVEN)
-                 .setSeverity(Message.ERROR)
-                 .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{TaxonValidator.LBL_UITGESTORVEN})
                  .build();
   private static final  Message REQ_VOLGNUMMER    =
       new Message.Builder()
@@ -221,30 +213,6 @@ public class TaxonValidatorTest {
   }
 
   @Test
-  public void testValideerFouteUitgestorven() {
-    var           taxon     = new Taxon();
-    List<Message> expResult = new ArrayList<>();
-
-    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
-    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
-    taxon.setRang(NatuurTestConstants.RANG);
-    taxon.setUitgestorven("");
-
-    expResult.add(REQ_UITGESTORVEN);
-
-    var           result    = TaxonValidator.valideer(taxon);
-    assertEquals(expResult.toString(), result.toString());
-
-    taxon.setUitgestorven("X");
-
-    expResult.clear();
-    expResult.add(REQ_UITGESTORVEN);
-
-    result    = TaxonValidator.valideer(taxon);
-    assertEquals(expResult.toString(), result.toString());
-  }
-
-  @Test
   public void testValideerGoedeTaxon() {
     var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
@@ -268,25 +236,6 @@ public class TaxonValidatorTest {
     taxon.setRang(NatuurTestConstants.RANG);
 
     var           result    = TaxonValidator.valideer(taxon);
-    assertEquals(expResult.toString(), result.toString());
-  }
-
-  @Test
-  public void testValideerGoedeUitgestorven() {
-    var           taxon     = new Taxon();
-    List<Message> expResult = new ArrayList<>();
-
-    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
-    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
-    taxon.setRang(NatuurTestConstants.RANG);
-    taxon.setUitgestorven(DoosConstants.WAAR);
-
-    var           result    = TaxonValidator.valideer(taxon);
-    assertEquals(expResult.toString(), result.toString());
-
-    taxon.setUitgestorven(DoosConstants.ONWAAR);
-
-    result    = TaxonValidator.valideer(taxon);
     assertEquals(expResult.toString(), result.toString());
   }
 

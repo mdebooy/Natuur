@@ -39,12 +39,14 @@ public class FotoOverzicht {
   private String  parentLatijnsenaam;
   private String  parentNaam;
   private String  parentRang;
+  private String  parentStatus;
   private Long    parentVolgnummer;
   private Long    landId;
   private String  landnaam;
   private String  latijnsenaam;
   private String  naam;
   private String  rang;
+  private String  status;
   private Long    taxonId;
   private Long    taxonSeq;
   private Long    volgnummer;
@@ -154,12 +156,20 @@ public class FotoOverzicht {
     return parentRang;
   }
 
+  public String getParentStatus() {
+    return parentStatus;
+  }
+
   public Long getParentVolgnummer() {
     return parentVolgnummer;
   }
 
   public String getRang() {
     return rang;
+  }
+
+  public String getStatus() {
+    return status;
   }
 
   public String getSorteerdatum() {
@@ -185,73 +195,5 @@ public class FotoOverzicht {
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(fotoId).toHashCode();
-  }
-
-  public void setDatum(Date datum) {
-    this.datum = new Date(datum.getTime());
-  }
-
-  public void setFotoBestand(String fotoBestand) {
-    this.fotoBestand = fotoBestand;
-  }
-
-  public void setFotoDetail(String fotoDetail) {
-    this.fotoDetail = fotoDetail;
-  }
-
-  public void setFotoId(Long fotoId) {
-    this.fotoId             = fotoId;
-  }
-
-  public void setGebied(String gebied) {
-    this.gebied             = gebied;
-  }
-
-  public void setLandId(Long landId) {
-    this.landId             = landId;
-  }
-
-  public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam       = latijnsenaam;
-  }
-
-  public void setNaam(String naam) {
-    this.naam               = naam;
-  }
-
-  public void setParentId(Long parentId) {
-    this.parentId           = parentId;
-  }
-
-  public void setParentLatijnsenaam(String parentLatijnsenaam) {
-    this.parentLatijnsenaam = parentLatijnsenaam;
-  }
-
-  public void setParentNaam(String parentNaam) {
-    this.parentNaam         = parentNaam;
-  }
-
-  public void setParentRang(String parentRang) {
-    this.parentRang         = parentRang;
-  }
-
-  public void setParentVolgnummer(Long parentVolgnummer) {
-    this.parentVolgnummer = parentVolgnummer;
-  }
-
-  public void setRang(String rang) {
-    this.rang               = rang;
-  }
-
-  public void setTaxonId(Long taxonId) {
-    this.taxonId            = taxonId;
-  }
-
-  public void setTaxonSeq(Long taxonSeq) {
-    this.taxonSeq           = taxonSeq;
-  }
-
-  public void setVolgnummer(Long volgnummer) {
-    this.volgnummer = volgnummer;
   }
 }

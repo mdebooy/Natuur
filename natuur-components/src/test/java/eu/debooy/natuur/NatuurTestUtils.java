@@ -109,19 +109,19 @@ public final class NatuurTestUtils {
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
+                       DetailDto.COL_PARENTSTATUS,
+                       NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
                        NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
                        DetailDto.COL_RANG, NatuurTestConstants.ONDERSOORTRANG);
     TestUtils.setField(detailDto,
+                       DetailDto.COL_STATUS,
+                       NatuurTestConstants.STATUS);
+    TestUtils.setField(detailDto,
                        DetailDto.COL_TAXONID,
                        NatuurTestConstants.ONDERSOORTTAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
                        NatuurTestConstants.ONDERSOORTVOLGNUMMER);
@@ -146,9 +146,11 @@ public final class NatuurTestUtils {
     taxon.setParentNiveau(NatuurTestConstants.NIVEAU);
     taxon.setParentRang(NatuurTestConstants.RANG);
     taxon.setParentRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setParentStatus(NatuurTestConstants.STATUS);
     taxon.setParentVolgnummer(NatuurTestConstants.VOLGNUMMER);
     taxon.setRang(NatuurTestConstants.ONDERSOORTRANG);
     taxon.setRangnaam(NatuurTestConstants.ONDERSOORTRANGNAAM);
+    taxon.setStatus(NatuurTestConstants.STATUS);
     taxon.setTaxonId(NatuurTestConstants.ONDERSOORTTAXONID);
     taxon.setVolgnummer(NatuurTestConstants.ONDERSOORTVOLGNUMMER);
 
@@ -195,9 +197,11 @@ public final class NatuurTestUtils {
     taxon.setParentNiveau(NatuurTestConstants.GRANDPARENTNIVEAU);
     taxon.setParentRang(NatuurTestConstants.GRANDPARENTRANG);
     taxon.setParentRangnaam(NatuurTestConstants.GRANDPARENTRANGNAAM);
+    taxon.setParentStatus(NatuurTestConstants.STATUS);
     taxon.setParentVolgnummer(NatuurTestConstants.GRANDPARENTVOLGNUMMER);
     taxon.setRang(NatuurTestConstants.PARENTRANG);
     taxon.setRangnaam(NatuurTestConstants.PARENTRANGNAAM);
+    taxon.setStatus(NatuurTestConstants.STATUS);
     taxon.setTaxonId(NatuurTestConstants.PARENTTAXONID);
     taxon.setVolgnummer(NatuurTestConstants.PARENTVOLGNUMMER);
 
@@ -269,18 +273,16 @@ public final class NatuurTestUtils {
                        DetailDto.COL_PARENTRANG,
                        NatuurTestConstants.PARENTRANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       NatuurTestConstants.PARENTUITGESTORVEN);
+                       DetailDto.COL_PARENTSTATUS, NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
                        NatuurTestConstants.PARENTVOLGNUMMER);
     TestUtils.setField(detailDto,
                        DetailDto.COL_RANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, NatuurTestConstants.TAXONID);
+                       DetailDto.COL_STATUS, NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
+                       DetailDto.COL_TAXONID, NatuurTestConstants.TAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
                        NatuurTestConstants.VOLGNUMMER);
@@ -304,9 +306,11 @@ public final class NatuurTestUtils {
     taxon.setParentNiveau(NatuurTestConstants.PARENTNIVEAU);
     taxon.setParentRang(NatuurTestConstants.PARENTRANG);
     taxon.setParentRangnaam(NatuurTestConstants.PARENTRANGNAAM);
+    taxon.setParentStatus(NatuurTestConstants.STATUS);
     taxon.setParentVolgnummer(NatuurTestConstants.PARENTVOLGNUMMER);
     taxon.setRang(NatuurTestConstants.RANG);
     taxon.setRangnaam(NatuurTestConstants.RANGNAAM);
+    taxon.setStatus(NatuurTestConstants.STATUS);
     taxon.setTaxonId(NatuurTestConstants.TAXONID);
     taxon.setVolgnummer(NatuurTestConstants.VOLGNUMMER);
 
@@ -449,19 +453,19 @@ public final class NatuurTestUtils {
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
+                       DetailDto.COL_PARENTSTATUS,
+                       NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
                        NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
                        DetailDto.COL_RANG, NatuurTestConstants.VARIETEITRANG);
     TestUtils.setField(detailDto,
+                       DetailDto.COL_STATUS,
+                       NatuurTestConstants.STATUS);
+    TestUtils.setField(detailDto,
                        DetailDto.COL_TAXONID,
                        NatuurTestConstants.VARIETEITTAXONID);
-    TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
                        NatuurTestConstants.VARIETEITVOLGNUMMER);
@@ -535,18 +539,18 @@ public final class NatuurTestUtils {
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTRANG, NatuurTestConstants.RANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_PARENTUITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
+                       DetailDto.COL_PARENTSTATUS,
+                       NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
                        DetailDto.COL_PARENTVOLGNUMMER,
                        NatuurTestConstants.VOLGNUMMER);
     TestUtils.setField(detailDto,
                        DetailDto.COL_RANG, NatuurTestConstants.VORMRANG);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_TAXONID, NatuurTestConstants.VORMTAXONID);
+                       DetailDto.COL_STATUS,
+                       NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
-                       DetailDto.COL_UITGESTORVEN,
-                       NatuurTestConstants.UITGESTORVEN);
+                       DetailDto.COL_TAXONID, NatuurTestConstants.VORMTAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
                        NatuurTestConstants.VORMVOLGNUMMER);

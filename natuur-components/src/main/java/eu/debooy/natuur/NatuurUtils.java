@@ -117,4 +117,9 @@ public final class NatuurUtils {
   public static Boolean isUitgestorven(String latijnsenaam) {
     return latijnsenaam.trim().endsWith(NatuurConstants.UITGESTORVEN);
   }
+
+  public static Boolean isStatusUitgestorven(String status) {
+    return DoosUtils.nullToEmpty(status)
+                    .equals(NatuurConstants.STAT_UITGESTORVEN);
+  }
 }

@@ -69,8 +69,10 @@ public class FotoOverzichtDto
   public static final String  COL_PARENTID            = "parentId";
   public static final String  COL_PARENTLATIJNSENAAM  = "parentLatijnsenaam";
   public static final String  COL_PARENTRANG          = "parentRang";
+  public static final String  COL_PARENTSTATUS        = "parentStatus";
   public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
   public static final String  COL_RANG                = "rang";
+  public static final String  COL_STATUS              = "status";
   public static final String  COL_TAXONID             = "taxonId";
   public static final String  COL_TAXONSEQ            = "taxonSeq";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
@@ -121,6 +123,9 @@ public class FotoOverzichtDto
   @Column(name="PARENT_RANG")
   private String    parentRang;
   @ReadOnly
+  @Column(name="PARENT_STATUS")
+  private String    parentStatus;
+  @ReadOnly
   @Column(name="PARENT_LATIJNSENAAM")
   private String    parentLatijnsenaam;
   @ReadOnly
@@ -129,6 +134,9 @@ public class FotoOverzichtDto
   @ReadOnly
   @Column(name="RANG")
   private String    rang;
+  @ReadOnly
+  @Column(name="STATUS")
+  private String    status;
   @ReadOnly
   @OneToOne
   @JoinColumn(name="TAXON_ID", nullable=false)
@@ -259,6 +267,10 @@ public class FotoOverzichtDto
     return parentRang;
   }
 
+  public String getParentStatus() {
+    return parentStatus;
+  }
+
   public Long getParentVolgnummer() {
     return parentVolgnummer;
   }
@@ -269,6 +281,10 @@ public class FotoOverzichtDto
 
   public String getRang() {
     return rang;
+  }
+
+  public String getStatus() {
+    return status;
   }
 
   public TaxonDto getTaxon() {
@@ -288,7 +304,7 @@ public class FotoOverzichtDto
   }
 
   public Long getVolgnummer() {
-    return taxon.getVolgnummer();
+    return volgnummer;
   }
 
   @Override
