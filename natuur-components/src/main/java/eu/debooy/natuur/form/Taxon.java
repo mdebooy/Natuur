@@ -412,7 +412,11 @@ public class Taxon
   }
 
   public void setStatus(String status) {
-    this.status             = DoosUtils.stripToLowerCase(status);
+    if (DoosUtils.isBlankOrNull(status)) {
+      this.status           = null;
+    } else {
+      this.status           = DoosUtils.stripToLowerCase(status);
+    }
   }
 
   public void setTaxonId(Long taxonId) {

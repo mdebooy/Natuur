@@ -378,7 +378,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setStatus(String status) {
-    this.status       = DoosUtils.stripToLowerCase(status);
+    if (DoosUtils.isBlankOrNull(status)) {
+      this.status     = null;
+    } else {
+      this.status     = DoosUtils.stripToLowerCase(status);
+    }
   }
 
   @SuppressWarnings("java:S1612")
