@@ -88,7 +88,9 @@ public class Taxon
     parentId              = taxonDto.getParentId();
     if (null != taxonDto.getParent()) {
       parentLatijnsenaam  = taxonDto.getParent().getLatijnsenaam();
-      parentNaam          = taxonDto.getParent().getNaam(taal);
+      if (DoosUtils.isNotBlankOrNull(taal)) {
+        parentNaam          = taxonDto.getParent().getNaam(taal);
+      }
       parentRang          = taxonDto.getParent().getRang();
       parentStatus        = taxonDto.getParent().getStatus();
       parentVolgnummer    = taxonDto.getParent().getVolgnummer();

@@ -583,7 +583,8 @@ public class TaxonController extends Natuur {
     rijen.addAll(getTaxonService().getSoorten(getGebruikersTaalInIso6392t()));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
-                               String.format(FMT_NAAM, rij.getNaam(), rij.getLatijnsenaam()))));
+                               String.format(FMT_NAAM, rij.getNaam(),
+                                             rij.getLatijnsenaam()))));
 
     return items;
   }
