@@ -31,14 +31,17 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
   private Long    parentId;
   private String  parentRang;
   private String  rang;
+  private String  status;
 
   public OverzichtPK() {}
 
-  public OverzichtPK(Long parentId, String parentRang, String rang) {
+  public OverzichtPK(Long parentId, String parentRang, String rang,
+                     String status) {
     super();
     this.parentId   = parentId;
     this.parentRang = parentRang;
     this.rang       = rang;
+    this.status     = status;
   }
 
   @Override
@@ -46,6 +49,7 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
     return new CompareToBuilder().append(parentRang, overzichtPK.parentRang)
                                  .append(parentId, overzichtPK.parentId)
                                  .append(rang, overzichtPK.rang)
+                                 .append(status, overzichtPK.status)
                                  .toComparison();
   }
 
@@ -62,6 +66,7 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
     return new EqualsBuilder().append(parentId, overzichtPK.parentId)
                               .append(parentRang, overzichtPK.parentRang)
                               .append(rang, overzichtPK.rang)
+                              .append(status, overzichtPK.status)
                               .isEquals();
   }
 
@@ -77,15 +82,20 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
     return rang;
   }
 
+  public String getStatus() {
+    return status;
+  }
+
   @Override
   public int hashCode() {
     return new HashCodeBuilder().append(parentId)
                                 .append(parentRang)
-                                .append(rang).toHashCode();
+                                .append(rang)
+                                .append(status).toHashCode();
   }
 
   public void setParentId(Long parentId) {
-    this.parentId = parentId;
+    this.parentId   = parentId;
   }
 
   public void setParentRang(String parentRang) {
@@ -93,7 +103,11 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rang       = rang;
+  }
+
+  public void setStatus(String status) {
+    this.status     = status;
   }
 
   @Override
@@ -102,6 +116,7 @@ public class OverzichtPK implements Comparable<OverzichtPK>, Serializable {
                               .append(" (parentId=").append(parentId)
                               .append(", parentRang=").append(parentRang)
                               .append(", rang=").append(rang)
+                              .append(", status=").append(status)
                               .append(")").toString();
   }
 }

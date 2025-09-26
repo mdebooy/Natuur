@@ -85,6 +85,7 @@ public class OverzichtDto extends Dto implements Comparable<OverzichtDto> {
   @ReadOnly
   @Column(name="RANG", length=3, insertable=false, updatable=false)
   private String    rang;
+  @Id
   @ReadOnly
   @Column(name="STATUS", length=2, insertable=false, updatable=false)
   private String    status;

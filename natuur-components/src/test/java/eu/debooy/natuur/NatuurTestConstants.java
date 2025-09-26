@@ -83,7 +83,7 @@ public final class NatuurTestConstants {
   public static final String  ONDERSOORTRANGNAAM      = "ondersoort";
   public static final Long    ONDERSOORTTAXONID       = 6834L;
   public static final Long    ONDERSOORTVOLGNUMMER    = 65789L;
-  public static final int     OVERZICHTPK_HASH        = 1156411;
+  public static final int     OVERZICHTPK_HASH        = 42790888;
   public static final String  PARENTLATIJNSENAAM      = "Phalacrocorax";
   public static final String  PARENTNAAM              = "Aalscholvers";
   public static final String  PARENTNAAM_GR           = "Corvo-marinho";
