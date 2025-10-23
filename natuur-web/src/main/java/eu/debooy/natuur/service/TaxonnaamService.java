@@ -83,38 +83,23 @@ public class TaxonnaamService {
     }
   }
 
+  @GET
+  @Path("/namen/{taal}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public TaxonnaamDto taxonnaam(Long taxonId, String taal) {
-    return taxonnaamDao.getByPrimaryKey(new TaxonnaamPK(taxonId, taal));
-  }
+  public Response getTaxonnamenPerTaal(
+      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    if (DoosUtils.isBlankOrNull(taal)) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
 
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxonnaam> taxonnamen(String taal) {
-    List<Taxonnaam>     taxonnamen  = new ArrayList<>();
-    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaal(taal);
-    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
-
-    return taxonnamen;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<Taxonnaam> query(Long taxonId) {
-    List<Taxonnaam>     taxonnamen  = new ArrayList<>();
-    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaxon(taxonId);
-    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
-
-    return taxonnamen;
-  }
-
-  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<SelectItem> selectTaxonnamen(String taal) {
-    List<SelectItem>  items = new LinkedList<>();
-    Set<TaxonnaamDto> rijen = new TreeSet<>(new TaxonnaamDto.NaamComparator());
-    rijen.addAll(taxonnaamDao.getPerTaal(taal));
-    rijen.forEach(rij -> items.add(new SelectItem(rij.getTaxonId(),
-                                                  rij.getNaam())));
-
-    return items;
+    try {
+      var taxonnamen  = new ArrayList<Taxonnaam>();
+      taxonnaamDao.getPerTaal(taal).forEach(rij ->
+          taxonnamen.add(new Taxonnaam(rij)));
+      return Response.ok().entity(taxonnamen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 
   @GET
@@ -133,5 +118,48 @@ public class TaxonnaamService {
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Taxonnaam> query(Long taxonId) {
+    List<Taxonnaam>     taxonnamen  = new ArrayList<>();
+    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaxon(taxonId);
+    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
+
+    return taxonnamen;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void save(TaxonnaamDto taxonnaam) {
+    if (null == taxonnaam.getTaxonId()) {
+      taxonnaamDao.create(taxonnaam);
+    } else {
+      taxonnaamDao.update(taxonnaam);
+    }
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<SelectItem> selectTaxonnamen(String taal) {
+    List<SelectItem>  items = new LinkedList<>();
+    Set<TaxonnaamDto> rijen = new TreeSet<>(new TaxonnaamDto.NaamComparator());
+    rijen.addAll(taxonnaamDao.getPerTaal(taal));
+    rijen.forEach(rij -> items.add(new SelectItem(rij.getTaxonId(),
+                                                  rij.getNaam())));
+
+    return items;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public TaxonnaamDto taxonnaam(Long taxonId, String taal) {
+    return taxonnaamDao.getByPrimaryKey(new TaxonnaamPK(taxonId, taal));
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Taxonnaam> taxonnamen(String taal) {
+    List<Taxonnaam>     taxonnamen  = new ArrayList<>();
+    List<TaxonnaamDto>  rijen       = taxonnaamDao.getPerTaal(taal);
+    rijen.forEach(rij -> taxonnamen.add(new Taxonnaam(rij)));
+
+    return taxonnamen;
   }
 }

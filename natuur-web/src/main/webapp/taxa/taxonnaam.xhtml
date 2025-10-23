@@ -28,7 +28,7 @@
             </div>
           </div>
 
-          <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxonnaam" detail="detail" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurTaxon.taxonnaam.naam}" />
+          <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxonnaam" detail="detail" returnto="#{natuur.path}#{natuurTaxon.returnTo}" tekst="#{natuurTaxon.taxonnaam.naam}" />
         </h:form>
       </div>
     </div>

@@ -95,6 +95,8 @@ public class Natuur extends DoosBean {
   protected static final  String  LBL_TAXONNAAM             = "label.taxonnaam";
   protected static final  String  LBL_WAARNEMING            =
       "label.waarneming";
+  protected static final  String  NAMENINEENTAAL_REDIRECT   =
+      "/statistieken/taxonnamen.xhtml";
   protected static final  String  NAMENPERTAAL_REDIRECT     =
       "/statistieken/namenpertaal.xhtml";
   protected static final  String  RANG_REDIRECT             =

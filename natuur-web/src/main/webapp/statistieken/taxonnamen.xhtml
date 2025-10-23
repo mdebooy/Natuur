@@ -1,0 +1,68 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:d="http://java.debooy.eu/jsf/facelets"
+  xmlns:f="http://java.sun.com/jsf/core"
+  xmlns:h="http://java.sun.com/jsf/html"
+ xmlns:ui="http://java.sun.com/jsf/facelets"
+ template="/WEB-INF/templates/template.xhtml">
+  <ui:define name="head">
+    <script type="text/javascript" charset="utf-8">
+      $(document).ready(function() {
+        var taxonnamenTabel = $('#taxonnamenTabel').DataTable( {
+          ajax: { url: '/natuur/taxonnamen/namen/#{natuurTaxon.perTaal}',
+                  dataSrc: '' },
+          order: [[0, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
+          ]
+        } );
+        $( '#taxonnamenTabel tbody').on('click', 'tr', function() {
+          if (taxonnamenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxonnamen:linkTaxonnaam');
+          alterParam(jsfCommandLink, taxonnamenTabel.row(this).data().taal);
+          alterParam(jsfCommandLink, taxonnamenTabel.row(this).data().taxonId, 'YY');
+          jsfCommandLink.click();
+        } );
+      } );
+    </script>
+  </ui:define>
+  <ui:define name="body">
+    <div class="columns is-centered content">
+      <div class="column is-10">
+        <h:form id="formTaxonnamen">
+          <d:titel titel="#{natuurTaxon.namenTitel}" />
+
+          <table id="taxonnamenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="taxonnamenTabel" />
+          <h:commandLink id="linkTaxonnaam" action="#{natuurTaxon.retrieveNaam}" style="display:none">
+            <f:param name="taal" value="XX" />
+            <f:param name="taxonId" value="YY" />
+          </h:commandLink>
+
+          <p class="control">
+            <d:cancel returnto="#{natuur.path}/statistieken/namenpertaal.xhtml" aktie="${natuurTaxon.aktie}"/>
+          </p>
+        </h:form>
+      </div>
+    </div>
+  </ui:define>
+</ui:composition>

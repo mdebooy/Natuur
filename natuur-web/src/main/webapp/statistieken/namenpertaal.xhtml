@@ -10,7 +10,7 @@
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
-        $('#namenpertaalTabel').DataTable( {
+        var namenpertaalTabel = $('#namenpertaalTabel').DataTable( {
           ajax: { url: '/natuur/taxonnamen/aantalpertaal',
                   dataSrc: '' },
           order: [[3, 'asc']],
@@ -49,6 +49,14 @@
             }
           ]
         } );
+        $( '#namenpertaalTabel tbody').on('click', 'tr', function() {
+          if (namenpertaalTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formNamenpertaal:linkTaal');
+          alterParam(jsfCommandLink, namenpertaalTabel.row(this).data().taal);
+          jsfCommandLink.click();
+        } );
         if (#{natuurTaxon.user}) {
           addUploadButton('namenpertaalTabel', 'formNamenpertaal', '#{i18nTeksten.tekst('img.upload')}');
         }
@@ -62,7 +70,9 @@
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.namen.per.taal')}" />
 
           <table id="namenpertaalTabel" class="table is-striped is-narrow" aria-describedby="namenpertaalTabel" />
-          <h:commandLink id="uploadNamenpertaal" class="is-hidden" action="#{natuurTaxon.batch}" />
+          <h:commandLink id="linkTaal" action="#{natuurTaxon.namenPerTaal}" style="display:none">
+            <f:param name="taal" value="XX" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

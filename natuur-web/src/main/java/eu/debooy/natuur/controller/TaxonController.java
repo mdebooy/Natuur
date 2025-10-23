@@ -17,6 +17,7 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.component.Export;
+import eu.debooy.doos.component.business.IDoosRemote;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
@@ -44,6 +45,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -73,6 +75,8 @@ public class TaxonController extends Natuur {
   private static final  String  DTIT_UPDATE   = "natuur.titel.taxonnaam.update";
   private static final  String  HERBENOEMD    =
       "natuur.latijnsenamen.herbenoemd";
+  private static final  String  NTIT_RETRIEVE =
+      "natuur.titel.taxonnamen.retrieve";
   private static final  String  TIT_CREATE    = "natuur.titel.taxon.create";
   private static final  String  TIT_UPDATE    = "natuur.titel.taxon.update";
 
@@ -94,12 +98,17 @@ public class TaxonController extends Natuur {
   private final Lijstparameter  lijstparameters = new Lijstparameter();
   private final JSONArray       resultaat       = new JSONArray();
 
+  @EJB
+  private IDoosRemote   doosRemote;
+
   private UploadedFile  bestand;
   private Taxon         ouder;
   private Long          ouderNiveau;
+  private String        perTaal     = "";
   private Taxon         taxon;
   private TaxonDto      taxonDto;
   private Taxonnaam     taxonnaam;
+  private TaxonnaamDto  taxonnaamDto;
   private boolean       wijzigen    = false;
 
   public void batch() {
@@ -241,7 +250,7 @@ public class TaxonController extends Natuur {
         }
       }
       taxonnaam = new Taxonnaam();
-      redirect(TAXON_REDIRECT);
+      redirect(getReturnTo());
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
     } catch (DoosRuntimeException e) {
@@ -259,6 +268,12 @@ public class TaxonController extends Natuur {
     return getTekst(DTIT_DELETE, getTaxonnaam(getGebruikersTaalInIso6392t()));
   }
 
+  public String getNamenTitel() {
+    return getTekst(NTIT_RETRIEVE,
+                    doosRemote.getIso6392tNaam(perTaal,
+                                               getGebruikersTaalInIso6392t()));
+  }
+
   public Taxon getOuder() {
     return ouder;
   }
@@ -269,6 +284,10 @@ public class TaxonController extends Natuur {
 
   public Lijstparameter getParameters() {
     return lijstparameters;
+  }
+
+  public String getPerTaal() {
+    return perTaal;
   }
 
   public String getStatus() {
@@ -348,6 +367,25 @@ public class TaxonController extends Natuur {
     }
   }
 
+  public void namenPerTaal() {
+    if (!isGerechtigd()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!ec.getRequestParameterMap().containsKey(TaxonnaamDto.COL_TAAL)) {
+      addError(ComponentsConstants.GEENPARAMETER, TaxonnaamDto.COL_TAAL);
+      return;
+    }
+
+    perTaal = ec.getRequestParameterMap().get(TaxonnaamDto.COL_TAAL);
+
+    redirect(NAMENINEENTAAL_REDIRECT);
+   
+  }
+
   public void parameters() {
     if (!isGerechtigd()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -419,6 +457,45 @@ public class TaxonController extends Natuur {
           getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
       }
 
+      setReturnTo(ec, TAXON_REDIRECT);
+      redirect(TAXONNAAM_REDIRECT);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXONNAAM));
+    }
+  }
+
+  public void retrieveNaam() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var ec  = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           TaxonnaamDto.COL_TAAL, TaxonnaamDto.COL_TAXONID)) {
+      return;
+    }
+
+    var taal    = ec.getRequestParameterMap().get(TaxonnaamDto.COL_TAAL);
+    var taxonId = Long.valueOf(ec.getRequestParameterMap()
+                                 .get(TaxonnaamDto.COL_TAXONID));
+
+    try {
+      setActieveTab(TAB_NAMEN);
+      taxonDto      = getTaxonService().taxon(taxonId);
+      taxon         = new Taxon(taxonDto, getGebruikersTaalInIso6392t());
+      taxonnaamDto  = getTaxonnaamService().taxonnaam(taxonId, taal);
+      taxonnaam     = new Taxonnaam(taxonnaamDto);
+      if (getAktie().isWijzig()) {
+        updateDetail();
+      } else {
+        setDetailAktie(PersistenceConstants.RETRIEVE);
+        setDetailSubTitel(
+          getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
+      }
+
+      setReturnTo(ec, NAMENINEENTAAL_REDIRECT);
       redirect(TAXONNAAM_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXONNAAM));
@@ -503,7 +580,7 @@ public class TaxonController extends Natuur {
 
     var taal  = taxonnaam.getTaal();
     try {
-      var taxonnaamDto  = new TaxonnaamDto();
+      taxonnaamDto  = new TaxonnaamDto();
       taxonnaam.persist(taxonnaamDto);
       switch (getDetailAktie().getAktie()) {
         case PersistenceConstants.CREATE:
@@ -531,7 +608,45 @@ public class TaxonController extends Natuur {
                    getDetailAktie().getAktie()) ;
           break;
       }
-      redirect(TAXON_REDIRECT);
+      redirect(getReturnTo());
+    } catch (DuplicateObjectException e) {
+      addError(PersistenceConstants.DUPLICATE, taal);
+    } catch (ObjectNotFoundException e) {
+      addError(PersistenceConstants.NOTFOUND, taal);
+    } catch (DoosRuntimeException e) {
+      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
+                                 e.getLocalizedMessage()), e);
+      generateExceptionMessage(e);
+    }
+  }
+
+  public void saveNaam() {
+    if (!isUser()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var messages  = TaxonnaamValidator.valideer(taxonnaam);
+    if (!messages.isEmpty()) {
+      addMessage(messages);
+      return;
+    }
+
+    var taal  = taxonnaam.getTaal();
+    try {
+      taxonnaam.persist(taxonnaamDto);
+      switch (getDetailAktie().getAktie()) {
+        case PersistenceConstants.UPDATE:
+          getTaxonnaamService().save(taxonnaamDto);
+          setDetailAktie(PersistenceConstants.RETRIEVE);
+          addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
+          break;
+        default:
+          addError(ComponentsConstants.WRONGREDIRECT,
+                   getDetailAktie().getAktie()) ;
+          break;
+      }
+      redirect(NAMENPERTAAL_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taal);
     } catch (ObjectNotFoundException e) {
