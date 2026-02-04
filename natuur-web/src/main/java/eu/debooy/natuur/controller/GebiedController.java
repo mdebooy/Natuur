@@ -26,13 +26,13 @@ import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.GebiedValidator;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,6 +91,11 @@ public class GebiedController extends Natuur {
                                  e.getLocalizedMessage()), e);
       generateExceptionMessage(e);
     }
+  }
+
+  @Override
+  public String getDeletetekst() {
+     return gebied.getNaam();
   }
 
   public Gebied getGebied() {
@@ -185,21 +190,19 @@ public class GebiedController extends Natuur {
 
     try {
       switch (getAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           gebied.persist(gebiedDto);
           getGebiedService().save(gebiedDto);
           gebied.setGebiedId(gebiedDto.getGebiedId());
           addInfo(PersistenceConstants.CREATED, gebied.getNaam());
           update();
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           gebied.persist(gebiedDto);
           getGebiedService().save(gebiedDto);
           addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, gebied.getNaam());

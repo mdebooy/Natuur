@@ -20,7 +20,6 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.natuur.NatuurTestConstants;
-import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.form.RegiolijstTaxon;
 import java.util.ArrayList;
@@ -35,7 +34,7 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class RegiolijstTaxonValidatorTest {
-  private static final  Message ERR_STATUS  =
+  private static final  Message ERR_STATUS        =
       new Message.Builder()
                  .setAttribute(RegiolijstTaxonDto.COL_STATUS)
                  .setSeverity(Message.ERROR)
@@ -43,16 +42,17 @@ public class RegiolijstTaxonValidatorTest {
                  .setParams(new Object[]{RegiolijstTaxonValidator.LBL_STATUS,
                                          2})
                  .build();
-  private static final  Message REQ_REGIOID =
+  private static final  Message REQ_REGIOLIJSTID  =
       new Message.Builder()
-                 .setAttribute(RegiolijstDto.COL_REGIOID)
+                 .setAttribute(RegiolijstTaxonDto.COL_REGIOLIJSTID)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
-                 .setParams(new Object[]{RegiolijstTaxonValidator.LBL_REGIOID})
+                 .setParams(
+                    new Object[]{RegiolijstTaxonValidator.LBL_REGIOLIJSTID})
                  .build();
-  private static final  Message REQ_TAXONID =
+  private static final  Message REQ_TAXONID       =
       new Message.Builder()
-                 .setAttribute(RegiolijstDto.COL_REGIOID)
+                 .setAttribute(RegiolijstTaxonDto.COL_TAXONID)
                  .setSeverity(Message.ERROR)
                  .setMessage(PersistenceConstants.REQUIRED)
                  .setParams(new Object[]{RegiolijstTaxonValidator.LBL_TAXONID})
@@ -62,7 +62,7 @@ public class RegiolijstTaxonValidatorTest {
   private static  RegiolijstTaxonDto  regiolijstTaxonDto;
 
   private static void setLeeg(List<Message> expResult) {
-    expResult.add(REQ_REGIOID);
+    expResult.add(REQ_REGIOLIJSTID);
     expResult.add(REQ_TAXONID);
   }
 
@@ -71,7 +71,7 @@ public class RegiolijstTaxonValidatorTest {
     regiolijstTaxon     = new RegiolijstTaxon();
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
 
-    regiolijstTaxon.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijstTaxon.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
     regiolijstTaxon.setStatus(NatuurTestConstants.STATUS);
     regiolijstTaxon.setTaxonId(NatuurTestConstants.TAXONID);
 
@@ -114,7 +114,8 @@ public class RegiolijstTaxonValidatorTest {
   public void testGoedeRegiolijstTaxon2() {
     var           instance  = new RegiolijstTaxon(regiolijstTaxonDto);
 
-    instance.setStatus(DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
+    instance.setStatus(
+        DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
     List<Message> result    = RegiolijstTaxonValidator.valideer(instance);
 
     assertTrue(result.isEmpty());
@@ -135,7 +136,8 @@ public class RegiolijstTaxonValidatorTest {
     var           instance  = new RegiolijstTaxonDto();
 
     regiolijstTaxon.persist(instance);
-    instance.setStatus(DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
+    instance.setStatus(
+        DoosUtils.stringMetLengte(NatuurTestConstants.STATUS, 2, "X"));
     List<Message> result    = RegiolijstTaxonValidator.valideer(instance);
 
     assertTrue(result.isEmpty());

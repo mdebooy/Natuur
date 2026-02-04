@@ -75,18 +75,18 @@ public class RegiolijstValidatorTest {
   public static void setUpClass() {
     Calendar  kalender  = Calendar.getInstance();
     kalender.add(Calendar.DAY_OF_YEAR, 1);
-    datum     = new Date();
-    morgen    = kalender.getTime();
+    datum         = new Date();
+    morgen        = kalender.getTime();
 
-    errDatum  = new Message.Builder()
-                           .setAttribute(WaarnemingDto.COL_DATUM)
-                           .setSeverity(Message.ERROR)
-                           .setMessage(PersistenceConstants.FUTURE)
-                           .setParams(new Object[]{Datum.fromDate(morgen)})
-                           .build();
+    errDatum      = new Message.Builder()
+                               .setAttribute(WaarnemingDto.COL_DATUM)
+                               .setSeverity(Message.ERROR)
+                               .setMessage(PersistenceConstants.FUTURE)
+                               .setParams(new Object[]{Datum.fromDate(morgen)})
+                               .build();
 
-    regiolijst     = new Regiolijst();
-    regiolijstDto  = new RegiolijstDto();
+    regiolijst    = new Regiolijst();
+    regiolijstDto = new RegiolijstDto();
 
     regiolijst.setDatum(datum);
     regiolijst.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
@@ -111,7 +111,8 @@ public class RegiolijstValidatorTest {
   public void testFouteRegiolijstValidator2() {
     var           instance  = new Regiolijst(regiolijstDto);
 
-    instance.setOmschrijving(DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2001, "X"));
+    instance.setOmschrijving(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2001, "X"));
 
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
@@ -137,7 +138,8 @@ public class RegiolijstValidatorTest {
     var           instance  = new RegiolijstDto();
 
     regiolijst.persist(instance);
-    instance.setOmschrijving(DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2001, "X"));
+    instance.setOmschrijving(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2001, "X"));
 
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
@@ -156,7 +158,8 @@ public class RegiolijstValidatorTest {
   public void testGoedeRegiolijstValidator2() {
     var           instance  = new Regiolijst(regiolijstDto);
 
-    instance.setOmschrijving(DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2000, "X"));
+    instance.setOmschrijving(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2000, "X"));
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
     assertTrue(result.isEmpty());
@@ -177,7 +180,8 @@ public class RegiolijstValidatorTest {
     var           instance  = new RegiolijstDto();
 
     regiolijst.persist(instance);
-    instance.setOmschrijving(DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2000, "X"));
+    instance.setOmschrijving(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OMSCHRIJVING, 2000, "X"));
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
     assertTrue(result.isEmpty());

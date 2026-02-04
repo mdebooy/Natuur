@@ -4,7 +4,7 @@
   <parent>
     <groupId>eu.debooy.natuur</groupId>
     <artifactId>natuur</artifactId>
-    <version>4.3.0-SNAPSHOT</version>
+    <version>5.0.0-SNAPSHOT</version>
   </parent>
   <artifactId>natuur-web</artifactId>
   <packaging>war</packaging>
@@ -34,10 +34,6 @@
       <artifactId>sedes-components</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-lang3</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.myfaces.core</groupId>
       <artifactId>myfaces-api</artifactId>
     </dependency>
@@ -46,20 +42,8 @@
       <artifactId>myfaces-impl</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.apache.myfaces.tomahawk</groupId>
-      <artifactId>tomahawk20</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.apache.tomee</groupId>
-      <artifactId>javaee-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>javax.annotation</groupId>
-      <artifactId>jsr250-api</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>taglibs</groupId>
-      <artifactId>standard</artifactId>
+      <artifactId>jakartaee-api</artifactId>
     </dependency>
   </dependencies>
 </project>

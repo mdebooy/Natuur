@@ -1,14 +1,15 @@
 <ui:composition
      xmlns="http://www.w3.org/1999/xhtml"
    xmlns:d="http://java.debooy.eu/jsf/facelets"
-   xmlns:f="http://java.sun.com/jsf/core"
-   xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
   template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
+        var iso6392t = getISO6391ToISO6392t(taal);
         var regiolijstenTabel = $('#regiolijstenTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsten',
                   dataSrc: '' },
@@ -38,7 +39,7 @@
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
-                return getRegionaam(data.regioId);
+                return getRegionaam(data.regioId, iso6392t);
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.omschrijving')}', render: function ( data, type, row ) {
@@ -55,7 +56,7 @@
             return;
           }
           var jsfCommandLink = document.getElementById('formRegiolijsten:linkRegiolijst');
-          alterParam(jsfCommandLink, regiolijstenTabel.row(this).data().regioId);
+          alterParam(jsfCommandLink, regiolijstenTabel.row(this).data().regiolijstId);
           jsfCommandLink.click();
         } );
         if (#{natuurRegiolijst.user}) {
@@ -73,7 +74,7 @@
 
           <table id="regiolijstenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="regiolijstenTabel" />
           <h:commandLink id="linkRegiolijst" class="is-hidden" action="#{natuurRegiolijst.retrieve}">
-            <f:param name="regioId" value="XX" />
+            <f:param name="regiolijstId" value="XX" />
             <f:param name="returnTo" value="/regiolijsten/regiolijsten.xhtml" />
           </h:commandLink>
           <h:commandLink id="addRegiolijsten" class="is-hidden" action="#{natuurRegiolijst.create}">

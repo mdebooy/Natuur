@@ -1,11 +1,9 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://java.debooy.eu/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:t="http://myfaces.apache.org/tomahawk"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
@@ -21,7 +19,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputText id="taxon" styleClass="input required" value="#{natuurWaarneming.waarneming.taxon.naam}" maxlength="255" size="100" readonly="true" />
+                      <d:inputText id="taxon" value="#{natuurWaarneming.waarneming.taxon.naam}" required="true" maxlength="255" size="100" readonly="true" />
                     </div>
                   </div>
                 </div>
@@ -45,7 +43,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputText id="gebied" styleClass="input required" value="#{natuurWaarneming.waarneming.gebied.naam}" maxlength="255" size="100" readonly="true" />
+                      <d:inputText id="gebied" value="#{natuurWaarneming.waarneming.gebied.naam}" required="true" maxlength="255" size="100" readonly="true" />
                     </div>
                   </div>
                 </div>
@@ -57,7 +55,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputText id="taxonSeq" styleClass="input required" value="#{natuurWaarneming.foto.taxonSeq}" maxlength="3" size="3" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="taxonSeq" value="#{natuurWaarneming.foto.taxonSeq}" required="true" maxlength="3" size="3" readonly="#{natuurWaarneming.detailAktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -69,7 +67,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputText id="fotodetail" styleClass="input" value="#{natuurWaarneming.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="fotodetail" value="#{natuurWaarneming.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurWaarneming.detailAktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -81,7 +79,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputText id="fotobestand" styleClass="input" value="#{natuurWaarneming.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="fotobestand" value="#{natuurWaarneming.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurWaarneming.detailAktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -93,13 +91,13 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <t:inputTextarea id="opmerking" styleClass="input" value="#{natuurWaarneming.foto.opmerking}" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputTextarea id="opmerking" value="#{natuurWaarneming.foto.opmerking}" readonly="#{natuurWaarneming.detailAktie.readonly}" />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formFoto" returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" detail="detail" tekst="#{natuurWaarneming.foto.taxonSeq} - #{natuurWaarneming.foto.fotoBestand}" />
+              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formFoto" returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" detail="detail" />
             </div>
           </div>
         </h:form>

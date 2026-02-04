@@ -18,8 +18,8 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.natuur.Natuur;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
 
 
 /**

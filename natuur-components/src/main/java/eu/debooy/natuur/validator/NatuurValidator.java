@@ -16,9 +16,8 @@
  */
 package eu.debooy.natuur.validator;
 
-import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -40,70 +39,50 @@ public abstract class NatuurValidator {
   protected static final  String  LBL_WAARNEMING  = "_I18N.label.waarneming";
 
   protected static void valideerGebiedId(Long gebiedId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(gebiedId)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(GebiedDto.COL_GEBIEDID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_GEBIED})
-                            .build());
-    }
+    fouten.addAll(
+        new Validator.Builder().setWaarde(gebiedId)
+                               .setAttribute(GebiedDto.COL_GEBIEDID)
+                               .setLabel(LBL_GEBIED)
+                               .setRequired()
+                               .valideer().getFouten());
   }
 
   protected static void valideerOpmerking(String opmerking,
                                           List<Message> fouten) {
-    if (DoosUtils.nullToEmpty(opmerking).length() > 2000) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_OPMERKING)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_OPMERKING, 2000})
-                            .build());
-    }
+    fouten.addAll(
+        new Validator.Builder().setWaarde(opmerking)
+                               .setAttribute(TaxonDto.COL_OPMERKING)
+                               .setLabel(LBL_OPMERKING)
+                               .setMaxLengte(2000)
+                               .valideer().getFouten());
   }
 
   protected static void valideerRang(String rang, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(rang)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangDto.COL_RANG)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_RANG})
-                            .build());
-      return;
-    }
-
-    if (rang.length() > 3) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangDto.COL_RANG)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_RANG, 3})
-                            .build());
-    }
+    fouten.addAll(
+        new Validator.Builder().setWaarde(rang)
+                               .setAttribute(RangDto.COL_RANG)
+                               .setLabel(LBL_RANG)
+                               .setMaxLengte(3)
+                               .setRequired()
+                               .valideer().getFouten());
   }
 
   protected static void valideerTaxonId(Long taxonId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taxonId)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_TAXONID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_SOORT})
-                            .build());
-    }
+    fouten.addAll(
+        new Validator.Builder().setWaarde(taxonId)
+                               .setAttribute(TaxonDto.COL_TAXONID)
+                               .setLabel(LBL_SOORT)
+                               .setRequired()
+                               .valideer().getFouten());
   }
 
   protected static void valideerWaarnemingId(Long waarnemingId,
                                              List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(waarnemingId)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(WaarnemingDto.COL_WAARNEMINGID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_WAARNEMING})
-                            .build());
-
-    }
+    fouten.addAll(
+        new Validator.Builder().setWaarde(waarnemingId)
+                               .setAttribute(WaarnemingDto.COL_WAARNEMINGID)
+                               .setLabel(LBL_WAARNEMING)
+                               .setRequired()
+                               .valideer().getFouten());
   }
 }

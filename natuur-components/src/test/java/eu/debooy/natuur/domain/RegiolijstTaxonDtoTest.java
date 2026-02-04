@@ -38,7 +38,7 @@ public class RegiolijstTaxonDtoTest {
   public static void beforeClass() {
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
 
-    regiolijstTaxonDto.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijstTaxonDto.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
     regiolijstTaxonDto.setStatus(NatuurTestConstants.STATUS);
     regiolijstTaxonDto.setTaxonId(NatuurTestConstants.TAXONID);
   }
@@ -49,20 +49,20 @@ public class RegiolijstTaxonDtoTest {
     var groter  = new RegiolijstTaxonDto();
     var kleiner = new RegiolijstTaxonDto();
 
-    gelijk.setRegioId(regiolijstTaxonDto.getRegioId());
+    gelijk.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
     gelijk.setTaxonId(regiolijstTaxonDto.getTaxonId());
-    groter.setRegioId(regiolijstTaxonDto.getRegioId());
+    groter.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
     groter.setTaxonId(regiolijstTaxonDto.getTaxonId() + 1);
-    kleiner.setRegioId(regiolijstTaxonDto.getRegioId());
+    kleiner.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
     kleiner.setTaxonId(regiolijstTaxonDto.getTaxonId() - 1);
 
     assertTrue(regiolijstTaxonDto.compareTo(groter) < 0);
     assertEquals(0, regiolijstTaxonDto.compareTo(gelijk));
     assertTrue(regiolijstTaxonDto.compareTo(kleiner) > 0);
 
-    groter.setRegioId(regiolijstTaxonDto.getRegioId() + 1);
+    groter.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId() + 1);
     groter.setTaxonId(regiolijstTaxonDto.getTaxonId());
-    kleiner.setRegioId(regiolijstTaxonDto.getRegioId() - 1);
+    kleiner.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId() - 1);
     kleiner.setTaxonId(regiolijstTaxonDto.getTaxonId());
 
     assertTrue(regiolijstTaxonDto.compareTo(groter) < 0);
@@ -79,21 +79,22 @@ public class RegiolijstTaxonDtoTest {
     assertNotEquals(regiolijstTaxonDto, NatuurTestConstants.RANGNAAM);
     assertNotEquals(regiolijstTaxonDto, instance);
 
-    instance.setRegioId(regiolijstTaxonDto.getRegioId());
+    instance.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
     instance.setTaxonId(regiolijstTaxonDto.getTaxonId());
     assertEquals(regiolijstTaxonDto, instance);
 
     instance.setTaxonId(regiolijstTaxonDto.getTaxonId() + 1);
     assertNotEquals(regiolijstTaxonDto, instance);
 
-    instance.setRegioId(regiolijstTaxonDto.getRegioId() + 1);
+    instance.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId() + 1);
     instance.setTaxonId(regiolijstTaxonDto.getTaxonId());
     assertNotEquals(regiolijstTaxonDto, instance);
   }
 
   @Test
   public void testGetRegio() {
-    assertEquals(NatuurTestConstants.REGIOID, regiolijstTaxonDto.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOLIJSTID,
+                 regiolijstTaxonDto.getRegiolijstId());
   }
 
   @Test
@@ -113,13 +114,13 @@ public class RegiolijstTaxonDtoTest {
   }
 
   @Test
-  public void testSetRegioId() {
+  public void testSetRegiolijstId() {
     var instance  = new RegiolijstTaxonDto();
-    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
+    assertNotEquals(NatuurTestConstants.REGIOID, instance.getRegiolijstId());
 
-    instance.setRegioId(NatuurTestConstants.REGIOID);
+    instance.setRegiolijstId(NatuurTestConstants.REGIOID);
 
-    assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID, instance.getRegiolijstId());
   }
 
   @Test

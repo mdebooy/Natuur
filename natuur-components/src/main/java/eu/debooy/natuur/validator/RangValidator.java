@@ -32,7 +32,9 @@ import java.util.List;
 public final class RangValidator extends NatuurValidator {
   protected static final  String  LBL_NIVEAU  = "_I18N.label.niveau";
 
-  private RangValidator() {}
+  private RangValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(RangDto rang) {
     if (null == rang) {

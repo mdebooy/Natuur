@@ -1,14 +1,15 @@
 <ui:composition
-      xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:d="http://java.debooy.eu/jsf/facelets"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:t="http://myfaces.apache.org/tomahawk"
-   xmlns:ui="http://java.sun.com/jsf/facelets"
-   template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var taal = '#{gebruiker.locale.language}';
+        fileUpload('taxonnaamUploadForm', 'bestand');
         $('#uploadTabel').DataTable( {
           data: #{natuurTaxon.uploadresultaat},
           order: [[0, 'asc'], [1, 'asc']],
@@ -85,7 +86,7 @@
           <div class="field is-horizontal">
             <d:label label="#{i18nTeksten.tekst('label.selecteerBestand')}" />
             <div class="field-body is-normal">
-              <d:inputFileUpload id="bestand" label="" value="#{natuurTaxon.bestand}" />
+              <d:inputFileUpload id="bestand" label="" value="#{natuurTaxon.bestand}" required="true" />
             </div>
           </div>
           <div class="field is-horizontal">
@@ -104,10 +105,10 @@
             </p>
           </div>
 
-          <t:div rendered="#{! empty natuurTaxon.uploadresultaat}">
+          <c:if test="#{! empty natuurTaxon.uploadresultaat}">
             <d:spacer />
             <table id="uploadTabel" class="table is-striped is-narrow" aria-describedby="uploadTabel" />
-          </t:div>
+          </c:if>
        </h:form>
       </div>
     </div>

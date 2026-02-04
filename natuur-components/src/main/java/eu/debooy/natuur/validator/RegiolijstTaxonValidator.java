@@ -18,10 +18,8 @@
 package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
-import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
-import eu.debooy.natuur.domain.RegiolijstDto;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
 import eu.debooy.natuur.form.RegiolijstTaxon;
 import java.util.ArrayList;
@@ -32,9 +30,9 @@ import java.util.List;
  * @author Marco de Booij
  */
 public class RegiolijstTaxonValidator {
-  protected static final  String  LBL_REGIOID = "_I18N.label.regio";
-  protected static final  String  LBL_STATUS  = "_I18N.label.status";
-  protected static final  String  LBL_TAXONID = "_I18N.label.taxon";
+  protected static final  String  LBL_REGIOLIJSTID  = "_I18N.label.regiolijst";
+  protected static final  String  LBL_STATUS        = "_I18N.label.status";
+  protected static final  String  LBL_TAXONID       = "_I18N.label.taxon";
 
   private RegiolijstTaxonValidator() {}
 
@@ -55,44 +53,26 @@ public class RegiolijstTaxonValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerRegioId(regiolijstTaxon.getRegioId(), fouten);
-    valideerStatus(regiolijstTaxon.getStatus(), fouten);
-    valideerTaxonId(regiolijstTaxon.getTaxonId(), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(regiolijstTaxon.getRegiolijstId())
+                               .setAttribute(
+                                  RegiolijstTaxonDto.COL_REGIOLIJSTID)
+                               .setLabel(LBL_REGIOLIJSTID)
+                               .setRequired()
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(regiolijstTaxon.getStatus())
+                               .setAttribute(RegiolijstTaxonDto.COL_STATUS)
+                               .setLabel(LBL_STATUS)
+                               .setMaxLengte(2)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(regiolijstTaxon.getTaxonId())
+                               .setAttribute(RegiolijstTaxonDto.COL_TAXONID)
+                               .setLabel(LBL_TAXONID)
+                               .setRequired()
+                               .valideer().getFouten());
 
     return fouten;
-  }
-
-  protected static void valideerRegioId(Long regioId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(regioId)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RegiolijstDto.COL_REGIOID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_REGIOID})
-                            .build());
-    }
-  }
-
-  protected static void valideerStatus(String status,
-                                        List<Message> fouten) {
-    if (DoosUtils.nullToEmpty(status).length() > 2) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RegiolijstTaxonDto.COL_STATUS)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_STATUS, 2})
-                            .build());
-    }
-  }
-
-  protected static void valideerTaxonId(Long taxonId, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taxonId)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RegiolijstDto.COL_REGIOID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_TAXONID})
-                            .build());
-    }
   }
 }

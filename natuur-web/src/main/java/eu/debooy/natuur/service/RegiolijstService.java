@@ -20,21 +20,21 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RegiolijstDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import jakarta.ejb.Lock;
+import jakarta.ejb.LockType;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,12 +66,12 @@ public class RegiolijstService {
   }
 
   @GET
-  @Path("/{regioId}")
+  @Path("/{regiolijstId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getRegiolijst
-      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId) {
+      (@PathParam(RegiolijstDto.COL_REGIOLIJSTID) Long regiolijstId) {
     try {
-      return Response.ok().entity(regiolijstDao.getByPrimaryKey(regioId))
+      return Response.ok().entity(regiolijstDao.getByPrimaryKey(regiolijstId))
                      .build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new RegiolijstDto()).build();

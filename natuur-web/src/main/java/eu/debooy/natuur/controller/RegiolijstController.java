@@ -18,9 +18,11 @@
 package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.component.Export;
+import eu.debooy.doos.component.business.IDoosRemote;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doos.model.I18nSelectItem;
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -43,6 +45,13 @@ import eu.debooy.natuur.validator.RegiolijstTaxonValidator;
 import eu.debooy.natuur.validator.RegiolijstValidator;
 import eu.debooy.natuur.validator.RegiolijstparameterValidator;
 import eu.debooy.sedes.component.entity.Regio;
+import jakarta.ejb.EJB;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -51,12 +60,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.myfaces.custom.fileupload.UploadedFile;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -94,7 +97,10 @@ public class RegiolijstController extends Natuur {
       new Regiolijstparameter();
   private final List<SelectItem>    statusses             = new LinkedList<>();
 
-  private UploadedFile        bestand;
+  @EJB
+  private IDoosRemote   doosRemote;
+
+  private Part                bestand;
   private Regio               regio;
   private Regiolijst          regiolijst;
   private RegiolijstDto       regiolijstDto;
@@ -125,6 +131,7 @@ public class RegiolijstController extends Natuur {
     regiolijstDto = new RegiolijstDto();
     setAktie(PersistenceConstants.CREATE);
     setSubTitel(getTekst(TIT_CREATE));
+    setReturnTo(getExternalContext(), REGIOLIJSTEN_REDIRECT);
     redirect(REGIOLIJST_REDIRECT);
   }
 
@@ -136,7 +143,7 @@ public class RegiolijstController extends Natuur {
 
     regiolijstTaxon     = new RegiolijstTaxon();
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
-    regiolijstTaxon.setRegioId(regiolijst.getRegioId());
+    regiolijstTaxon.setRegiolijstId(regiolijst.getRegiolijstId());
     regiolijstTaxon.persist(regiolijstTaxonDto);
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE, regio.getNaam()));
@@ -150,14 +157,14 @@ public class RegiolijstController extends Natuur {
     }
 
     try {
-      getRegiolijstService().delete(regiolijst.getRegioId());
+      getRegiolijstService().delete(regiolijst.getRegiolijstId());
       addInfo(PersistenceConstants.DELETED, regio.getNaam());
       regiolijst      = new Regiolijst();
       regiolijstDto   = new RegiolijstDto();
       regiolijstTaxon = new RegiolijstTaxon();
       redirect(REGIOLIJSTEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, regiolijst.getRegioId());
+      addError(PersistenceConstants.NOTFOUND, regiolijst.getRegiolijstId());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -173,7 +180,7 @@ public class RegiolijstController extends Natuur {
 
     var naam  = regiolijstTaxon.getTaxon().getNaam();
     try {
-      var sleutel     = new RegiolijstTaxonPK(regiolijstTaxon.getRegioId(),
+      var sleutel     = new RegiolijstTaxonPK(regiolijstTaxon.getRegiolijstId(),
                                               regiolijstTaxon.getTaxonId());
       getRegiolijstTaxonService().delete(sleutel);
       regiolijstTaxon     = new RegiolijstTaxon();
@@ -201,8 +208,18 @@ public class RegiolijstController extends Natuur {
     return onbekend.size();
   }
 
-  public UploadedFile getBestand() {
+  public Part getBestand() {
     return bestand;
+  }
+
+  @Override
+  public String getDeletetekst() {
+    return regio.getNaam();
+  }
+
+  @Override
+  public String getDetailDeletetekst() {
+    return regiolijstTaxon.getTaxon().getNaam();
   }
 
   public JSONArray getDubbel() {
@@ -308,12 +325,16 @@ public class RegiolijstController extends Natuur {
     exportData.addVeld("ReportTitel",
                        getTekst(TIT_RETRIEVE, regio.getNaam()));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
-    exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
-    exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
-    exportData.addVeld("LabelTaal3",        iso6392tNaam(taal3, taal3));
+    exportData.addVeld("LabelTaal1",        doosRemote.getIso6392tNaam(taal1,
+                                                                       taal1));
+    exportData.addVeld("LabelTaal2",        doosRemote.getIso6392tNaam(taal2,
+                                                                       taal2));
+    exportData.addVeld("LabelTaal3",        doosRemote.getIso6392tNaam(taal3,
+                                                                       taal3));
 
     Set<DetailDto>  rijen = new TreeSet<>(new DetailDto.LijstComparator());
-    rijen.addAll(getDetailService().getVanRegiolijst(regiolijst.getRegioId()));
+    rijen.addAll(getDetailService()
+                    .getVanRegiolijst(regiolijst.getRegiolijstId()));
     rijen.forEach(rij ->
       exportData.addData(
           new String[] {NatuurUtils.getSubtitel(rij.getParentLatijnsenaam(),
@@ -346,15 +367,15 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(RegiolijstDto.COL_REGIOID)) {
-      addError(ComponentsConstants.GEENPARAMETER, RegiolijstDto.COL_REGIOID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           RegiolijstDto.COL_REGIOLIJSTID)) {
       return;
     }
 
     var sleutel = Long.valueOf(ec.getRequestParameterMap()
-                                 .get(RegiolijstDto.COL_REGIOID));
+                                 .get(RegiolijstDto.COL_REGIOLIJSTID));
 
     try {
       regiolijstDto = getRegiolijstService().regiolijst(sleutel);
@@ -377,10 +398,8 @@ public class RegiolijstController extends Natuur {
 
     var ec          = FacesContext.getCurrentInstance().getExternalContext();
 
-    if (!ec.getRequestParameterMap()
-           .containsKey(RegiolijstTaxonDto.COL_TAXONID)) {
-      addError(ComponentsConstants.GEENPARAMETER,
-               RegiolijstTaxonDto.COL_TAXONID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           RegiolijstTaxonDto.COL_TAXONID)) {
       return;
     }
 
@@ -389,8 +408,8 @@ public class RegiolijstController extends Natuur {
 
     try {
       regiolijstTaxonDto  =
-          getRegiolijstTaxonService().regiolijstTaxon(regiolijst.getRegioId(),
-                                                      taxonId);
+          getRegiolijstTaxonService()
+              .regiolijstTaxon(regiolijst.getRegiolijstId(), taxonId);
       regiolijstTaxon     = new RegiolijstTaxon(regiolijstTaxonDto,
                                                 getGebruikersTaalInIso6392t());
       setDetailAktie(PersistenceConstants.UPDATE);
@@ -414,25 +433,26 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    setRegio(regiolijst.getRegioId());
-    var naam  = regio.getNaam();
+    setRegio(regiolijst.getRegiolijstId());
+    var naam  = String.format("%s - %s",
+                              regio.getNaam(),
+                              Datum.fromDate(regiolijst.getDatum()));
     try {
       switch (getAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           regiolijst.persist(regiolijstDto);
           getRegiolijstService().save(regiolijstDto);
-          regiolijst.setRegioId(regiolijstDto.getRegioId());
+          regiolijst.setRegiolijstId(regiolijstDto.getRegiolijstId());
           addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
           update();
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           regiolijst.persist(regiolijstDto);
           getRegiolijstService().update(regiolijstDto);
           addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getAktie().getAktie()) ;
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, naam);
@@ -460,7 +480,7 @@ public class RegiolijstController extends Natuur {
     if (getDetailAktie().getAktie() == PersistenceConstants.CREATE) {
       try {
         getRegiolijstTaxonService()
-                      .regiolijstTaxon(regiolijstTaxon.getRegioId(),
+                      .regiolijstTaxon(regiolijstTaxon.getRegiolijstId(),
                                        regiolijstTaxon.getTaxonId());
         addError(PersistenceConstants.DUPLICATE,
                   (getTaxonService().taxon(
@@ -481,20 +501,19 @@ public class RegiolijstController extends Natuur {
     var naam  = regiolijstTaxon.getTaxon().getNaam();
     try {
       switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           regiolijstTaxon.persist(regiolijstTaxonDto);
           getRegiolijstTaxonService().save(regiolijstTaxonDto);
+          regiolijstTaxon.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
           addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           regiolijstTaxon.persist(regiolijstTaxonDto);
           getRegiolijstTaxonService().update(regiolijstTaxonDto);
           addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT,
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
                    getDetailAktie().getAktie());
-          break;
       }
       redirect(REGIOLIJST_REDIRECT);
     } catch (DuplicateObjectException e) {
@@ -508,18 +527,14 @@ public class RegiolijstController extends Natuur {
     }
   }
 
-  public Collection<SelectItem> getSelectRegios() {
-    return getSedesRemote().getSelectRegios();
-  }
-
-  public void setBestand(UploadedFile bestand) {
+  public void setBestand(Part bestand) {
     this.bestand  = bestand;
   }
 
   protected void setRegio(Long regioId) {
     if (null == regio
         || !regioId.equals(regio.getRegioId())) {
-      regio = getSedesRemote().getRegio(regioId);
+      regio = getSedesRemote().getRegio(regioId, getGebruikersTaalInIso6392t());
     }
   }
 
@@ -609,7 +624,7 @@ public class RegiolijstController extends Natuur {
       } else {
         var lijstTaxon  = new RegiolijstTaxonDto();
 
-        lijstTaxon.setRegioId(regiolijst.getRegioId());
+        lijstTaxon.setRegiolijstId(regiolijst.getRegiolijstId());
         lijstTaxon.setStatus(status);
         lijstTaxon.setTaxonId(taxon.getTaxonId());
         lijstTaxon.setTaxon(taxon);

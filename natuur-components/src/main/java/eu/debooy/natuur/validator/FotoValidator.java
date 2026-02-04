@@ -18,8 +18,8 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.form.Foto;
 import java.util.ArrayList;
@@ -34,7 +34,9 @@ public final class FotoValidator extends NatuurValidator {
   protected static final  String  LBL_FOTODETAIL  = "_I18N.label.fotodetail";
   protected static final  String  LBL_SEQ         = "_I18N.label.seq";
 
-  private FotoValidator() {}
+  private FotoValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(FotoDto foto) {
     if (null == foto) {
@@ -51,48 +53,27 @@ public final class FotoValidator extends NatuurValidator {
     }
 
 
-    valideerFotoBestand(DoosUtils.nullToEmpty(foto.getFotoBestand()), fouten);
-    valideerFotoDetail(DoosUtils.nullToEmpty(foto.getFotoDetail()), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(foto.getFotoBestand())
+                               .setAttribute(FotoDto.COL_FOTOBESTAND)
+                               .setLabel(LBL_FOTOBESTAND)
+                               .setMaxLengte(255)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(foto.getFotoDetail())
+                               .setAttribute(FotoDto.COL_FOTODETAIL)
+                               .setLabel(LBL_FOTODETAIL)
+                               .setMaxLengte(20)
+                               .valideer().getFouten());
     valideerOpmerking(DoosUtils.nullToEmpty(foto.getOpmerking()), fouten);
-    valideerTaxonSeq(foto.getTaxonSeq(), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(foto.getTaxonSeq())
+                               .setAttribute(FotoDto.COL_TAXONSEQ)
+                               .setLabel(LBL_SEQ)
+                               .setRequired()
+                               .valideer().getFouten());
     valideerWaarnemingId(foto.getWaarnemingId(), fouten);
 
     return fouten;
-  }
-
-  private static void valideerFotoBestand(String fotoBestand,
-                                          List<Message> fouten) {
-    if (fotoBestand.length() > 255) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(FotoDto.COL_FOTOBESTAND)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_FOTOBESTAND,
-                                                    255})
-                            .build());
-    }
-  }
-
-  private static void valideerFotoDetail(String fotoDetail,
-                                         List<Message> fouten) {
-    if (fotoDetail.length() > 20) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(FotoDto.COL_FOTODETAIL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_FOTODETAIL, 20})
-                            .build());
-    }
-  }
-
-  private static void valideerTaxonSeq(Long taxonSeq, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taxonSeq)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(FotoDto.COL_TAXONSEQ)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_SEQ})
-                            .build());
-    }
   }
 }

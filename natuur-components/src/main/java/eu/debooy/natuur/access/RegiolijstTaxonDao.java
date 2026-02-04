@@ -18,14 +18,15 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import static eu.debooy.natuur.NatuurConstants.NATUUR_EM;
 import eu.debooy.natuur.domain.RegiolijstTaxonDto;
+import jakarta.interceptor.Interceptors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceContextType;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 
 /**
@@ -33,7 +34,7 @@ import javax.persistence.PersistenceContextType;
  */
 @Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class RegiolijstTaxonDao extends Dao<RegiolijstTaxonDto> {
-  @PersistenceContext(unitName="natuur",
+  @PersistenceContext(unitName=NATUUR_EM,
                       type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 
@@ -43,7 +44,7 @@ public class RegiolijstTaxonDao extends Dao<RegiolijstTaxonDto> {
 
   public List<Object[]> getAantalPerRegiolijst() {
     var query = getEntityManager().createNamedQuery(
-                    RegiolijstTaxonDto.QRY_TOTPERREGIO);
+                    RegiolijstTaxonDto.QRY_TOTPERREGIOLIJST);
 
     return query.getResultList();
   }
@@ -53,10 +54,10 @@ public class RegiolijstTaxonDao extends Dao<RegiolijstTaxonDto> {
     return em;
   }
 
-  public List<RegiolijstTaxonDto> getPerRegiolijst(Long regioId) {
+  public List<RegiolijstTaxonDto> getPerRegiolijst(Long regiolijstId) {
     Map<String, Object> params  = new HashMap<>();
-    params.put(RegiolijstTaxonDto.PAR_REGIOID, regioId);
+    params.put(RegiolijstTaxonDto.PAR_REGIOLIJSTID, regiolijstId);
 
-    return namedQuery(RegiolijstTaxonDto.QRY_REGIO, params);
+    return namedQuery(RegiolijstTaxonDto.QRY_REGIOLIJST, params);
   }
 }

@@ -1,11 +1,11 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://java.debooy.eu/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:t="http://myfaces.apache.org/tomahawk"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
@@ -116,9 +116,9 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formWaarneming" returnto="#{natuur.path}/taxa/taxon.xhtml" tekst="#{natuurWaarneming.formateerDatum(natuurWaarneming.waarneming.datum)} - #{natuurWaarneming.waarneming.gebied.naam}" />
+              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formWaarneming" returnto="#{natuur.path}/taxa/taxon.xhtml" />
 
-              <t:div rendered="#{!natuurWaarneming.aktie.nieuw}">
+              <c:if test="#{!natuurWaarneming.aktie.nieuw}">
                 <d:spacer />
                 <div id="tabFotos" class="tab-detail">
                   <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
@@ -129,7 +129,7 @@
                 <h:commandLink id="addFotos" class="is-hidden" action="#{natuurWaarneming.createDetail}">
                   <f:param name="waarnemingId" value="XX" />
                 </h:commandLink>
-              </t:div>
+              </c:if>
             </div>
           </div>
         </h:form>

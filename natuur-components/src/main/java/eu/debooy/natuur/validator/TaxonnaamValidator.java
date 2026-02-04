@@ -17,9 +17,8 @@
 package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
-import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Taxonnaam;
 import java.util.ArrayList;
@@ -30,7 +29,9 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class TaxonnaamValidator extends NatuurValidator {
-  private TaxonnaamValidator() {}
+  private TaxonnaamValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(TaxonnaamDto taxonnaam) {
     if (null == taxonnaam) {
@@ -47,62 +48,22 @@ public final class TaxonnaamValidator extends NatuurValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerNaam(DoosUtils.nullToEmpty(taxonnaam.getNaam()), fouten);
-    valideerTaal(DoosUtils.nullToEmpty(taxonnaam.getTaal()), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(taxonnaam.getNaam())
+                               .setAttribute(TaxonnaamDto.COL_NAAM)
+                               .setLabel(LBL_NAAM)
+                               .setMaxLengte(255)
+                               .setRequired()
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(taxonnaam.getTaal())
+                               .setAttribute(TaxonnaamDto.COL_TAAL)
+                               .setLabel(LBL_TAAL)
+                               .setLowerCase()
+                               .setFixLengte(3)
+                               .setRequired()
+                               .valideer().getFouten());
 
     return fouten;
-  }
-
-  private static void valideerNaam(String naam, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(naam)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonnaamDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{NatuurValidator.LBL_NAAM})
-                            .build());
-      return;
-    }
-
-    if (naam.length() > 255) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonnaamDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{NatuurValidator.LBL_NAAM,
-                                                    255})
-                            .build());
-    }
-  }
-
-  private static void valideerTaal(String taal, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taal)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonnaamDto.COL_TAAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{NatuurValidator.LBL_TAAL})
-                            .build());
-      return;
-    }
-
-    if (taal.length() != 3) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonnaamDto.COL_TAAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FIXLENGTH)
-                            .setParams(new Object[]
-                                          {NatuurValidator.LBL_TAAL, 3})
-                            .build());
-    }
-
-    if (!taal.toLowerCase().equals(taal)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonnaamDto.COL_TAAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.NIETLCASE)
-                            .setParams(new Object[]{LBL_TAAL})
-                            .build());
-    }
   }
 }

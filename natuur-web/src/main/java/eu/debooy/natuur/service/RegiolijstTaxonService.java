@@ -25,22 +25,22 @@ import eu.debooy.natuur.domain.RegiolijstTaxonPK;
 import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.AantalPerRegio;
 import eu.debooy.natuur.form.RegiolijstTaxon;
+import jakarta.ejb.Lock;
+import jakarta.ejb.LockType;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.TransactionAttribute;
+import jakarta.ejb.TransactionAttributeType;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
-import javax.ejb.Singleton;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -77,8 +77,7 @@ public class RegiolijstTaxonService {
   @GET
   @Path("/aantalperregiolijst")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public Response getAantalPerRegiolijst
-      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId) {
+  public Response getAantalPerRegiolijst() {
     List<AantalPerRegio>  aantallen = new ArrayList<>();
     try {
       regiolijstTaxonDao.getAantalPerRegiolijst()
@@ -94,12 +93,12 @@ public class RegiolijstTaxonService {
   }
 
   @GET
-  @Path("/{regioId}")
+  @Path("/{regiolijstId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getPerRegiolijst
-      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId) {
+      (@PathParam(RegiolijstDto.COL_REGIOLIJSTID) Long regiolijstId) {
     try {
-      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regioId);
+      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regiolijstId);
       setGezien(taxa);
       return Response.ok().entity(taxa).build();
     } catch (ObjectNotFoundException e) {
@@ -108,13 +107,13 @@ public class RegiolijstTaxonService {
   }
 
   @GET
-  @Path("/{regioId}/{taal}")
+  @Path("/{regiolijstId}/{taal}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getPerRegiolijst
-      (@PathParam(RegiolijstDto.COL_REGIOID) Long regioId,
+      (@PathParam(RegiolijstDto.COL_REGIOLIJSTID) Long regiolijstId,
                   @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
     try {
-      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regioId);
+      var taxa  = regiolijstTaxonDao.getPerRegiolijst(regiolijstId);
       var lijst = new ArrayList<RegiolijstTaxon>();
       setGezien(taxa);
       taxa.forEach(taxon -> lijst.add(new RegiolijstTaxon(taxon, taal)));
@@ -137,11 +136,11 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<RegiolijstTaxonDto> query(Long regioId) {
+  public List<RegiolijstTaxonDto> query(Long regiolijstId) {
     List<RegiolijstTaxonDto>  taxa  = new ArrayList<>();
 
     try {
-      taxa.addAll(regiolijstTaxonDao.getPerRegiolijst(regioId));
+      taxa.addAll(regiolijstTaxonDao.getPerRegiolijst(regiolijstId));
       setGezien(taxa);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.
@@ -151,8 +150,8 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public RegiolijstTaxonDto regiolijstTaxon(Long regioId, Long taxonId) {
-    return regiolijstTaxon(new RegiolijstTaxonPK(regioId, taxonId));
+  public RegiolijstTaxonDto regiolijstTaxon(Long regioIlijstd, Long taxonId) {
+    return regiolijstTaxon(new RegiolijstTaxonPK(regioIlijstd, taxonId));
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
@@ -161,13 +160,8 @@ public class RegiolijstTaxonService {
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void update(RegiolijstTaxonDto regiolijstTaxon) {
-    regiolijstTaxonDao.update(regiolijstTaxon);
-  }
-
-  @TransactionAttribute(TransactionAttributeType.REQUIRED)
-  public void save(RegiolijstTaxonDto regiolijst) {
-    regiolijstTaxonDao.create(regiolijst);
+  public void save(RegiolijstTaxonDto regiolijstTaxon) {
+    regiolijstTaxonDao.create(regiolijstTaxon);
   }
 
   private void setGezien(List<RegiolijstTaxonDto> taxa) {
@@ -175,5 +169,10 @@ public class RegiolijstTaxonService {
 
     taxa.forEach(rij -> rij.setGezien(gezien.contains(rij.getTaxon()
                                                          .getTaxonId())));
+  }
+
+  @TransactionAttribute(TransactionAttributeType.REQUIRED)
+  public void update(RegiolijstTaxonDto regiolijstTaxon) {
+    regiolijstTaxonDao.update(regiolijstTaxon);
   }
 }

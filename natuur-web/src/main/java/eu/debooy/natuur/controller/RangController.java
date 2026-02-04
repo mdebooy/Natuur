@@ -30,13 +30,13 @@ import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Rangnaam;
 import eu.debooy.natuur.validator.RangValidator;
 import eu.debooy.natuur.validator.RangnaamValidator;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -157,8 +157,18 @@ public class RangController extends Natuur {
     return geenFotoAktie;
   }
 
+  @Override
+  public String getDeletetekst() {
+    return rang.getNaam();
+  }
+
   public String getDeleteTitel() {
     return getTekst(DTIT_DELETE, rang.getNaam());
+  }
+
+  @Override
+  public String getDetailDeletetekst() {
+    return rangnaam.getNaam();
   }
 
   public Long getGeenFotosTaxonId() {

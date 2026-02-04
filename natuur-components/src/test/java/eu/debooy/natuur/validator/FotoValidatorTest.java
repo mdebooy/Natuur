@@ -99,12 +99,12 @@ public class FotoValidatorTest {
     Foto          foto      = new Foto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND,
-                                                  256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL,
-                                                 21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING,
-                                                2001, "X"));
+    foto.setFotoBestand(
+        DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND, 256, "X"));
+    foto.setFotoDetail(
+        DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL, 21, "X"));
+    foto.setOpmerking(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING, 2001, "X"));
     foto.setTaxonSeq(null);
     foto.setWaarnemingId(null);
 
@@ -144,12 +144,12 @@ public class FotoValidatorTest {
     FotoDto       foto      = new FotoDto();
     List<Message> expResult = new ArrayList<>();
 
-    foto.setFotoBestand(DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND,
-                                                  256, "X"));
-    foto.setFotoDetail(DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL,
-                                                 21, "X"));
-    foto.setOpmerking(DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING,
-                                                2001, "X"));
+    foto.setFotoBestand(
+        DoosUtils.stringMetLengte(NatuurTestConstants.FOTOBESTAND, 256, "X"));
+    foto.setFotoDetail(
+        DoosUtils.stringMetLengte(NatuurTestConstants.FOTODETAIL, 21, "X"));
+    foto.setOpmerking(
+        DoosUtils.stringMetLengte(NatuurTestConstants.OPMERKING, 2001, "X"));
     foto.setTaxonSeq(null);
     foto.setWaarnemingId(null);
 

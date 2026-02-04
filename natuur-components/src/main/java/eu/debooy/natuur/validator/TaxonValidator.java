@@ -18,8 +18,8 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.form.Taxon;
@@ -47,7 +47,9 @@ public final class TaxonValidator extends NatuurValidator {
   protected static final  String  LBL_VOLGNUMMER    =
       "_I18N.label.volgnummer";
 
-  private TaxonValidator() {}
+  private TaxonValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(TaxonDto taxon) {
     if (null == taxon) {
@@ -64,50 +66,41 @@ public final class TaxonValidator extends NatuurValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerLatijnsenaam(DoosUtils.nullToEmpty(taxon.getLatijnsenaam()),
-                         fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(taxon.getLatijnsenaam())
+                               .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                               .setLabel(LBL_LATIJNSENAAM)
+                               .setMaxLengte(255)
+                               .setRequired()
+                               .valideer().getFouten());
     valideerOpmerking(DoosUtils.nullToEmpty(taxon.getOpmerking()), fouten);
     valideerRang(DoosUtils.nullToEmpty(taxon.getRang()), fouten);
-    valideerStatus(DoosUtils.nullToEmpty(taxon.getStatus()), fouten);
-    valideerVolgnummer(taxon.getVolgnummer(), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(taxon.getStatus())
+                               .setAttribute(TaxonDto.COL_STATUS)
+                               .setLabel(LBL_STATUS)
+                               .setLowerCase()
+                               .setMaxLengte(2)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(taxon.getVolgnummer())
+                               .setAttribute(TaxonDto.COL_VOLGNUMMER)
+                               .setLabel(LBL_VOLGNUMMER)
+                               .setRequired()
+                               .valideer().getFouten());
+
     var aantal  = fouten.size();
     switch (DoosUtils.nullToEmpty(taxon.getRang())) {
-      case NatuurConstants.RANG_SOORT:
-        valideerSoort(taxon, fouten);
-        break;
-      case NatuurConstants.RANG_ONDERSOORT:
-        valideerOndersoort(taxon, fouten);
-        break;
-      default:
-        break;
+      case NatuurConstants.RANG_SOORT -> valideerSoort(taxon, fouten);
+      case NatuurConstants.RANG_ONDERSOORT -> valideerOndersoort(taxon, fouten);
+      default -> {
+      }
     }
     if (aantal == fouten.size()) {
       valideerRang(taxon, fouten);
     }
 
     return fouten;
-  }
-
-  private static void valideerLatijnsenaam(String latijnsenaam,
-                                           List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(latijnsenaam)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_LATIJNSENAAM})
-                            .build());
-      return;
-    }
-
-    if (latijnsenaam.length() > 255) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_LATIJNSENAAM, 255})
-                            .build());
-    }
   }
 
   private static void valideerOndersoort(Taxon taxon, List<Message> fouten) {
@@ -151,30 +144,6 @@ public final class TaxonValidator extends NatuurValidator {
     }
   }
 
-  private static void valideerStatus(String status, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(status)) {
-      return;
-    }
-
-    if (status.length() > 2) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_STATUS)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{LBL_STATUS, 2})
-                            .build());
-    }
-
-    if (!status.toLowerCase().equals(status)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_STATUS)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.NIETLCASE)
-                            .setParams(new Object[]{LBL_STATUS})
-                            .build());
-    }
-  }
-
   private static void valideerSoort(Taxon taxon, List<Message> fouten) {
     var deel  = taxon.getLatijnsenaam().split(" ");
     if (deel.length != 2) {
@@ -195,18 +164,6 @@ public final class TaxonValidator extends NatuurValidator {
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
                             .setMessage(ERR_LATIJNSENAAMFOUT)
-                            .build());
-    }
-  }
-
-  private static void valideerVolgnummer(Long volgnummer,
-                                         List<Message> fouten) {
-    if (null == volgnummer) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(TaxonDto.COL_VOLGNUMMER)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_VOLGNUMMER})
                             .build());
     }
   }

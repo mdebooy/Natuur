@@ -16,18 +16,19 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import java.io.Serializable;
 import java.util.Comparator;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.JoinColumn;
-import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -39,30 +40,31 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Entity
 @Table(name="REGIOLIJST_TAXA", schema="NATUUR")
 @IdClass(RegiolijstTaxonPK.class)
-@NamedQuery(name="regiolijsttaxonPerRegio", query="select r from RegiolijstTaxonDto r where r.regioId=:regioId")
+@NamedQuery(name="regiolijsttaxonPerRegiolijst", query="select r from RegiolijstTaxonDto r where r.regiolijstId=:regiolijstId")
 @NamedQuery(name="regiolijsttaxonPerTaxon", query="select r from RegiolijstTaxonDto r where r.taxonId=:taxonId")
 // Zonder is de query veel te traag: and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso')
-@NamedQuery(name="regiolijsttaxonTotalenPerRegio", query="select r.regioId, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o where r.taxonId=o.parentId and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso') and o.parentRang=o.rang group by r.regioId")
+@NamedQuery(name="regiolijsttaxonTotalenPerRegiolijst", query="select r.regiolijstId, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o where r.taxonId=o.parentId and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso') and o.parentRang=o.rang group by r.regiolijstId")
 public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  COL_REGIOID = "regioId";
-  public static final String  COL_STATUS  = "status";
-  public static final String  COL_TAXONID = "taxonId";
+  public static final String  COL_REGIOLIJSTID  = "regiolijstId";
+  public static final String  COL_STATUS        = "status";
+  public static final String  COL_TAXONID       = "taxonId";
 
-  public static final String  PAR_REGIOID = "regioId";
-  public static final String  PAR_TAXONID = "taxonId";
+  public static final String  PAR_REGIOLIJSTID  = "regiolijstId";
+  public static final String  PAR_TAXONID       = "taxonId";
 
-  public static final String  QRY_TOTPERREGIO =
-      "regiolijsttaxonTotalenPerRegio";
-  public static final String  QRY_REGIO       = "regiolijsttaxonPerRegio";
-  public static final String  QRY_TAXON       = "regiolijsttaxonPerTaxon";
+  public static final String  QRY_TOTPERREGIOLIJST  =
+      "regiolijsttaxonTotalenPerRegiolijst";
+  public static final String  QRY_REGIOLIJST        =
+      "regiolijsttaxonPerRegiolijst";
+  public static final String  QRY_TAXON             = "regiolijsttaxonPerTaxon";
 
   @Transient
   private boolean   gezien  = false;
   @Id
-  @Column(name="REGIO_ID", nullable=false)
-  private Long      regioId;
+  @Column(name="REGIOLIJST_ID", nullable=false)
+  private Long      regiolijstId;
   @Column(name="STATUS", length = 2)
   private String    status;
   @Id
@@ -91,7 +93,7 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
 
   @Override
   public int compareTo(RegiolijstTaxonDto naamDto) {
-    return new CompareToBuilder().append(regioId, naamDto.regioId)
+    return new CompareToBuilder().append(regiolijstId, naamDto.regiolijstId)
                                  .append(taxonId, naamDto.taxonId)
                                  .toComparison();
   }
@@ -106,13 +108,13 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
     }
 
     var naamDto = (RegiolijstTaxonDto) object;
-    return new EqualsBuilder().append(regioId, naamDto.regioId)
+    return new EqualsBuilder().append(regiolijstId, naamDto.regiolijstId)
                               .append(taxonId, naamDto.taxonId)
                               .isEquals();
   }
 
-  public Long getRegioId() {
-    return regioId;
+  public Long getRegiolijstId() {
+    return regiolijstId;
   }
 
   public String getStatus() {
@@ -129,7 +131,8 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(taxonId).toHashCode();
+    return new HashCodeBuilder().append(regiolijstId)
+                                .append(taxonId).toHashCode();
   }
 
   public boolean isGezien() {
@@ -137,30 +140,26 @@ public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxo
   }
 
   public void setGezien(boolean gezien) {
-    this.gezien   = gezien;
+    this.gezien       = gezien;
   }
 
-  public void setRegioId(Long regioId) {
-    this.regioId  = regioId;
+  public void setRegiolijstId(Long regiolijstId) {
+    this.regiolijstId = regiolijstId;
   }
 
   public void setStatus(String status) {
-    if (null == status) {
-      this.status = null;
-    } else {
-      this.status = status;
-    }
+    this.status       = DoosUtils.stripToLowerCase(status);
   }
 
   public void setTaxon(TaxonDto taxon) {
     if (null == taxon) {
-      this.taxon= null;
+      this.taxon      = null;
     } else {
-      this.taxon = taxon;
+      this.taxon      = taxon;
     }
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+    this.taxonId      = taxonId;
   }
 }

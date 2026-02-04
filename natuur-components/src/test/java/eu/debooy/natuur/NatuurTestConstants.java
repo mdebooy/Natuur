@@ -32,6 +32,8 @@ public final class NatuurTestConstants {
   public static final Integer AANTALFOTOS             = 0;
   public static final String  COORDINATEN             =
       "N 30 31 33,210 - E 40 41 43,210";
+  public static final String  BESCHRIJVING            = "Beschrijving.";
+  public static final String  BESCHRIJVINGTYPE        = "btype";
   public static final int     DETAILPK_HASH           = 28871;
   public static final String  FOTOBESTAND             = "fotobestand";
   public static final String  FOTODETAIL              = "fotodetail";
@@ -109,9 +111,10 @@ public final class NatuurTestConstants {
   public static final int     RANGNAAM_HASH           = 268443;
   public static final String  RANGNAAM_KL             = "orde";
   public static final Long    REGIOID                 = 101L;
-  public static final int     REGIOLIJST_HASH         = 730;
-  public static final int     REGIOLIJSTTAXON_HASH    = 28020;
-  public static final int     REGIOLIJSTTAXONPK_HASH  = 28020;
+  public static final int     REGIOLIJST_HASH         = 2002365212;
+  public static final Long    REGIOLIJSTID            = 12L;
+  public static final int     REGIOLIJSTTAXON_HASH    = 24727;
+  public static final int     REGIOLIJSTTAXONPK_HASH  = 24727;
   public static final String  TAAL                    = "nld";
   public static final String  STATUS                  = "st";
   public static final String  TAAL_FOUT               = "xxxx";

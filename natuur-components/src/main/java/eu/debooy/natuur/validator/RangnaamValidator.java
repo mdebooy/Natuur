@@ -18,10 +18,12 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.form.Rangnaam;
+import static eu.debooy.natuur.validator.NatuurValidator.LBL_NAAM;
+import static eu.debooy.natuur.validator.NatuurValidator.LBL_TAAL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,9 @@ import java.util.List;
  * @author Marco de Booij
  */
 public class RangnaamValidator extends NatuurValidator {
-  private RangnaamValidator() {}
+  private RangnaamValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(RangnaamDto rangnaam) {
     if (null == rangnaam) {
@@ -47,53 +51,23 @@ public class RangnaamValidator extends NatuurValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerNaam(DoosUtils.nullToEmpty(rangnaam.getNaam()), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(rangnaam.getNaam())
+                               .setAttribute(RangnaamDto.COL_NAAM)
+                               .setLabel(LBL_NAAM)
+                               .setMaxLengte(255)
+                               .setRequired()
+                               .valideer().getFouten());
     valideerRang(DoosUtils.nullToEmpty(rangnaam.getRang()), fouten);
-    valideerTaal(DoosUtils.nullToEmpty(rangnaam.getTaal()), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(rangnaam.getTaal())
+                               .setAttribute(RangnaamDto.COL_TAAL)
+                               .setLabel(LBL_TAAL)
+                               .setLowerCase()
+                               .setFixLengte(3)
+                               .setRequired()
+                               .valideer().getFouten());
 
     return fouten;
-  }
-
-  private static void valideerNaam(String naam, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(naam)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangnaamDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{NatuurValidator.LBL_NAAM})
-                            .build());
-      return;
-    }
-
-    if (naam.length() > 255) {
-    fouten.add(new Message.Builder()
-                          .setAttribute(RangnaamDto.COL_NAAM)
-                          .setSeverity(Message.ERROR)
-                          .setMessage(PersistenceConstants.MAXLENGTH)
-                          .setParams(new Object[]{NatuurValidator.LBL_NAAM,
-                                                  255})
-                          .build());
-    }
-  }
-
-  private static void valideerTaal(String taal, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taal)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(RangnaamDto.COL_TAAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{NatuurValidator.LBL_TAAL})
-                            .build());
-      return;
-    }
-
-    if (taal.length() != 3) {
-    fouten.add(new Message.Builder()
-                          .setAttribute(RangnaamDto.COL_TAAL)
-                          .setSeverity(Message.ERROR)
-                          .setMessage(PersistenceConstants.FIXLENGTH)
-                          .setParams(new Object[]{NatuurValidator.LBL_TAAL, 3})
-                          .build());
-    }
   }
 }

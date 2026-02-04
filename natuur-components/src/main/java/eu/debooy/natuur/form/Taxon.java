@@ -388,41 +388,37 @@ public class Taxon
   }
 
   public void setParentRangnaam(String parentRangnaam) {
-    this.parentRangnaam     = DoosUtils.strip(parentRangnaam);
+    this.parentRangnaam   = DoosUtils.strip(parentRangnaam);
   }
 
   public void setParentStatus(String parentStatus) {
-    this.parentStatus       = DoosUtils.stripToLowerCase(parentStatus);
+    this.parentStatus     = DoosUtils.stripToLowerCase(parentStatus);
   }
 
   public void setParentVolgnummer(Long parentVolgnummer) {
-    this.parentVolgnummer   = parentVolgnummer;
+    this.parentVolgnummer = parentVolgnummer;
   }
 
   public void setRang(Rang rang) {
-    this.niveau             = rang.getNiveau();
-    this.rang               = rang.getRang();
-    this.rangnaam           = rang.getNaam();
+    this.niveau           = rang.getNiveau();
+    this.rang             = rang.getRang();
+    this.rangnaam         = rang.getNaam();
   }
 
   public void setRang(String rang) {
-    this.rang               = DoosUtils.stripToLowerCase(rang);
+    this.rang             = DoosUtils.stripToLowerCase(rang);
   }
 
   public void setRangnaam(String rangnaam) {
-    this.rangnaam           = DoosUtils.strip(rangnaam);
+    this.rangnaam         = DoosUtils.strip(rangnaam);
   }
 
   public void setStatus(String status) {
-    if (DoosUtils.isBlankOrNull(status)) {
-      this.status           = null;
-    } else {
-      this.status           = DoosUtils.stripToLowerCase(status);
-    }
+    this.status           = DoosUtils.stripToLowerCase(status);
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId            = taxonId;
+    this.taxonId          = taxonId;
   }
 
   public void setVolgnummer(Long volgnummer) {

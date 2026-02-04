@@ -36,16 +36,16 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
 import eu.debooy.natuur.validator.FotoValidator;
 import eu.debooy.natuur.validator.WaarnemingValidator;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -174,6 +174,17 @@ public class WaarnemingController extends Natuur {
     return Datum.fromDate(datum, getTekst("kalender.datum.formaat"));
   }
 
+  @Override
+  public String getDeletetekst() {
+    return String.format("%s - %s", formateerDatum(waarneming.getDatum()),
+                                    waarneming.getGebied().getNaam());
+  }
+
+  @Override
+  public String getDetailDeletetekst() {
+    return String.format("%s - %s", foto.getTaxonSeq(), foto.getFotoBestand());
+  }
+
   public Foto getFoto() {
     return foto;
   }
@@ -278,28 +289,28 @@ public class WaarnemingController extends Natuur {
     var datum = formateerDatum(waarneming.getDatum());
     try {
       switch (getAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           waarneming.setGebied(
-              new Gebied(getGebiedService().gebied(
-                      waarneming.getGebied().getGebiedId())));
+                  new Gebied(getGebiedService().gebied(
+                          waarneming.getGebied().getGebiedId())));
           waarneming.persist(waarnemingDto);
           getWaarnemingService().save(waarnemingDto);
           waarneming.setWaarnemingId(waarnemingDto.getWaarnemingId());
           addInfo(PersistenceConstants.CREATED, datum);
-          break;
-        case PersistenceConstants.UPDATE:
+          update();
+        }
+        case PersistenceConstants.UPDATE -> {
           waarneming.setGebied(
-              new Gebied(getGebiedService().gebied(
-                      waarneming.getGebied().getGebiedId())));
+                  new Gebied(getGebiedService().gebied(
+                          waarneming.getGebied().getGebiedId())));
           waarneming.persist(waarnemingDto);
           getWaarnemingService().save(waarnemingDto);
           addInfo(PersistenceConstants.UPDATED, datum);
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getAktie().getAktie());
       }
-      redirect(TAXON_REDIRECT);
+      redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, datum);
     } catch (ObjectNotFoundException e) {
@@ -339,22 +350,21 @@ public class WaarnemingController extends Natuur {
     var taxonSeq  = foto.getTaxonSeq();
     try {
       switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           foto.persist(fotoDto);
           getFotoService().save(fotoDto);
           waarnemingDto.addFoto(fotoDto);
           addInfo(PersistenceConstants.CREATED, "'" + taxonSeq + "'");
-          break;
-        case PersistenceConstants.UPDATE:
+          updateDetail();
+        }
+        case PersistenceConstants.UPDATE -> {
           foto.persist(fotoDto);
           getFotoService().save(fotoDto);
           waarnemingDto.addFoto(fotoDto);
           addInfo(PersistenceConstants.UPDATED, "'" + taxonSeq + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT,
-                   getDetailAktie().getAktie()) ;
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getDetailAktie().getAktie()) ;
       }
       redirect(WAARNEMING_REDIRECT);
     } catch (DuplicateObjectException e) {

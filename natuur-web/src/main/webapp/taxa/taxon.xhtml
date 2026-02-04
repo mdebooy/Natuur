@@ -1,11 +1,11 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://java.debooy.eu/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:t="http://myfaces.apache.org/tomahawk"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
@@ -77,6 +77,40 @@
             { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
           ]
         } );
+        var taxonbeschrijvingenTabel = $('#taxonbeschrijvingenTabel').DataTable( {
+          ajax: { url: '/natuur/taxonbeschrijvingen/taxon/#{natuurTaxon.taxon.taxonId}',
+                  dataSrc: '' },
+          order: [[1, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: 1,
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: null, visible: false, render: function ( data, type, row ) {
+                return getBeschrijvingseq(data.beschrijvingtype, iso6392t);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.beschrijvingtype')}', orderData: 0, render: function ( data, type, row ) {
+                return getBeschrijvingtype(data.beschrijvingtype, taal);
+              }
+            },
+            { data: 'beschrijving', title: '#{i18nTeksten.tekst('label.beschrijving')}' }
+          ]
+        } );
         var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen/taxon/#{natuurTaxon.taxon.taxonId}/' + iso6392t,
                   dataSrc: '' },
@@ -116,7 +150,7 @@
             { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
             { data: 'gebied.naam', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
-                return getLandnaam(data.gebied.landId, taal);
+                return getLandnaam(data.gebied.landId, iso6392t);
               }
             },
             { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
@@ -161,7 +195,7 @@
             { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
             { data: 'gebied', title: '#{i18nTeksten.tekst('label.gebied')}' },
             { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
-                return getLandnaam(data.landId, taal);
+                return getLandnaam(data.landId, iso6392t);
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
@@ -204,7 +238,7 @@
           },
           columns: [
             { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
-                return getRegionaam(data.regioId);
+                return getRegionaam(data.regioId, iso6392t);
               }
             }
           ]
@@ -225,6 +259,14 @@
           alterParam(jsfCommandLink, taxonnamenTabel.row(this).data().taal);
           jsfCommandLink.click();
         } );
+        $( '#taxonbeschrijvingenTabel tbody').on('click', 'tr', function() {
+          if (taxonbeschrijvingenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkTaxonbeschrijving');
+          alterParam(jsfCommandLink, taxonbeschrijvingenTabel.row(this).data().beschrijvingtype);
+          jsfCommandLink.click();
+        } );
         $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
           if (waarnemingenTabel.row(this).data() === undefined) {
             return;
@@ -238,6 +280,7 @@
           alterParam(document.getElementById('formTaxon:addTaxa'), #{natuurTaxon.taxon.taxonId});
           alterParam(document.getElementById('formTaxon:addWaarnemingen'), #{natuurTaxon.taxon.taxonId});
           addInsertButton('taxaTabel', 'formTaxon', imgTekst);
+          addInsertButton('taxonbeschrijvingenTabel', 'formTaxon', imgTekst);
           addInsertButton('taxonnamenTabel', 'formTaxon', imgTekst);
           addInsertButton('waarnemingenTabel', 'formTaxon', imgTekst);
         }
@@ -286,6 +329,7 @@
                       <div class="control">
                         <h:commandLink id="parent" action="#{natuurTaxon.retrieve}" styleClass="button" rendered="#{!natuurTaxon.aktie.nieuw and !empty natuurTaxon.taxon.parentId}">#{i18nTeksten.tekst('label.ouder')}
                           <f:param name="taxonId" value="#{natuurTaxon.taxon.parentId}" />
+                          <f:param name="returnTo" value="#{natuurTaxon.returnTo}" />
                         </h:commandLink>
                       </div>
                     </div>
@@ -299,14 +343,15 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxon" returnto="#{natuur.path}#{natuurTaxon.returnTo}" tekst="#{natuurTaxon.taxon.naam}" />
+              <d:crudbuttonbar bean="#{natuurTaxon}" form="formTaxon" returnto="#{natuur.path}#{natuurTaxon.returnTo}" />
 
-              <t:div rendered="#{!natuurTaxon.aktie.nieuw}">
+              <c:if test="#{!natuurTaxon.aktie.nieuw}">
                 <d:spacer />
                 <div id="taxonTabs" class="tabs is-boxed">
                   <ul>
                     <li id="tabKinderen" class="tab-link is-active" onclick="switchToTab('Kinderen')"><a>#{i18nTeksten.tekst('tab.kinderen')}</a></li>
                     <li id="tabNamen" class="tab-link" onclick="switchToTab('Namen')"><a>#{i18nTeksten.tekst('tab.namen')}</a></li>
+                    <li id="tabBeschrijvingen" class="tab-link" onclick="switchToTab('Beschrijvingen')"><a>#{i18nTeksten.tekst('tab.beschrijvingen')}</a></li>
                     <li id="tabWaarnemingen" class="tab-link" onclick="switchToTab('Waarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
                     <li id="tabFotos" class="tab-link" onclick="switchToTab('Fotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
                     <li id="tabRegios" class="tab-link" onclick="switchToTab('Regios')"><a>#{i18nTeksten.tekst('tab.regios')}</a></li>
@@ -330,13 +375,23 @@
                     </h:commandLink>
                     <h:commandLink id="addTaxonnamen" class="is-hidden" action="#{natuurTaxon.createDetail}" />
                   </div>
+                  <div id="conBeschrijvingen" class="tab-detail is-hidden">
+                    <table id="taxonbeschrijvingenTabel" class="table is-striped is-narrow" aria-describedby="taxonbeschrijvingenTabel" />
+                    <h:commandLink id="linkTaxonbeschrijving" class="is-hidden" action="#{natuurTaxonbeschrijving.retrieve}">
+                      <f:param name="beschrijvingtype" value="XX" />
+                      <f:param name="taxonId" value="#{natuurTaxon.taxon.taxonId}" />
+                    </h:commandLink>
+                    <h:commandLink id="addTaxonbeschrijvingen" class="is-hidden" action="#{natuurTaxonbeschrijving.create}">
+                      <f:param name="taxonId" value="#{natuurTaxon.taxon.taxonId}" />
+                    </h:commandLink>
+                  </div>
                   <div id="conWaarnemingen" class="tab-detail is-hidden">
                     <table id="waarnemingenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="waarnemingenTabel" />
                     <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurWaarneming.retrieve}">
                       <f:param name="waarnemingId" value="XX" />
                     </h:commandLink>
                     <h:commandLink id="addWaarnemingen" class="is-hidden" action="#{natuurWaarneming.create}">
-                      <f:param name="taxonId" value="XX" />
+                      <f:param name="taxonId" value="#{natuurTaxon.taxon.taxonId}" />
                     </h:commandLink>
                   </div>
                   <div id="conFotos" class="tab-detail is-hidden">
@@ -346,7 +401,7 @@
                     <table id="regiosTabel" class="table is-striped is-narrow" aria-describedby="regiosTabel" />
                   </div>
                 </div>
-              </t:div>
+              </c:if>
             </div>
           </div>
         </h:form>

@@ -1,14 +1,12 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://java.debooy.eu/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:t="http://myfaces.apache.org/tomahawk"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
-//<![CDATA[
       $(document).ready(function() {
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
@@ -149,7 +147,6 @@
         } );
         initTabs();
       } );
-//]]>
     </script>
   </ui:define>
   <ui:define name="body">
@@ -169,7 +166,7 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.land')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.selectLanden}" textvalue="#{natuurGebied.landnaam}" />
+                  <d:listbox id="landId" value="#{natuurGebied.gebied.landId}" fullwidth="true" required="true" readonly="#{natuurGebied.aktie.readonly}" items="#{sedesRemote.selectLandnamen}" textvalue="#{sedesRemote.i18nLandnaam(natuurGebied.gebied.landId)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -177,25 +174,19 @@
                 <div class="field-body is-normal">
                   <d:listbox id="latitude" value="#{natuurGebied.gebied.latitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.latitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.latitude)}" />
                   <div class="field has-addons">
-                    <t:inputText id="latitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0" />
-                    </t:inputText>
+                    <d:inputText id="latitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeGraden}" pattern="#0" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">°</span>
                     </div>
                   </div>
                   <div class="field has-addons">
-                    <t:inputText id="latitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0" />
-                    </t:inputText>
+                    <d:inputText id="latitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">'</span>
                     </div>
                   </div>
                   <div class="field has-addons">
-                    <t:inputText id="latitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0.000" />
-                    </t:inputText>
+                    <d:inputText id="latitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.latitudeSeconden}" pattern="#0.000" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">"</span>
                     </div>
@@ -207,25 +198,19 @@
                 <div class="field-body is-normal">
                   <d:listbox id="longitude" value="#{natuurGebied.gebied.longitude}" fullwidth="true" readonly="#{natuurGebied.aktie.readonly}" items="#{natuurGebied.longitudes}" textvalue="#{natuurGebied.getWindstreek(natuurGebied.gebied.longitude)}" />
                   <div class="field has-addons">
-                    <t:inputText id="longitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeGraden}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0" />
-                    </t:inputText>
+                    <d:inputText id="longitudeGraden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeGraden}" pattern="#0" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">°</span>
                     </div>
                   </div>
                   <div class="field has-addons">
-                    <t:inputText id="longitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeMinuten}" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0" />
-                    </t:inputText>
+                    <d:inputText id="longitudeMinuten" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeMinuten}" pattern="#0" maxlength="2" size="2" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">'</span>
                     </div>
                   </div>
                   <div class="field has-addons">
-                    <t:inputText id="longitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeSeconden}" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}">
-                      <f:convertNumber type="number" pattern="#0.000" />
-                    </t:inputText>
+                    <d:inputText id="longitudeSeconden" styleClass="input has-text-right" value="#{natuurGebied.gebied.longitudeSeconden}" pattern="#0.000" maxlength="6" size="6" readonly="#{natuurGebied.aktie.readonly}" />
                     <div class="control">
                       <span class="button is-static">"</span>
                     </div>
@@ -233,9 +218,9 @@
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurGebied}" form="formGebied" returnto="#{natuur.path}/gebieden/gebieden.xhtml" tekst="#{natuurGebied.gebied.naam}" />
+              <d:crudbuttonbar bean="#{natuurGebied}" form="formGebied" returnto="#{natuur.path}/gebieden/gebieden.xhtml" />
 
-              <t:div rendered="#{!natuurGebied.aktie.nieuw}">
+              <c:if test="#{!natuurGebied.aktie.nieuw}">
                 <d:spacer />
                 <div id="rangTabs" class="tabs is-boxed">
                   <ul>
@@ -255,7 +240,7 @@
                     <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
                   </div>
                 </div>
-              </t:div>
+              </c:if>
             </div>
           </div>
         </h:form>

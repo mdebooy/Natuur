@@ -30,19 +30,20 @@ public class RegiolijstTaxonPK
   private static final  long  serialVersionUID  = 1L;
 
   private Long  taxonId;
-  private Long  regioId;
+  private Long  regiolijstId;
 
   public RegiolijstTaxonPK() {}
 
-  public RegiolijstTaxonPK(Long regioId, Long taxonId) {
+  public RegiolijstTaxonPK(Long regiolijstId, Long taxonId) {
     super();
-    this.regioId  = regioId;
-    this.taxonId  = taxonId;
+    this.regiolijstId = regiolijstId;
+    this.taxonId      = taxonId;
   }
 
   @Override
   public int compareTo(RegiolijstTaxonPK regiolijstTaxonPK) {
-    return new CompareToBuilder().append(regioId, regiolijstTaxonPK.regioId)
+    return new CompareToBuilder().append(regiolijstId,
+                                         regiolijstTaxonPK.regiolijstId)
                                  .append(taxonId, regiolijstTaxonPK.taxonId)
                                  .toComparison();
   }
@@ -57,13 +58,14 @@ public class RegiolijstTaxonPK
     }
 
     var regiolijstTaxonPK = (RegiolijstTaxonPK) object;
-    return new EqualsBuilder().append(regioId, regiolijstTaxonPK.regioId)
+    return new EqualsBuilder().append(regiolijstId,
+                                      regiolijstTaxonPK.regiolijstId)
                               .append(taxonId, regiolijstTaxonPK.taxonId)
                               .isEquals();
   }
 
-  public Long getRegioId() {
-    return regioId;
+  public Long getRegiolijstId() {
+    return regiolijstId;
   }
 
   public Long getTaxonId() {
@@ -72,22 +74,22 @@ public class RegiolijstTaxonPK
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId)
+    return new HashCodeBuilder().append(regiolijstId)
                                 .append(taxonId).toHashCode();
   }
 
-  public void setRegioId(Long regioId) {
-    this.regioId = regioId;
+  public void setRegiolijstId(Long regiolijstId) {
+    this.regiolijstId = regiolijstId;
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+    this.taxonId      = taxonId;
   }
 
   @Override
   public String toString() {
     return new StringBuilder().append("RegiolijstTaxonPK")
-                              .append(" (regioId=").append(regioId)
+                              .append(" (regiolijstId=").append(regiolijstId)
                               .append(", taxonId=").append(taxonId)
                               .append(")").toString();
   }

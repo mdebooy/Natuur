@@ -1,10 +1,9 @@
 <ui:composition
      xmlns="http://www.w3.org/1999/xhtml"
-   xmlns:c="http://java.sun.com/jsp/jstl/core"
+   xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
    xmlns:d="http://java.debooy.eu/jsf/facelets"
-   xmlns:h="http://java.sun.com/jsf/html"
-   xmlns:t="http://myfaces.apache.org/tomahawk"
-  xmlns:ui="http://java.sun.com/jsf/facelets"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
   template="/WEB-INF/templates/template.xhtml">
   <ui:define name="body">
     <div class="columns is-centered content">
@@ -17,27 +16,27 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst(natuurAppParam.parameter)}" />
                 <div class="field-body is-normal">
-                  <t:div rendered="#{!natuurAppParam.isSpeciaal(natuurAppParam.sleutel)}">
+                  <c:if test="#{!natuurAppParam.isSpeciaal(natuurAppParam.sleutel)}">
                     <d:inputText id="waarde" value="#{natuurAppParam.waarde}" required="true" maxlength="255" size="100" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.landid'}">
-                    <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{natuurGebied.selectLanden}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.rang'}">
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.default.landid'}">
+                    <d:listbox id="landId" value="#{natuurAppParam.landId}" items="#{sedesRemote.selectLandnamen}" fullwidth="true" required="true" textvalue="" />
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.default.rang'}">
                     <d:listbox id="rang" value="#{natuurAppParam.rang}" items="#{natuurRang.selectRangen}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.default.gebiedid'}">
                     <d:listbox id="gebiedId" value="#{natuurAppParam.gebiedId}" items="#{natuurGebied.selectGebieden}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.1'}">
-                    <d:listbox id="taal1" value="#{natuurAppParam.taal1}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.2'}">
-                    <d:listbox id="taal2" value="#{natuurAppParam.taal2}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
-                  <t:div rendered="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.3'}">
-                    <d:listbox id="taal3" value="#{natuurAppParam.taal3}" items="#{i18nTeksten.talenIso6392t()}" fullwidth="true" required="true" textvalue="" />
-                  </t:div>
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.1'}">
+                    <d:listbox id="taal1" value="#{natuurAppParam.taal1}" items="#{doosRemote.talenIso6392t}" fullwidth="true" required="true" textvalue="" />
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.2'}">
+                    <d:listbox id="taal2" value="#{natuurAppParam.taal2}" items="#{doosRemote.talenIso6392t}" fullwidth="true" required="true" textvalue="" />
+                  </c:if>
+                  <c:if test="#{natuurAppParam.sleutel=='natuur.regiolijst.taal.3'}">
+                    <d:listbox id="taal3" value="#{natuurAppParam.taal3}" items="#{doosRemote.talenIso6392t}" fullwidth="true" required="true" textvalue="" />
+                  </c:if>
                 </div>
                </div>
 

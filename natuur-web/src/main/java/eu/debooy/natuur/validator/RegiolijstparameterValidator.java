@@ -21,6 +21,7 @@ import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.form.Regiolijstparameter;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -34,7 +35,9 @@ import java.util.Set;
 public class RegiolijstparameterValidator extends NatuurValidator {
   protected static final  String  ERR_TALEN = "errors.uniek.talen";
 
-  private RegiolijstparameterValidator() {}
+  private RegiolijstparameterValidator() {
+   throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(Regiolijstparameter parameter) {
     if (null == parameter) {
@@ -46,9 +49,24 @@ public class RegiolijstparameterValidator extends NatuurValidator {
 
     valideerAanwezig(parameter.getTaal1(), parameter.getTaal2(),
                      parameter.getTaal3(), fouten);
-    valideerTaal1(parameter.getTaal1(), fouten);
-    valideerTaal2(parameter.getTaal2(), fouten);
-    valideerTaal3(parameter.getTaal3(), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(parameter.getTaal1())
+                               .setAttribute(Regiolijstparameter.COL_TAAL1)
+                               .setLabel(LBL_TAAL)
+                               .setFixLengte(3)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(parameter.getTaal2())
+                               .setAttribute(Regiolijstparameter.COL_TAAL2)
+                               .setLabel(LBL_TAAL)
+                               .setFixLengte(3)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(parameter.getTaal3())
+                               .setAttribute(Regiolijstparameter.COL_TAAL3)
+                               .setLabel(LBL_TAAL)
+                               .setFixLengte(3)
+                               .valideer().getFouten());
     valideerUniek(parameter.getTaal1(), parameter.getTaal2(),
                   parameter.getTaal3(), fouten);
 
@@ -63,54 +81,6 @@ public class RegiolijstparameterValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setSeverity(Message.ERROR)
                             .setMessage(PersistenceConstants.EMPTY)
-                            .build());
-    }
-  }
-
-  private static void valideerTaal1(String taal, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taal)) {
-      return;
-    }
-
-    if (taal.length() != 3) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(Regiolijstparameter.COL_TAAL1)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FIXLENGTH)
-                            .setParams(new Object[]
-                                          {NatuurValidator.LBL_TAAL, 3})
-                            .build());
-    }
-  }
-
-  private static void valideerTaal2(String taal, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taal)) {
-      return;
-    }
-
-    if (taal.length() != 3) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(Regiolijstparameter.COL_TAAL2)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FIXLENGTH)
-                            .setParams(new Object[]
-                                          {NatuurValidator.LBL_TAAL, 3})
-                            .build());
-    }
-  }
-
-  private static void valideerTaal3(String taal, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(taal)) {
-      return;
-    }
-
-    if (taal.length() != 3) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(Regiolijstparameter.COL_TAAL3)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FIXLENGTH)
-                            .setParams(new Object[]
-                                          {NatuurValidator.LBL_TAAL, 3})
                             .build());
     }
   }

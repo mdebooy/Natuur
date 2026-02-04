@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<persistence version="2.0"
-               xmlns="http://java.sun.com/xml/ns/persistence"
+<persistence   xmlns="http://xmlns.jcp.org/xml/ns/persistence"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
-                      http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+                      http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
   <persistence-unit name="natuur" transaction-type="JTA">
     <jta-data-source>jdbc/Natuur</jta-data-source>
 
@@ -17,6 +16,7 @@
     <class>eu.debooy.natuur.domain.RangnaamDto</class>
     <class>eu.debooy.natuur.domain.RegiolijstDto</class>
     <class>eu.debooy.natuur.domain.RegiolijstTaxonDto</class>
+    <class>eu.debooy.natuur.domain.TaxonbeschrijvingDto</class>
     <class>eu.debooy.natuur.domain.TaxonDto</class>
     <class>eu.debooy.natuur.domain.TaxonnaamDto</class>
     <class>eu.debooy.natuur.domain.WaarnemingDto</class>

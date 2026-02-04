@@ -34,7 +34,7 @@ public class RegiolijstTaxon
   private static final  long  serialVersionUID  = 1L;
 
   private boolean gezien;
-  private Long    regioId;
+  private Long    regiolijstId;
   private String  status;
   private Taxon   taxon;
   private Long    taxonId;
@@ -46,20 +46,21 @@ public class RegiolijstTaxon
   }
 
   public RegiolijstTaxon(RegiolijstTaxonDto regiolijstTaxonDto, String taal) {
-    gezien  = regiolijstTaxonDto.isGezien();
-    regioId = regiolijstTaxonDto.getRegioId();
-    status  = regiolijstTaxonDto.getStatus();
+    gezien        = regiolijstTaxonDto.isGezien();
+    regiolijstId  = regiolijstTaxonDto.getRegiolijstId();
+    status        = regiolijstTaxonDto.getStatus();
     if (null == regiolijstTaxonDto.getTaxon()) {
       taxon = new Taxon();
     } else {
       taxon = new Taxon(regiolijstTaxonDto.getTaxon(), taal);
     }
-    taxonId = regiolijstTaxonDto.getTaxonId();
+    taxonId       = regiolijstTaxonDto.getTaxonId();
   }
 
   @Override
   public int compareTo(RegiolijstTaxon regiolijstTaxon) {
-    return new CompareToBuilder().append(regioId, regiolijstTaxon.regioId)
+    return new CompareToBuilder().append(regiolijstId,
+                                         regiolijstTaxon.regiolijstId)
                                  .append(taxonId, regiolijstTaxon.taxonId)
                                  .toComparison();
   }
@@ -74,13 +75,14 @@ public class RegiolijstTaxon
     }
 
     var regiolijstTaxon = (RegiolijstTaxon) object;
-    return new EqualsBuilder().append(regioId, regiolijstTaxon.regioId)
+    return new EqualsBuilder().append(regiolijstId,
+                                      regiolijstTaxon.regiolijstId)
                               .append(taxonId, regiolijstTaxon.taxonId)
                               .isEquals();
   }
 
-  public Long getRegioId() {
-    return regioId;
+  public Long getRegiolijstId() {
+    return regiolijstId;
   }
 
   public String getStatus() {
@@ -97,7 +99,8 @@ public class RegiolijstTaxon
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(taxonId).toHashCode();
+    return new HashCodeBuilder().append(regiolijstId)
+                                .append(taxonId).toHashCode();
   }
 
   public boolean isGezien() {
@@ -105,7 +108,7 @@ public class RegiolijstTaxon
   }
 
   public void persist(RegiolijstTaxonDto parameter) {
-    parameter.setRegioId(regioId);
+    parameter.setRegiolijstId(regiolijstId);
     parameter.setStatus(status);
     parameter.setTaxonId(taxonId);
   }
@@ -114,19 +117,19 @@ public class RegiolijstTaxon
     this.gezien = gezien;
   }
 
-  public void setRegioId(Long regioId) {
-    this.regioId  = regioId;
+  public void setRegiolijstId(Long regiolijstId) {
+    this.regiolijstId = regiolijstId;
   }
 
   public void setStatus(String status) {
-    this.status   = status;
+    this.status       = DoosUtils.stripToLowerCase(status);
   }
 
   public void setTaxon(Taxon taxon) {
-    this.taxon    = taxon;
+    this.taxon        = taxon;
   }
 
   public void setTaxonId(Long taxonId) {
-    this.taxonId  = taxonId;
+    this.taxonId      = taxonId;
   }
 }

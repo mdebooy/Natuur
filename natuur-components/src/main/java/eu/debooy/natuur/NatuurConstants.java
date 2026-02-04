@@ -30,6 +30,20 @@ public final class NatuurConstants {
 
   public static final String  ERR_TAALONBEKEND  = "errors.taal.onbekend";
 
+  public static final String  FMT_LATIJNSENAAM_UITG = "%s %s";
+  public static final String  FMT_NAAMLATIJNSENAAM  = "%s (%s)";
+  public static final String  FMT_ONDERSOORT        = "%s ssp. %s";
+  public static final String  FMT_I18NCODE          = "%s.%s";
+  public static final String  FMT_VARIETEIT         = "%s var. %s";
+  public static final String  FMT_VORM              = "%s f. %s";
+
+  public static final String  LAT_VOGELS        = "Aves";
+  public static final String  LAT_ZOOGDIEREN    = "Mammalia";
+
+  public static final String  NATUUR_EM         = "natuur";
+
+  public static final String  PAR_LIJSTTAAL     = "natuur.regiolijst.taal.";
+
   public static final String  RANG_FAMILIE      = "fa";
   public static final String  RANG_GESLACHT     = "ge";
   public static final String  RANG_KLASSE       = "kl";
@@ -38,11 +52,6 @@ public final class NatuurConstants {
   public static final String  RANG_SOORT        = "so";
   public static final String  RANG_VARIETEIT    = "var";
   public static final String  RANG_VORM         = "frm";
-
-  public static final String  LAT_VOGELS        = "Aves";
-  public static final String  LAT_ZOOGDIEREN    = "Mammalia";
-
-  public static final String  PAR_LIJSTTAAL     = "natuur.regiolijst.taal.";
 
   public static final String  STAT_UITGESTORVEN = "ex";
 

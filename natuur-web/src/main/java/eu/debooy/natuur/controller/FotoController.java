@@ -23,14 +23,14 @@ import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.natuur.Natuur;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
 
 
 /**

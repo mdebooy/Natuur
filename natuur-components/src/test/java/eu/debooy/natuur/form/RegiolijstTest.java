@@ -16,8 +16,12 @@
  */
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.test.TestConstants;
 import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.domain.RegiolijstDto;
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -33,18 +37,30 @@ import org.junit.Test;
  */
 public class RegiolijstTest {
   private static  Date          datum;
+  private static  Date          gisteren;
+  private static  Date          morgen;
   private static  Regiolijst    regiolijst;
   private static  RegiolijstDto regiolijstDto;
 
   @BeforeClass
-  public static void setUpClass() {
-    datum         = new Date();
+  public static void setUpClass() throws ParseException {
+    datum         = Datum.stripTime(Datum.toDate(TestConstants.RUSHDATUM,
+                                                 TestConstants.FORMAAT));
+
+    var kalender  = Calendar.getInstance();
+    kalender.setTime(datum);
+    kalender.add(Calendar.DATE, -1);
+    gisteren      = kalender.getTime();
+    kalender.add(Calendar.DATE, 2);
+    morgen        = kalender.getTime();
+
     regiolijst    = new Regiolijst();
     regiolijstDto = new RegiolijstDto();
 
     regiolijst.setDatum(datum);
     regiolijst.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
     regiolijst.setRegioId(NatuurTestConstants.REGIOID);
+    regiolijst.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
 
     regiolijst.persist(regiolijstDto);
   }
@@ -56,8 +72,22 @@ public class RegiolijstTest {
     var kleiner = new Regiolijst();
 
     gelijk.setRegioId(regiolijst.getRegioId());
+    gelijk.setDatum(regiolijst.getDatum());
     groter.setRegioId(regiolijst.getRegioId() + 1);
+    groter.setDatum(regiolijst.getDatum());
     kleiner.setRegioId(regiolijst.getRegioId() - 1);
+    kleiner.setDatum(regiolijst.getDatum());
+
+    assertTrue(regiolijst.compareTo(groter) < 0);
+    assertEquals(0, regiolijst.compareTo(gelijk));
+    assertTrue(regiolijst.compareTo(kleiner) > 0);
+
+    gelijk.setRegioId(regiolijst.getRegioId());
+    gelijk.setDatum(regiolijst.getDatum());
+    groter.setRegioId(regiolijst.getRegioId());
+    groter.setDatum(morgen);
+    kleiner.setRegioId(regiolijst.getRegioId());
+    kleiner.setDatum(gisteren);
 
     assertTrue(regiolijst.compareTo(groter) < 0);
     assertEquals(0, regiolijst.compareTo(gelijk));
@@ -74,6 +104,7 @@ public class RegiolijstTest {
     assertNotEquals(regiolijst, instance);
 
     instance.setRegioId(regiolijst.getRegioId());
+    instance.setDatum(regiolijst.getDatum());
     assertEquals(regiolijst, instance);
 
     instance  = new Regiolijst(regiolijstDto);
@@ -87,7 +118,8 @@ public class RegiolijstTest {
 
   @Test
   public void testGetOmschrijving() {
-    assertEquals(NatuurTestConstants.OMSCHRIJVING, regiolijst.getOmschrijving());
+    assertEquals(NatuurTestConstants.OMSCHRIJVING,
+                 regiolijst.getOmschrijving());
   }
 
   @Test
@@ -164,7 +196,8 @@ public class RegiolijstTest {
   public void testSetOmschrijving() {
     var instance  = new Regiolijst();
 
-    assertNotEquals(NatuurTestConstants.OMSCHRIJVING, instance.getOmschrijving());
+    assertNotEquals(NatuurTestConstants.OMSCHRIJVING,
+                    instance.getOmschrijving());
 
     instance.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
 

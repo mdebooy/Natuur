@@ -21,6 +21,7 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
+import eu.debooy.natuur.form.Taxon;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -58,45 +59,86 @@ public final class NatuurUtils {
       return latijnsenaam;
     }
 
-    return String.format("%s %s", latijnsenaam, NatuurConstants.UITGESTORVEN);
+    return String.format(NatuurConstants.FMT_LATIJNSENAAM_UITG,
+                         latijnsenaam, NatuurConstants.UITGESTORVEN);
   }
 
   public static String getNaam(String naam, String latijnsenaam) {
-    return naam.equals(latijnsenaam) ? "" : naam;
+    return getNaam(naam, "", latijnsenaam, "", false);
   }
 
   public static String getNaam(DetailDto detail, String taal) {
-    return getNaam(detail.getNaam(taal), detail.getLatijnsenaam());
+    return getNaam(detail.hasTaxonnaam(taal) ? detail.getNaam(taal) : "",
+                   detail.hasParentnaam(taal) ? detail.getParentnaam(taal) : "",
+                   detail.getLatijnsenaam(), detail.getRang(), false);
   }
 
   public static String getNaam(TaxonDto taxon, String taal) {
-    return getNaam(taxon.getNaam(taal), taxon.getLatijnsenaam());
+    return getNaam(taxon.hasTaxonnaam(taal) ? taxon.getNaam(taal) : "",
+                   taxon.hasParentnaam(taal)
+                      ? taxon.getParentnaam(taal).getNaam() : "",
+                   taxon.getLatijnsenaam(), taxon.getRang(), false);
   }
 
   public static String getNaam(Map<String, TaxonnaamDto> taxonnamen,
                                Map<String, TaxonnaamDto> parentnamen,
                                String latijnsenaam, String rang, String taal) {
-    if (taxonnamen.containsKey(taal)) {
-      return taxonnamen.get(taal).getNaam();
+    return getNaam(taxonnamen.containsKey(taal) ?
+                      taxonnamen.get(taal).getNaam() : "",
+                   parentnamen.containsKey(taal) ?
+                      parentnamen.get(taal).getNaam() : "",
+                   latijnsenaam, rang, false);
+  }
+
+  public static String getNaam(String naam, String parentnaam,
+                               String latijnsenaam, String rang,
+                               boolean latijns) {
+    if (DoosUtils.isNotBlankOrNull(naam)) {
+      return naam;
     }
 
-    if (parentnamen.containsKey(taal)) {
-      switch (rang) {
-        case NatuurConstants.RANG_ONDERSOORT:
-          return String.format("%s ssp. %s", parentnamen.get(taal).getNaam(),
-                               latijnsenaam.split(" ")[2]);
-        case NatuurConstants.RANG_VARIETEIT:
-          return String.format("%s var. %s", parentnamen.get(taal).getNaam(),
-                               latijnsenaam.split(" ")[2]);
-        case NatuurConstants.RANG_VORM:
-          return String.format("%s f. %s", parentnamen.get(taal).getNaam(),
-                               latijnsenaam.split(" ")[2]);
-        default:
-          break;
+    if (DoosUtils.isBlankOrNull(parentnaam)) {
+      return latijns ? latijnsenaam : "";
+    }
+
+    switch (rang) {
+      case NatuurConstants.RANG_ONDERSOORT -> {
+        return String.format(NatuurConstants.FMT_ONDERSOORT,
+                             parentnaam,
+                             latijnsenaam.split(" ")[2]);
+      }
+      case NatuurConstants.RANG_VARIETEIT -> {
+        return String.format(NatuurConstants.FMT_VARIETEIT,
+                             parentnaam,
+                             latijnsenaam.split(" ")[2]);
+      }
+      case NatuurConstants.RANG_VORM -> {
+        return String.format(NatuurConstants.FMT_VORM,
+                             parentnaam,
+                             latijnsenaam.split(" ")[2]);
+      }
+      default -> {
+        return latijns ? latijnsenaam : "";
       }
     }
+  }
 
-    return "";
+  public static String getNaamLatijnsenaam(String naam, String latijnsenaam) {
+    if (DoosUtils.isBlankOrNull(naam)
+        || naam.equals(latijnsenaam)) {
+      return latijnsenaam;
+    }
+
+    return String.format(NatuurConstants.FMT_NAAMLATIJNSENAAM,
+                         naam, latijnsenaam);
+  }
+
+  public static String getNaamLatijnsenaam(Taxon taxon) {
+    return getNaamLatijnsenaam(taxon.getNaam(), taxon.getLatijnsenaam());
+  }
+
+  public static String getNaamLatijnsenaam(TaxonDto taxon, String taal) {
+    return getNaamLatijnsenaam(getNaam(taxon, taal), taxon.getLatijnsenaam());
   }
 
   public static String getSubtitel(String latijnsenaam, boolean uitgestorven,

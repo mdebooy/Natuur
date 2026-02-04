@@ -18,8 +18,8 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 import java.util.ArrayList;
@@ -48,7 +48,9 @@ public final class GebiedValidator extends NatuurValidator {
       "_I18N.error.longitude.seconden";
   protected static final  String  LBL_LAND        = "_I18N.label.land";
 
-  private GebiedValidator() {}
+  private GebiedValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(GebiedDto gebied) {
     if (null == gebied) {
@@ -65,8 +67,19 @@ public final class GebiedValidator extends NatuurValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerLandId(gebied.getLandId(), fouten);
-    valideerNaam(DoosUtils.nullToEmpty(gebied.getNaam()), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(gebied.getLandId())
+                               .setAttribute(GebiedDto.COL_LANDID)
+                               .setLabel(LBL_LAND)
+                               .setRequired()
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(gebied.getNaam())
+                               .setAttribute(GebiedDto.COL_NAAM)
+                               .setLabel(NatuurValidator.LBL_GEBIED)
+                               .setMaxLengte(255)
+                               .setRequired()
+                               .valideer().getFouten());
     int leeg  = valideerLatitude(gebied.getLatitude(), fouten);
     leeg  += valideerLatitudeGraden(gebied.getLatitudeGraden(), fouten);
     leeg  += valideerLatitudeMinuten(gebied.getLatitudeMinuten(), fouten);
@@ -91,17 +104,6 @@ public final class GebiedValidator extends NatuurValidator {
     }
 
     return fouten;
-  }
-
-  private static void valideerLandId(Long landId, List<Message> fouten) {
-    if (null == landId) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(GebiedDto.COL_LANDID)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_LAND})
-                            .build());
-    }
   }
 
   private static int valideerLatitude(String latitude, List<Message> fouten) {
@@ -237,27 +239,5 @@ public final class GebiedValidator extends NatuurValidator {
     }
 
     return 0;
-  }
-
-  private static void valideerNaam(String naam, List<Message> fouten) {
-    if (DoosUtils.isBlankOrNull(naam)) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(GebiedDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{NatuurValidator.LBL_GEBIED})
-                            .build());
-      return;
-    }
-
-    if (naam.length() > 255) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(GebiedDto.COL_NAAM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.MAXLENGTH)
-                            .setParams(new Object[]{NatuurValidator.LBL_GEBIED,
-                                                    255})
-                            .build());
-    }
   }
 }

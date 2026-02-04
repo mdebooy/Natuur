@@ -1,11 +1,10 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-  xmlns:d="http://java.debooy.eu/jsf/facelets"
-  xmlns:f="http://java.sun.com/jsf/core"
-  xmlns:h="http://java.sun.com/jsf/html"
-  xmlns:t="http://myfaces.apache.org/tomahawk"
- xmlns:ui="http://java.sun.com/jsf/facelets"
- template="/WEB-INF/templates/template.xhtml">
+     xmlns="http://www.w3.org/1999/xhtml"
+   xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
+   xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  template="/WEB-INF/templates/template.xhtml">
   <ui:define name="body">
     <div class="columns is-centered content">
       <div class="column is-8">
@@ -17,31 +16,31 @@
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.gesorteerd')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="sortering" value="#{natuurTaxon.parameters.sortering}" fullwidth="true" required="true" items="#{natuurTaxon.selectSortering()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                  <d:listbox id="sortering" value="#{natuurTaxon.parameters.sortering}" fullwidth="true" required="true" items="#{natuurTaxon.selectSortering()}" textvalue="#{doosRemote.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal.allenamen')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="compleet" value="#{natuurTaxon.parameters.compleet}" fullwidth="true" required="true" items="#{natuurTaxon.selectCompleet()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                  <d:listbox id="compleet" value="#{natuurTaxon.parameters.compleet}" fullwidth="true" required="true" items="#{natuurTaxon.selectCompleet()}" textvalue="#{doosRemote.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal.1')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="taal1" value="#{natuurTaxon.parameters.taal1}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
+                  <d:listbox id="taal1" value="#{natuurTaxon.parameters.taal1}" fullwidth="true" required="true" items="#{doosRemote.talenIso6392t()}" textvalue="#{doosRemote.taalIso6392t(natuurRegiolijst.parameters.taal1)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal.2')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="taal2" value="#{natuurTaxon.parameters.taal2}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal2)}" />
+                  <d:listbox id="taal2" value="#{natuurTaxon.parameters.taal2}" fullwidth="true" required="true" items="#{doosRemote.talenIso6392t()}" textvalue="#{doosRemote.taalIso6392t(natuurRegiolijst.parameters.taal2)}" />
                 </div>
               </div>
               <div class="field is-horizontal">
                 <d:label label="#{i18nTeksten.tekst('label.taal.3')}" />
                 <div class="field-body is-normal">
-                  <d:listbox id="taal3" value="#{natuurTaxon.parameters.taal3}" fullwidth="true" required="true" items="#{i18nTeksten.talenIso6392t()}" textvalue="#{i18nTeksten.taalIso6392t(natuurRegiolijst.parameters.taal3)}" />
+                  <d:listbox id="taal3" value="#{natuurTaxon.parameters.taal3}" fullwidth="true" required="true" items="#{doosRemote.talenIso6392t()}" textvalue="#{doosRemote.taalIso6392t(natuurRegiolijst.parameters.taal3)}" />
                 </div>
               </div>
               <div class="field is-horizontal">

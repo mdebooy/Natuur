@@ -17,14 +17,11 @@
 package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
-import eu.debooy.doosutils.Datum;
-import eu.debooy.doosutils.DoosUtils;
-import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -35,7 +32,9 @@ public final class WaarnemingValidator extends NatuurValidator {
   protected static final  String  LBL_AANTAL  = "_I18N.label.aantal";
   protected static final  String  LBL_DATUM   = "_I18N.label.datum";
 
-  private WaarnemingValidator() {}
+  private WaarnemingValidator() {
+    throw new IllegalStateException("Utility class");
+  }
 
   public static List<Message> valideer(WaarnemingDto waarneming) {
     if (null == waarneming) {
@@ -52,54 +51,31 @@ public final class WaarnemingValidator extends NatuurValidator {
 
     List<Message> fouten  = new ArrayList<>();
 
-    valideerAantal(waarneming.getAantal(), fouten);
-    valideerDatum(waarneming.getDatum(), fouten);
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(waarneming.getAantal())
+                               .setAttribute(WaarnemingDto.COL_AANTAL)
+                               .setLabel(LBL_AANTAL)
+                               .setMinWaarde(1L)
+                               .valideer().getFouten());
+    fouten.addAll(new Validator.Builder()
+                               .setWaarde(waarneming.getDatum())
+                               .setAttribute(WaarnemingDto.COL_DATUM)
+                               .setLabel(LBL_DATUM)
+                               .setRequired()
+                               .setVerleden()
+                               .valideer().getFouten());
     if (null == waarneming.getGebied()) {
       valideerGebiedId(null, fouten);
     } else {
       valideerGebiedId(waarneming.getGebied().getGebiedId(), fouten);
     }
-    valideerOpmerking(DoosUtils.nullToEmpty(waarneming.getOpmerking()),
-                      fouten);
+    valideerOpmerking(waarneming.getOpmerking(), fouten);
     if (null == waarneming.getTaxon()) {
       valideerTaxonId(null, fouten);
     } else {
-    valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
+      valideerTaxonId(waarneming.getTaxon().getTaxonId(), fouten);
     }
 
     return fouten;
-  }
-
-  private static void valideerAantal(Integer aantal, List<Message> fouten) {
-    if (null != aantal
-        && aantal.compareTo(0) < 1) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(WaarnemingDto.COL_AANTAL)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.ISKLEINER)
-                            .setParams(new Object[]{LBL_AANTAL, 1})
-                            .build());
-    }
-  }
-
-  private static void valideerDatum(Date datum, List<Message> fouten) {
-    if ( null == datum) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(WaarnemingDto.COL_DATUM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.REQUIRED)
-                            .setParams(new Object[]{LBL_DATUM})
-                            .build());
-      return;
-    }
-
-    if (datum.after(new Date())) {
-      fouten.add(new Message.Builder()
-                            .setAttribute(WaarnemingDto.COL_DATUM)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.FUTURE)
-                            .setParams(new Object[]{Datum.fromDate(datum)})
-                            .build());
-    }
   }
 }

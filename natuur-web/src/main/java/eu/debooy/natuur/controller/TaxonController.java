@@ -38,20 +38,22 @@ import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Taxonnaam;
 import eu.debooy.natuur.validator.TaxonValidator;
 import eu.debooy.natuur.validator.TaxonnaamValidator;
+import jakarta.ejb.EJB;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.faces.context.FacesContext;
+import jakarta.faces.model.SelectItem;
+import jakarta.inject.Named;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Paths;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.model.SelectItem;
-import javax.inject.Named;
-import javax.servlet.http.HttpServletResponse;
-import org.apache.myfaces.custom.fileupload.UploadedFile;
+import org.apache.myfaces.util.lang.FilenameUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
@@ -80,8 +82,6 @@ public class TaxonController extends Natuur {
   private static final  String  TIT_CREATE    = "natuur.titel.taxon.create";
   private static final  String  TIT_UPDATE    = "natuur.titel.taxon.update";
 
-  private static final  String  FMT_NAAM      = "%s (%s)";
-
   private static final  String  LBL_LATIJSENAAM = "label.latijnsenaam";
 
   private static final  String  TAB_KINDEREN  = "Kinderen";
@@ -101,7 +101,7 @@ public class TaxonController extends Natuur {
   @EJB
   private IDoosRemote   doosRemote;
 
-  private UploadedFile  bestand;
+  private Part          bestand;
   private Taxon         ouder;
   private Long          ouderNiveau;
   private String        perTaal     = "";
@@ -159,7 +159,7 @@ public class TaxonController extends Natuur {
     for (var i = 1; i < talen.length; i++) {
       if (DoosUtils.isNotBlankOrNull(talen[i])) {
         try {
-          getDoosRemote().getTaalIso6392t(talen[i]);
+          doosRemote.getTaalIso6392t(talen[i]);
         } catch (ObjectNotFoundException e) {
           addError(NatuurConstants.ERR_TAALONBEKEND, talen[i]);
           correct = false;
@@ -260,12 +260,27 @@ public class TaxonController extends Natuur {
     }
   }
 
-  public UploadedFile getBestand() {
+  public Part getBestand() {
     return bestand;
+  }
+
+  public String getBestandnaam() {
+    return FilenameUtils.getBaseName(Paths.get(bestand.getSubmittedFileName())
+                                          .getFileName().toString());
+  }
+
+  @Override
+  public String getDeletetekst() {
+    return taxon.getNaam();
   }
 
   public String getDeleteTitel() {
     return getTekst(DTIT_DELETE, getTaxonnaam(getGebruikersTaalInIso6392t()));
+  }
+
+  @Override
+  public String getDetailDeletetekst() {
+    return taxonnaam.getNaam();
   }
 
   public String getNamenTitel() {
@@ -296,8 +311,11 @@ public class TaxonController extends Natuur {
       return "";
     }
 
-    return String.format(FMT_NAAM, getTekst(STATUSSEN + "." + status),
-                         status.toUpperCase());
+    // Geeft ook in formaat %s (%s)
+    return NatuurUtils.getNaamLatijnsenaam(
+              getTekst(String.format(NatuurConstants.FMT_I18NCODE,
+                                     STATUSSEN, status)),
+              status.toUpperCase());
   }
 
   public Taxon getTaxon() {
@@ -325,7 +343,8 @@ public class TaxonController extends Natuur {
     try {
       var parent  = getTaxonService().taxon(taxon.getParentId());
       if (parent.hasTaxonnaam(taal)) {
-        return String.format("%s ssp %s", parent.getNaam(taal),
+        return String.format(NatuurConstants.FMT_ONDERSOORT,
+                             parent.getNaam(taal),
                              taxon.getLatijnsenaam().split(" ")[2]);
       }
     } catch (ObjectNotFoundException e) {
@@ -353,18 +372,13 @@ public class TaxonController extends Natuur {
 
   private boolean isTePrinten(DetailDto taxon, String compleet,
                               String taal1, String taal2, String taal3) {
-    switch (compleet) {
-      case TaxonDto.COL_LATIJNSENAAM:
-        return true;
-      case TAG_TAAL1:
-        return taxon.hasTaxonnaam(taal1);
-      case TAG_TAAL2:
-        return taxon.hasTaxonnaam(taal2);
-      case TAG_TAAL3:
-        return taxon.hasTaxonnaam(taal3);
-      default:
-        return false;
-    }
+    return switch (compleet) {
+      case TaxonDto.COL_LATIJNSENAAM -> true;
+      case TAG_TAAL1 -> taxon.hasTaxonnaam(taal1);
+      case TAG_TAAL2 -> taxon.hasTaxonnaam(taal2);
+      case TAG_TAAL3 -> taxon.hasTaxonnaam(taal3);
+      default -> false;
+    };
   }
 
   public void namenPerTaal() {
@@ -518,7 +532,7 @@ public class TaxonController extends Natuur {
 
     try {
       switch (getAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           taxon.persist(taxonDto);
           getTaxonService().save(taxonDto);
           taxon.setTaxonId(taxonDto.getTaxonId());
@@ -527,8 +541,8 @@ public class TaxonController extends Natuur {
           addInfo(PersistenceConstants.CREATED,
                   getTaxonnaam(getGebruikersTaalInIso6392t()));
           update();
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           var latijnsenaam  = taxonDto.getLatijnsenaam();
           taxon.persist(taxonDto);
           getTaxonService().save(taxonDto);
@@ -538,16 +552,15 @@ public class TaxonController extends Natuur {
                   getTaxonnaam(getGebruikersTaalInIso6392t()));
           if (!latijnsenaam.equals(taxonDto.getLatijnsenaam())) {
             var gewijzigd = wijzigKinderen(latijnsenaam,
-                                           taxonDto.getLatijnsenaam(),
-                                           taxonDto.getTaxonId());
+                    taxonDto.getLatijnsenaam(),
+                    taxonDto.getTaxonId());
             if (gewijzigd > 0) {
               addInfo(HERBENOEMD, gewijzigd);
             }
           }
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getAktie().getAktie());
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxon.getLatijnsenaam());
@@ -583,7 +596,7 @@ public class TaxonController extends Natuur {
       taxonnaamDto  = new TaxonnaamDto();
       taxonnaam.persist(taxonnaamDto);
       switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           taxonDto.addNaam(taxonnaamDto);
           getTaxonService().save(taxonDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
@@ -592,8 +605,8 @@ public class TaxonController extends Natuur {
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.CREATED, "'" + taal + "'");
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           taxonDto.addNaam(taxonnaamDto);
           getTaxonService().save(taxonDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
@@ -602,11 +615,9 @@ public class TaxonController extends Natuur {
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT,
-                   getDetailAktie().getAktie()) ;
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getDetailAktie().getAktie()) ;
       }
       redirect(getReturnTo());
     } catch (DuplicateObjectException e) {
@@ -636,17 +647,15 @@ public class TaxonController extends Natuur {
     try {
       taxonnaam.persist(taxonnaamDto);
       switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.UPDATE:
+        case PersistenceConstants.UPDATE -> {
           getTaxonnaamService().save(taxonnaamDto);
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT,
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
                    getDetailAktie().getAktie()) ;
-          break;
       }
-      redirect(NAMENPERTAAL_REDIRECT);
+      redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taal);
     } catch (ObjectNotFoundException e) {
@@ -683,11 +692,10 @@ public class TaxonController extends Natuur {
     items.add(new SelectItem("", "--"));
     Set<TaxonDto>     rijen = new TreeSet<>(new TaxonDto.NaamComparator());
     rijen.addAll(getTaxonService().getOuders(niveau));
+    var               taal  = getGebruikersTaalInIso6392t();
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
-                               String.format(FMT_NAAM,
-                                  rij.getNaam(getGebruikersTaalInIso6392t()),
-                                             rij.getLatijnsenaam()))));
+                               NatuurUtils.getNaamLatijnsenaam(rij, taal))));
 
     return items;
   }
@@ -698,8 +706,7 @@ public class TaxonController extends Natuur {
     rijen.addAll(getTaxonService().getSoorten(getGebruikersTaalInIso6392t()));
     rijen.forEach(rij ->
       items.add(new SelectItem(rij.getTaxonId(),
-                               String.format(FMT_NAAM, rij.getNaam(),
-                                             rij.getLatijnsenaam()))));
+                               NatuurUtils.getNaamLatijnsenaam(rij))));
 
     return items;
   }
@@ -717,7 +724,7 @@ public class TaxonController extends Natuur {
     return items;
   }
 
-  public void setBestand(UploadedFile bestand) {
+  public void setBestand(Part bestand) {
     this.bestand  = bestand;
   }
 
@@ -778,9 +785,12 @@ public class TaxonController extends Natuur {
                                     NatuurUtils.getNaam(taxonDto, taal2),
                                     NatuurUtils.getNaam(taxonDto, taal3)));
     exportData.addVeld("LabelLatijnsenaam", getTekst(LBL_LATIJSENAAM));
-    exportData.addVeld("LabelTaal1",        iso6392tNaam(taal1, taal1));
-    exportData.addVeld("LabelTaal2",        iso6392tNaam(taal2, taal2));
-    exportData.addVeld("LabelTaal3",        iso6392tNaam(taal3, taal3));
+    exportData.addVeld("LabelTaal1",        doosRemote.getIso6392tNaam(taal1,
+                                                                       taal1));
+    exportData.addVeld("LabelTaal2",        doosRemote.getIso6392tNaam(taal2,
+                                                                       taal2));
+    exportData.addVeld("LabelTaal3",        doosRemote.getIso6392tNaam(taal3,
+                                                                       taal3));
 
     var rijen       = setSortering();
     rijen.addAll(getDetailService().getSoortenMetParent(taxon.getTaxonId()));
@@ -873,7 +883,7 @@ public class TaxonController extends Natuur {
         verwerkTaxon(invoer.readLine().split(",", -1), talen);
       }
 
-      addInfo("message.upload", bestand.getName());
+      addInfo("message.upload", getBestandnaam());
       addInfo("message.gelezen", taxa);
     } catch (IOException e) {
       generateExceptionMessage(e);
@@ -953,12 +963,12 @@ public class TaxonController extends Natuur {
     taxonToJson(item, taal, naam, json);
     resultaat.add(json);
 
-    var taxonnaamDto  = new TaxonnaamDto();
+    var dto = new TaxonnaamDto();
 
-    taxonnaamDto.setNaam(naam);
-    taxonnaamDto.setTaal(taal);
-    taxonnaamDto.setTaxonId(item.getTaxonId());
-    item.addNaam(taxonnaamDto);
+    dto.setNaam(naam);
+    dto.setTaal(taal);
+    dto.setTaxonId(item.getTaxonId());
+    item.addNaam(dto);
 
     return true;
   }

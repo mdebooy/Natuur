@@ -17,6 +17,8 @@
 
 package eu.debooy.natuur.form;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import java.io.Serializable;
@@ -36,6 +38,7 @@ public class Regiolijst extends Formulier
   private Date    datum;
   private String  omschrijving;
   private Long    regioId;
+  private Long    regiolijstId;
 
   public Regiolijst() {}
 
@@ -43,11 +46,13 @@ public class Regiolijst extends Formulier
     datum         = regiolijst.getDatum();
     omschrijving  = regiolijst.getOmschrijving();
     regioId       = regiolijst.getRegioId();
+    regiolijstId  = regiolijst.getRegiolijstId();
   }
 
   @Override
   public int compareTo(Regiolijst regiolijst) {
     return new CompareToBuilder().append(regioId, regiolijst.regioId)
+                                 .append(datum, regiolijst.datum)
                                  .toComparison();
   }
 
@@ -61,7 +66,9 @@ public class Regiolijst extends Formulier
     }
 
     var regiolijst  = (Regiolijst) object;
-    return new EqualsBuilder().append(regioId, regiolijst.regioId).isEquals();
+    return new EqualsBuilder().append(regioId, regiolijst.regioId)
+                              .append(datum, regiolijst.datum)
+                              .isEquals();
   }
 
   public Date getDatum() {
@@ -80,31 +87,35 @@ public class Regiolijst extends Formulier
     return regioId;
   }
 
+  public Long getRegiolijstId() {
+    return regiolijstId;
+  }
+
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).toHashCode();
+    return new HashCodeBuilder().append(regioId).append(datum).toHashCode();
   }
 
   public void persist(RegiolijstDto regiolijstDto) {
     regiolijstDto.setDatum(datum);
     regiolijstDto.setOmschrijving(omschrijving);
     regiolijstDto.setRegioId(regioId);
+    regiolijstDto.setRegiolijstId(regiolijstId);
   }
 
   public void setDatum(Date datum) {
-    if (null == datum) {
-      this.datum      = null;
-    } else {
-      this.datum      = new Date(datum.getTime());
-    }
+    this.datum        = Datum.stripTime(datum);
   }
 
   public void setOmschrijving(String omschrijving) {
-    this.omschrijving = omschrijving;
+    this.omschrijving = DoosUtils.strip(omschrijving);
   }
 
   public void setRegioId(Long regioId) {
     this.regioId      = regioId;
   }
 
+  public void setRegiolijstId(Long regiolijstId) {
+    this.regiolijstId = regiolijstId;
+  }
 }

@@ -137,7 +137,7 @@ public class FotoOverzicht {
   }
 
   public String getNaam() {
-    return naam;
+    return (DoosUtils.isBlankOrNull(naam) ? latijnsenaam : naam);
   }
 
   public Long getParentId() {

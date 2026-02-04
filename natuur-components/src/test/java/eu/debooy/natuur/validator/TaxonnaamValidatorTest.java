@@ -65,7 +65,7 @@ public class TaxonnaamValidatorTest {
   @Test
   public void testNullTaxonnaam() {
     Taxonnaam     taxonnaam = null;
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
 
     assertEquals(1, result.size());
     assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
@@ -76,7 +76,7 @@ public class TaxonnaamValidatorTest {
   @Test
   public void testNullTaxonnaamDto() {
     TaxonnaamDto  taxonnaam = null;
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
 
     assertEquals(1, result.size());
     assertEquals(PersistenceConstants.NULL, result.get(0).getMessage());
@@ -86,79 +86,81 @@ public class TaxonnaamValidatorTest {
 
   @Test
   public void testValideerFouteTaxonnaam() {
-    Taxonnaam     taxonnaam = new Taxonnaam();
+    var           taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM,
+                                                256, "X"));
     taxonnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(ERR_TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerGoedeTaxonnaam() {
-    Taxonnaam     taxonnaam = new Taxonnaam();
+    var           taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();
 
     taxonnaam.setNaam(NatuurTestConstants.NAAM);
     taxonnaam.setTaal(NatuurTestConstants.TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerLegeTaxonnaam() {
-    Taxonnaam     taxonnaam = new Taxonnaam();
+    var           taxonnaam = new Taxonnaam();
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
     expResult.add(REQ_TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerFouteTaxonnaamDto() {
-    TaxonnaamDto  taxonnaam = new TaxonnaamDto();
+    var           taxonnaam = new TaxonnaamDto();
     List<Message> expResult = new ArrayList<>();
 
-    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM, 256, "X"));
+    taxonnaam.setNaam(DoosUtils.stringMetLengte(NatuurTestConstants.NAAM,
+                                                256, "X"));
     taxonnaam.setTaal(NatuurTestConstants.TAAL_FOUT);
 
     expResult.add(ERR_NAAM);
     expResult.add(ERR_TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerGoedeTaxonnaamDto() {
-    TaxonnaamDto  taxonnaam = new TaxonnaamDto();
+    var           taxonnaam = new TaxonnaamDto();
     List<Message> expResult = new ArrayList<>();
 
     taxonnaam.setNaam(NatuurTestConstants.NAAM);
     taxonnaam.setTaal(NatuurTestConstants.TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 
   @Test
   public void testValideerLegeTaxonnaamDto() {
-    TaxonnaamDto  taxonnaam = new TaxonnaamDto();
+    var           taxonnaam = new TaxonnaamDto();
     List<Message> expResult = new ArrayList<>();
 
     expResult.add(REQ_NAAM);
     expResult.add(REQ_TAAL);
 
-    List<Message> result    = TaxonnaamValidator.valideer(taxonnaam);
+    var           result    = TaxonnaamValidator.valideer(taxonnaam);
     assertEquals(expResult.toString(), result.toString());
   }
 }

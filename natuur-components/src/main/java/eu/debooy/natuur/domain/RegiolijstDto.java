@@ -16,13 +16,15 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 import java.util.Date;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -33,7 +35,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 @Entity
 @Table(name="REGIOLIJSTEN", schema="NATUUR")
-@NamedQuery(name="regiolijstenPerTaxon", query="select r from RegiolijstDto r, RegiolijstTaxonDto rt where r.regioId=rt.regioId and rt.taxonId=:taxonId")
+@NamedQuery(name="regiolijstenPerTaxon", query="select r from RegiolijstDto r, RegiolijstTaxonDto rt where r.regiolijstId=rt.regiolijstId and rt.taxonId=:taxonId")
 public class RegiolijstDto
     extends Dto implements Comparable<RegiolijstDto> {
   private static final  long  serialVersionUID  = 1L;
@@ -41,6 +43,7 @@ public class RegiolijstDto
   public static final String  COL_DATUM         = "datum";
   public static final String  COL_OMSCHRIJVING  = "omschrijving";
   public static final String  COL_REGIOID       = "regioId";
+  public static final String  COL_REGIOLIJSTID  = "regiolijstId";
 
   public static final String  PAR_TAXONID = "taxonId";
 
@@ -50,13 +53,16 @@ public class RegiolijstDto
   private Date    datum;
   @Column(name="OMSCHRIJVING", length=2000)
   private String  omschrijving;
-  @Id
   @Column(name="REGIO_ID", nullable=false)
   private Long    regioId;
+  @Id
+  @Column(name="REGIOLIJST_ID", nullable=false)
+  private Long    regiolijstId;
 
   @Override
   public int compareTo(RegiolijstDto regiolijstDto) {
     return new CompareToBuilder().append(regioId, regiolijstDto.regioId)
+                                 .append(datum, regiolijstDto.datum)
                                  .toComparison();
   }
 
@@ -71,8 +77,8 @@ public class RegiolijstDto
 
     var regiolijstDto = (RegiolijstDto) object;
 
-    return new EqualsBuilder().append(regioId,
-                                      regiolijstDto.regioId).isEquals();
+    return new EqualsBuilder().append(regioId, regiolijstDto.regioId)
+                              .append(datum, regiolijstDto.datum).isEquals();
   }
 
   public Date getDatum() {
@@ -91,28 +97,28 @@ public class RegiolijstDto
     return regioId;
   }
 
+  public Long getRegiolijstId() {
+    return regiolijstId;
+  }
+
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).toHashCode();
+    return new HashCodeBuilder().append(regioId).append(datum).toHashCode();
   }
 
   public void setDatum(Date datum) {
-    if (null == datum) {
-      this.datum        = null;
-    } else {
-      this.datum        = new Date(datum.getTime());
-    }
+    this.datum        = Datum.stripTime(datum);
   }
 
   public void setOmschrijving(String omschrijving) {
-    if (null == omschrijving) {
-      this.omschrijving = null;
-    } else {
-      this.omschrijving = omschrijving;
-    }
+    this.omschrijving   = DoosUtils.strip(omschrijving);
   }
 
   public void setRegioId(Long regioId) {
     this.regioId        = regioId;
+  }
+
+  public void setRegiolijstId(Long regiolijstId) {
+    this.regiolijstId   = regiolijstId;
   }
 }

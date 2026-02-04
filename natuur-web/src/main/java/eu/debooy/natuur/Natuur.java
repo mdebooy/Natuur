@@ -27,12 +27,13 @@ import eu.debooy.natuur.service.RangService;
 import eu.debooy.natuur.service.RegiolijstService;
 import eu.debooy.natuur.service.RegiolijstTaxonService;
 import eu.debooy.natuur.service.TaxonService;
+import eu.debooy.natuur.service.TaxonbeschrijvingService;
 import eu.debooy.natuur.service.TaxonnaamService;
 import eu.debooy.natuur.service.WaarnemingService;
 import eu.debooy.sedes.component.business.ISedesRemote;
-import javax.ejb.EJB;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
+import jakarta.ejb.EJB;
+import jakarta.enterprise.context.SessionScoped;
+import jakarta.inject.Named;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,17 +48,18 @@ public class Natuur extends DoosBean {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(Natuur.class);
 
-  private transient DetailService           detailService;
-  private transient FotoService             fotoService;
-  private transient GebiedService           gebiedService;
-  private transient GeenFotoService         geenFotoService;
-  private transient OverzichtService        overzichtService;
-  private transient RangService             rangService;
-  private transient RegiolijstService       regiolijstService;
-  private transient RegiolijstTaxonService  regiolijstTaxonService;
-  private transient TaxonnaamService        taxonnaamService;
-  private transient TaxonService            taxonService;
-  private transient WaarnemingService       waarnemingService;
+  private transient DetailService             detailService;
+  private transient FotoService               fotoService;
+  private transient GebiedService             gebiedService;
+  private transient GeenFotoService           geenFotoService;
+  private transient OverzichtService          overzichtService;
+  private transient RangService               rangService;
+  private transient RegiolijstService         regiolijstService;
+  private transient RegiolijstTaxonService    regiolijstTaxonService;
+  private transient TaxonbeschrijvingService  taxonbeschrijvingService;
+  private transient TaxonnaamService          taxonnaamService;
+  private transient TaxonService              taxonService;
+  private transient WaarnemingService         waarnemingService;
 
   @EJB
   private transient ISedesRemote  sedesRemote;
@@ -83,6 +85,8 @@ public class Natuur extends DoosBean {
       "/gebieden/gebieden.xhtml";
   protected static final  String  GEENFOTOS_REDIRECT        =
       "/rangen/geenfotos.xhtml";
+  protected static final  String  LBL_BESCHRIJVING          =
+      "label.beschrijving";
   protected static final  String  LBL_FOTO                  = "label.foto";
   protected static final  String  LBL_GEBIED                = "label.gebied";
   protected static final  String  LBL_PARAMETERS            =
@@ -125,6 +129,8 @@ public class Natuur extends DoosBean {
       "/taxa/taxalijstparameters.xhtml";
   protected static final  String  TAXON_REDIRECT            =
       "/taxa/taxon.xhtml";
+  protected static final  String  TAXONBESCHR_REDIRECT      =
+      "/taxa/taxonbeschrijving.xhtml";
   protected static final  String  TAXONNAAM_REDIRECT        =
       "/taxa/taxonnaam.xhtml";
   protected static final  String  TAXONNAMENUPLOAD_REDIRECT =
@@ -252,6 +258,15 @@ public class Natuur extends DoosBean {
     }
 
     return regiolijstTaxonService;
+  }
+
+  protected TaxonbeschrijvingService getTaxonbeschrijvingService() {
+    if (null == taxonbeschrijvingService) {
+      taxonbeschrijvingService  = (TaxonbeschrijvingService)
+          new JNDI.JNDINaam().metBean(TaxonbeschrijvingService.class).locate();
+    }
+
+    return taxonbeschrijvingService;
   }
 
   protected TaxonnaamService getTaxonnaamService() {

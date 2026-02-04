@@ -18,13 +18,14 @@ package eu.debooy.natuur.access;
 
 import eu.debooy.doosutils.access.Dao;
 import eu.debooy.doosutils.errorhandling.handler.interceptor.PersistenceExceptionHandlerInterceptor;
+import static eu.debooy.natuur.NatuurConstants.NATUUR_EM;
 import eu.debooy.natuur.domain.RegiolijstDto;
+import jakarta.interceptor.Interceptors;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.PersistenceContextType;
 import java.util.HashMap;
 import java.util.Map;
-import javax.interceptor.Interceptors;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 
 
 /**
@@ -32,7 +33,7 @@ import javax.persistence.PersistenceContextType;
  */
 @Interceptors({PersistenceExceptionHandlerInterceptor.class})
 public class RegiolijstDao extends Dao<RegiolijstDto> {
-  @PersistenceContext(unitName="natuur",
+  @PersistenceContext(unitName=NATUUR_EM,
                       type=PersistenceContextType.TRANSACTION)
   private EntityManager em;
 

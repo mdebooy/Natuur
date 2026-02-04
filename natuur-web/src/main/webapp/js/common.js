@@ -15,11 +15,46 @@
  * limitations under the Licence.
  */
 
+let beschrijvingtypes = {};
 var landen = {};
 var rangen = {};
 var regios = {};
 var statussen = {};
 var windstreken = {};
+
+function getBeschrijvingtype(beschrijvingtype, taal) {
+  let beschrijving = getBeschrijving(beschrijvingtype);
+
+  var naam = beschrijving.teksten.findIndex(i => i.taalKode === taal);
+  if (naam < 0) {
+    return beschrijvingtype;
+  }
+
+  return beschrijving.teksten[naam].tekst;
+}
+
+function getBeschrijvingseq(beschrijvingtype, taal) {
+  let beschrijving = getBeschrijving(beschrijvingtype);
+  return beschrijving.volgorde;
+}
+
+function getBeschrijving(beschrijvingtype) {
+  let beschrijving = {};
+  if (beschrijvingtypes.hasOwnProperty(beschrijvingtype)) {
+    beschrijving = beschrijvingtypes[beschrijvingtype];
+  } else {
+    $.ajax({ url: '/doos/i18nLijsten/natuur.taxon.beschrijving.type/'+beschrijvingtype,
+             dataType: 'json',
+             async: false,
+             success:  function(data) {
+               beschrijvingtypes[beschrijvingtype] = data;
+               beschrijving = data;
+             }
+    });
+  }
+
+  return beschrijving;
+}
 
 function getCoordinaten(gebied) {
   var coordinaten = '';
@@ -46,7 +81,7 @@ function getCoordinaten(gebied) {
 }
 
 function getGebied(gebiedId) {
-  var gebied = {};
+  let gebied = {};
   $.ajax({ url: '/natuur/gebieden/'+gebiedId,
            dataType: 'json',
            async: false,
@@ -75,7 +110,7 @@ function getLandnaam(landId, taal) {
 
   var naam = landnamen.findIndex(i => i.taal === taal);
   if (naam < 0) {
-    return landId;
+    return landId+taal;
   }
 
   return landnamen[naam].naam;
@@ -115,18 +150,27 @@ function getRangNaam(rangnamen, rang, taal) {
   return rangnamen[naam].naam;
 }
 
-function getRegionaam(regioId) {
-  if (!regios.hasOwnProperty(regioId)) {
+function getRegionaam(regioId, taal) {
+  var regionamen = [];
+  if (regios.hasOwnProperty(regioId)) {
+    regionamen = regios[regioId].regionamen;
+  } else {
     $.ajax({ url: '/sedes/regios/'+regioId,
              dataType: 'json',
              async: false,
              success:  function(data) {
                regios[regioId] = data;
+               regionamen = data.regionamen;
              }
     });
   }
 
-  return regios[regioId].naam;
+  var naam = regionamen.findIndex(i => i.taal === taal);
+  if (naam < 0) {
+    return regioId;
+  }
+
+  return regionamen[naam].naam;
 }
 
 function getStatus(status, taal) {
