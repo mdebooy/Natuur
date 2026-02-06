@@ -511,12 +511,15 @@ INSERT INTO NATUUR.RANGEN
          (22, 'ge'),
          (23, 'oge'),
          (24, 'so'),
-         (25, 'oso');
+         (25, 'oso'),
+         (26, 'var'),
+         (27, 'frm');
 
 INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domein',        'nld'),
          ('fa' , 'Familie',       'nld'),
+         ('frm', 'Vorm',          'nld'),
          ('ge' , 'Geslacht',      'nld'),
          ('ikl', 'Infraklasse',   'nld'),
          ('ior', 'Infraorde',     'nld'),
@@ -539,12 +542,14 @@ INSERT INTO NATUUR.RANGNAMEN
          ('so' , 'Soort',         'nld'),
          ('sor', 'Superorde',     'nld'),
          ('st' , 'Stam',          'nld'),
-         ('ta' , 'Tak',           'nld');
+         ('ta' , 'Tak',           'nld'),
+         ('var', 'Variëteit',     'nld');
 
 INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domain',      'eng'),
          ('fa' , 'Family',      'eng'),
+         ('frm', 'Form',        'eng'),
          ('ge' , 'Genus',       'eng'),
          ('ikl', 'Infraclass',  'eng'),
          ('ior', 'Infraorder',  'eng'),
@@ -567,12 +572,14 @@ INSERT INTO NATUUR.RANGNAMEN
          ('so' , 'Species',     'eng'),
          ('sor', 'Superorder',  'eng'),
          ('st' , 'Phylum',      'eng'),
-         ('ta' , 'Tribe',       'eng');
+         ('ta' , 'Tribe',       'eng'),
+         ('var', 'Variety',     'eng');
 
 INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)
   VALUES ('do' , 'Domäne',        'deu'),
          ('fa' , 'Familie',       'deu'),
+         ('frm', 'Form',          'deu'),
          ('ge' , 'Gattung',       'deu'),
          ('ikl', 'Infraklasse',   'deu'),
          ('ior', 'Infraordnung',  'deu'),
@@ -595,4 +602,5 @@ INSERT INTO NATUUR.RANGNAMEN
          ('so' , 'Art',           'deu'),
          ('sor', 'Superordnung',  'deu'),
          ('st' , 'Stamm',         'deu'),
-         ('ta' , 'Tribus',        'deu');
+         ('ta' , 'Tribus',        'deu'),
+         ('var', 'Varietät',      'deu');

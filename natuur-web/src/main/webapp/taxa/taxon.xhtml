@@ -365,6 +365,7 @@
                     </h:commandLink>
                     <h:commandLink id="addTaxa" class="is-hidden" action="#{natuurTaxon.create}">
                       <f:param name="taxonId" value="XX" />
+                      <f:param name="returnTo" value="#{natuurTaxon.returnTo}" />
                     </h:commandLink>
                     <h:commandLink id="pdfTaxa" class="is-hidden" action="#{natuurTaxon.parameters}" />
                   </div>

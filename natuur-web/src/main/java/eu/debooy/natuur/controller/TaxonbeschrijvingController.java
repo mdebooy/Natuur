@@ -19,6 +19,7 @@ package eu.debooy.natuur.controller;
 
 import eu.debooy.doos.model.I18nSelectItem;
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -71,8 +72,8 @@ public class TaxonbeschrijvingController extends Natuur {
 
     var   ec        = FacesContext.getCurrentInstance().getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
-      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                          TaxonDto.COL_TAXONID)) {
       return;
     }
 
@@ -116,7 +117,7 @@ public class TaxonbeschrijvingController extends Natuur {
   public String getBeschrijvingtype() {
     if (null == taxonbeschrijving
         || DoosUtils.isBlankOrNull(taxonbeschrijving.getBeschrijvingtype())) {
-      return "";
+      return DoosConstants.NA;
     }
 
     return getDeletetekst();
@@ -162,10 +163,10 @@ public class TaxonbeschrijvingController extends Natuur {
                                                           beschrijvingtype);
       taxonbeschrijving     = new Taxonbeschrijving(taxonbeschrijvingDto);
       setAktie(PersistenceConstants.RETRIEVE);
-      setSubTitel(getTekst(TIT_RETRIEVE));
       setDeletetekst(getTekst(String.format(NatuurConstants.FMT_I18NCODE,
                                   PAR_TYPES,
                                   taxonbeschrijving.getBeschrijvingtype())));
+      setSubTitel(getTekst(TIT_RETRIEVE));
       setReturnTo(ec, TAXON_REDIRECT);
       redirect(TAXONBESCHR_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -221,9 +222,9 @@ public class TaxonbeschrijvingController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel(getTekst(TIT_UPDATE));
     setDeletetekst(getTekst(String.format(NatuurConstants.FMT_I18NCODE,
                                 PAR_TYPES,
                                 taxonbeschrijving.getBeschrijvingtype())));
+    setSubTitel(getTekst(TIT_UPDATE));
   }
 }

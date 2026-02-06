@@ -271,3 +271,22 @@ ALTER TABLE NATUUR.TAXA
 
 ALTER TABLE NATUUR.TAXA
   DROP COLUMN UITGESTORVEN;
+
+INSERT INTO NATUUR.RANGEN
+  VALUES (26, 'var'),
+         (27, 'frm');
+
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
+  VALUES ('frm', 'Vorm',          'nld'),
+         ('var', 'Variëteit',     'nld');
+
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
+  VALUES ('frm', 'Form',        'eng'),
+         ('var', 'Variety',     'eng');
+
+INSERT INTO NATUUR.RANGNAMEN
+         (RANG, NAAM, TAAL)
+  VALUES ('frm', 'Form',          'deu'),
+         ('var', 'Varietät',      'deu');
