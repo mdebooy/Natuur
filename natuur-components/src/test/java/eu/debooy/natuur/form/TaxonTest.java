@@ -1038,33 +1038,6 @@ public class TaxonTest {
   }
 
   @Test
-  public void testSetUitgestorven4() {
-    var instance  = new Taxon();
-    instance.setStatus(NatuurConstants.STAT_UITGESTORVEN);
-    assertTrue(instance.isUitgestorven());
-    assertTrue(instance.getUitgestorven());
-
-    instance.setStatus(NatuurTestConstants.STATUS);
-    assertFalse(instance.isUitgestorven());
-    assertFalse(instance.getUitgestorven());
-    assertNull(instance.getLatijnsenaam());
-    assertNull(instance.getNaam());
-    assertNull(instance.getOpmerking());
-    assertNull(instance.getParentId());
-    assertNull(instance.getParentLatijnsenaam());
-    assertNull(instance.getParentNaam());
-    assertNull(instance.getParentNiveau());
-    assertNull(instance.getParentRang());
-    assertNull(instance.getParentRangnaam());
-    assertNull(instance.getParentVolgnummer());
-    assertNull(instance.getRang());
-    assertNull(instance.getRangnaam());
-    assertNull(instance.getTaxonId());
-    assertFalse(instance.getUitgestorven());
-    assertEquals(Long.valueOf(0), instance.getVolgnummer());
-  }
-
-  @Test
   public void testSetVolgnummer() {
     var instance  = new Taxon();
     assertNotEquals(NatuurTestConstants.VOLGNUMMER, instance.getVolgnummer());

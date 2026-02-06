@@ -16,9 +16,12 @@
  */
 package eu.debooy.natuur;
 
+import eu.debooy.doosutils.Datum;
+import eu.debooy.doosutils.test.TestConstants;
 import eu.debooy.doosutils.test.TestUtils;
 import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.FotoDto;
+import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
@@ -26,6 +29,7 @@ import eu.debooy.natuur.domain.TaxonnaamDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Rang;
 import eu.debooy.natuur.form.Taxon;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,8 +64,72 @@ public final class NatuurTestUtils {
     return fotos;
   }
 
+  public static FotoOverzichtDto getFotoOverzichtDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException, ParseException {
+    var fotoOverzichtDto  = new FotoOverzichtDto();
+
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_DATUM,
+                       Datum.toDate(TestConstants.RUSHDATUM,
+                                    TestConstants.FORMAAT));
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_FOTOBESTAND,
+                       NatuurTestConstants.FOTOBESTAND);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_FOTODETAIL,
+                       NatuurTestConstants.FOTODETAIL);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_FOTOID,
+                       NatuurTestConstants.FOTOID);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_GEBIEDID,
+                       NatuurTestConstants.GEBIEDID);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_LANDID,
+                       NatuurTestConstants.LANDID);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_LATIJNSENAAM,
+                       NatuurTestConstants.LATIJNSENAAM);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_OPMERKING,
+                       NatuurTestConstants.OPMERKING);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_PARENTID,
+                       NatuurTestConstants.PARENTTAXONID);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_PARENTLATIJNSENAAM,
+                       NatuurTestConstants.PARENTLATIJNSENAAM);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_PARENTRANG,
+                       NatuurTestConstants.PARENTRANG);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_PARENTSTATUS,
+                       NatuurTestConstants.STATUS);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_PARENTVOLGNUMMER,
+                       NatuurTestConstants.PARENTVOLGNUMMER);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_RANG,
+                       NatuurTestConstants.RANG);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_STATUS,
+                       NatuurTestConstants.STATUS);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_TAXON,
+                       getTaxonDto());
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_TAXONSEQ,
+                       NatuurTestConstants.TAXONSEQ);
+    TestUtils.setField(fotoOverzichtDto,
+                       FotoOverzichtDto.COL_VOLGNUMMER,
+                       NatuurTestConstants.VOLGNUMMER);
+
+    return fotoOverzichtDto;
+  }
   public static Gebied getGebied() {
     var gebied  = new Gebied();
+
     gebied.setGebiedId(NatuurTestConstants.GEBIEDID);
     gebied.setLandId(NatuurTestConstants.LANDID);
     gebied.setLatitude(NatuurTestConstants.LATITUDE);

@@ -15,17 +15,17 @@
  * limitations under the Licence.
  */
 
-let beschrijvingtypes = {};
-var landen = {};
-var rangen = {};
-var regios = {};
-var statussen = {};
-var windstreken = {};
+const beschrijvingtypes = {};
+const landen = {};
+const rangen = {};
+const regios = {};
+const statussen = {};
+const windstreken = {};
 
 function getBeschrijvingtype(beschrijvingtype, taal) {
-  let beschrijving = getBeschrijving(beschrijvingtype);
+  const beschrijving = getBeschrijving(beschrijvingtype);
 
-  var naam = beschrijving.teksten.findIndex(i => i.taalKode === taal);
+  const naam = beschrijving.teksten.findIndex(i => i.taalKode === taal);
   if (naam < 0) {
     return beschrijvingtype;
   }
@@ -33,13 +33,12 @@ function getBeschrijvingtype(beschrijvingtype, taal) {
   return beschrijving.teksten[naam].tekst;
 }
 
-function getBeschrijvingseq(beschrijvingtype, taal) {
-  let beschrijving = getBeschrijving(beschrijvingtype);
-  return beschrijving.volgorde;
+function getBeschrijvingseq(beschrijvingtype) {
+  return getBeschrijving(beschrijvingtype).volgorde;
 }
 
 function getBeschrijving(beschrijvingtype) {
-  let beschrijving = {};
+  const beschrijving = {};
   if (beschrijvingtypes.hasOwnProperty(beschrijvingtype)) {
     beschrijving = beschrijvingtypes[beschrijvingtype];
   } else {

@@ -67,10 +67,13 @@ public class RegiolijstDtoTest {
 
     gelijk.setRegioId(regiolijstDto.getRegioId());
     gelijk.setDatum(regiolijstDto.getDatum());
-    groter.setRegioId(regiolijstDto.getRegioId() + 1);
+    gelijk.setRegiolijstId(regiolijstDto.getRegiolijstId());
+    groter.setRegioId(regiolijstDto.getRegioId());
     groter.setDatum(regiolijstDto.getDatum());
-    kleiner.setRegioId(regiolijstDto.getRegioId() - 1);
+    groter.setRegiolijstId(regiolijstDto.getRegiolijstId() + 1);
+    kleiner.setRegioId(regiolijstDto.getRegioId());
     kleiner.setDatum(regiolijstDto.getDatum());
+    kleiner.setRegiolijstId(regiolijstDto.getRegiolijstId() - 1);
 
     assertTrue(regiolijstDto.compareTo(groter) < 0);
     assertEquals(0, regiolijstDto.compareTo(gelijk));
@@ -99,6 +102,7 @@ public class RegiolijstDtoTest {
 
     instance.setRegioId(regiolijstDto.getRegioId());
     instance.setDatum(regiolijstDto.getDatum());
+    instance.setRegiolijstId(regiolijstDto.getRegiolijstId());
     assertEquals(regiolijstDto, instance);
 
     instance.setRegioId(regiolijstDto.getRegioId() + 1);

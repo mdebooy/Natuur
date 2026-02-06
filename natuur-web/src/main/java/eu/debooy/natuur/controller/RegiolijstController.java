@@ -98,9 +98,10 @@ public class RegiolijstController extends Natuur {
   private final List<SelectItem>    statusses             = new LinkedList<>();
 
   @EJB
-  private IDoosRemote   doosRemote;
+  private transient IDoosRemote   doosRemote;
 
-  private Part                bestand;
+  private transient Part          bestand;
+
   private Regio               regio;
   private Regiolijst          regiolijst;
   private RegiolijstDto       regiolijstDto;
@@ -263,14 +264,14 @@ public class RegiolijstController extends Natuur {
       statusses.add(new SelectItem(" ", "--"));
       var rijen = getI18nLijst(STATUSSEN, getGebruikersTaal(),
                                new I18nSelectItem.WaardeComparator());
-      rijen.forEach(rij -> {
+      rijen.forEach(rij ->
         statusses.add(new SelectItem(rij.getValue(),
                                      String.format(FMT_NAAM,
                                                    rij.getLabel(),
                                                    rij.getValue()
                                                       .toString()
-                                                      .toUpperCase())));
-      });
+                                                      .toUpperCase())))
+      );
     }
 
     return statusses;

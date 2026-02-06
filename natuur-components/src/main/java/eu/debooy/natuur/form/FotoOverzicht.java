@@ -19,7 +19,9 @@ package eu.debooy.natuur.form;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
+import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
+import java.io.Serializable;
 import java.util.Date;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -29,7 +31,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 /**
  * @author Marco de Booij
  */
-public class FotoOverzicht {
+public class FotoOverzicht
+    extends Formulier implements Comparable<FotoOverzicht>, Serializable {
   private Date    datum;
   private String  fotoBestand;
   private String  fotoDetail;
@@ -61,7 +64,7 @@ public class FotoOverzicht {
 
   public FotoOverzicht(FotoOverzichtDto fotoOverzichtDto, String taal,
                        String landnaam) {
-    datum               = new Date(fotoOverzichtDto.getDatum().getTime());
+    datum             = new Date(fotoOverzichtDto.getDatum().getTime());
     fotoBestand         = fotoOverzichtDto.getFotoBestand();
     fotoDetail          = fotoOverzichtDto.getFotoDetail();
     fotoId              = fotoOverzichtDto.getFotoId();
@@ -76,13 +79,16 @@ public class FotoOverzicht {
     parentLatijnsenaam  = fotoOverzichtDto.getParentLatijnsenaam();
     parentNaam          = fotoOverzichtDto.getParentNaam(taal);
     parentRang          = fotoOverzichtDto.getParentRang();
+    parentStatus        = fotoOverzichtDto.getParentStatus();
     parentVolgnummer    = fotoOverzichtDto.getParentVolgnummer();
     rang                = fotoOverzichtDto.getRang();
+    status              = fotoOverzichtDto.getStatus();
     taxonId             = fotoOverzichtDto.getTaxonId();
     taxonSeq            = fotoOverzichtDto.getTaxonSeq();
     volgnummer          = fotoOverzichtDto.getVolgnummer();
   }
 
+  @Override
   public int compareTo(FotoOverzicht fotoOverzicht) {
     return new CompareToBuilder().append(datum, fotoOverzicht.datum)
                                  .append(fotoId, fotoOverzicht.fotoId)
@@ -173,10 +179,6 @@ public class FotoOverzicht {
   }
 
   public String getSorteerdatum() {
-    if (null == datum) {
-      return "";
-    }
-
     return Datum.fromDate(datum, DoosConstants.SORTEERDATUM);
   }
 

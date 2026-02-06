@@ -22,8 +22,6 @@ import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.form.Rangnaam;
-import static eu.debooy.natuur.validator.NatuurValidator.LBL_NAAM;
-import static eu.debooy.natuur.validator.NatuurValidator.LBL_TAAL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +52,7 @@ public class RangnaamValidator extends NatuurValidator {
     fouten.addAll(new Validator.Builder()
                                .setWaarde(rangnaam.getNaam())
                                .setAttribute(RangnaamDto.COL_NAAM)
-                               .setLabel(LBL_NAAM)
+                               .setLabel(NatuurValidator.LBL_NAAM)
                                .setMaxLengte(255)
                                .setRequired()
                                .valideer().getFouten());
@@ -62,7 +60,7 @@ public class RangnaamValidator extends NatuurValidator {
     fouten.addAll(new Validator.Builder()
                                .setWaarde(rangnaam.getTaal())
                                .setAttribute(RangnaamDto.COL_TAAL)
-                               .setLabel(LBL_TAAL)
+                               .setLabel(NatuurValidator.LBL_TAAL)
                                .setLowerCase()
                                .setFixLengte(3)
                                .setRequired()

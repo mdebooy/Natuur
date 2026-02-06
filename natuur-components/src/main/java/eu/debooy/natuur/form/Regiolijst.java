@@ -53,6 +53,7 @@ public class Regiolijst extends Formulier
   public int compareTo(Regiolijst regiolijst) {
     return new CompareToBuilder().append(regioId, regiolijst.regioId)
                                  .append(datum, regiolijst.datum)
+                                 .append(regiolijstId, regiolijst.regiolijstId)
                                  .toComparison();
   }
 
@@ -68,6 +69,7 @@ public class Regiolijst extends Formulier
     var regiolijst  = (Regiolijst) object;
     return new EqualsBuilder().append(regioId, regiolijst.regioId)
                               .append(datum, regiolijst.datum)
+                              .append(regiolijstId, regiolijst.regiolijstId)
                               .isEquals();
   }
 
@@ -93,7 +95,8 @@ public class Regiolijst extends Formulier
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(datum).toHashCode();
+    return new HashCodeBuilder().append(regioId).append(datum)
+                                .append(regiolijstId).toHashCode();
   }
 
   public void persist(RegiolijstDto regiolijstDto) {

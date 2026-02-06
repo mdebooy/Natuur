@@ -53,7 +53,7 @@ import org.slf4j.LoggerFactory;
 @Lock(LockType.WRITE)
 public class TaxonbeschrijvingService {
   private static final  Logger  LOGGER  =
-      LoggerFactory.getLogger(TaxonnaamService.class);
+      LoggerFactory.getLogger(TaxonbeschrijvingService.class);
 
   @SuppressWarnings("java:S6813")
   @Inject

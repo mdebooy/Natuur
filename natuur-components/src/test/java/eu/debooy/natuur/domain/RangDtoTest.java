@@ -66,7 +66,7 @@ public class RangDtoTest {
     instance.setNiveau(NIVEAU);
     instance.setRang(RANG);
 
-    rangnamen.values().forEach(rangnaam ->  instance.addNaam(rangnaam));
+    rangnamen.values().forEach(instance::addNaam);
 
     var rangnaamDto = new RangnaamDto();
     rangnaamDto.setTaal(TAAL_GR);

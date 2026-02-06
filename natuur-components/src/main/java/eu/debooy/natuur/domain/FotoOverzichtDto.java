@@ -73,7 +73,7 @@ public class FotoOverzichtDto
   public static final String  COL_PARENTVOLGNUMMER    = "parentVolgnummer";
   public static final String  COL_RANG                = "rang";
   public static final String  COL_STATUS              = "status";
-  public static final String  COL_TAXONID             = "taxonId";
+  public static final String  COL_TAXON               = "taxon";
   public static final String  COL_TAXONSEQ            = "taxonSeq";
   public static final String  COL_VOLGNUMMER          = "volgnummer";
 
@@ -120,14 +120,14 @@ public class FotoOverzichtDto
   @Column(name="PARENT_ID")
   private Long      parentId;
   @ReadOnly
+  @Column(name="PARENT_LATIJNSENAAM")
+  private String    parentLatijnsenaam;
+  @ReadOnly
   @Column(name="PARENT_RANG")
   private String    parentRang;
   @ReadOnly
   @Column(name="PARENT_STATUS")
   private String    parentStatus;
-  @ReadOnly
-  @Column(name="PARENT_LATIJNSENAAM")
-  private String    parentLatijnsenaam;
   @ReadOnly
   @Column(name="PARENT_VOLGNUMMER")
   private Long      parentVolgnummer;

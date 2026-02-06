@@ -73,10 +73,13 @@ public class RegiolijstTest {
 
     gelijk.setRegioId(regiolijst.getRegioId());
     gelijk.setDatum(regiolijst.getDatum());
-    groter.setRegioId(regiolijst.getRegioId() + 1);
+    gelijk.setRegiolijstId(regiolijst.getRegiolijstId());
+    groter.setRegioId(regiolijst.getRegioId());
     groter.setDatum(regiolijst.getDatum());
-    kleiner.setRegioId(regiolijst.getRegioId() - 1);
+    groter.setRegiolijstId(regiolijst.getRegiolijstId() + 1);
+    kleiner.setRegioId(regiolijst.getRegioId());
     kleiner.setDatum(regiolijst.getDatum());
+    kleiner.setRegiolijstId(regiolijst.getRegiolijstId() - 1);
 
     assertTrue(regiolijst.compareTo(groter) < 0);
     assertEquals(0, regiolijst.compareTo(gelijk));
@@ -105,6 +108,7 @@ public class RegiolijstTest {
 
     instance.setRegioId(regiolijst.getRegioId());
     instance.setDatum(regiolijst.getDatum());
+    instance.setRegiolijstId(regiolijst.getRegiolijstId());
     assertEquals(regiolijst, instance);
 
     instance  = new Regiolijst(regiolijstDto);
@@ -124,7 +128,14 @@ public class RegiolijstTest {
 
   @Test
   public void testGetRegioId() {
-    assertEquals(NatuurTestConstants.REGIOID, regiolijst.getRegioId());
+    assertEquals(NatuurTestConstants.REGIOID,
+                 regiolijst.getRegioId());
+  }
+
+  @Test
+  public void testGetRegioLijstId() {
+    assertEquals(NatuurTestConstants.REGIOLIJSTID,
+                 regiolijst.getRegiolijstId());
   }
 
   @Test
@@ -217,5 +228,17 @@ public class RegiolijstTest {
     instance.setRegioId(NatuurTestConstants.REGIOID);
 
     assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
+  }
+
+  @Test
+  public void testSetRegiolijstId() {
+    var instance  = new Regiolijst();
+
+    assertNotEquals(NatuurTestConstants.REGIOLIJSTID,
+                    instance.getRegiolijstId());
+
+    instance.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
+
+    assertEquals(NatuurTestConstants.REGIOLIJSTID, instance.getRegiolijstId());
   }
 }

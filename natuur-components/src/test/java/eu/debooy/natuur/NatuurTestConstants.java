@@ -111,7 +111,7 @@ public final class NatuurTestConstants {
   public static final int     RANGNAAM_HASH           = 268443;
   public static final String  RANGNAAM_KL             = "orde";
   public static final Long    REGIOID                 = 101L;
-  public static final int     REGIOLIJST_HASH         = 2002365212;
+  public static final int     REGIOLIJST_HASH         = 1073068824;
   public static final Long    REGIOLIJSTID            = 12L;
   public static final int     REGIOLIJSTTAXON_HASH    = 24727;
   public static final int     REGIOLIJSTTAXONPK_HASH  = 24727;

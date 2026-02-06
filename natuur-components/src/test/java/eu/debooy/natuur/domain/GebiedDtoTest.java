@@ -35,7 +35,7 @@ public class GebiedDtoTest {
   @BeforeClass
   public static void setUpClass() {
     // Voor de juiste decimal point.
-    Locale.setDefault(new Locale("nl"));
+    Locale.setDefault(new Locale.Builder().setLanguage("nl").build());
 
     gebiedDto = NatuurTestUtils.getGebiedDto();
   }
@@ -91,7 +91,8 @@ public class GebiedDtoTest {
 
   @Test
   public void testGetLatitudeGraden() {
-    assertEquals(NatuurTestConstants.LATITUDE_GRADEN, gebiedDto.getLatitudeGraden());
+    assertEquals(NatuurTestConstants.LATITUDE_GRADEN,
+                 gebiedDto.getLatitudeGraden());
   }
 
   @Test
@@ -206,7 +207,8 @@ public class GebiedDtoTest {
     assertNull(instance.getGebiedId());
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
-    assertEquals(NatuurTestConstants.LATITUDE_GRADEN, instance.getLatitudeGraden());
+    assertEquals(NatuurTestConstants.LATITUDE_GRADEN,
+                 instance.getLatitudeGraden());
     assertNull(instance.getLatitudeMinuten());
     assertNull(instance.getLatitudeSeconden());
     assertNull(instance.getLongitude());
@@ -227,7 +229,8 @@ public class GebiedDtoTest {
     assertEquals(Long.valueOf(0), instance.getLandId());
     assertNull(instance.getLatitude());
     assertNull(instance.getLatitudeGraden());
-    assertEquals(NatuurTestConstants.LATITUDE_MINUTEN, instance.getLatitudeMinuten());
+    assertEquals(NatuurTestConstants.LATITUDE_MINUTEN,
+                 instance.getLatitudeMinuten());
     assertNull(instance.getLatitudeSeconden());
     assertNull(instance.getLongitude());
     assertNull(instance.getLongitudeGraden());
@@ -290,7 +293,8 @@ public class GebiedDtoTest {
     assertNull(instance.getLatitudeMinuten());
     assertNull(instance.getLatitudeSeconden());
     assertNull(instance.getLongitude());
-    assertEquals(NatuurTestConstants.LONGITUDE_GRADEN, instance.getLongitudeGraden());
+    assertEquals(NatuurTestConstants.LONGITUDE_GRADEN,
+                 instance.getLongitudeGraden());
     assertNull(instance.getLongitudeMinuten());
     assertNull(instance.getLongitudeSeconden());
     assertNull(instance.getNaam());

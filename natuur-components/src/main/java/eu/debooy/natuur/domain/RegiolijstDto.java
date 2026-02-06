@@ -63,6 +63,8 @@ public class RegiolijstDto
   public int compareTo(RegiolijstDto regiolijstDto) {
     return new CompareToBuilder().append(regioId, regiolijstDto.regioId)
                                  .append(datum, regiolijstDto.datum)
+                                 .append(regiolijstId,
+                                         regiolijstDto.regiolijstId)
                                  .toComparison();
   }
 
@@ -78,7 +80,9 @@ public class RegiolijstDto
     var regiolijstDto = (RegiolijstDto) object;
 
     return new EqualsBuilder().append(regioId, regiolijstDto.regioId)
-                              .append(datum, regiolijstDto.datum).isEquals();
+                              .append(datum, regiolijstDto.datum)
+                              .append(regiolijstId, regiolijstDto.regiolijstId)
+                              .isEquals();
   }
 
   public Date getDatum() {
@@ -103,7 +107,8 @@ public class RegiolijstDto
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(datum).toHashCode();
+    return new HashCodeBuilder().append(regioId).append(datum)
+                                .append(regiolijstId).toHashCode();
   }
 
   public void setDatum(Date datum) {

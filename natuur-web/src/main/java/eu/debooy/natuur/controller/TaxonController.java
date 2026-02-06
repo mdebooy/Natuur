@@ -617,23 +617,22 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var taal  = taxonnaam.getTaal();
     try {
       taxonnaam.persist(taxonnaamDto);
-      switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.UPDATE -> {
-          getTaxonnaamService().save(taxonnaamDto);
-          setDetailAktie(PersistenceConstants.RETRIEVE);
-          addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
-        }
-        default -> addError(ComponentsConstants.WRONGREDIRECT,
-                   getDetailAktie().getAktie()) ;
+      if (getDetailAktie().getAktie() == PersistenceConstants.UPDATE) {
+        getTaxonnaamService().save(taxonnaamDto);
+        setDetailAktie(PersistenceConstants.RETRIEVE);
+        addInfo(PersistenceConstants.UPDATED,
+                String.format("'%s'", taxonnaam.getTaal()));
+      } else {
+        addError(ComponentsConstants.WRONGREDIRECT,
+                 getDetailAktie().getAktie());
       }
       redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, taal);
+      addError(PersistenceConstants.DUPLICATE, taxonnaam.getTaal());
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, taal);
+      addError(PersistenceConstants.NOTFOUND, taxonnaam.getTaal());
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);

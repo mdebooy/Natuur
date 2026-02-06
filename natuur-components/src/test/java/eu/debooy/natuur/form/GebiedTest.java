@@ -39,7 +39,7 @@ public class GebiedTest {
   @BeforeClass
   public static void setUpClass() {
     // Voor de juiste decimal point.
-    Locale.setDefault(new Locale("nl"));
+    Locale.setDefault(new Locale.Builder().setLanguage("nl").build());
 
     gebied    = NatuurTestUtils.getGebied();
     gebiedDto = NatuurTestUtils.getGebiedDto();
