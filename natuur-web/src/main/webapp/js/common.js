@@ -38,7 +38,7 @@ function getBeschrijvingseq(beschrijvingtype) {
 }
 
 function getBeschrijving(beschrijvingtype) {
-  const beschrijving = {};
+  let beschrijving = {};
   if (beschrijvingtypes.hasOwnProperty(beschrijvingtype)) {
     beschrijving = beschrijvingtypes[beschrijvingtype];
   } else {

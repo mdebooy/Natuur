@@ -56,6 +56,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -99,7 +100,6 @@ public class RegiolijstController extends Natuur {
 
   @EJB
   private transient IDoosRemote   doosRemote;
-
   private transient Part          bestand;
 
   private Regio               regio;
@@ -130,6 +130,7 @@ public class RegiolijstController extends Natuur {
 
     regiolijst    = new Regiolijst();
     regiolijstDto = new RegiolijstDto();
+    regiolijst.setDatum(new Date());
     setAktie(PersistenceConstants.CREATE);
     setSubTitel(getTekst(TIT_CREATE));
     setReturnTo(getExternalContext(), REGIOLIJSTEN_REDIRECT);
@@ -145,7 +146,6 @@ public class RegiolijstController extends Natuur {
     regiolijstTaxon     = new RegiolijstTaxon();
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
     regiolijstTaxon.setRegiolijstId(regiolijst.getRegiolijstId());
-    regiolijstTaxon.persist(regiolijstTaxonDto);
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE, regio.getNaam()));
     redirect(REGIOLIJSTTAXON_REDIRECT);
@@ -157,15 +157,18 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
+    var naam  = String.format("%s - %s",
+                              regio.getNaam(),
+                              Datum.fromDate(regiolijst.getDatum()));
     try {
       getRegiolijstService().delete(regiolijst.getRegiolijstId());
-      addInfo(PersistenceConstants.DELETED, regio.getNaam());
+      addInfo(PersistenceConstants.DELETED, naam);
       regiolijst      = new Regiolijst();
       regiolijstDto   = new RegiolijstDto();
       regiolijstTaxon = new RegiolijstTaxon();
       redirect(REGIOLIJSTEN_REDIRECT);
     } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, regiolijst.getRegiolijstId());
+      addError(PersistenceConstants.NOTFOUND, naam);
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -381,7 +384,7 @@ public class RegiolijstController extends Natuur {
     try {
       regiolijstDto = getRegiolijstService().regiolijst(sleutel);
       regiolijst    = new Regiolijst(regiolijstDto);
-      setRegio(sleutel);
+      setRegio(regiolijst.getRegioId());
       setAktie(PersistenceConstants.RETRIEVE);
       setSubTitel(getTekst(TIT_RETRIEVE, regio.getNaam()));
       setReturnTo(ec, REGIOLIJSTEN_REDIRECT);
@@ -434,7 +437,7 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    setRegio(regiolijst.getRegiolijstId());
+    setRegio(regiolijst.getRegioId());
     var naam  = String.format("%s - %s",
                               regio.getNaam(),
                               Datum.fromDate(regiolijst.getDatum()));
@@ -444,13 +447,13 @@ public class RegiolijstController extends Natuur {
           regiolijst.persist(regiolijstDto);
           getRegiolijstService().save(regiolijstDto);
           regiolijst.setRegiolijstId(regiolijstDto.getRegiolijstId());
-          addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
+          addInfo(PersistenceConstants.CREATED, naam);
           update();
         }
         case PersistenceConstants.UPDATE -> {
           regiolijst.persist(regiolijstDto);
           getRegiolijstService().update(regiolijstDto);
-          addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
+          addInfo(PersistenceConstants.UPDATED, naam);
         }
         default -> addError(ComponentsConstants.WRONGREDIRECT,
                             getAktie().getAktie()) ;
@@ -506,12 +509,12 @@ public class RegiolijstController extends Natuur {
           regiolijstTaxon.persist(regiolijstTaxonDto);
           getRegiolijstTaxonService().save(regiolijstTaxonDto);
           regiolijstTaxon.setRegiolijstId(regiolijstTaxonDto.getRegiolijstId());
-          addInfo(PersistenceConstants.CREATED, "'" + naam + "'");
+          addInfo(PersistenceConstants.CREATED, naam);
         }
         case PersistenceConstants.UPDATE -> {
           regiolijstTaxon.persist(regiolijstTaxonDto);
           getRegiolijstTaxonService().update(regiolijstTaxonDto);
-          addInfo(PersistenceConstants.UPDATED, "'" + naam + "'");
+          addInfo(PersistenceConstants.UPDATED, naam);
         }
         default -> addError(ComponentsConstants.WRONGREDIRECT,
                    getDetailAktie().getAktie());

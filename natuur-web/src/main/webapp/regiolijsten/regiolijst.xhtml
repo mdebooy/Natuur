@@ -9,7 +9,6 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        fileUpload('formRegiolijst', 'bestand');
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
         if (#{!natuurRegiolijst.aktie.readonly}) {

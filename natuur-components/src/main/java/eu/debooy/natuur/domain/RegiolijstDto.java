@@ -21,6 +21,8 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQuery;
 import jakarta.persistence.Table;
@@ -56,7 +58,8 @@ public class RegiolijstDto
   @Column(name="REGIO_ID", nullable=false)
   private Long    regioId;
   @Id
-  @Column(name="REGIOLIJST_ID", nullable=false)
+  @GeneratedValue(strategy=GenerationType.IDENTITY)
+  @Column(name="REGIOLIJST_ID", nullable=false, unique=true, updatable=false)
   private Long    regiolijstId;
 
   @Override

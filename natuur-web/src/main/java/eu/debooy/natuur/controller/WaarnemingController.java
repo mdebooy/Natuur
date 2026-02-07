@@ -100,7 +100,8 @@ public class WaarnemingController extends Natuur {
       waarnemingDto.setTaxon(taxon);
       waarnemingDto.setDatum(new Date());
       waarnemingDto.setGebied(gebied);
-      waarneming    = new Waarneming(waarnemingDto, getGebruikersTaalInIso6392t());
+      waarneming    = new Waarneming(waarnemingDto,
+                                     getGebruikersTaalInIso6392t());
       setAktie(PersistenceConstants.CREATE);
       setSubTitel(getTekst(TIT_CREATE));
       redirect(WAARNEMING_REDIRECT);

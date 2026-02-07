@@ -99,9 +99,9 @@ public class TaxonController extends Natuur {
   private final JSONArray       resultaat       = new JSONArray();
 
   @EJB
-  private IDoosRemote   doosRemote;
+  private transient IDoosRemote doosRemote;
+  private transient Part        bestand;
 
-  private Part          bestand;
   private Taxon         ouder;
   private Long          ouderNiveau;
   private String        perTaal     = "";

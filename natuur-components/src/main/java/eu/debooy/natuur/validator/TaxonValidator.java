@@ -93,6 +93,9 @@ public final class TaxonValidator extends NatuurValidator {
     switch (DoosUtils.nullToEmpty(taxon.getRang())) {
       case NatuurConstants.RANG_SOORT -> valideerSoort(taxon, fouten);
       case NatuurConstants.RANG_ONDERSOORT -> valideerOndersoort(taxon, fouten);
+      default -> {
+        // Geen speciale rang, niets te doen
+      }
     }
     if (aantal == fouten.size()) {
       valideerRang(taxon, fouten);

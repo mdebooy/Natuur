@@ -9,6 +9,7 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
+        fileUpload('regiolijstUploadForm', 'bestand');
         $('#dubbelTabel').DataTable( {
           data: #{natuurRegiolijst.dubbel},
           order: [[0, 'asc'], [1, 'asc']],
