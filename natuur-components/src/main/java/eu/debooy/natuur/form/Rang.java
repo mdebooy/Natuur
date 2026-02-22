@@ -33,6 +33,7 @@ public class Rang
     extends Formulier implements Comparable<Rang>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
+  private boolean individu;
   private String  naam;
   private Long    niveau;
   private String  rangcode;
@@ -40,6 +41,7 @@ public class Rang
   public Rang() {}
 
   public Rang(Rang rang) {
+    individu  = rang.getIndividu();
     naam      = rang.getNaam();
     niveau    = rang.getNiveau();
     rangcode  = rang.getRang();
@@ -86,6 +88,10 @@ public class Rang
     return new EqualsBuilder().append(rangcode, rang.rangcode).isEquals();
   }
 
+  public boolean getIndividu() {
+    return individu;
+  }
+
   public String getNaam() {
     return (DoosUtils.isBlankOrNull(naam) ? rangcode : naam);
   }
@@ -103,9 +109,17 @@ public class Rang
     return new HashCodeBuilder().append(rangcode).toHashCode();
   }
 
+  public boolean isIndividu() {
+    return individu;
+  }
+
   public void persist(RangDto parameter) {
     parameter.setNiveau(niveau);
     parameter.setRang(rangcode);
+  }
+
+  public final void setIndividu(boolean individu) {
+    this.individu = individu;
   }
 
   public void setNaam(String naam) {

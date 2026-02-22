@@ -74,6 +74,7 @@ CREATE TABLE NATUUR.GEBIEDEN (
 );
 
 CREATE TABLE NATUUR.RANGEN (
+  INDIVIDU                        CHAR(1)         NOT NULL  DEFAULT 'N',
   NIVEAU                          INTEGER         NOT NULL,
   RANG                            VARCHAR(3)      NOT NULL,
   CONSTRAINT PK_RANGEN PRIMARY KEY (RANG)
@@ -241,6 +242,9 @@ ALTER TABLE NATUUR.GEBIEDEN
 
 ALTER TABLE NATUUR.GEBIEDEN
   ADD CONSTRAINT CHK_GEB_LONGITUDE_SECONDEN CHECK(LONGITUDE_SECONDEN >= 0 AND LONGITUDE_SECONDEN < 60);
+
+ALTER TABLE NATUUR.RANGEN
+  ADD CONSTRAINT CHK_RAN_INDIVIDU CHECK(INDIVIDU = ANY (ARRAY['J', 'N']));
 
 ALTER TABLE NATUUR.RANGEN
   ADD CONSTRAINT UK_RAN_NIVEAU UNIQUE(NIVEAU);
@@ -425,6 +429,7 @@ COMMENT ON COLUMN NATUUR.OVERZICHT.TOTAAL                     IS 'Aantal soorten
 COMMENT ON COLUMN NATUUR.OVERZICHT.WAARGENOMEN                IS 'Aantal soorten waargenomen binnen de parent rang.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.OP_FOTO                    IS 'Aantal soorten gefotografeerd binnen de parent rang.';
 COMMENT ON TABLE  NATUUR.RANGEN                               IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
+COMMENT ON COLUMN NATUUR.RANGEN.INDIVIDU                      IS 'Is het een rang van individuen.';
 COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU                        IS 'Het niveau rang binnen de taxa.';
 COMMENT ON COLUMN NATUUR.RANGEN.RANG                          IS 'De rang van een taxon.';
 COMMENT ON TABLE  NATUUR.RANGNAMEN                            IS 'Deze tabel bevat de namen van de rangen.';
@@ -487,33 +492,34 @@ INSERT INTO NATUUR.GEBIEDEN
  VALUES (1,'Onbekend');
 
 INSERT INTO NATUUR.RANGEN
-  VALUES (1 , 'le'),
-         (2 , 'do'),
-         (3 , 'ri'),
-         (4 , 'ori'),
-         (5 , 'st'),
-         (6 , 'ost'),
-         (7 , 'ist'),
-         (8 , 'kl'),
-         (9 , 'okl'),
-         (10, 'ikl'),
-         (11, 'pkl'),
-         (12, 'sor'),
-         (13, 'or'),
-         (14, 'oor'),
-         (15, 'ior'),
-         (16, 'por'),
-         (17, 'sfa'),
-         (18, 'fa'),
-         (19, 'ofa'),
-         (20, 'ta'),
-         (21, 'ota'),
-         (22, 'ge'),
-         (23, 'oge'),
-         (24, 'so'),
-         (25, 'oso'),
-         (26, 'var'),
-         (27, 'frm');
+         (NIVEAU, RANG, INDIVIDU)
+  VALUES (1 , 'le',  'N'),
+         (2 , 'do',  'N'),
+         (3 , 'ri',  'N'),
+         (4 , 'ori', 'N'),
+         (5 , 'st',  'N'),
+         (6 , 'ost', 'N'),
+         (7 , 'ist', 'N'),
+         (8 , 'kl',  'N'),
+         (9 , 'okl', 'N'),
+         (10, 'ikl', 'N'),
+         (11, 'pkl', 'N'),
+         (12, 'sor', 'N'),
+         (13, 'or',  'N'),
+         (14, 'oor', 'N'),
+         (15, 'ior', 'N'),
+         (16, 'por', 'N'),
+         (17, 'sfa', 'N'),
+         (18, 'fa',  'N'),
+         (19, 'ofa', 'N'),
+         (20, 'ta',  'N'),
+         (21, 'ota', 'N'),
+         (22, 'ge',  'N'),
+         (23, 'oge', 'N'),
+         (24, 'so',  'J'),
+         (25, 'oso', 'J'),
+         (26, 'var', 'J'),
+         (27, 'frm', 'J');
 
 INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)

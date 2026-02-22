@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
@@ -50,13 +51,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class RangDto extends Dto implements Comparable<RangDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  COL_NIVEAU  = "niveau";
-  public static final String  COL_RANG    = "rang";
+  public static final String  COL_INDIVIDU  = "niveau";
+  public static final String  COL_NIVEAU    = "niveau";
+  public static final String  COL_RANG      = "rang";
 
   public static final String  PAR_NIVEAU  = "niveau";
 
   public static final String  QRY_VANAF = "rangenVanaf";
 
+  @Column(name="INDIVIDU", length=1, nullable=false)
+  private String  individu;
   @Column(name="NIVEAU", nullable=false)
   private Long    niveau;
   @Id
@@ -103,6 +107,10 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     var rangDto  = (RangDto) object;
     return new EqualsBuilder().append(rang, rangDto.rang)
                               .isEquals();
+  }
+
+  public boolean getIndividu() {
+    return (DoosConstants.WAAR.equals(individu));
   }
 
   @Transient
@@ -152,12 +160,16 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     }
   }
 
+  public void setIndividu(boolean individu) {
+    this.individu = individu ? DoosConstants.WAAR : DoosConstants.ONWAAR;
+  }
+
   public void setNiveau(Long niveau) {
-    this.niveau = niveau;
+    this.niveau   = niveau;
   }
 
   public void setRang(String rang) {
-    this.rang = rang;
+    this.rang     = rang;
   }
 
   public void setRangnamen(Collection<RangnaamDto> rangnamen) {

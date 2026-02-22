@@ -45,10 +45,12 @@ public class RangTest {
   @BeforeClass
   public static void setUpClass() {
     rang    = new Rang();
+    rang.setIndividu(true);
     rang.setNiveau(NIVEAU);
     rang.setRang(RANG);
 
     rangDto = new RangDto();
+    rangDto.setIndividu(true);
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);
     rangDto.setRangnamen(NatuurTestUtils.getRangnamen());
@@ -85,6 +87,11 @@ public class RangTest {
 
     instance  = new Rang(rangDto);
     assertEquals(rang, instance);
+  }
+
+  @Test
+  public void testGetIndividu() {
+    assertTrue(rang.getIndividu());
   }
 
   @Test
@@ -141,6 +148,11 @@ public class RangTest {
     assertEquals(NIVEAU, instance.getNiveau());
     assertEquals(RANG, instance.getRang());
     assertEquals(RANGNAAM, instance.getNaam());
+  }
+
+  @Test
+  public void testIsIndividu() {
+    assertTrue(rang.getIndividu());
   }
 
   @Test

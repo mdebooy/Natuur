@@ -23,6 +23,12 @@
 ALTER TABLE NATUUR.TAXA
   ADD STATUS VARCHAR(2) NULL;
 
+ALTER TABLE NATUUR.RANGEN
+  ADD INDIVIDU CHAR(1) NOT NULL DEFAULT 'N';
+
+ALTER TABLE NATUUR.RANGEN
+  ADD CONSTRAINT CHK_RAN_INDIVIDU CHECK(INDIVIDU = ANY (ARRAY['J', 'N']));
+
 ALTER TABLE NATUUR.REGIOLIJSTEN
   DROP CONSTRAINT PK_REGIOLIJSTEN;
 
@@ -186,6 +192,7 @@ GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE NATUUR.TAXONBESCHRIJVINGEN  TO NAT
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE            TO NATUUR_UPD;
 
 -- Commentaren
+COMMENT ON COLUMN NATUUR.RANGEN.INDIVIDU                      IS 'Is het een rang van individuen.';
 COMMENT ON VIEW   NATUUR.DETAILS                              IS 'Deze view bevat gegevens van de taxon en zijn parent.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_ID                    IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_LATIJNSENAAM          IS 'De wetenschappelijke naam van de parent van de taxon.';
@@ -273,8 +280,8 @@ ALTER TABLE NATUUR.TAXA
   DROP COLUMN UITGESTORVEN;
 
 INSERT INTO NATUUR.RANGEN
-  VALUES (26, 'var'),
-         (27, 'frm');
+  VALUES (26, 'var', 'J'),
+         (27, 'frm', 'J');
 
 INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)
@@ -290,3 +297,7 @@ INSERT INTO NATUUR.RANGNAMEN
          (RANG, NAAM, TAAL)
   VALUES ('frm', 'Form',          'deu'),
          ('var', 'Varietät',      'deu');
+
+UPDATE NATUUR.RANGEN
+SET    INDIVIDU='J'
+WHERE  RANG IN ('so', 'oso');

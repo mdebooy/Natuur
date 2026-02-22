@@ -54,6 +54,7 @@ public class RangDtoTest {
     rangDto   = new RangDto();
     rangnamen = NatuurTestUtils.getRangnamen();
 
+    rangDto.setIndividu(true);
     rangDto.setNiveau(NIVEAU);
     rangDto.setRang(RANG);
     rangDto.setRangnamen(rangnamen);
@@ -118,6 +119,11 @@ public class RangDtoTest {
   @Test
   public void testGetNiveau() {
     assertEquals(NIVEAU, rangDto.getNiveau());
+  }
+
+  @Test
+  public void testGetIndividu() {
+    assertTrue(rangDto.getIndividu());
   }
 
   @Test
