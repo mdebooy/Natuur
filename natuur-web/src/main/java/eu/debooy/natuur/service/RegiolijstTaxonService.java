@@ -39,6 +39,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -85,7 +86,10 @@ public class RegiolijstTaxonService {
                             aantallen.add(new AantalPerRegio(
                                     Long.valueOf(String.valueOf(aantal[0])),
                                     Long.valueOf(String.valueOf(aantal[1])),
-                                    Long.valueOf(String.valueOf(aantal[2])))));
+                                    new Date(((java.util.Date) aantal[2])
+                                            .getTime()),
+                                    Long.valueOf(String.valueOf(aantal[3])),
+                                    Long.valueOf(String.valueOf(aantal[4])))));
       return Response.ok().entity(aantallen).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new RegiolijstDto()).build();

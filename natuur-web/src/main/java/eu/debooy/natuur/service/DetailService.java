@@ -108,11 +108,11 @@ public class DetailService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public List<DetailDto> getVanRegiolijst(Long regioId) {
+  public List<DetailDto> getVanRegiolijst(Long regiolijstId) {
     List<DetailDto> soorten = new ArrayList<>();
 
     try {
-      soorten.addAll(detailDao.getVanRegiolijst(regioId));
+      soorten.addAll(detailDao.getVanRegiolijst(regiolijstId));
       setGezien(soorten);
     } catch (ObjectNotFoundException e) {
       // Er wordt nu gewoon een lege ArrayList gegeven.

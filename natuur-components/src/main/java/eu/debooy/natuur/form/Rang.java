@@ -52,6 +52,7 @@ public class Rang
   }
 
   public Rang(RangDto rangDto, String taal) {
+    individu  = rangDto.getIndividu();
     if (DoosUtils.isNotBlankOrNull(taal)) {
       naam    = rangDto.getNaam(taal);
     }
@@ -114,6 +115,7 @@ public class Rang
   }
 
   public void persist(RangDto parameter) {
+    parameter.setIndividu(individu);
     parameter.setNiveau(niveau);
     parameter.setRang(rangcode);
   }

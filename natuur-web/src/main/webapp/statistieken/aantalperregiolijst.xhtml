@@ -13,7 +13,7 @@
         var aantalperregiolijstTabel = $('#aantalperregiolijstTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsttaxa/aantalperregiolijst',
                   dataSrc: '' },
-          order: [[2, 'asc']],
+          order: [[3, 'asc'], [4, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength')},
           lengthChange: false,
@@ -34,20 +34,25 @@
           },
           columns: [
             { data: 'aantal', visible: false },
+            { data: 'datum', visible: false,  searchable: false },
             { data: 'gezien', visible: false },
             { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
                 return getRegionaam(data.regioId, iso6392t);
               }
             },
-            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', orderData: 0, render: function ( data, type, row ) {
+            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', orderData: 0, render: function ( data, type, row ) {
+                return formatDatum(data.datum, taal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
                 return formatNumber(data.aantal);
               }
             },
-            { data: null, title: '#{i18nTeksten.tekst('label.gezien')}', width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
+            { data: null, title: '#{i18nTeksten.tekst('label.gezien')}', width: '50px', class: 'has-text-right', orderData: 2, render: function ( data, type, row ) {
                 return formatNumber(data.gezien);
               }
             },
-            { data: null, title: '', orderable: false, width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
+            { data: null, title: '', orderable: false, width: '50px', class: 'has-text-right', orderData: 2, render: function ( data, type, row ) {
                 return formatNumber(100*(data.gezien/data.aantal), 2)+'%';
               }
             }
@@ -58,7 +63,7 @@
             return;
           }
           var jsfCommandLink = document.getElementById('formTotalen:linkRegiolijst');
-          alterParam(jsfCommandLink, aantalperregiolijstTabel.row(this).data().regioId);
+          alterParam(jsfCommandLink, aantalperregiolijstTabel.row(this).data().regiolijstId);
           jsfCommandLink.click();
         } );
       } );
@@ -72,7 +77,7 @@
 
           <table id="aantalperregiolijstTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="aantalperregiolijstTabel" />
           <h:commandLink id="linkRegiolijst" class="is-hidden" action="#{natuurRegiolijst.retrieve}">
-            <f:param name="regioId" value="XX" />
+            <f:param name="regiolijstId" value="XX" />
             <f:param name="returnTo" value="/statistieken/aantalperregiolijst.xhtml" />
           </h:commandLink>
         </h:form>

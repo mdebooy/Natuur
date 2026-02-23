@@ -147,6 +147,8 @@ public class Natuur extends DoosBean {
       "/waarnemingen/foto.xhtml";
   protected static final  String  WNMNPERLAND_REDIRECT      =
       "/statistieken/waarnemingenperland.xhtml";
+  protected static final  String  WNMNINLAND_REDIRECT       =
+      "/statistieken/waarnemingeninland.xhtml";
   protected static final  String  ZOEKEN_REDIRECT           =
       "/zoeken/opnaam.xhtml";
 

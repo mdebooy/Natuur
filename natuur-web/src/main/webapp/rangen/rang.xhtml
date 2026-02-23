@@ -132,6 +132,12 @@
                   <d:inputText id="niveau" value="#{natuurRang.rang.niveau}" maxlength="5" size="5" required="true" readonly="#{natuurRang.aktie.readonly}" />
                 </div>
               </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.natuur.individu')}" />
+                <div class="field-body is-normal">
+                  <d:selectBooleanCheckbox id="individu" value="#{natuurRang.rang.individu}" disabled="#{natuurRang.aktie.readonly}" />
+                </div>
+              </div>
 
               <d:crudbuttonbar bean="#{natuurRang}" form="formRang" returnto="#{natuur.path}/rangen/rangen.xhtml" />
 

@@ -64,25 +64,47 @@ public final class NatuurUtils {
   }
 
   public static String getNaam(String naam, String latijnsenaam) {
-    return getNaam(naam, "", latijnsenaam, "", false);
+    return getNaam(naam, latijnsenaam, false);
+  }
+
+  public static String getNaam(String naam, String latijnsenaam,
+                               boolean latijns) {
+    return getNaam(naam, "", latijnsenaam, "", latijns);
   }
 
   public static String getNaam(DetailDto detail, String taal) {
+    return getNaam(detail, taal, false);
+  }
+
+  public static String getNaam(DetailDto detail, String taal,
+                               boolean latijns) {
     return getNaam(detail.hasTaxonnaam(taal) ? detail.getNaam(taal) : "",
                    detail.hasParentnaam(taal) ? detail.getParentnaam(taal) : "",
-                   detail.getLatijnsenaam(), detail.getRang(), false);
+                   detail.getLatijnsenaam(), detail.getRang(), latijns);
   }
 
   public static String getNaam(TaxonDto taxon, String taal) {
+    return getNaam(taxon, taal, false);
+  }
+
+  public static String getNaam(TaxonDto taxon, String taal,
+                               boolean latijns) {
     return getNaam(taxon.hasTaxonnaam(taal) ? taxon.getNaam(taal) : "",
                    taxon.hasParentnaam(taal)
                       ? taxon.getParentnaam(taal).getNaam() : "",
-                   taxon.getLatijnsenaam(), taxon.getRang(), false);
+                   taxon.getLatijnsenaam(), taxon.getRang(), latijns);
   }
 
   public static String getNaam(Map<String, TaxonnaamDto> taxonnamen,
                                Map<String, TaxonnaamDto> parentnamen,
                                String latijnsenaam, String rang, String taal) {
+    return getNaam(taxonnamen, parentnamen, latijnsenaam, rang, taal, false);
+  }
+
+  public static String getNaam(Map<String, TaxonnaamDto> taxonnamen,
+                               Map<String, TaxonnaamDto> parentnamen,
+                               String latijnsenaam, String rang, String taal,
+                               boolean latijns) {
     return getNaam(taxonnamen.containsKey(taal) ?
                       taxonnamen.get(taal).getNaam() : "",
                    parentnamen.containsKey(taal) ?

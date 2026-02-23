@@ -118,6 +118,35 @@ public class WaarnemingService {
   }
 
   @GET
+  @Path("/land/{landId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getLandWaarnemingen(
+                      @PathParam(GebiedDto.COL_LANDID) Long landId) {
+    try {
+      return Response.ok().entity(waarnemingDao.getPerLand(landId)).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/land/{landId}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getLandWaarnemingen(
+                      @PathParam(GebiedDto.COL_LANDID) Long landId,
+                      @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Waarneming>  waarnemingen  = new ArrayList<>();
+      waarnemingDao.getPerLand(landId)
+              .forEach(waarneming ->
+                          waarnemingen.add(new Waarneming(waarneming, taal)));
+      return Response.ok().entity(waarnemingen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/taxon/{taxonId}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getTaxonWaarnemingen(

@@ -21,16 +21,17 @@ package eu.debooy.natuur;
  * @author Marco de Booij
  */
 public final class NatuurTestConstants {
-  public static final Long    AANTAL    = Long.valueOf(10);
-  public static final String  COMPLEET  = "compleet";
-  public static final Long    GEZIEN    = Long.valueOf(8);
-  public static final Long    ID        = Long.valueOf(2112);
-  public static final Long    REGIOID   = Long.valueOf(126);
-  public static final String  SORTERING = "sortering";
-  public static final String  TAAL      = "nld";
-  public static final String  TAAL_FOUT = "xxxx";
-  public static final String  TAAL_GR   = "por";
-  public static final String  TAAL_KL   = "eng";
+  public static final Long    AANTAL        = Long.valueOf(10);
+  public static final String  COMPLEET      = "compleet";
+  public static final Long    GEZIEN        = Long.valueOf(8);
+  public static final Long    ID            = Long.valueOf(2112);
+  public static final Long    REGIOID       = Long.valueOf(126);
+  public static final Long    REGIOLIJSTID  = Long.valueOf(1126);
+  public static final String  SORTERING     = "sortering";
+  public static final String  TAAL          = "nld";
+  public static final String  TAAL_FOUT     = "xxxx";
+  public static final String  TAAL_GR       = "por";
+  public static final String  TAAL_KL       = "eng";
 
   private NatuurTestConstants() {
     throw new IllegalStateException("Utility class");

@@ -75,6 +75,13 @@ public class WaarnemingDao extends Dao<WaarnemingDto> {
     return namedQuery(WaarnemingDto.QRY_PERGEBIED, params);
   }
 
+  public List<WaarnemingDto> getPerLand(Long landId) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(WaarnemingDto.PAR_LANDID, landId);
+
+    return namedQuery(WaarnemingDto.QRY_PERLAND, params);
+  }
+
   public List<WaarnemingDto> getPerTaxon(Long taxonId) {
     Map<String, Object> params  = new HashMap<>();
     params.put(WaarnemingDto.PAR_TAXONID, taxonId);

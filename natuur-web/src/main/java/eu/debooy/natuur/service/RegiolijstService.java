@@ -103,8 +103,8 @@ public class RegiolijstService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
-  public RegiolijstDto regiolijst(Long regioId) {
-    return regiolijstDao.getByPrimaryKey(regioId);
+  public RegiolijstDto regiolijst(Long regiolijstId) {
+    return regiolijstDao.getByPrimaryKey(regiolijstId);
   }
 
   @TransactionAttribute(TransactionAttributeType.REQUIRED)

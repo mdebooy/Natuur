@@ -10,7 +10,7 @@
       $(document).ready(function() {
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
-        $('#waarnemingenperlandTabel').DataTable( {
+        var waarnemingenperlandTabel = $('#waarnemingenperlandTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen/aantalperland',
                   dataSrc: '' },
           order: [[1, 'asc']],
@@ -44,6 +44,14 @@
             }
           ]
         } );
+        $( '#waarnemingenperlandTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenperlandTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTotalen:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenperlandTabel.row(this).data().id);
+          jsfCommandLink.click();
+        } );
       } );
     </script>
   </ui:define>
@@ -54,6 +62,10 @@
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.waarnemingen.per.land')}" />
 
           <table id="waarnemingenperlandTabel" class="table is-striped is-narrow" aria-describedby="waarnemingenperlandTabel" />
+          <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurGebied.retrieveLand}">
+            <f:param name="landId" value="XX" />
+            <f:param name="returnTo" value="/statistieken/waarnemingenperland.xhtml" />
+          </h:commandLink>
         </h:form>
       </div>
     </div>

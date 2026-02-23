@@ -299,20 +299,19 @@ public class RangController extends Natuur {
 
     try {
       switch (getAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           getRangService().save(rang);
           addInfo(PersistenceConstants.CREATED, "'" + rang.getRang() + "'");
           rangDto = getRangService().rang(rang.getRang());
           update();
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           rang.persist(rangDto);
           getRangService().save(rangDto);
           addInfo(PersistenceConstants.UPDATED, "'" + rang.getRang() + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie()) ;
-          break;
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getAktie().getAktie()) ;
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, rang.getRang());
@@ -348,7 +347,7 @@ public class RangController extends Natuur {
       rangnaamDto  = new RangnaamDto();
       rangnaam.persist(rangnaamDto);
       switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.CREATE:
+        case PersistenceConstants.CREATE -> {
           rangDto.addNaam(rangnaamDto);
           getRangService().save(rangDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
@@ -357,8 +356,8 @@ public class RangController extends Natuur {
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.CREATED, "'" + rangnaam.getTaal() + "'");
-          break;
-        case PersistenceConstants.UPDATE:
+        }
+        case PersistenceConstants.UPDATE -> {
           rangDto.addNaam(rangnaamDto);
           getRangService().save(rangDto);
           if (getGebruikersTaalInIso6392t().equals(taal)) {
@@ -367,11 +366,9 @@ public class RangController extends Natuur {
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
           addInfo(PersistenceConstants.UPDATED, "'" + rangnaam.getTaal() + "'");
-          break;
-        default:
-          addError(ComponentsConstants.WRONGREDIRECT,
+        }
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
                    getDetailAktie().getAktie());
-          break;
       }
       redirect(RANG_REDIRECT);
     } catch (DuplicateObjectException e) {
@@ -388,9 +385,10 @@ public class RangController extends Natuur {
   public List<SelectItem> selectRangen(Long niveau) {
     List<SelectItem>  items = new LinkedList<>();
 
-    getRangService().query(niveau)
-                    .forEach(rij ->  items.add(new SelectItem(rij.getRang(),
-                                               getRangtekst(rij.getRang()))));
+    getRangService().query(niveau).stream().sorted(new Rang.NiveauComparator())
+                    .forEachOrdered(rij ->
+                        items.add(new SelectItem(rij.getRang(),
+                                  getRangtekst(rij.getRang()))));
 
     return items;
   }

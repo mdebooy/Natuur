@@ -160,7 +160,8 @@ CREATE OR REPLACE VIEW NATUUR.DETAILS AS
 SELECT   P.TAXON_ID AS PARENT_ID, P.VOLGNUMMER AS PARENT_VOLGNUMMER,
          P.RANG AS PARENT_RANG, P.STATUS as PARENT_STATUS,
          P.LATIJNSENAAM AS PARENT_LATIJNSENAAM,
-         R.NIVEAU, T.TAXON_ID, T.VOLGNUMMER, T.RANG, T.STATUS, T.LATIJNSENAAM,
+         R.INDIVIDU, R.NIVEAU,
+         T.TAXON_ID, T.VOLGNUMMER, T.RANG, T.STATUS, T.LATIJNSENAAM,
          T.OPMERKING, CASE WHEN F.AANTAL IS NULL THEN 0 ELSE 1 END OP_FOTO
 FROM     NATUUR.TAXONOMIE T
            JOIN NATUUR.TAXA P
@@ -367,6 +368,7 @@ COMMENT ON COLUMN NATUUR.DETAILS.PARENT_RANG                  IS 'De rang van de
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_STATUS                IS 'De status van de parent taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.PARENT_VOLGNUMMER            IS 'Het volgnummer van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.LATIJNSENAAM                 IS 'De wetenschappelijke naam van de taxon.';
+COMMENT ON COLUMN NATUUR.DETAILS.INDIVIDU                     IS 'Is het een rang van individuen?';
 COMMENT ON COLUMN NATUUR.DETAILS.NIVEAU                       IS 'Het niveau van de taxon.';
 COMMENT ON COLUMN NATUUR.DETAILS.OP_FOTO                      IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
 COMMENT ON COLUMN NATUUR.DETAILS.OPMERKING                    IS 'Een opmerking voor deze taxon.';
@@ -429,7 +431,7 @@ COMMENT ON COLUMN NATUUR.OVERZICHT.TOTAAL                     IS 'Aantal soorten
 COMMENT ON COLUMN NATUUR.OVERZICHT.WAARGENOMEN                IS 'Aantal soorten waargenomen binnen de parent rang.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.OP_FOTO                    IS 'Aantal soorten gefotografeerd binnen de parent rang.';
 COMMENT ON TABLE  NATUUR.RANGEN                               IS 'Deze tabel bevat alle rangen van de taxa met hun niveau.';
-COMMENT ON COLUMN NATUUR.RANGEN.INDIVIDU                      IS 'Is het een rang van individuen.';
+COMMENT ON COLUMN NATUUR.RANGEN.INDIVIDU                      IS 'Is het een rang van individuen?';
 COMMENT ON COLUMN NATUUR.RANGEN.NIVEAU                        IS 'Het niveau rang binnen de taxa.';
 COMMENT ON COLUMN NATUUR.RANGEN.RANG                          IS 'De rang van een taxon.';
 COMMENT ON TABLE  NATUUR.RANGNAMEN                            IS 'Deze tabel bevat de namen van de rangen.';

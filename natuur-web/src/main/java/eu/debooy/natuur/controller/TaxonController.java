@@ -324,7 +324,7 @@ public class TaxonController extends Natuur {
   }
 
   public String getTaxonnaam(String taal) {
-    return NatuurUtils.getNaam(taxonDto, taal);
+    return NatuurUtils.getNaam(taxonDto, taal, true);
   }
 
   public JSONArray getTaxonnamen() {
@@ -578,7 +578,7 @@ public class TaxonController extends Natuur {
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
-          addInfo(PersistenceConstants.CREATED, "'" + taal + "'");
+          addInfo(PersistenceConstants.CREATED, taal);
         }
         case PersistenceConstants.UPDATE -> {
           taxonDto.addNaam(taxonnaamDto);
@@ -588,12 +588,12 @@ public class TaxonController extends Natuur {
             setSubTitel(getTekst(TIT_UPDATE, taxon.getNaam()));
           }
           setDetailAktie(PersistenceConstants.RETRIEVE);
-          addInfo(PersistenceConstants.UPDATED, "'" + taal + "'");
+          addInfo(PersistenceConstants.UPDATED, taal);
         }
         default -> addError(ComponentsConstants.WRONGREDIRECT,
                             getDetailAktie().getAktie()) ;
       }
-      redirect(getReturnTo());
+      redirect(TAXON_REDIRECT);
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taal);
     } catch (ObjectNotFoundException e) {
@@ -622,13 +622,12 @@ public class TaxonController extends Natuur {
       if (getDetailAktie().getAktie() == PersistenceConstants.UPDATE) {
         getTaxonnaamService().save(taxonnaamDto);
         setDetailAktie(PersistenceConstants.RETRIEVE);
-        addInfo(PersistenceConstants.UPDATED,
-                String.format("'%s'", taxonnaam.getTaal()));
+        addInfo(PersistenceConstants.UPDATED, taxonnaam.getTaal());
       } else {
         addError(ComponentsConstants.WRONGREDIRECT,
                  getDetailAktie().getAktie());
       }
-      redirect(TAXON_REDIRECT);
+      redirect(getReturnTo());
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, taxonnaam.getTaal());
     } catch (ObjectNotFoundException e) {

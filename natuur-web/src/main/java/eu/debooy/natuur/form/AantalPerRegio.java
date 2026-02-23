@@ -17,22 +17,33 @@
 
 package eu.debooy.natuur.form;
 
+import java.util.Date;
+
 /**
  * @author Marco de Booij
  */
 public class AantalPerRegio {
   private final Long  aantal;
+  private final Date  datum;
   private final Long  gezien;
   private final Long  regioId;
+  private final Long  regiolijstId;
 
-  public AantalPerRegio(Long regioId, Long aantal, Long gezien) {
-    this.aantal   = aantal;
-    this.gezien   = gezien;
-    this.regioId  = regioId;
+  public AantalPerRegio(Long regiolijstId, Long regioId,
+                        Date datum, Long aantal, Long gezien) {
+    this.aantal       = aantal;
+    this.datum        = new Date(datum.getTime());
+    this.gezien       = gezien;
+    this.regioId      = regioId;
+    this.regiolijstId = regiolijstId;
   }
 
   public Long getAantal() {
     return aantal;
+  }
+
+  public Date getDatum() {
+    return new Date(datum.getTime());
   }
 
   public Long getGezien() {
@@ -41,5 +52,9 @@ public class AantalPerRegio {
 
   public Long getRegioId() {
     return regioId;
+  }
+
+  public Long getRegiolijstId() {
+    return regiolijstId;
   }
 }

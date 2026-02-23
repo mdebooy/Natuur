@@ -186,7 +186,7 @@ public class TaxonbeschrijvingController extends Natuur {
       return;
     }
 
-    var beschrijvingtype  = taxonbeschrijving.getBeschrijvingtype();
+    var beschrijvingtype  = getBeschrijvingtype();
     try {
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE -> {

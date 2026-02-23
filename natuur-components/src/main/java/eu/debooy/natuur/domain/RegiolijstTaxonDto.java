@@ -43,7 +43,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @NamedQuery(name="regiolijsttaxonPerRegiolijst", query="select r from RegiolijstTaxonDto r where r.regiolijstId=:regiolijstId")
 @NamedQuery(name="regiolijsttaxonPerTaxon", query="select r from RegiolijstTaxonDto r where r.taxonId=:taxonId")
 // Zonder is de query veel te traag: and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso')
-@NamedQuery(name="regiolijsttaxonTotalenPerRegiolijst", query="select r.regiolijstId, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o where r.taxonId=o.parentId and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso') and o.parentRang=o.rang group by r.regiolijstId")
+@NamedQuery(name="regiolijsttaxonTotalenPerRegiolijst", query="select r.regiolijstId, rl.regioId, rl.datum, count(r.taxonId), sum(o.waargenomen) from RegiolijstTaxonDto r, OverzichtDto o, RegiolijstDto rl where r.regiolijstId=rl.regiolijstId and r.taxonId=o.parentId and o.parentRang in ('so', 'oso') and o.rang in ('so', 'oso') and o.parentRang=o.rang group by r.regiolijstId, rl.regioId, rl.datum")
 public class RegiolijstTaxonDto extends Dto implements Comparable<RegiolijstTaxonDto> {
   private static final  long  serialVersionUID  = 1L;
 

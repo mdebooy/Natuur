@@ -79,11 +79,13 @@ public class RegiolijstController extends Natuur {
 
   private static final  String  DTIT_CREATE   =
       "natuur.titel.regiolijsttaxon.create";
+  private static final  String  DTIT_DELETE   =
+      "natuur.titel.regiolijsttaxon.delete";
   private static final  String  DTIT_UPDATE   =
       "natuur.titel.regiolijsttaxon.update";
   private static final  String  DTIT_UPLOAD   =
       "natuur.titel.regiolijst.upload";
-  private static final  String  FMT_NAAM      = "%s (%s)";
+  private static final  String  FMT_TITEL     = "%s (%s)";
   private static final  String  TIT_CREATE    =
       "natuur.titel.regiolijst.create";
   private static final  String  TIT_RETRIEVE  =
@@ -118,7 +120,9 @@ public class RegiolijstController extends Natuur {
     nieuw.clear();
     onbekend.clear();
 
-    setDetailSubTitel(getTekst(DTIT_UPLOAD, regio.getNaam()));
+    setDetailSubTitel(getTekst(DTIT_UPLOAD,
+                               regio.getNaam(),
+                               Datum.fromDate(regiolijst.getDatum())));
     redirect(REGIOLIJSTUPLOAD_REDIRECT);
   }
 
@@ -147,7 +151,9 @@ public class RegiolijstController extends Natuur {
     regiolijstTaxonDto  = new RegiolijstTaxonDto();
     regiolijstTaxon.setRegiolijstId(regiolijst.getRegiolijstId());
     setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel(getTekst(DTIT_CREATE, regio.getNaam()));
+    setDetailSubTitel(getTekst(DTIT_CREATE,
+                               regio.getNaam(),
+                               Datum.fromDate(regiolijst.getDatum())));
     redirect(REGIOLIJSTTAXON_REDIRECT);
   }
 
@@ -157,7 +163,7 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    var naam  = String.format("%s - %s",
+    var naam  = String.format(FMT_TITEL,
                               regio.getNaam(),
                               Datum.fromDate(regiolijst.getDatum()));
     try {
@@ -216,14 +222,9 @@ public class RegiolijstController extends Natuur {
     return bestand;
   }
 
-  @Override
-  public String getDeletetekst() {
-    return regio.getNaam();
-  }
-
-  @Override
-  public String getDetailDeletetekst() {
-    return regiolijstTaxon.getTaxon().getNaam();
+  public String getDetailDeleteTitel() {
+    return getTekst(DTIT_DELETE, regio.getNaam(),
+                                 Datum.fromDate(regiolijst.getDatum()));
   }
 
   public JSONArray getDubbel() {
@@ -269,7 +270,8 @@ public class RegiolijstController extends Natuur {
                                new I18nSelectItem.WaardeComparator());
       rijen.forEach(rij ->
         statusses.add(new SelectItem(rij.getValue(),
-                                     String.format(FMT_NAAM,
+                                     String.format(
+                                         NatuurConstants.FMT_NAAMLATIJNSENAAM,
                                                    rij.getLabel(),
                                                    rij.getValue()
                                                       .toString()
@@ -327,7 +329,9 @@ public class RegiolijstController extends Natuur {
                                           "taal1", "taal2", "taal3" });
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
-                       getTekst(TIT_RETRIEVE, regio.getNaam()));
+                       getTekst(TIT_RETRIEVE,
+                                regio.getNaam(),
+                                Datum.fromDate(regiolijst.getDatum())));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
     exportData.addVeld("LabelTaal1",        doosRemote.getIso6392tNaam(taal1,
                                                                        taal1));
@@ -386,7 +390,11 @@ public class RegiolijstController extends Natuur {
       regiolijst    = new Regiolijst(regiolijstDto);
       setRegio(regiolijst.getRegioId());
       setAktie(PersistenceConstants.RETRIEVE);
-      setSubTitel(getTekst(TIT_RETRIEVE, regio.getNaam()));
+      setDeletetekst(String.format(FMT_TITEL, regio.getNaam(),
+                                    Datum.fromDate(regiolijst.getDatum())));
+      setSubTitel(getTekst(TIT_RETRIEVE,
+                           regio.getNaam(),
+                           Datum.fromDate(regiolijst.getDatum())));
       setReturnTo(ec, REGIOLIJSTEN_REDIRECT);
       redirect(REGIOLIJST_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -417,7 +425,10 @@ public class RegiolijstController extends Natuur {
       regiolijstTaxon     = new RegiolijstTaxon(regiolijstTaxonDto,
                                                 getGebruikersTaalInIso6392t());
       setDetailAktie(PersistenceConstants.UPDATE);
-      setDetailSubTitel(getTekst(DTIT_UPDATE, regio.getNaam()));
+      setDetailDeletetekst(regiolijstTaxon.getTaxon().getNaam());
+      setDetailSubTitel(getTekst(DTIT_UPDATE,
+                                 regio.getNaam(),
+                                 Datum.fromDate(regiolijst.getDatum())));
 
       redirect(REGIOLIJSTTAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -438,7 +449,7 @@ public class RegiolijstController extends Natuur {
     }
 
     setRegio(regiolijst.getRegioId());
-    var naam  = String.format("%s - %s",
+    var naam  = String.format(FMT_TITEL,
                               regio.getNaam(),
                               Datum.fromDate(regiolijst.getDatum()));
     try {
@@ -565,7 +576,10 @@ public class RegiolijstController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setSubTitel(getTekst(TIT_UPDATE, regio.getNaam()));
+    setDeletetekst(String.format(FMT_TITEL, regio.getNaam(),
+                                  Datum.fromDate(regiolijst.getDatum())));
+    setSubTitel(getTekst(TIT_UPDATE, regio.getNaam(),
+                                     Datum.fromDate(regiolijst.getDatum())));
   }
 
   public void uploading() {

@@ -74,9 +74,9 @@ public class DetailDao extends Dao<DetailDto> {
     return namedQuery(DetailDto.QRY_UITGESTORVENPERKLASSE);
   }
 
-  public List<DetailDto> getVanRegiolijst(Long regioId) {
+  public List<DetailDto> getVanRegiolijst(Long regiolijstId) {
     Map<String, Object> params  = new HashMap<>();
-    params.put(DetailDto.PAR_REGIOID, regioId);
+    params.put(DetailDto.PAR_REGIOLIJSTID, regiolijstId);
 
     return namedQuery(DetailDto.QRY_VANREGIOLIJST, params);
   }

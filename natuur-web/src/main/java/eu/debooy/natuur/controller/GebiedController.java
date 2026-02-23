@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.controller;
 
+import eu.debooy.doosutils.Aktie;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
@@ -47,12 +48,18 @@ public class GebiedController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(GebiedController.class);
 
+  private static final  String  TIT_INLAND    =
+      "natuur.titel.waarnemingen.in.land";
   private static final  String  TIT_CREATE    = "natuur.titel.gebied.create";
   private static final  String  TIT_RETRIEVE  = "natuur.titel.gebied.retrieve";
   private static final  String  TIT_UPDATE    = "natuur.titel.gebied.update";
 
   private Gebied    gebied;
   private GebiedDto gebiedDto;
+  private Long      landId;
+  private String    perlandTitel;
+
+  private final Aktie perlandAktie = new Aktie();
 
   public void create() {
     if (!isUser()) {
@@ -107,6 +114,10 @@ public class GebiedController extends Natuur {
                                             getGebruikersTaal());
   }
 
+  public Long getLandId() {
+    return landId;
+  }
+
   public Collection<SelectItem> getLatitudes() {
     List<SelectItem>  items = new LinkedList<>();
 
@@ -125,6 +136,14 @@ public class GebiedController extends Natuur {
     items.add(new SelectItem("W", getTekst("windstreek.W")));
 
     return items;
+  }
+
+  public Aktie getPerlandAktie() {
+    return perlandAktie;
+  }
+
+  public String getPerlandTitel() {
+    return perlandTitel;
   }
 
   public Collection<SelectItem> getSelectGebieden() {
@@ -176,6 +195,29 @@ public class GebiedController extends Natuur {
     }
   }
 
+  public void retrieveLand() {
+    if (!isGerechtigd()) {
+      addError(ComponentsConstants.GEENRECHTEN);
+      return;
+    }
+
+    var ec        = FacesContext.getCurrentInstance().getExternalContext();
+
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           GebiedDto.COL_LANDID)) {
+      return;
+    }
+
+    landId        = Long.valueOf(ec.getRequestParameterMap()
+                                   .get(GebiedDto.COL_LANDID));
+    perlandTitel  = getTekst(TIT_INLAND,
+                             getSedesRemote().getI18nLandnaam(landId,
+                                                        getGebruikersTaal()));
+
+    setReturnTo(ec, WNMNPERLAND_REDIRECT);
+    redirect(WNMNINLAND_REDIRECT);
+  }
+
   public void save() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -202,7 +244,8 @@ public class GebiedController extends Natuur {
           getGebiedService().save(gebiedDto);
           addInfo(PersistenceConstants.UPDATED, gebied.getNaam());
         }
-        default -> addError(ComponentsConstants.WRONGREDIRECT, getAktie().getAktie());
+        default -> addError(ComponentsConstants.WRONGREDIRECT,
+                            getAktie().getAktie());
       }
     } catch (DuplicateObjectException e) {
       addError(PersistenceConstants.DUPLICATE, gebied.getNaam());
