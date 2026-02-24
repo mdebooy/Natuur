@@ -111,7 +111,7 @@ public class Rang
   }
 
   public boolean isIndividu() {
-    return individu;
+    return getIndividu();
   }
 
   public void persist(RangDto parameter) {

@@ -109,7 +109,7 @@ public final class NatuurUtils {
                       taxonnamen.get(taal).getNaam() : "",
                    parentnamen.containsKey(taal) ?
                       parentnamen.get(taal).getNaam() : "",
-                   latijnsenaam, rang, false);
+                   latijnsenaam, rang, latijns);
   }
 
   public static String getNaam(String naam, String parentnaam,
