@@ -62,6 +62,7 @@ public class WaarnemingController extends Natuur {
       LoggerFactory.getLogger(WaarnemingController.class);
 
   private static final  String  DTIT_CREATE   = "natuur.titel.foto.create";
+  private static final  String  DTIT_DELETE   = "natuur.titel.foto.delete";
   private static final  String  DTIT_RETRIEVE = "natuur.titel.foto.retrieve";
   private static final  String  DTIT_UPDATE   = "natuur.titel.foto.update";
   private static final  String  TIT_CREATE    =
@@ -184,6 +185,11 @@ public class WaarnemingController extends Natuur {
   @Override
   public String getDetailDeletetekst() {
     return String.format("%s - %s", foto.getTaxonSeq(), foto.getFotoBestand());
+  }
+
+  @Override
+  public String getDetailDeletetitel() {
+    return getTekst(DTIT_DELETE, waarneming.getTaxon().getNaam());
   }
 
   public Foto getFoto() {
