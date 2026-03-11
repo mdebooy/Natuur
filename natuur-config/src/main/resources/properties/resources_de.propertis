@@ -1,0 +1,58 @@
+app_param.default.gebiedid  = Standardgebiet
+app_param.default.landid    = Standardland
+app_param.default.rang      = Standardrang
+app_param.rang.individueel  = Zu beobachtende Ränge
+app_param.regiolijst.taal.1 = Regioliste Sprache 1
+app_param.regiolijst.taal.2 = Regioliste Sprache 2
+app_param.regiolijst.taal.3 = Regioliste Sprache 3
+
+errors.value                    = {0} ist nicht {1} oder {2}.
+errors.latijnsenaam.foutief     = Der wissenschaftliche Name stimmt nicht mit dem seines Elternteils überein.
+errors.latijnsenaam.ondersoort  = Der wissenschaftliche Name für die Unterart muss aus 3 Wörtern bestehen.
+errors.latijnsenaam.soort       = Der wissenschaftliche Name für die Art muss aus 2 Wörtern bestehen.
+errors.rang.parentniveau        = Die Ebene von ''{0}'' ist ''höher'' als die von ''{1}''.
+errors.taal.onbekend            = Die Sprache ''{0}'' ist unbekannt.
+errors.uniek.talen              = Die Sprachen müssen unterschiedlich sein.
+
+img.geenfotos = Keine Fotos
+
+menu.aantal.per.regiolijst  = Anzahl Arten pro Regioliste
+menu.fotos                  = Fotos
+menu.gebieden               = Gebiete
+menu.namen.per.taal         = Namen pro Sprache
+menu.rangen                 = Ränge
+menu.regiolijsten           = Regiolisten
+menu.statistieken           = Statistiken
+menu.taxa                   = Taxa
+menu.uitgestorven           = Ausgestorben
+menu.waarnemingen           = Beobachtungen
+menu.waarnemingen.per.land  = Beobachtungen pro Land
+menu.zoeken                 = Suchen
+
+natuur.latijnsenamen.herbenoemd = Wissenschaftlicher Name von {0} Taxa geändert.
+
+natuur.taxon.status.cd  = Schutzabhängig
+natuur.taxon.status.cr  = Stark gefährdet
+natuur.taxon.status.dd  = Ungewiss
+natuur.taxon.status.en  = Gefährdet
+natuur.taxon.status.ew  = In freier Wildbahn ausgestorben
+natuur.taxon.status.ex  = Ausgestorben
+natuur.taxon.status.lc  = Nicht gefährdet
+natuur.taxon.status.ne  = Nicht bewertet
+natuur.taxon.status.nt  = Empfindlich
+natuur.taxon.status.o   = Nicht allgemein
+natuur.taxon.status.vu  = Gefährdet
+natuur.taxon.status.z   = Selten
+
+tab.beschrijvingen  = Beschreibungen
+tab.fotos           = Fotos
+tab.kinderen        = Kinder
+tab.namen           = Namen
+tab.regios          = Regionen
+tab.taxa            = Taxa
+tab.totalen         = Summen
+tab.waarnemingen    = Beobachtungen
+
+tab.natuur.dubbel   = Doppelungen ({0})
+tab.natuur.nieuw    = Neu ({0})
+tab.natuur.onbekend = Unbekannt ({0})
