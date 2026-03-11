@@ -6,13 +6,16 @@ app_param.regiolijst.taal.1 = Regioliste Sprache 1
 app_param.regiolijst.taal.2 = Regioliste Sprache 2
 app_param.regiolijst.taal.3 = Regioliste Sprache 3
 
-errors.value                    = {0} ist nicht {1} oder {2}.
+errors.latijnsenaam.anders      = Der wissenschaftliche Name muss aus 1 Wort bestehen.
+errors.latijnsenaam.soort       = Der wissenschaftliche Name für die Art muss aus 2 Wörtern bestehen.
 errors.latijnsenaam.foutief     = Der wissenschaftliche Name stimmt nicht mit dem seines Elternteils überein.
+errors.latijnsenaam.initcap     = Der wissenschaftliche Name besteht nicht aus Kleinbuchstaben und beginnt nicht mit einem Großbuchstaben.
 errors.latijnsenaam.ondersoort  = Der wissenschaftliche Name für die Unterart muss aus 3 Wörtern bestehen.
 errors.latijnsenaam.soort       = Der wissenschaftliche Name für die Art muss aus 2 Wörtern bestehen.
 errors.rang.parentniveau        = Die Ebene von ''{0}'' ist ''höher'' als die von ''{1}''.
 errors.taal.onbekend            = Die Sprache ''{0}'' ist unbekannt.
 errors.uniek.talen              = Die Sprachen müssen unterschiedlich sein.
+errors.value                    = {0} ist nicht {1} oder {2}.
 
 img.geenfotos = Keine Fotos
 

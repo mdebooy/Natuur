@@ -52,7 +52,7 @@ public class TaxonValidatorTest {
       new Message.Builder()
                  .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                  .setSeverity(Message.ERROR)
-                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMFOUT)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAM)
                  .build();
   private static final  Message ERR_RANG          =
       new Message.Builder()
@@ -61,6 +61,12 @@ public class TaxonValidatorTest {
                  .setMessage(TaxonValidator.ERR_PARENTNIVEAU)
                  .setParams(new Object[]{NatuurTestConstants.RANGNAAM,
                                          NatuurTestConstants.PARENTRANGNAAM})
+                 .build();
+  private static final  Message ERR_SOORT0        =
+      new Message.Builder()
+                 .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                 .setSeverity(Message.ERROR)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMANDERS)
                  .build();
   private static final  Message ERR_SOORT1        =
       new Message.Builder()
@@ -72,7 +78,7 @@ public class TaxonValidatorTest {
       new Message.Builder()
                  .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                  .setSeverity(Message.ERROR)
-                 .setMessage(TaxonValidator.ERR_LATIJNSENAAMFOUT)
+                 .setMessage(TaxonValidator.ERR_LATIJNSENAAM)
                  .build();
   private static final  Message REQ_LATIJNSENAAM  =
       new Message.Builder()
@@ -94,6 +100,7 @@ public class TaxonValidatorTest {
     expResult.add(NatuurTestConstants.ERR_OPMERKING);
     expResult.add(NatuurTestConstants.ERR_RANG);
     expResult.add(REQ_VOLGNUMMER);
+    expResult.add(ERR_SOORT0);
   }
 
   @Test
@@ -168,7 +175,8 @@ public class TaxonValidatorTest {
   public void testValideerFouteSoort2() {
     var soort = NatuurTestUtils.getTaxon();
 
-    soort.setParentLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR.split(" ")[0]);
+    soort.setParentLatijnsenaam(NatuurTestConstants.LATIJNSENAAM_GR
+                                                   .split(" ")[0]);
 
     var result  = TaxonValidator.valideer(soort);
 
@@ -213,7 +221,7 @@ public class TaxonValidatorTest {
   }
 
   @Test
-  public void testValideerGoedeTaxon() {
+  public void testValideerGoedeTaxon1() {
     var           taxon     = new Taxon();
     List<Message> expResult = new ArrayList<>();
 
@@ -227,11 +235,65 @@ public class TaxonValidatorTest {
   }
 
   @Test
-  public void testValideerGoedeTaxonDto() {
+  public void testValideerGoedeTaxon2() {
+    var           taxon     = new Taxon();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setParentLatijnsenaam(NatuurTestConstants.PARENTLATIJNSENAAM);
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM.toLowerCase());
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
+    taxon.setRang(NatuurTestConstants.RANG);
+
+    var           result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerGoedeTaxon3() {
+    var           taxon     = new Taxon();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setParentLatijnsenaam(NatuurTestConstants.PARENTLATIJNSENAAM);
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM.toUpperCase());
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
+    taxon.setRang(NatuurTestConstants.RANG);
+
+    var           result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerGoedeTaxonDto1() {
     var           taxon     = new TaxonDto();
     List<Message> expResult = new ArrayList<>();
 
     taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM);
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
+    taxon.setRang(NatuurTestConstants.RANG);
+
+    var           result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerGoedeTaxonDto2() {
+    var           taxon     = new TaxonDto();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM.toLowerCase());
+    taxon.setOpmerking(NatuurTestConstants.OPMERKING);
+    taxon.setRang(NatuurTestConstants.RANG);
+
+    var           result    = TaxonValidator.valideer(taxon);
+    assertEquals(expResult.toString(), result.toString());
+  }
+
+  @Test
+  public void testValideerGoedeTaxonDto3() {
+    var           taxon     = new TaxonDto();
+    List<Message> expResult = new ArrayList<>();
+
+    taxon.setLatijnsenaam(NatuurTestConstants.LATIJNSENAAM.toUpperCase());
     taxon.setOpmerking(NatuurTestConstants.OPMERKING);
     taxon.setRang(NatuurTestConstants.RANG);
 

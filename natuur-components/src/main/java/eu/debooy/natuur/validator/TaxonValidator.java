@@ -31,8 +31,12 @@ import java.util.List;
  * @author Marco de Booij
  */
 public final class TaxonValidator extends NatuurValidator {
-  public static final String  ERR_LATIJNSENAAMFOUT        =
+  public static final String  ERR_LATIJNSENAAM            =
       "errors.latijnsenaam.foutief";
+  public static final String  ERR_LATIJNSENAAMANDERS      =
+      "errors.latijnsenaam.anders";
+  public static final String  ERR_LATIJNSENAAMINITCAP     =
+      "errors.latijnsenaam.initcap";
   public static final String  ERR_LATIJNSENAAMONDERSOORT  =
       "errors.latijnsenaam.ondersoort";
   public static final String  ERR_LATIJNSENAAMSOORT       =
@@ -90,11 +94,12 @@ public final class TaxonValidator extends NatuurValidator {
                                .valideer().getFouten());
 
     var aantal  = fouten.size();
-    switch (DoosUtils.nullToEmpty(taxon.getRang())) {
-      case NatuurConstants.RANG_SOORT -> valideerSoort(taxon, fouten);
-      case NatuurConstants.RANG_ONDERSOORT -> valideerOndersoort(taxon, fouten);
-      default -> {
-        // Geen speciale rang, niets te doen
+    if (DoosUtils.isNotBlankOrNull(taxon.getLatijnsenaam())) {
+      switch (DoosUtils.nullToEmpty(taxon.getRang())) {
+        case NatuurConstants.RANG_SOORT -> valideerSoort(taxon, fouten);
+        case NatuurConstants.RANG_ONDERSOORT -> valideerOndersoort(taxon,
+                                                                   fouten);
+        default -> valideerLatijnsenaam(taxon, fouten);
       }
     }
     if (aantal == fouten.size()) {
@@ -102,6 +107,26 @@ public final class TaxonValidator extends NatuurValidator {
     }
 
     return fouten;
+  }
+
+  private static void valideerLatijnsenaam(Taxon taxon, List<Message> fouten) {
+    var deel  = taxon.getLatijnsenaam().split(" ");
+    if (deel.length != 1) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMANDERS)
+                            .build());
+      return;
+    }
+
+    if (!DoosUtils.initCap(deel[0]).equals(deel[0])) {
+      fouten.add(new Message.Builder()
+                            .setAttribute(TaxonDto.COL_LATIJNSENAAM)
+                            .setSeverity(Message.ERROR)
+                            .setMessage(ERR_LATIJNSENAAMINITCAP)
+                            .build());
+    }
   }
 
   private static void valideerOndersoort(Taxon taxon, List<Message> fouten) {
@@ -123,7 +148,7 @@ public final class TaxonValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
-                            .setMessage(ERR_LATIJNSENAAMFOUT)
+                            .setMessage(ERR_LATIJNSENAAM)
                             .build());
     }
   }
@@ -164,7 +189,7 @@ public final class TaxonValidator extends NatuurValidator {
       fouten.add(new Message.Builder()
                             .setAttribute(TaxonDto.COL_LATIJNSENAAM)
                             .setSeverity(Message.ERROR)
-                            .setMessage(ERR_LATIJNSENAAMFOUT)
+                            .setMessage(ERR_LATIJNSENAAM)
                             .build());
     }
   }

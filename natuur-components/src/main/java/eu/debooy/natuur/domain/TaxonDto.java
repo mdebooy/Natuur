@@ -362,7 +362,11 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   }
 
   public void setLatijnsenaam(String latijnsenaam) {
-    this.latijnsenaam = DoosUtils.strip(latijnsenaam);
+    var tekst = DoosUtils.strip(latijnsenaam);
+
+    this.latijnsenaam = String.format("%s%s",
+                                      tekst.substring(0, 1).toUpperCase(),
+                                      tekst.substring(1).toLowerCase());
   }
 
   public void setOpmerking(String opmerking) {
