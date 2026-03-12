@@ -82,9 +82,7 @@ public class FotoController extends Natuur {
                                        rij.getGebied()});
     });
 
-    var response  =
-        (HttpServletResponse) FacesContext.getCurrentInstance()
-                                          .getExternalContext().getResponse();
+    var response  = (HttpServletResponse) getExternalContext().getResponse();
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();

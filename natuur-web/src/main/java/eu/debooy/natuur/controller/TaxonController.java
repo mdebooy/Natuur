@@ -176,7 +176,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
     setActieveTab(TAB_KINDEREN);
     taxon       = new Taxon();
@@ -360,10 +360,10 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(TaxonnaamDto.COL_TAAL)) {
-      addError(ComponentsConstants.GEENPARAMETER, TaxonnaamDto.COL_TAAL);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           TaxonnaamDto.COL_TAAL)) {
       return;
     }
 
@@ -394,7 +394,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                            TaxonDto.COL_TAXONID)) {
@@ -425,10 +425,10 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var ec  = FacesContext.getCurrentInstance().getExternalContext();
+    var ec  = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(TaxonnaamDto.COL_TAAL)) {
-      addError(ComponentsConstants.GEENPARAMETER, TaxonnaamDto.COL_TAAL);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           TaxonnaamDto.COL_TAAL)) {
       return;
     }
 
@@ -458,7 +458,7 @@ public class TaxonController extends Natuur {
       return;
     }
 
-    var ec  = FacesContext.getCurrentInstance().getExternalContext();
+    var ec  = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                            TaxonnaamDto.COL_TAAL, TaxonnaamDto.COL_TAXONID)) {
@@ -780,9 +780,7 @@ public class TaxonController extends Natuur {
                         NatuurUtils.getNaam(rij, taal3)})
     ));
 
-    var response  =
-        (HttpServletResponse) FacesContext.getCurrentInstance()
-                                          .getExternalContext().getResponse();
+    var response  = (HttpServletResponse) getExternalContext().getResponse();
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();

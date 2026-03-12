@@ -358,9 +358,7 @@ public class RegiolijstController extends Natuur {
                         NatuurUtils.getNaam(rij, taal3)})
     );
 
-    var response  =
-        (HttpServletResponse) FacesContext.getCurrentInstance()
-                                          .getExternalContext().getResponse();
+    var response  = (HttpServletResponse) getExternalContext().getResponse();
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();
@@ -408,7 +406,7 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
-    var ec          = FacesContext.getCurrentInstance().getExternalContext();
+    var ec          = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                            RegiolijstTaxonDto.COL_TAXONID)) {

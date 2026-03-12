@@ -31,7 +31,6 @@ import eu.debooy.natuur.form.Rangnaam;
 import eu.debooy.natuur.validator.RangValidator;
 import eu.debooy.natuur.validator.RangnaamValidator;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 import java.util.ArrayList;
@@ -217,10 +216,10 @@ public class RangController extends Natuur {
       return;
     }
 
-    var ec    = FacesContext.getCurrentInstance().getExternalContext();
+    var ec    = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(RangDto.COL_RANG)) {
-      addError(ComponentsConstants.GEENPARAMETER, RangDto.COL_RANG);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           RangDto.COL_RANG)) {
       return;
     }
 
@@ -242,10 +241,10 @@ public class RangController extends Natuur {
       return;
     }
 
-    var ec  = FacesContext.getCurrentInstance().getExternalContext();
+    var ec  = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(RangnaamDto.COL_TAAL)) {
-      addError(ComponentsConstants.GEENPARAMETER, RangnaamDto.COL_TAAL);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           RangnaamDto.COL_TAAL)) {
       return;
     }
 
@@ -267,10 +266,10 @@ public class RangController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
-      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           TaxonDto.COL_TAXONID)) {
       return;
     }
 

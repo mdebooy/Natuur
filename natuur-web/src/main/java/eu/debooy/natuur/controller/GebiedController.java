@@ -28,7 +28,6 @@ import eu.debooy.natuur.domain.GebiedDto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.validator.GebiedValidator;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 import java.util.Collection;
@@ -174,10 +173,10 @@ public class GebiedController extends Natuur {
       return;
     }
 
-    var ec        = FacesContext.getCurrentInstance().getExternalContext();
+    var ec        = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(GebiedDto.COL_GEBIEDID)) {
-      addError(ComponentsConstants.GEENPARAMETER, GebiedDto.COL_GEBIEDID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           GebiedDto.COL_GEBIEDID)) {
       return;
     }
 
@@ -201,7 +200,7 @@ public class GebiedController extends Natuur {
       return;
     }
 
-    var ec        = FacesContext.getCurrentInstance().getExternalContext();
+    var ec        = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                            GebiedDto.COL_LANDID)) {

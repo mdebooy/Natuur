@@ -32,7 +32,6 @@ import eu.debooy.natuur.domain.TaxonbeschrijvingDto;
 import eu.debooy.natuur.form.Taxonbeschrijving;
 import eu.debooy.natuur.validator.TaxonbeschrijvingValidator;
 import jakarta.enterprise.context.SessionScoped;
-import jakarta.faces.context.FacesContext;
 import jakarta.faces.model.SelectItem;
 import jakarta.inject.Named;
 import java.util.ArrayList;
@@ -70,7 +69,7 @@ public class TaxonbeschrijvingController extends Natuur {
       return;
     }
 
-    var   ec        = FacesContext.getCurrentInstance().getExternalContext();
+    var   ec        = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                           TaxonDto.COL_TAXONID)) {
@@ -142,8 +141,7 @@ public class TaxonbeschrijvingController extends Natuur {
       return;
     }
 
-    var ec                = FacesContext.getCurrentInstance()
-                                        .getExternalContext();
+    var ec                = getExternalContext();
 
     if (!checkEcParameters(ec.getRequestParameterMap(),
                            TaxonbeschrijvingDto.COL_BESCHRIJVINGTYPE,

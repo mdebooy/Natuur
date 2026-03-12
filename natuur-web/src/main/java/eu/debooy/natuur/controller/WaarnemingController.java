@@ -83,10 +83,10 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    var   ec        = FacesContext.getCurrentInstance().getExternalContext();
+    var   ec        = getExternalContext();
 
-    if (!ec.getRequestParameterMap().containsKey(TaxonDto.COL_TAXONID)) {
-      addError(ComponentsConstants.GEENPARAMETER, TaxonDto.COL_TAXONID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           TaxonDto.COL_TAXONID)) {
       return;
     }
 
@@ -104,6 +104,7 @@ public class WaarnemingController extends Natuur {
       waarneming    = new Waarneming(waarnemingDto,
                                      getGebruikersTaalInIso6392t());
       setAktie(PersistenceConstants.CREATE);
+      setReturnTo(ec, WAARNEMINGEN_REDIRECT);
       setSubTitel(getTekst(TIT_CREATE));
       redirect(WAARNEMING_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -227,12 +228,10 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    var ec            = FacesContext.getCurrentInstance().getExternalContext();
+    var ec            = getExternalContext();
 
-    if (!ec.getRequestParameterMap()
-           .containsKey(WaarnemingDto.COL_WAARNEMINGID)) {
-      addError(ComponentsConstants.GEENPARAMETER,
-               WaarnemingDto.COL_WAARNEMINGID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           WaarnemingDto.COL_WAARNEMINGID)) {
       return;
     }
 
@@ -245,6 +244,7 @@ public class WaarnemingController extends Natuur {
       waarneming    = new Waarneming(waarnemingDto,
                                      getGebruikersTaalInIso6392t());
       setAktie(PersistenceConstants.RETRIEVE);
+      setReturnTo(ec, WAARNEMINGEN_REDIRECT);
       setSubTitel(getTekst(TIT_RETRIEVE));
       redirect(WAARNEMING_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -258,11 +258,10 @@ public class WaarnemingController extends Natuur {
       return;
     }
 
-    var ec      = FacesContext.getCurrentInstance().getExternalContext();
+    var ec      = getExternalContext();
 
-    if (!ec.getRequestParameterMap()
-           .containsKey(FotoDto.COL_FOTOID)) {
-      addError(ComponentsConstants.GEENPARAMETER, FotoDto.COL_FOTOID);
+    if (!checkEcParameters(ec.getRequestParameterMap(),
+                           FotoDto.COL_FOTOID)) {
       return;
     }
 
@@ -275,6 +274,7 @@ public class WaarnemingController extends Natuur {
       foto    = new Foto(fotoDto);
       setDetailAktie(PersistenceConstants.RETRIEVE);
       setDetailSubTitel(getTekst(DTIT_RETRIEVE));
+      setReturnTo(ec, WAARNEMING_REDIRECT);
       redirect(FOTO_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_FOTO));
@@ -361,14 +361,14 @@ public class WaarnemingController extends Natuur {
           foto.persist(fotoDto);
           getFotoService().save(fotoDto);
           waarnemingDto.addFoto(fotoDto);
-          addInfo(PersistenceConstants.CREATED, "'" + taxonSeq + "'");
+          addInfo(PersistenceConstants.CREATED, taxonSeq);
           updateDetail();
         }
         case PersistenceConstants.UPDATE -> {
           foto.persist(fotoDto);
           getFotoService().save(fotoDto);
           waarnemingDto.addFoto(fotoDto);
-          addInfo(PersistenceConstants.UPDATED, "'" + taxonSeq + "'");
+          addInfo(PersistenceConstants.UPDATED, taxonSeq);
         }
         default -> addError(ComponentsConstants.WRONGREDIRECT,
                             getDetailAktie().getAktie()) ;
@@ -434,8 +434,7 @@ public class WaarnemingController extends Natuur {
                                        rij.getLatijnsenaam()}));
 
     var response  =
-        (HttpServletResponse) FacesContext.getCurrentInstance()
-                                          .getExternalContext().getResponse();
+        (HttpServletResponse) getExternalContext().getResponse();
     try {
       Export.export(response, exportData);
       FacesContext.getCurrentInstance().responseComplete();
