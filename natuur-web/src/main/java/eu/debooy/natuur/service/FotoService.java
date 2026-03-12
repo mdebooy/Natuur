@@ -159,6 +159,21 @@ public class FotoService {
   }
 
   @GET
+  @Path("/waarneming/{waarnemingId}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getFotosPerWaarneming(
+      @PathParam(FotoDto.COL_WAARNEMINGID) Long waarnemingId) {
+    try {
+      List<Foto>  fotos = new ArrayList<>();
+      fotoDao.getPerWaarneming(waarnemingId)
+              .forEach(foto -> fotos.add(new Foto(foto)));
+      return Response.ok().entity(fotos).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
   @Path("/taxon/{taxonId}/{taal}")
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public Response getFotosTaxon(@PathParam(TaxonDto.COL_TAXONID) Long taxonId,

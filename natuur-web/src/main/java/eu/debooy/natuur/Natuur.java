@@ -76,7 +76,7 @@ public class Natuur extends DoosBean {
   public    static final  String  DEF_RANG                  =
       "natuur.default.rang";
   protected static final  String  FOTO_REDIRECT             =
-      "/waarnemingen/foto.xhtml";
+      "/fotos/foto.xhtml";
   protected static final  String  FOTOS_REDIRECT            =
       "/fotos/fotos.xhtml";
   protected static final  String  GEBIED_REDIRECT           =
@@ -143,8 +143,6 @@ public class Natuur extends DoosBean {
       "/waarnemingen/waarneming.xhtml";
   protected static final  String  WAARNEMINGEN_REDIRECT     =
       "/waarnemingen/waarnemingen.xhtml";
-  protected static final  String  WNMFOTO_REDIRECT          =
-      "/waarnemingen/foto.xhtml";
   protected static final  String  WNMNPERLAND_REDIRECT      =
       "/statistieken/waarnemingenperland.xhtml";
   protected static final  String  WNMNINLAND_REDIRECT       =

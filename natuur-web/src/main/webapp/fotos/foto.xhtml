@@ -8,7 +8,7 @@
     <div class="columns is-centered content">
       <div class="column is-8">
         <h:form id="formFoto">
-          <d:titel titel="#{natuurWaarneming.detailSubTitel}" />
+          <d:titel titel="#{natuurFoto.subTitel}" />
 
           <div class="columns is-centered">
             <div class="column">
@@ -19,7 +19,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputText id="taxon" value="#{natuurWaarneming.waarneming.taxon.naam}" required="true" maxlength="255" size="100" readonly="true" />
+                      <d:inputText id="taxon" value="#{natuurFoto.waarneming.taxon.naam}" required="true" maxlength="255" size="100" readonly="true" />
                     </div>
                   </div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:datum id="datum" value="#{natuurWaarneming.waarneming.datum}" required="true" readonly="true" />
+                      <d:datum id="datum" value="#{natuurFoto.waarneming.datum}" required="true" readonly="true" />
                     </div>
                   </div>
                 </div>
@@ -43,7 +43,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputText id="gebied" value="#{natuurWaarneming.waarneming.gebied.naam}" required="true" maxlength="255" size="100" readonly="true" />
+                      <d:inputText id="gebied" value="#{natuurFoto.waarneming.gebied.naam}" required="true" maxlength="255" size="100" readonly="true" />
                     </div>
                   </div>
                 </div>
@@ -55,7 +55,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputText id="taxonSeq" value="#{natuurWaarneming.foto.taxonSeq}" required="true" maxlength="3" size="3" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="taxonSeq" value="#{natuurFoto.foto.taxonSeq}" required="true" maxlength="3" size="3" readonly="#{natuurFoto.aktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -67,7 +67,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputText id="fotodetail" value="#{natuurWaarneming.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="fotodetail" value="#{natuurFoto.foto.fotoDetail}" maxlength="20" size="20" readonly="#{natuurFoto.aktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -79,7 +79,7 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputText id="fotobestand" value="#{natuurWaarneming.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputText id="fotobestand" value="#{natuurFoto.foto.fotoBestand}" maxlength="255" size="100" readonly="#{natuurFoto.aktie.readonly}" />
                     </div>
                   </div>
                 </div>
@@ -91,13 +91,13 @@
                 <div class="field-body is-normal">
                   <div class="field">
                     <div class="control">
-                      <d:inputTextarea id="opmerking" value="#{natuurWaarneming.foto.opmerking}" readonly="#{natuurWaarneming.detailAktie.readonly}" />
+                      <d:inputTextarea id="opmerking" value="#{natuurFoto.foto.opmerking}" readonly="#{natuurFoto.aktie.readonly}" />
                     </div>
                   </div>
                 </div>
               </div>
 
-              <d:crudbuttonbar bean="#{natuurWaarneming}" form="formFoto" returnto="#{natuur.path}/waarnemingen/waarneming.xhtml" detail="detail" />
+              <d:crudbuttonbar bean="#{natuurFoto}" form="formFoto" returnto="#{natuur.path}#{natuurFoto.returnTo}" />
             </div>
           </div>
         </h:form>
@@ -105,6 +105,6 @@
     </div>
   </ui:define>
   <ui:define name="modal">
-    <d:confirmatie titel="#{natuurWaarneming.detailDeletetitel}" />
+    <d:confirmatie titel="#{natuurFoto.detailDeletetitel}" />
   </ui:define>
 </ui:composition>

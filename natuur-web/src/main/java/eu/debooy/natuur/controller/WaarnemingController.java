@@ -21,20 +21,16 @@ import eu.debooy.doos.model.ExportData;
 import eu.debooy.doosutils.ComponentsConstants;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.PersistenceConstants;
-import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.doosutils.errorhandling.exception.TechnicalException;
 import eu.debooy.doosutils.errorhandling.exception.base.DoosRuntimeException;
 import eu.debooy.natuur.Natuur;
-import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.WaarnemingDto;
-import eu.debooy.natuur.form.Foto;
 import eu.debooy.natuur.form.Gebied;
 import eu.debooy.natuur.form.Taxon;
 import eu.debooy.natuur.form.Waarneming;
-import eu.debooy.natuur.validator.FotoValidator;
 import eu.debooy.natuur.validator.WaarnemingValidator;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.faces.context.FacesContext;
@@ -46,7 +42,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-import org.json.simple.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,10 +56,6 @@ public class WaarnemingController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(WaarnemingController.class);
 
-  private static final  String  DTIT_CREATE   = "natuur.titel.foto.create";
-  private static final  String  DTIT_DELETE   = "natuur.titel.foto.delete";
-  private static final  String  DTIT_RETRIEVE = "natuur.titel.foto.retrieve";
-  private static final  String  DTIT_UPDATE   = "natuur.titel.foto.update";
   private static final  String  TIT_CREATE    =
       "natuur.titel.waarneming.create";
   private static final  String  TIT_RETRIEVE  =
@@ -72,8 +63,6 @@ public class WaarnemingController extends Natuur {
   private static final  String  TIT_UPDATE    =
       "natuur.titel.waarneming.update";
 
-  private Foto          foto;
-  private FotoDto       fotoDto;
   private Waarneming    waarneming;
   private WaarnemingDto waarnemingDto;
 
@@ -112,21 +101,6 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void createDetail() {
-    if (!isUser()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    foto    = new Foto();
-    fotoDto = new FotoDto();
-    foto.setWaarnemingId(waarneming.getWaarnemingId());
-    foto.persist(fotoDto);
-    setDetailAktie(PersistenceConstants.CREATE);
-    setDetailSubTitel(getTekst(DTIT_CREATE));
-    redirect(WNMFOTO_REDIRECT);
-  }
-
   public void delete() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -140,32 +114,9 @@ public class WaarnemingController extends Natuur {
               formateerDatum(waarneming.getDatum()));
       waarneming    = new Waarneming();
       waarnemingDto = new WaarnemingDto();
-      redirect(TAXON_REDIRECT);
+      redirect(getReturnTo());
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, waarnemingId);
-    } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
-                                 e.getLocalizedMessage()), e);
-      generateExceptionMessage(e);
-    }
-  }
-
-  public void deleteDetail() {
-    if (!isUser()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    var taxonSeq = foto.getTaxonSeq();
-    try {
-      waarnemingDto.removeFoto(taxonSeq);
-      getWaarnemingService().save(waarnemingDto);
-      foto    = new Foto();
-      fotoDto = new FotoDto();
-      addInfo(PersistenceConstants.DELETED, "'" + taxonSeq + "'");
-      redirect(WAARNEMING_REDIRECT);
-    } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, taxonSeq);
     } catch (DoosRuntimeException e) {
       LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
                                  e.getLocalizedMessage()), e);
@@ -181,28 +132,6 @@ public class WaarnemingController extends Natuur {
   public String getDeletetekst() {
     return String.format("%s - %s", formateerDatum(waarneming.getDatum()),
                                     waarneming.getGebied().getNaam());
-  }
-
-  @Override
-  public String getDetailDeletetekst() {
-    return String.format("%s - %s", foto.getTaxonSeq(), foto.getFotoBestand());
-  }
-
-  @Override
-  public String getDetailDeletetitel() {
-    return getTekst(DTIT_DELETE, waarneming.getTaxon().getNaam());
-  }
-
-  public Foto getFoto() {
-    return foto;
-  }
-
-  public JSONArray getFotos() {
-    var fotos = new JSONArray();
-
-    waarnemingDto.getFotos().forEach(rij -> fotos.add(rij.toJSON()));
-
-    return fotos;
   }
 
   public List<SelectItem> getSelectWaarnemingen() {
@@ -249,35 +178,6 @@ public class WaarnemingController extends Natuur {
       redirect(WAARNEMING_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_WAARNEMING));
-    }
-  }
-
-  public void retrieveDetail() {
-    if (!isGerechtigd()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    var ec      = getExternalContext();
-
-    if (!checkEcParameters(ec.getRequestParameterMap(),
-                           FotoDto.COL_FOTOID)) {
-      return;
-    }
-
-    var fotoId  =
-        Long.valueOf(ec.getRequestParameterMap()
-                       .get(FotoDto.COL_FOTOID));
-
-    try {
-      fotoDto = getFotoService().foto(fotoId);
-      foto    = new Foto(fotoDto);
-      setDetailAktie(PersistenceConstants.RETRIEVE);
-      setDetailSubTitel(getTekst(DTIT_RETRIEVE));
-      setReturnTo(ec, WAARNEMING_REDIRECT);
-      redirect(FOTO_REDIRECT);
-    } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, getTekst(LBL_FOTO));
     }
   }
 
@@ -329,62 +229,6 @@ public class WaarnemingController extends Natuur {
     }
   }
 
-  public void saveDetail() {
-    if (!isUser()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    var messages      = FotoValidator.valideer(foto);
-    var fotoOverzicht =
-            getFotoService().fotoTaxonSeq(waarnemingDto.getTaxon().getTaxonId(),
-                                          foto.getTaxonSeq());
-    if (null != fotoOverzicht.getFotoId()
-            && !fotoOverzicht.getFotoId().equals(foto.getFotoId())) {
-          messages.add(new Message.Builder()
-                            .setAttribute(FotoDto.COL_TAXONSEQ)
-                            .setSeverity(Message.ERROR)
-                            .setMessage(PersistenceConstants.DUPLICATE)
-                            .setParams(new Object[]{foto.getTaxonSeq()})
-                            .build());
-    }
-
-    if (!messages.isEmpty()) {
-      addMessage(messages);
-      return;
-    }
-
-    var taxonSeq  = foto.getTaxonSeq();
-    try {
-      switch (getDetailAktie().getAktie()) {
-        case PersistenceConstants.CREATE -> {
-          foto.persist(fotoDto);
-          getFotoService().save(fotoDto);
-          waarnemingDto.addFoto(fotoDto);
-          addInfo(PersistenceConstants.CREATED, taxonSeq);
-          updateDetail();
-        }
-        case PersistenceConstants.UPDATE -> {
-          foto.persist(fotoDto);
-          getFotoService().save(fotoDto);
-          waarnemingDto.addFoto(fotoDto);
-          addInfo(PersistenceConstants.UPDATED, taxonSeq);
-        }
-        default -> addError(ComponentsConstants.WRONGREDIRECT,
-                            getDetailAktie().getAktie()) ;
-      }
-      redirect(WAARNEMING_REDIRECT);
-    } catch (DuplicateObjectException e) {
-      addError(PersistenceConstants.DUPLICATE, taxonSeq);
-    } catch (ObjectNotFoundException e) {
-      addError(PersistenceConstants.NOTFOUND, taxonSeq);
-    } catch (DoosRuntimeException e) {
-      LOGGER.error(String.format(ComponentsConstants.ERR_RUNTIME,
-                                 e.getLocalizedMessage()), e);
-      generateExceptionMessage(e);
-    }
-  }
-
   public void update() {
     if (!isUser()) {
       addError(ComponentsConstants.GEENRECHTEN);
@@ -393,16 +237,6 @@ public class WaarnemingController extends Natuur {
 
     setAktie(PersistenceConstants.UPDATE);
     setSubTitel(getTekst(TIT_UPDATE));
-  }
-
-  public void updateDetail() {
-    if (!isUser()) {
-      addError(ComponentsConstants.GEENRECHTEN);
-      return;
-    }
-
-    setDetailAktie(PersistenceConstants.UPDATE);
-    setDetailSubTitel(getTekst(DTIT_UPDATE));
   }
 
   public void waarnemingenlijst() {

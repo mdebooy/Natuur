@@ -162,7 +162,7 @@
             }
           ]
         } );
-        $('#fotosTabel').DataTable( {
+        var fotosTabel = $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}/' + iso6392t,
                   dataSrc: '' },
           order: [[2, "asc"], [3, "asc"], [4, "asc"]],
@@ -214,7 +214,7 @@
             }
           ]
         } );
-        $('#regiosTabel').DataTable( {
+        var regiosTabel = $('#regiosTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsten/taxon/#{natuurTaxon.taxon.taxonId}',
                   dataSrc: '' },
           order: [[0, "asc"]],
@@ -273,6 +273,14 @@
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkWaarneming');
           alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
+        } );
+        $( '#fotosTabel tbody').on('click', 'tr', function() {
+          if (fotosTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkFoto');
+          alterParam(jsfCommandLink, fotosTabel.row(this).data().fotoId);
           jsfCommandLink.click();
         } );
         if (#{natuurTaxon.aktie.wijzig and natuurTaxon.user}) {
@@ -390,6 +398,7 @@
                     <table id="waarnemingenTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="waarnemingenTabel" />
                     <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurWaarneming.retrieve}">
                       <f:param name="waarnemingId" value="XX" />
+                      <f:param name="returnTo" value="/taxa/taxon.xhtml" />
                     </h:commandLink>
                     <h:commandLink id="addWaarnemingen" class="is-hidden" action="#{natuurWaarneming.create}">
                       <f:param name="taxonId" value="#{natuurTaxon.taxon.taxonId}" />
@@ -397,6 +406,10 @@
                   </div>
                   <div id="conFotos" class="tab-detail is-hidden">
                     <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
+                    <h:commandLink id="linkFoto" class="is-hidden" action="#{natuurFoto.retrieve}">
+                      <f:param name="fotoId" value="XX" />
+                      <f:param name="returnTo" value="/taxa/taxon.xhtml" />
+                    </h:commandLink>
                   </div>
                   <div id="conRegios" class="tab-detail is-hidden">
                     <table id="regiosTabel" class="table is-striped is-narrow" aria-describedby="regiosTabel" />

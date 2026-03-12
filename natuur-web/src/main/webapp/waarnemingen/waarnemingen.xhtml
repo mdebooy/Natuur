@@ -11,7 +11,7 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
-        $('#waarnemingenTabel').DataTable( {
+        var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen/taal/' + iso6392t,
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
@@ -61,6 +61,14 @@
             }
           ]
         } );
+        $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formWaarnemingen:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
+        } );
         if (#{natuurWaarneming.user or natuurWaarneming.view}) {
           addPdfButton('waarnemingenTabel', 'formWaarnemingen', '#{i18nTeksten.tekst('img.PDF')}');
         }
@@ -74,6 +82,10 @@
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.waarnemingen')}" />
 
           <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemngenTabel" />
+          <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurWaarneming.retrieve}">
+            <f:param name="waarnemingId" value="XX" />
+            <f:param name="returnTo" value="/waarnemingen/waarnemingen.xhtml" />
+          </h:commandLink>
           <h:commandLink id="pdfWaarnemingen" class="is-hidden" action="#{natuurWaarneming.waarnemingenlijst}">
             <f:setPropertyActionListener target="#{natuurWaarneming.type}" value="PDF" />
           </h:commandLink>
