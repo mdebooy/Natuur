@@ -12,6 +12,58 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
+        var fotosTabel = $('#fotosTabel').DataTable( {
+          ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}/' + iso6392t,
+                  dataSrc: '' },
+          order: [[2, "asc"], [3, "asc"], [4, "asc"]],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'datum', visible: false,  searchable: false},
+            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', width: '50px', orderData: 0, render: function ( data, type, row ) {
+                return formatDatum(data.datum, taal);
+              }
+            },
+            { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
+            { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
+            { data: 'gebied', title: '#{i18nTeksten.tekst('label.gebied')}' },
+            { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
+                return getLandnaam(data.landId, iso6392t);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
+                if (data.hasOwnProperty('fotoDetail')) {
+                  return data.fotoDetail;
+                }
+                return '';
+              }
+            },
+            { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('opmerking')) {
+                  return '<img src="/common/images/16x16/status/dialog-information.svg" alt="'+info+'" title="'+data.opmerking+'" />';
+                }
+                return '';
+              }
+            }
+          ]
+        } );
         var taxaTabel = $('#taxaTabel').DataTable( {
           ajax: { url: '/natuur/taxa/kinderen/#{natuurTaxon.taxon.taxonId}/' + iso6392t,
                   dataSrc: '' },
@@ -47,36 +99,6 @@
             }
           ]
         } );
-        var taxonnamenTabel = $('#taxonnamenTabel').DataTable( {
-          data: #{natuurTaxon.taxonnamen},
-          order: [[1, 'asc']],
-          pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength.tab')},
-          lengthChange: false,
-          stateSave: true,
-          language: {
-            paginate: {
-              first: '#{properties.appValue('natuur.pager.first')}',
-              last: '#{properties.appValue('natuur.pager.last')}',
-              next: '#{properties.appValue('natuur.pager.next')}',
-              previous: '#{properties.appValue('natuur.pager.previous')}'
-            },
-            search: '#{i18nTeksten.tekst('pager.search')}',
-            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
-            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
-            info: '#{i18nTeksten.tekst('pager.info')}',
-            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
-            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
-          },
-          columns: [
-            { data: 'taal', visible: false },
-            { data: null, title: '#{i18nTeksten.tekst('label.taal')}', width: '50px', class: 'has-text-centered', orderData: 0, render: function ( data, type, row ) {
-                return taalvlag(data.taal);
-              }
-            },
-            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
-          ]
-        } );
         var taxonbeschrijvingenTabel = $('#taxonbeschrijvingenTabel').DataTable( {
           ajax: { url: '/natuur/taxonbeschrijvingen/taxon/#{natuurTaxon.taxon.taxonId}',
                   dataSrc: '' },
@@ -109,6 +131,65 @@
               }
             },
             { data: 'beschrijving', title: '#{i18nTeksten.tekst('label.beschrijving')}' }
+          ]
+        } );
+        var taxonnamenTabel = $('#taxonnamenTabel').DataTable( {
+          data: #{natuurTaxon.taxonnamen},
+          order: [[1, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'taal', visible: false },
+            { data: null, title: '#{i18nTeksten.tekst('label.taal')}', width: '50px', class: 'has-text-centered', orderData: 0, render: function ( data, type, row ) {
+                return taalvlag(data.taal);
+              }
+            },
+            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' }
+          ]
+        } );
+        $('#regiolijstenTabel').DataTable( {
+          ajax: { url: '/natuur/regiolijsten/taxon/#{natuurTaxon.taxon.taxonId}',
+                  dataSrc: '' },
+          order: [[0, "asc"]],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
+                return getRegionaam(data.regioId, iso6392t);
+              }
+            }
           ]
         } );
         var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
@@ -162,120 +243,7 @@
             }
           ]
         } );
-        var fotosTabel = $('#fotosTabel').DataTable( {
-          ajax: { url: '/natuur/fotos/taxon/#{natuurTaxon.taxon.taxonId}/' + iso6392t,
-                  dataSrc: '' },
-          order: [[2, "asc"], [3, "asc"], [4, "asc"]],
-          pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength.tab')},
-          lengthChange: false,
-          stateSave: true,
-          language: {
-            paginate: {
-              first: '#{properties.appValue('natuur.pager.first')}',
-              last: '#{properties.appValue('natuur.pager.last')}',
-              next: '#{properties.appValue('natuur.pager.next')}',
-              previous: '#{properties.appValue('natuur.pager.previous')}'
-            },
-            search: '#{i18nTeksten.tekst('pager.search')}',
-            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
-            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
-            info: '#{i18nTeksten.tekst('pager.info')}',
-            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
-            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
-          },
-          columns: [
-            { data: 'datum', visible: false,  searchable: false},
-            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', width: '50px', orderData: 0, render: function ( data, type, row ) {
-                return formatDatum(data.datum, taal);
-              }
-            },
-            { data: 'volgnummer', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-centered' },
-            { data: 'naam', title: '#{i18nTeksten.tekst('label.naam')}' },
-            { data: 'taxonSeq', title: '#{i18nTeksten.tekst('label.seq')}', width: '50px', class: 'has-text-right' },
-            { data: 'gebied', title: '#{i18nTeksten.tekst('label.gebied')}' },
-            { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
-                return getLandnaam(data.landId, iso6392t);
-              }
-            },
-            { data: null, title: '#{i18nTeksten.tekst('label.detail')}', render: function ( data, type, row ) {
-                if (data.hasOwnProperty('fotoDetail')) {
-                  return data.fotoDetail;
-                }
-                return '';
-              }
-            },
-            { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
-                if (data.hasOwnProperty('opmerking')) {
-                  return '<img src="/common/images/16x16/status/dialog-information.svg" alt="'+info+'" title="'+data.opmerking+'" />';
-                }
-                return '';
-              }
-            }
-          ]
-        } );
-        var regiosTabel = $('#regiosTabel').DataTable( {
-          ajax: { url: '/natuur/regiolijsten/taxon/#{natuurTaxon.taxon.taxonId}',
-                  dataSrc: '' },
-          order: [[0, "asc"]],
-          pagingType: 'full_numbers',
-          pageLength: #{properties.appValue('natuur.pagelength.tab')},
-          lengthChange: false,
-          stateSave: true,
-          language: {
-            paginate: {
-              first: '#{properties.appValue('natuur.pager.first')}',
-              last: '#{properties.appValue('natuur.pager.last')}',
-              next: '#{properties.appValue('natuur.pager.next')}',
-              previous: '#{properties.appValue('natuur.pager.previous')}'
-            },
-            search: '#{i18nTeksten.tekst('pager.search')}',
-            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
-            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
-            info: '#{i18nTeksten.tekst('pager.info')}',
-            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
-            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
-          },
-          columns: [
-            { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
-                return getRegionaam(data.regioId, iso6392t);
-              }
-            }
-          ]
-        } );
-        $( '#taxaTabel tbody').on('click', 'tr', function() {
-          if (taxaTabel.row(this).data() === undefined) {
-            return;
-          }
-          var jsfCommandLink = document.getElementById('formTaxon:linkKind');
-          alterParam(jsfCommandLink, taxaTabel.row(this).data().taxonId);
-          jsfCommandLink.click();
-        } );
-        $( '#taxonnamenTabel tbody').on('click', 'tr', function() {
-          if (taxonnamenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
-            return;
-          }
-          var jsfCommandLink = document.getElementById('formTaxon:linkTaxonnaam');
-          alterParam(jsfCommandLink, taxonnamenTabel.row(this).data().taal);
-          jsfCommandLink.click();
-        } );
-        $( '#taxonbeschrijvingenTabel tbody').on('click', 'tr', function() {
-          if (taxonbeschrijvingenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
-            return;
-          }
-          var jsfCommandLink = document.getElementById('formTaxon:linkTaxonbeschrijving');
-          alterParam(jsfCommandLink, taxonbeschrijvingenTabel.row(this).data().beschrijvingtype);
-          jsfCommandLink.click();
-        } );
-        $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
-          if (waarnemingenTabel.row(this).data() === undefined) {
-            return;
-          }
-          var jsfCommandLink = document.getElementById('formTaxon:linkWaarneming');
-          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
-          jsfCommandLink.click();
-        } );
-        $( '#fotosTabel tbody').on('click', 'tr', function() {
+        $('#fotosTabel tbody').on('click', 'tr', function() {
           if (fotosTabel.row(this).data() === undefined) {
             return;
           }
@@ -283,6 +251,42 @@
           alterParam(jsfCommandLink, fotosTabel.row(this).data().fotoId);
           jsfCommandLink.click();
         } );
+        $('#taxaTabel tbody').on('click', 'tr', function() {
+          if (taxaTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkKind');
+          alterParam(jsfCommandLink, taxaTabel.row(this).data().taxonId);
+          jsfCommandLink.click();
+        } );
+        $('#taxonbeschrijvingenTabel tbody').on('click', 'tr', function() {
+          if (taxonbeschrijvingenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkTaxonbeschrijving');
+          alterParam(jsfCommandLink, taxonbeschrijvingenTabel.row(this).data().beschrijvingtype);
+          jsfCommandLink.click();
+        } );
+        $('#taxonnamenTabel tbody').on('click', 'tr', function() {
+          if (taxonnamenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkTaxonnaam');
+          alterParam(jsfCommandLink, taxonnamenTabel.row(this).data().taal);
+          jsfCommandLink.click();
+        } );
+        $('#waarnemingenTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formTaxon:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
+        } );
+        if (#{!natuurTaxon.aktie.nieuw}) {
+          initTabs();
+          switchToTab('#{natuurTaxon.actieveTab}');
+        }
         if (#{natuurTaxon.aktie.wijzig and natuurTaxon.user}) {
           var imgTekst = '#{i18nTeksten.tekst('img.nieuw')}';
           alterParam(document.getElementById('formTaxon:addTaxa'), #{natuurTaxon.taxon.taxonId});
@@ -291,10 +295,6 @@
           addInsertButton('taxonbeschrijvingenTabel', 'formTaxon', imgTekst);
           addInsertButton('taxonnamenTabel', 'formTaxon', imgTekst);
           addInsertButton('waarnemingenTabel', 'formTaxon', imgTekst);
-        }
-        if (#{!natuurTaxon.aktie.nieuw}) {
-          initTabs();
-          switchToTab('#{natuurTaxon.actieveTab}');
         }
         addPdfButton('taxaTabel', 'formTaxon', '#{i18nTeksten.tekst('img.PDF')}');
       } );
@@ -362,7 +362,7 @@
                     <li id="tabBeschrijvingen" class="tab-link" onclick="switchToTab('Beschrijvingen')"><a>#{i18nTeksten.tekst('tab.beschrijvingen')}</a></li>
                     <li id="tabWaarnemingen" class="tab-link" onclick="switchToTab('Waarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
                     <li id="tabFotos" class="tab-link" onclick="switchToTab('Fotos')"><a>#{i18nTeksten.tekst('tab.fotos')}</a></li>
-                    <li id="tabRegios" class="tab-link" onclick="switchToTab('Regios')"><a>#{i18nTeksten.tekst('tab.regios')}</a></li>
+                    <li id="tabRegiolijsten" class="tab-link" onclick="switchToTab('Regiolijsten')"><a>#{i18nTeksten.tekst('tab.regios')}</a></li>
                   </ul>
                 </div>
                 <div class="tabs-details titel">
@@ -411,8 +411,8 @@
                       <f:param name="returnTo" value="/taxa/taxon.xhtml" />
                     </h:commandLink>
                   </div>
-                  <div id="conRegios" class="tab-detail is-hidden">
-                    <table id="regiosTabel" class="table is-striped is-narrow" aria-describedby="regiosTabel" />
+                  <div id="conRegiolijsten" class="tab-detail is-hidden">
+                    <table id="regiolijstenTabel" class="table is-striped is-narrow" aria-describedby="regiolijstenTabel" />
                   </div>
                 </div>
               </c:if>

@@ -22,6 +22,7 @@ import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.form.Formulier;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import java.io.Serializable;
+import java.util.Comparator;
 import java.util.Date;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -47,6 +48,22 @@ public class Regiolijst extends Formulier
     omschrijving  = regiolijst.getOmschrijving();
     regioId       = regiolijst.getRegioId();
     regiolijstId  = regiolijst.getRegiolijstId();
+  }
+
+  public static class SelecttekstComparator
+      implements Comparator<Regiolijst>, Serializable {
+    private static final  long  serialVersionUID  = 1L;
+
+    @Override
+    public int compare(Regiolijst regiolijst1, Regiolijst regiolijst2) {
+      return new CompareToBuilder().append(regiolijst1.getOmschrijving(),
+                                           regiolijst2.getOmschrijving())
+                                   .append(regiolijst1.getDatum(),
+                                           regiolijst2.getDatum())
+                                   .append(regiolijst1.getRegioId(),
+                                           regiolijst2.getRegioId())
+                                   .toComparison();
+    }
   }
 
   @Override
@@ -91,6 +108,10 @@ public class Regiolijst extends Formulier
 
   public Long getRegiolijstId() {
     return regiolijstId;
+  }
+
+  public String getSelecttekst() {
+    return String.format("%s (%s)", omschrijving, Datum.fromDate(datum));
   }
 
   @Override

@@ -135,6 +135,8 @@ public class Natuur extends DoosBean {
       "/taxa/taxonnaam.xhtml";
   protected static final  String  TAXONNAMENUPLOAD_REDIRECT =
       "/taxa/taxonnaamupload.xhtml";
+  protected static final  String  TAXONREGIOLIJST_REDIRECT  =
+      "/taxa/taxonregiolijst.xhtml";
   protected static final  String  USER_ROLE                 = "natuur-user";
   protected static final  String  UITGESTORVEN_REDIRECT     =
       "/statistieken/uitgestorven.xhtml";

@@ -70,17 +70,22 @@ public class TaxonController extends Natuur {
   private static final  Logger  LOGGER            =
       LoggerFactory.getLogger(TaxonController.class);
 
-  private static final  String  DTIT_CREATE   = "natuur.titel.taxonnaam.create";
-  private static final  String  DTIT_DELETE   = "natuur.titel.taxonnaam.delete";
-  private static final  String  DTIT_RETRIEVE =
+  private static final  String  DTIT_CREATE     =
+      "natuur.titel.taxonnaam.create";
+  private static final  String  DTIT_DELETE     =
+      "natuur.titel.taxonnaam.delete";
+  private static final  String  DTIT_RETRIEVE   =
       "natuur.titel.taxonnaam.retrieve";
-  private static final  String  DTIT_UPDATE   = "natuur.titel.taxonnaam.update";
-  private static final  String  HERBENOEMD    =
+  private static final  String  DTIT_UPDATE     =
+      "natuur.titel.taxonnaam.update";
+  private static final  String  HERBENOEMD      =
       "natuur.latijnsenamen.herbenoemd";
-  private static final  String  NTIT_RETRIEVE =
+  private static final  String  NTIT_RETRIEVE   =
       "natuur.titel.taxonnamen.retrieve";
-  private static final  String  TIT_CREATE    = "natuur.titel.taxon.create";
-  private static final  String  TIT_UPDATE    = "natuur.titel.taxon.update";
+  private static final  String  TIT_CREATE      = "natuur.titel.taxon.create";
+  private static final  String  TIT_REGIOLIJST  =
+      "natuur.titel.regiolijst.taxon";
+  private static final  String  TIT_UPDATE      = "natuur.titel.taxon.update";
 
   private static final  String  LBL_LATIJSENAAM = "label.latijnsenaam";
 
@@ -271,15 +276,6 @@ public class TaxonController extends Natuur {
                                           .getFileName().toString());
   }
 
-  public String getDeleteTitel() {
-    return getTekst(DTIT_DELETE, getTaxonnaam(getGebruikersTaalInIso6392t()));
-  }
-
-  @Override
-  public String getDetailDeletetekst() {
-    return taxonnaam.getNaam();
-  }
-
   public String getNamenTitel() {
     return getTekst(NTIT_RETRIEVE,
                     doosRemote.getIso6392tNaam(perTaal,
@@ -441,6 +437,9 @@ public class TaxonController extends Natuur {
         updateDetail();
       } else {
         setDetailAktie(PersistenceConstants.RETRIEVE);
+        setDetailDeletetekst(taxonnaam.getNaam());
+        setDetailDeletetitel(
+            getTekst(DTIT_DELETE, getTaxonnaam(getGebruikersTaalInIso6392t())));
         setDetailSubTitel(
           getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
       }
@@ -702,20 +701,16 @@ public class TaxonController extends Natuur {
 
   private TreeSet<DetailDto> setSortering() {
     String  sortering;
-    switch (lijstparameters.getSortering()) {
-      case TaxonDto.COL_VOLGNUMMER:
-        return new TreeSet<>(new DetailDto.VolgnummerComparator());
-      case TAG_TAAL1:
-        sortering = lijstparameters.getTaal1();
-        break;
-      case TAG_TAAL2:
-        sortering = lijstparameters.getTaal2();
-        break;
-      case TAG_TAAL3:
-        sortering = lijstparameters.getTaal3();
-        break;
-      default:
-        sortering = TAG_LATIJN;
+    sortering = switch (lijstparameters.getSortering()) {
+      case TaxonDto.COL_VOLGNUMMER -> TaxonDto.COL_VOLGNUMMER;
+      case TAG_TAAL1 -> lijstparameters.getTaal1();
+      case TAG_TAAL2 -> lijstparameters.getTaal2();
+      case TAG_TAAL3 -> lijstparameters.getTaal3();
+      default -> TAG_LATIJN;
+    };
+
+    if (sortering.equals(TaxonDto.COL_VOLGNUMMER)) {
+      return new TreeSet<>(new DetailDto.VolgnummerComparator());
     }
 
     var comparator  = new DetailDto.NaamComparator();
@@ -822,6 +817,7 @@ public class TaxonController extends Natuur {
     }
 
     setDetailAktie(PersistenceConstants.UPDATE);
+    setDetailDeletetekst(taxonnaam.getNaam());
     setDetailSubTitel(
         getTekst(DTIT_UPDATE, getTaxonnaam(getGebruikersTaalInIso6392t())));
   }

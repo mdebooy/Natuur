@@ -195,7 +195,7 @@ public class RegiolijstController extends Natuur {
       getRegiolijstTaxonService().delete(sleutel);
       regiolijstTaxon     = new RegiolijstTaxon();
       regiolijstTaxonDto  = new RegiolijstTaxonDto();
-      addInfo(PersistenceConstants.DELETED, "'" + naam + "'");
+      addInfo(PersistenceConstants.DELETED, naam);
       redirect(REGIOLIJST_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, naam);
@@ -220,11 +220,6 @@ public class RegiolijstController extends Natuur {
 
   public Part getBestand() {
     return bestand;
-  }
-
-  public String getDetailDeleteTitel() {
-    return getTekst(DTIT_DELETE, regio.getNaam(),
-                                 Datum.fromDate(regiolijst.getDatum()));
   }
 
   public JSONArray getDubbel() {
@@ -424,6 +419,8 @@ public class RegiolijstController extends Natuur {
                                                 getGebruikersTaalInIso6392t());
       setDetailAktie(PersistenceConstants.UPDATE);
       setDetailDeletetekst(regiolijstTaxon.getTaxon().getNaam());
+      setDetailDeletetitel(getTekst(DTIT_DELETE, regio.getNaam(),
+                                    Datum.fromDate(regiolijst.getDatum())));
       setDetailSubTitel(getTekst(DTIT_UPDATE,
                                  regio.getNaam(),
                                  Datum.fromDate(regiolijst.getDatum())));

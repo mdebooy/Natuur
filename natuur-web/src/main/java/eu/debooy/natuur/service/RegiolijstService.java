@@ -20,6 +20,7 @@ import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
 import eu.debooy.natuur.access.RegiolijstDao;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.domain.TaxonDto;
+import eu.debooy.natuur.form.Regiolijst;
 import jakarta.ejb.Lock;
 import jakarta.ejb.LockType;
 import jakarta.ejb.Singleton;
@@ -35,6 +36,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,6 +102,20 @@ public class RegiolijstService {
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
     }
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Regiolijst> query() {
+    List<Regiolijst>  regiolijsten  = new ArrayList<>();
+
+    try {
+      regiolijstDao.getAll()
+                   .forEach(rij -> regiolijsten.add(new Regiolijst(rij)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return regiolijsten;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
