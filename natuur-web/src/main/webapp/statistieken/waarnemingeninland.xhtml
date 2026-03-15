@@ -12,7 +12,7 @@
         var taal = '#{gebruiker.locale.language}';
         var landId = '#{natuurGebied.landId}';
         var iso6392t = getISO6391ToISO6392t(taal);
-        $('#waarnemingenTabel').DataTable( {
+        var waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen/land/' + landId + '/' + iso6392t,
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
@@ -35,7 +35,7 @@
             infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
           },
           columns: [
-            { data: 'datum', visible: false,  searchable: false },
+            { data: 'sorteerdatum', visible: false,  searchable: false },
             { data: null, title: '#{i18nTeksten.tekst('label.datum')}', orderData: 0, render: function ( data, type, row ) {
                 return formatDatum(data.datum, taal);
               }
@@ -58,6 +58,14 @@
             }
           ]
         } );
+        $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formWaarnemingen:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
+        } );
       } );
     </script>
   </ui:define>
@@ -68,6 +76,10 @@
           <d:titel titel="#{natuurGebied.perlandTitel}" />
 
           <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemngenTabel" />
+          <h:commandLink id="linkWaarneming" action="#{natuurWaarneming.retrieve}" style="display:none">
+            <f:param name="waarnemingId" value="XX" />
+            <f:param name="returnTo" value="/statistieken/waarnemingeninland.xhtml" />
+          </h:commandLink>
 
           <d:cancel aktie="#{natuurGebied.perlandAktie}" returnto="#{natuur.path}/statistieken/waarnemingenperland.xhtml" />
         </h:form>

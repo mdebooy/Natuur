@@ -244,7 +244,7 @@
           ]
         } );
         $('#fotosTabel tbody').on('click', 'tr', function() {
-          if (fotosTabel.row(this).data() === undefined) {
+          if (fotosTabel.row(this).data() === undefined || #{!natuurTaxon.aktie.wijzig}) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkFoto');
@@ -260,7 +260,7 @@
           jsfCommandLink.click();
         } );
         $('#taxonbeschrijvingenTabel tbody').on('click', 'tr', function() {
-          if (taxonbeschrijvingenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
+          if (taxonbeschrijvingenTabel.row(this).data() === undefined || #{!natuurTaxon.user} || #{!natuurTaxon.aktie.wijzig}) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkTaxonbeschrijving');
@@ -268,7 +268,7 @@
           jsfCommandLink.click();
         } );
         $('#taxonnamenTabel tbody').on('click', 'tr', function() {
-          if (taxonnamenTabel.row(this).data() === undefined || #{!natuurTaxon.user}) {
+          if (taxonnamenTabel.row(this).data() === undefined || #{!natuurTaxon.user} || #{!natuurTaxon.aktie.wijzig}) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkTaxonnaam');
@@ -276,7 +276,7 @@
           jsfCommandLink.click();
         } );
         $('#waarnemingenTabel tbody').on('click', 'tr', function() {
-          if (waarnemingenTabel.row(this).data() === undefined) {
+          if (waarnemingenTabel.row(this).data() === undefined || #{!natuurTaxon.aktie.wijzig}) {
             return;
           }
           var jsfCommandLink = document.getElementById('formTaxon:linkWaarneming');
@@ -381,6 +381,7 @@
                     <table id="taxonnamenTabel" class="table is-striped is-narrow #{natuurTaxon.user ? 'is-hoverable' : ''}" aria-describedby="taxonnamenTabel" />
                     <h:commandLink id="linkTaxonnaam" class="is-hidden" action="#{natuurTaxon.retrieveDetail}">
                       <f:param name="taal" value="XX" />
+                      <f:param name="returnTo" value="/taxa/taxon.xhtml" />
                     </h:commandLink>
                     <h:commandLink id="addTaxonnamen" class="is-hidden" action="#{natuurTaxon.createDetail}" />
                   </div>

@@ -59,7 +59,7 @@
           ]
         } );
         $( '#regiolijstTaxaTabel tbody').on('click', 'tr', function() {
-          if (regiolijstTaxaTabel.row(this).data() === undefined || #{!natuurRegiolijst.user}) {
+          if (regiolijstTaxaTabel.row(this).data() === undefined || #{!natuurRegiolijst.user} || #{!natuurRegiolijst.aktie.wijzig}) {
             return;
           }
           var jsfCommandLink = document.getElementById("formRegiolijst:linkRegiolijstTaxon");
@@ -69,6 +69,9 @@
         if (#{natuurRegiolijst.aktie.wijzig and natuurRegiolijst.user}) {
           addInsertButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.nieuw')}');
           addUploadButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.upload')}');
+        }
+        if (#{!natuurRegiolijst.aktie.nieuw}) {
+          initTabs();
         }
         if (#{natuurRegiolijst.user or natuurRegiolijst.view}) {
           addPdfButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.PDF')}');

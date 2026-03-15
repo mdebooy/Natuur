@@ -128,12 +128,6 @@ public class WaarnemingController extends Natuur {
     return Datum.fromDate(datum, getTekst("kalender.datum.formaat"));
   }
 
-  @Override
-  public String getDeletetekst() {
-    return String.format("%s - %s", formateerDatum(waarneming.getDatum()),
-                                    waarneming.getGebied().getNaam());
-  }
-
   public List<SelectItem> getSelectWaarnemingen() {
     List<SelectItem>  items = new LinkedList<>();
     Set<Taxon>        rijen = new TreeSet<>(new Taxon.NaamComparator());
@@ -173,6 +167,9 @@ public class WaarnemingController extends Natuur {
       waarneming    = new Waarneming(waarnemingDto,
                                      getGebruikersTaalInIso6392t());
       setAktie(PersistenceConstants.RETRIEVE);
+      setDeletetekst(String.format("%s - %s",
+                                   formateerDatum(waarneming.getDatum()),
+                                   waarneming.getGebied().getNaam()));
       setReturnTo(ec, WAARNEMINGEN_REDIRECT);
       setSubTitel(getTekst(TIT_RETRIEVE));
       redirect(WAARNEMING_REDIRECT);
@@ -236,6 +233,9 @@ public class WaarnemingController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
+    setDeletetekst(String.format("%s - %s",
+                                 formateerDatum(waarneming.getDatum()),
+                                 waarneming.getGebied().getNaam()));
     setSubTitel(getTekst(TIT_UPDATE));
   }
 

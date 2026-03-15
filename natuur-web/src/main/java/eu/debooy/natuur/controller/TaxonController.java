@@ -83,8 +83,6 @@ public class TaxonController extends Natuur {
   private static final  String  NTIT_RETRIEVE   =
       "natuur.titel.taxonnamen.retrieve";
   private static final  String  TIT_CREATE      = "natuur.titel.taxon.create";
-  private static final  String  TIT_REGIOLIJST  =
-      "natuur.titel.regiolijst.taxon";
   private static final  String  TIT_UPDATE      = "natuur.titel.taxon.update";
 
   private static final  String  LBL_LATIJSENAAM = "label.latijnsenaam";
@@ -213,6 +211,7 @@ public class TaxonController extends Natuur {
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE,
                          getTaxonnaam(getGebruikersTaalInIso6392t())));
+    setDetailReturnTo(TAXON_REDIRECT);
     redirect(TAXONNAAM_REDIRECT);
   }
 
@@ -444,7 +443,7 @@ public class TaxonController extends Natuur {
           getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
       }
 
-      setReturnTo(ec, TAXON_REDIRECT);
+      setDetailReturnTo(ec, TAXON_REDIRECT);
       redirect(TAXONNAAM_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXONNAAM));
@@ -482,7 +481,7 @@ public class TaxonController extends Natuur {
           getTekst(DTIT_RETRIEVE, getTaxonnaam(getGebruikersTaalInIso6392t())));
       }
 
-      setReturnTo(ec, NAMENINEENTAAL_REDIRECT);
+      setDetailReturnTo(ec, TAXON_REDIRECT);
       redirect(TAXONNAAM_REDIRECT);
     } catch (ObjectNotFoundException e) {
       addError(PersistenceConstants.NOTFOUND, getTekst(LBL_TAXONNAAM));

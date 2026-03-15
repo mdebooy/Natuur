@@ -209,9 +209,10 @@ public class GebiedController extends Natuur {
 
     landId        = Long.valueOf(ec.getRequestParameterMap()
                                    .get(GebiedDto.COL_LANDID));
-    perlandTitel  = getTekst(TIT_INLAND,
-                             getSedesRemote().getI18nLandnaam(landId,
-                                                        getGebruikersTaal()));
+    perlandTitel  =
+        getTekst(TIT_INLAND,
+                 getSedesRemote()
+                    .getI18nLandnaam(landId, getGebruikersTaalInIso6392t()));
 
     setReturnTo(ec, WNMNPERLAND_REDIRECT);
     redirect(WNMNINLAND_REDIRECT);
