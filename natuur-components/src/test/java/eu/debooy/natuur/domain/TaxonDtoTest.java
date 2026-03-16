@@ -164,6 +164,21 @@ public class TaxonDtoTest {
   }
 
   @Test
+  public void testGetParentnaam() {
+    TaxonDto  instance;
+    try {
+      instance  = NatuurTestUtils.getOndersoortTaxonDto();
+
+      assertEquals(NatuurTestConstants.TAXONNAAM,
+                   instance.getParentnaam(NatuurTestConstants.TAAL).getNaam());
+      assertNull(instance.getParentnaam(NatuurTestConstants.TAAL_GR).getNaam());
+    } catch (IllegalArgumentException | IllegalAccessException
+             | NoSuchFieldException e) {
+      fail("Geen Exception verwacht: " + e.getLocalizedMessage());
+    }
+  }
+
+  @Test
   public void testGetRang() {
     assertEquals(NatuurTestConstants.RANG, taxonDto.getRang());
   }
@@ -202,6 +217,7 @@ public class TaxonDtoTest {
       assertEquals(NatuurTestConstants.OPMERKING, taxon.getOpmerking());
       assertEquals(NatuurTestConstants.PARENTTAXONID, taxon.getParentId());
       assertEquals(NatuurTestConstants.RANG, taxon.getRang());
+      assertEquals(NatuurTestConstants.STATUS, taxon.getStatus());
       assertEquals(NatuurTestConstants.TAXONID, taxon.getTaxonId());
       assertFalse(taxon.isUitgestorven());
       assertEquals(NatuurTestConstants.VOLGNUMMER, taxon.getVolgnummer());

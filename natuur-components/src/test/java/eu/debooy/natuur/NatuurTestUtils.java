@@ -23,6 +23,7 @@ import eu.debooy.natuur.domain.DetailDto;
 import eu.debooy.natuur.domain.FotoDto;
 import eu.debooy.natuur.domain.FotoOverzichtDto;
 import eu.debooy.natuur.domain.GebiedDto;
+import eu.debooy.natuur.domain.GeenFotoDto;
 import eu.debooy.natuur.domain.RangnaamDto;
 import eu.debooy.natuur.domain.TaxonDto;
 import eu.debooy.natuur.domain.TaxonnaamDto;
@@ -154,6 +155,71 @@ public final class NatuurTestUtils {
     return gebiedDto;
   }
 
+  public static GeenFotoDto getGeenFotoDto()
+      throws IllegalAccessException, IllegalArgumentException,
+             NoSuchFieldException, ParseException {
+    var geenFotoDto = new GeenFotoDto();
+
+    TestUtils.setField(geenFotoDto,
+                       GeenFotoDto.COL_PARENTID,
+                       NatuurTestConstants.GESLACHTTAXONID);
+    TestUtils.setField(geenFotoDto,
+                       "parent",
+                       NatuurTestUtils.getGeslachtTaxonDto());
+    TestUtils.setField(geenFotoDto,
+                       GeenFotoDto.COL_PARENTRANG,
+                       NatuurTestConstants.GESLACHTRANG);
+    TestUtils.setField(geenFotoDto,
+                       GeenFotoDto.COL_TAXONID,
+                       NatuurTestConstants.TAXONID);
+    TestUtils.setField(geenFotoDto,
+                       "taxon",
+                       NatuurTestUtils.getTaxonDto());
+
+    return geenFotoDto;
+  }
+
+  public static Taxon getGeslachtTaxon() {
+    var taxon = new Taxon();
+
+    taxon.setLatijnsenaam(NatuurTestConstants.GESLACHTLATIJNSENAAM);
+    taxon.setNaam(NatuurTestConstants.GESLACHTNAAM);
+    taxon.setNiveau(NatuurTestConstants.GESLACHTNIVEAU);
+    taxon.setOpmerking(NatuurTestConstants.GESLACHTOPMERKING);
+    taxon.setParentId(NatuurTestConstants.FAMILIETAXONID);
+    taxon.setParentLatijnsenaam(NatuurTestConstants.FAMILIELATIJNSENAAM);
+    taxon.setParentNaam(NatuurTestConstants.FAMILIETAXONNAAM);
+    taxon.setParentNiveau(NatuurTestConstants.FAMILIENIVEAU);
+    taxon.setParentRang(NatuurTestConstants.FAMILIERANG);
+    taxon.setParentRangnaam(NatuurTestConstants.FAMILIERANGNAAM);
+    taxon.setParentStatus(NatuurTestConstants.STATUS);
+    taxon.setParentVolgnummer(NatuurTestConstants.FAMILIEVOLGNUMMER);
+    taxon.setRang(NatuurTestConstants.GESLACHTRANG);
+    taxon.setRangnaam(NatuurTestConstants.GESLACHTRANGNAAM);
+    taxon.setStatus(NatuurTestConstants.STATUS);
+    taxon.setTaxonId(NatuurTestConstants.GESLACHTTAXONID);
+    taxon.setVolgnummer(NatuurTestConstants.GESLACHTVOLGNUMMER);
+
+    return taxon;
+  }
+
+  public static TaxonDto getGeslachtTaxonDto()
+      throws IllegalArgumentException, IllegalAccessException,
+             NoSuchFieldException {
+    var taxon     = getGeslachtTaxon();
+    var taxonDto  = new TaxonDto();
+
+    taxon.persist(taxonDto);
+    getTaxonOndersoortnamen().forEach((taal, taxonnaam) -> {
+      taxonnaam.setTaxonId(taxon.getTaxonId());
+      taxonDto.addNaam(taxonnaam);
+    });
+    TestUtils.setField(taxonDto, "parentnamen", getTaxonnamen());
+    TestUtils.setField(taxonDto, "parent", getTaxonDto());
+
+    return taxonDto;
+  }
+
   public static DetailDto getOndersoortDetailDto()
       throws IllegalAccessException, IllegalArgumentException,
              NoSuchFieldException {
@@ -189,7 +255,7 @@ public final class NatuurTestUtils {
                        NatuurTestConstants.STATUS);
     TestUtils.setField(detailDto,
                        DetailDto.COL_TAXONID,
-                       NatuurTestConstants.ONDERSOORTTAXONID);
+                       NatuurTestConstants.GESLACHTTAXONID);
     TestUtils.setField(detailDto,
                        DetailDto.COL_VOLGNUMMER,
                        NatuurTestConstants.ONDERSOORTVOLGNUMMER);

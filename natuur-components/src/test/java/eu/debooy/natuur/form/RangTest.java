@@ -28,6 +28,7 @@ import eu.debooy.natuur.domain.RangDto;
 import java.util.Set;
 import java.util.TreeSet;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -152,7 +153,7 @@ public class RangTest {
 
   @Test
   public void testIsIndividu() {
-    assertTrue(rang.getIndividu());
+    assertTrue(rang.isIndividu());
   }
 
   @Test
@@ -192,6 +193,17 @@ public class RangTest {
 
     assertEquals(instance.getNiveau(), parameter.getNiveau());
     assertEquals(instance.getRang(), parameter.getRang());
+  }
+
+  @Test
+  public void testSetIndividu() {
+    var instance  = new Rang();
+
+    instance.setIndividu(true);
+    assertTrue(instance.getIndividu());
+
+    instance.setIndividu(false);
+    assertFalse(instance.getIndividu());
   }
 
   @Test

@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.Test;
 
 
@@ -133,6 +134,64 @@ public class TaxonValidatorTest {
 
     assertEquals(1, result.size());
     assertEquals(ERR_ONDERSOORT1.toString(), result.get(0).toString());
+  }
+
+  @Test
+  public void testValideerFouteLatijnsenaam01() {
+    var instance  = NatuurTestUtils.getOndersoortTaxon();
+
+    instance.setRang(NatuurConstants.RANG_GESLACHT);
+
+    var result    = TaxonValidator.valideer(instance);
+
+    assertEquals(1, result.size());
+    assertEquals(ERR_SOORT0.toString(), result.get(0).toString());
+  }
+
+  @Test
+  // Test om te zien of de latijnsenaam intern wordt goedgezet.
+  public void testValideerFouteLatijnsenaam02() {
+    var instance  = NatuurTestUtils.getGeslachtTaxon();
+
+    instance.setLatijnsenaam(instance.getLatijnsenaam().toUpperCase());
+
+    var result    = TaxonValidator.valideer(instance);
+
+    assertEquals(0, result.size());
+  }
+
+  @Test
+  public void testValideerFouteLatijnsenaam11() {
+    try {
+      var instance  = NatuurTestUtils.getOndersoortTaxonDto();
+
+      instance.setRang(NatuurConstants.RANG_GESLACHT);
+
+      var result    = TaxonValidator.valideer(instance);
+
+      assertEquals(1, result.size());
+      assertEquals(ERR_SOORT0.toString(), result.get(0).toString());
+    } catch (IllegalArgumentException | IllegalAccessException
+            | NoSuchFieldException e) {
+      fail("Geen Exception verwacht: " + e.getLocalizedMessage());
+    }
+  }
+
+  @Test
+  // Test om te zien of de latijnsenaam intern wordt goedgezet.
+  public void testValideerFouteLatijnsenaam12() throws IllegalArgumentException {
+    try {
+      var instance  = NatuurTestUtils.getGeslachtTaxonDto();
+
+      instance.setLatijnsenaam(instance.getLatijnsenaam().toUpperCase());
+
+      var result    = TaxonValidator.valideer(instance);
+
+      assertEquals(0, result.size());
+    } catch (IllegalArgumentException | IllegalAccessException
+            | NoSuchFieldException e) {
+      fail("Geen Exception verwacht: " + e.getLocalizedMessage());
+    }
   }
 
   @Test

@@ -158,6 +158,17 @@ public class RangDtoTest {
   }
 
   @Test
+  public void testIndividu() {
+    var instance  = new RangDto();
+
+    instance.setIndividu(true);
+    assertTrue(instance.isIndividu());
+
+    instance.setIndividu(false);
+    assertFalse(instance.isIndividu());
+  }
+
+  @Test
   public void testNiveauComparator() {
     var groter  = new RangDto();
     var kleiner = new RangDto();
@@ -199,6 +210,17 @@ public class RangDtoTest {
     } catch (ObjectNotFoundException e) {
       // Is goed.
     }
+  }
+
+  @Test
+  public void testSetIndividu() {
+    var instance  = new RangDto();
+
+    instance.setIndividu(true);
+    assertTrue(instance.getIndividu());
+
+    instance.setIndividu(false);
+    assertFalse(instance.getIndividu());
   }
 
   @Test

@@ -152,6 +152,10 @@ public class RangDto extends Dto implements Comparable<RangDto> {
     return rangnamen.containsKey(taal);
   }
 
+  public boolean isIndividu() {
+    return getIndividu();
+  }
+
   public void removeRangnaam(String taal) {
     if (rangnamen.containsKey(taal)) {
       rangnamen.remove(taal);

@@ -19,10 +19,12 @@ package eu.debooy.natuur.form;
 
 import eu.debooy.natuur.NatuurTestConstants;
 import eu.debooy.natuur.NatuurTestUtils;
+import java.text.ParseException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -119,6 +121,47 @@ public class GeenFotoTest {
   }
 
   @Test
+  public void testInit3() {
+    try {
+      var instance  = new GeenFoto(NatuurTestUtils.getGeenFotoDto());
+
+      assertEquals(NatuurTestConstants.GESLACHTRANG, instance.getParentRang());
+      assertEquals(NatuurTestConstants.GESLACHTTAXONID,
+                   instance.getParent().getTaxonId());
+      assertEquals(NatuurTestConstants.TAXONID,
+                   instance.getTaxon().getTaxonId());
+      assertEquals(NatuurTestConstants.PARENTLATIJNSENAAM,
+                   instance.getParent().getNaam());
+      assertEquals(NatuurTestConstants.LATIJNSENAAM,
+                   instance.getTaxon().getNaam());
+    } catch (IllegalArgumentException | IllegalAccessException
+            | NoSuchFieldException | ParseException e) {
+      fail("Geen Exception verwacht: " + e.getLocalizedMessage());
+    }
+  }
+
+  @Test
+  public void testInit4() {
+    try {
+      var instance  = new GeenFoto(NatuurTestUtils.getGeenFotoDto(),
+                                   NatuurTestConstants.TAAL_KL);
+
+      assertEquals(NatuurTestConstants.GESLACHTRANG, instance.getParentRang());
+      assertEquals(NatuurTestConstants.GESLACHTTAXONID,
+                   instance.getParent().getTaxonId());
+      assertEquals(NatuurTestConstants.TAXONID,
+                   instance.getTaxon().getTaxonId());
+      assertEquals(NatuurTestConstants.ONDERSOORTNAAM_KL,
+                   instance.getParent().getNaam());
+      assertEquals(NatuurTestConstants.TAXONNAAM_KL,
+                   instance.getTaxon().getNaam());
+    } catch (IllegalArgumentException | IllegalAccessException
+            | NoSuchFieldException | ParseException e) {
+      fail("Geen Exception verwacht: " + e.getLocalizedMessage());
+    }
+  }
+
+  @Test
   public void testGetParent() {
     assertEquals(NatuurTestConstants.PARENTTAXONID,
                  geenFoto.getParent().getTaxonId());
@@ -176,7 +219,8 @@ public class GeenFotoTest {
 
     assertNull(instance.getParent());
 
-    instance.setParent(NatuurTestUtils.getParentTaxonDto(), NatuurTestConstants.TAAL_KL);
+    instance.setParent(NatuurTestUtils.getParentTaxonDto(),
+                       NatuurTestConstants.TAAL_KL);
 
     assertEquals(NatuurTestConstants.PARENTNAAM_KL,
                  instance.getParent().getNaam());
@@ -231,7 +275,8 @@ public class GeenFotoTest {
 
     assertNull(instance.getTaxon());
 
-    instance.setTaxon(NatuurTestUtils.getTaxonDto(), NatuurTestConstants.TAAL_KL);
+    instance.setTaxon(NatuurTestUtils.getTaxonDto(),
+                      NatuurTestConstants.TAAL_KL);
 
     assertNull(instance.getParent());
     assertNull(instance.getParentRang());
