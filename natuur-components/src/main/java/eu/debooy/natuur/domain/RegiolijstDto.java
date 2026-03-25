@@ -42,17 +42,18 @@ public class RegiolijstDto
     extends Dto implements Comparable<RegiolijstDto> {
   private static final  long  serialVersionUID  = 1L;
 
-  public static final String  COL_DATUM         = "datum";
+  public static final String  COL_EINDDATUM     = "einddatum";
   public static final String  COL_OMSCHRIJVING  = "omschrijving";
   public static final String  COL_REGIOID       = "regioId";
   public static final String  COL_REGIOLIJSTID  = "regiolijstId";
+  public static final String  COL_STARTDATUM    = "startdatum";
 
   public static final String  PAR_TAXONID = "taxonId";
 
   public static final String  QRY_PERTAXON  = "regiolijstenPerTaxon";
 
-  @Column(name="DATUM", nullable=false)
-  private Date    datum;
+  @Column(name="EINDDATUM")
+  private Date    einddatum;
   @Column(name="OMSCHRIJVING", length=2000)
   private String  omschrijving;
   @Column(name="REGIO_ID", nullable=false)
@@ -61,11 +62,14 @@ public class RegiolijstDto
   @GeneratedValue(strategy=GenerationType.IDENTITY)
   @Column(name="REGIOLIJST_ID", nullable=false, unique=true, updatable=false)
   private Long    regiolijstId;
+  @Column(name="STARTDATUM", nullable=false)
+  private Date    startdatum;
 
   @Override
   public int compareTo(RegiolijstDto regiolijstDto) {
     return new CompareToBuilder().append(regioId, regiolijstDto.regioId)
-                                 .append(datum, regiolijstDto.datum)
+                                 .append(startdatum, regiolijstDto.startdatum)
+                                 .append(einddatum, regiolijstDto.einddatum)
                                  .append(regiolijstId,
                                          regiolijstDto.regiolijstId)
                                  .toComparison();
@@ -83,17 +87,18 @@ public class RegiolijstDto
     var regiolijstDto = (RegiolijstDto) object;
 
     return new EqualsBuilder().append(regioId, regiolijstDto.regioId)
-                              .append(datum, regiolijstDto.datum)
+                              .append(startdatum, regiolijstDto.startdatum)
+                              .append(einddatum, regiolijstDto.einddatum)
                               .append(regiolijstId, regiolijstDto.regiolijstId)
                               .isEquals();
   }
 
-  public Date getDatum() {
-    if (null == datum) {
+  public Date getEinddatum() {
+    if (null == einddatum) {
       return null;
     }
 
-    return new Date(datum.getTime());
+    return new Date(einddatum.getTime());
   }
 
   public String getOmschrijving() {
@@ -108,14 +113,23 @@ public class RegiolijstDto
     return regiolijstId;
   }
 
+  public Date getStartdatum() {
+    if (null == startdatum) {
+      return null;
+    }
+
+    return new Date(startdatum.getTime());
+  }
+
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(datum)
+    return new HashCodeBuilder().append(regioId).append(startdatum)
+                                .append(einddatum)
                                 .append(regiolijstId).toHashCode();
   }
 
-  public void setDatum(Date datum) {
-    this.datum        = Datum.stripTime(datum);
+  public void setEinddatum(Date einddatum) {
+    this.einddatum      = Datum.stripTime(einddatum);
   }
 
   public void setOmschrijving(String omschrijving) {
@@ -128,5 +142,9 @@ public class RegiolijstDto
 
   public void setRegiolijstId(Long regiolijstId) {
     this.regiolijstId   = regiolijstId;
+  }
+
+  public void setStartdatum(Date startdatum) {
+    this.startdatum     = Datum.stripTime(startdatum);
   }
 }

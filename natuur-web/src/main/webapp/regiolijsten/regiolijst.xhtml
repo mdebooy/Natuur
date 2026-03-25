@@ -12,9 +12,12 @@
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
         if (#{!natuurRegiolijst.aktie.readonly}) {
-          $("#formRegiolijst\\:datum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
-                                                   monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
-                                                   dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
+          $("#formRegiolijst\\:einddatum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
+                                                       monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
+                                                       dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
+          $("#formRegiolijst\\:startdatum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
+                                                        monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
+                                                        dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
         }
         var regiolijstTaxaTabel = $('#regiolijstTaxaTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsttaxa/#{natuurRegiolijst.regiolijst.regiolijstId}/' + iso6392t,
@@ -94,9 +97,13 @@
                 </div>
               </div>
               <div class="field is-horizontal">
-                <d:label label="#{i18nTeksten.tekst('label.datum')}" />
+                <d:label label="#{i18nTeksten.tekst('label.vandatum')}" />
                 <div class="field-body is-normal">
-                  <d:datum id="datum" value="#{natuurRegiolijst.regiolijst.datum}" required="true" readonly="#{natuurRegiolijst.aktie.readonly}" />
+                  <d:datum id="startdatum" value="#{natuurRegiolijst.regiolijst.startdatum}" required="true" readonly="#{natuurRegiolijst.aktie.readonly}" />
+                  <d:label label="#{i18nTeksten.tekst('label.totdatum')}" />
+                  <div class="field-body is-normal">
+                    <d:datum id="einddatum" value="#{natuurRegiolijst.regiolijst.einddatum}" readonly="#{natuurRegiolijst.aktie.readonly}" />
+                  </div>
                 </div>
               </div>
               <div class="field is-horizontal">

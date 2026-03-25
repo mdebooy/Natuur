@@ -36,18 +36,20 @@ public class Regiolijst extends Formulier
     implements Comparable<Regiolijst>, Serializable {
   private static final  long  serialVersionUID  = 1L;
 
-  private Date    datum;
+  private Date    einddatum;
   private String  omschrijving;
   private Long    regioId;
   private Long    regiolijstId;
+  private Date    startdatum;
 
   public Regiolijst() {}
 
   public Regiolijst(RegiolijstDto regiolijst) {
-    datum         = regiolijst.getDatum();
+    einddatum     = regiolijst.getEinddatum();
     omschrijving  = regiolijst.getOmschrijving();
     regioId       = regiolijst.getRegioId();
     regiolijstId  = regiolijst.getRegiolijstId();
+    startdatum    = regiolijst.getStartdatum();
   }
 
   public static class SelecttekstComparator
@@ -58,8 +60,10 @@ public class Regiolijst extends Formulier
     public int compare(Regiolijst regiolijst1, Regiolijst regiolijst2) {
       return new CompareToBuilder().append(regiolijst1.getOmschrijving(),
                                            regiolijst2.getOmschrijving())
-                                   .append(regiolijst1.getDatum(),
-                                           regiolijst2.getDatum())
+                                   .append(regiolijst1.getStartdatum(),
+                                           regiolijst2.getStartdatum())
+                                   .append(regiolijst1.getEinddatum(),
+                                           regiolijst2.getEinddatum())
                                    .append(regiolijst1.getRegioId(),
                                            regiolijst2.getRegioId())
                                    .toComparison();
@@ -69,7 +73,8 @@ public class Regiolijst extends Formulier
   @Override
   public int compareTo(Regiolijst regiolijst) {
     return new CompareToBuilder().append(regioId, regiolijst.regioId)
-                                 .append(datum, regiolijst.datum)
+                                 .append(startdatum, regiolijst.startdatum)
+                                 .append(einddatum, regiolijst.einddatum)
                                  .append(regiolijstId, regiolijst.regiolijstId)
                                  .toComparison();
   }
@@ -85,21 +90,31 @@ public class Regiolijst extends Formulier
 
     var regiolijst  = (Regiolijst) object;
     return new EqualsBuilder().append(regioId, regiolijst.regioId)
-                              .append(datum, regiolijst.datum)
+                              .append(startdatum, regiolijst.startdatum)
+                              .append(einddatum, regiolijst.einddatum)
                               .append(regiolijstId, regiolijst.regiolijstId)
                               .isEquals();
   }
 
-  public Date getDatum() {
-    if (null == datum) {
+  public Date getEinddatum() {
+    if (null == einddatum) {
       return null;
     }
 
-    return new Date(datum.getTime());
+    return new Date(einddatum.getTime());
   }
 
   public String getOmschrijving() {
     return omschrijving;
+  }
+
+  public String getPeriode() {
+    if (null == einddatum) {
+      return Datum.fromDate(startdatum);
+    }
+
+    return String.format("%s - %s", Datum.fromDate(startdatum),
+                                    Datum.fromDate(einddatum));
   }
 
   public Long getRegioId() {
@@ -111,24 +126,34 @@ public class Regiolijst extends Formulier
   }
 
   public String getSelecttekst() {
-    return String.format("%s (%s)", omschrijving, Datum.fromDate(datum));
+    return String.format("%s (%s)", omschrijving, getPeriode());
+  }
+
+  public Date getStartdatum() {
+    if (null == startdatum) {
+      return null;
+    }
+
+    return new Date(startdatum.getTime());
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(regioId).append(datum)
+    return new HashCodeBuilder().append(regioId).append(startdatum)
+                                .append(einddatum)
                                 .append(regiolijstId).toHashCode();
   }
 
   public void persist(RegiolijstDto regiolijstDto) {
-    regiolijstDto.setDatum(datum);
+    regiolijstDto.setEinddatum(einddatum);
     regiolijstDto.setOmschrijving(omschrijving);
     regiolijstDto.setRegioId(regioId);
     regiolijstDto.setRegiolijstId(regiolijstId);
+    regiolijstDto.setStartdatum(startdatum);
   }
 
-  public void setDatum(Date datum) {
-    this.datum        = Datum.stripTime(datum);
+  public void setEinddatum(Date einddatum) {
+    this.einddatum        = Datum.stripTime(einddatum);
   }
 
   public void setOmschrijving(String omschrijving) {
@@ -141,5 +166,9 @@ public class Regiolijst extends Formulier
 
   public void setRegiolijstId(Long regiolijstId) {
     this.regiolijstId = regiolijstId;
+  }
+
+  public void setStartdatum(Date startdatum) {
+    this.startdatum       = Datum.stripTime(startdatum);
   }
 }

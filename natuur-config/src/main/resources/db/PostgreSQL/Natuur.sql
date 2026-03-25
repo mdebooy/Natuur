@@ -95,10 +95,11 @@ CREATE TABLE NATUUR.REGIOLIJST_TAXA (
 );
 
 CREATE TABLE NATUUR.REGIOLIJSTEN (
-  DATUM                           DATE            NOT NULL,
+  EINDDATUM                       DATE,
   OMSCHRIJVING                    VARCHAR(2000),
   REGIO_ID                        INTEGER         NOT NULL,
   REGIOLIJST_ID                   INTEGER         NOT NULL  GENERATED ALWAYS AS IDENTITY,
+  STARTDATUM                      DATE            NOT NULL,
   CONSTRAINT PK_REGIOLIJSTEN PRIMARY KEY (REGIO_ID)
 );
 
@@ -443,10 +444,11 @@ COMMENT ON COLUMN NATUUR.REGIOLIJST_TAXA.REGIOLIJST_ID        IS 'De sleutel van
 COMMENT ON COLUMN NATUUR.REGIOLIJST_TAXA.STATUS               IS 'De status van de taxon in de regio.';
 COMMENT ON COLUMN NATUUR.REGIOLIJST_TAXA.TAXON_ID             IS 'De sleutel van de taxon.';
 COMMENT ON TABLE  NATUUR.REGIOLIJSTEN                         IS 'Deze tabel bevat de regios waarvoor er een lijst is met de taxa die erin voorkomen.';
-COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.DATUM                   IS 'De datum van de samenstelling van de lijst.';
+COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.EINDDATUM               IS 'De datum tot wanneer de lijst geldig is.';
 COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.OMSCHRIJVING            IS 'De omschrijving van de lijst.';
 COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.REGIO_ID                IS 'De sleutel van de regio waarvoor deze lijst is.';
 COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.REGIOLIJST_ID           IS 'De sleutel van de regiolijst.';
+COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.STARTDATUM              IS 'De datum vanaf wanneer de lijst geldig is.';
 COMMENT ON TABLE  NATUUR.TAXA                                 IS 'Deze tabel bevat alle nodige TAXA (ev. TAXON).';
 COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM                    IS 'De wetenschappelijke naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.OPMERKING                       IS 'Een opmerking voor deze taxon.';

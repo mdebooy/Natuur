@@ -22,7 +22,6 @@ import eu.debooy.doos.component.business.IDoosRemote;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doos.model.I18nSelectItem;
 import eu.debooy.doosutils.ComponentsConstants;
-import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -121,8 +120,7 @@ public class RegiolijstController extends Natuur {
     onbekend.clear();
 
     setDetailSubTitel(getTekst(DTIT_UPLOAD,
-                               regio.getNaam(),
-                               Datum.fromDate(regiolijst.getDatum())));
+                               regio.getNaam(), regiolijst.getPeriode()));
     redirect(REGIOLIJSTUPLOAD_REDIRECT);
   }
 
@@ -134,7 +132,7 @@ public class RegiolijstController extends Natuur {
 
     regiolijst    = new Regiolijst();
     regiolijstDto = new RegiolijstDto();
-    regiolijst.setDatum(new Date());
+    regiolijst.setStartdatum(new Date());
     setAktie(PersistenceConstants.CREATE);
     setSubTitel(getTekst(TIT_CREATE));
     setReturnTo(getExternalContext(), REGIOLIJSTEN_REDIRECT);
@@ -152,8 +150,7 @@ public class RegiolijstController extends Natuur {
     regiolijstTaxon.setRegiolijstId(regiolijst.getRegiolijstId());
     setDetailAktie(PersistenceConstants.CREATE);
     setDetailSubTitel(getTekst(DTIT_CREATE,
-                               regio.getNaam(),
-                               Datum.fromDate(regiolijst.getDatum())));
+                               regio.getNaam(), regiolijst.getPeriode()));
     redirect(REGIOLIJSTTAXON_REDIRECT);
   }
 
@@ -164,8 +161,7 @@ public class RegiolijstController extends Natuur {
     }
 
     var naam  = String.format(FMT_TITEL,
-                              regio.getNaam(),
-                              Datum.fromDate(regiolijst.getDatum()));
+                              regio.getNaam(), regiolijst.getPeriode());
     try {
       getRegiolijstService().delete(regiolijst.getRegiolijstId());
       addInfo(PersistenceConstants.DELETED, naam);
@@ -325,8 +321,7 @@ public class RegiolijstController extends Natuur {
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
                        getTekst(TIT_RETRIEVE,
-                                regio.getNaam(),
-                                Datum.fromDate(regiolijst.getDatum())));
+                                regio.getNaam(), regiolijst.getPeriode()));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
     exportData.addVeld("LabelTaal1",        doosRemote.getIso6392tNaam(taal1,
                                                                        taal1));
@@ -383,11 +378,10 @@ public class RegiolijstController extends Natuur {
       regiolijst    = new Regiolijst(regiolijstDto);
       setRegio(regiolijst.getRegioId());
       setAktie(PersistenceConstants.RETRIEVE);
-      setDeletetekst(String.format(FMT_TITEL, regio.getNaam(),
-                                    Datum.fromDate(regiolijst.getDatum())));
+      setDeletetekst(String.format(FMT_TITEL,
+                                   regio.getNaam(), regiolijst.getPeriode()));
       setSubTitel(getTekst(TIT_RETRIEVE,
-                           regio.getNaam(),
-                           Datum.fromDate(regiolijst.getDatum())));
+                           regio.getNaam(), regiolijst.getPeriode()));
       setReturnTo(ec, REGIOLIJSTEN_REDIRECT);
       redirect(REGIOLIJST_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -419,11 +413,10 @@ public class RegiolijstController extends Natuur {
                                                 getGebruikersTaalInIso6392t());
       setDetailAktie(PersistenceConstants.UPDATE);
       setDetailDeletetekst(regiolijstTaxon.getTaxon().getNaam());
-      setDetailDeletetitel(getTekst(DTIT_DELETE, regio.getNaam(),
-                                    Datum.fromDate(regiolijst.getDatum())));
+      setDetailDeletetitel(getTekst(DTIT_DELETE,
+                                    regio.getNaam(), regiolijst.getPeriode()));
       setDetailSubTitel(getTekst(DTIT_UPDATE,
-                                 regio.getNaam(),
-                                 Datum.fromDate(regiolijst.getDatum())));
+                                 regio.getNaam(), regiolijst.getPeriode()));
 
       redirect(REGIOLIJSTTAXON_REDIRECT);
     } catch (ObjectNotFoundException e) {
@@ -445,8 +438,7 @@ public class RegiolijstController extends Natuur {
 
     setRegio(regiolijst.getRegioId());
     var naam  = String.format(FMT_TITEL,
-                              regio.getNaam(),
-                              Datum.fromDate(regiolijst.getDatum()));
+                              regio.getNaam(), regiolijst.getPeriode());
     try {
       switch (getAktie().getAktie()) {
         case PersistenceConstants.CREATE -> {
@@ -571,10 +563,10 @@ public class RegiolijstController extends Natuur {
     }
 
     setAktie(PersistenceConstants.UPDATE);
-    setDeletetekst(String.format(FMT_TITEL, regio.getNaam(),
-                                  Datum.fromDate(regiolijst.getDatum())));
-    setSubTitel(getTekst(TIT_UPDATE, regio.getNaam(),
-                                     Datum.fromDate(regiolijst.getDatum())));
+    setDeletetekst(String.format(FMT_TITEL,
+                                 regio.getNaam(), regiolijst.getPeriode()));
+    setSubTitel(getTekst(TIT_UPDATE,
+                         regio.getNaam(), regiolijst.getPeriode()));
   }
 
   public void uploading() {

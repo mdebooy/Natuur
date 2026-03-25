@@ -19,6 +19,7 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.ValiDatum;
 import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.RegiolijstDto;
 import eu.debooy.natuur.form.Regiolijst;
@@ -30,10 +31,11 @@ import java.util.List;
  * @author Marco de Booij
  */
 public class RegiolijstValidator extends NatuurValidator {
-  protected static final  String  LBL_DATUM         = "_I18N.label.datum";
+  protected static final  String  LBL_EINDDATUM     = "_I18N.label.totdatum";
   protected static final  String  LBL_OMSCHRIJVING  =
       "_I18N.label.omschrijving";
   protected static final  String  LBL_REGIOID       = "_I18N.label.regio";
+  protected static final  String  LBL_STARTDATUM    = "_I18N.label.vandatum";
 
   private RegiolijstValidator() {
     throw new IllegalStateException("Utility class");
@@ -55,13 +57,6 @@ public class RegiolijstValidator extends NatuurValidator {
     List<Message> fouten  = new ArrayList<>();
 
     fouten.addAll(new Validator.Builder()
-                               .setWaarde(regiolijst.getDatum())
-                               .setAttribute(RegiolijstDto.COL_DATUM)
-                               .setLabel(LBL_DATUM)
-                               .setRequired()
-                               .setVerleden()
-                               .valideer().getFouten());
-    fouten.addAll(new Validator.Builder()
                                .setWaarde(regiolijst.getOmschrijving())
                                .setAttribute(RegiolijstDto.COL_OMSCHRIJVING)
                                .setLabel(LBL_OMSCHRIJVING)
@@ -72,6 +67,19 @@ public class RegiolijstValidator extends NatuurValidator {
                                .setAttribute(RegiolijstDto.COL_REGIOID)
                                .setLabel(LBL_REGIOID)
                                .setRequired()
+                               .valideer().getFouten());
+    fouten.addAll(new ValiDatum.Builder()
+                               .setStartdatum(regiolijst.getStartdatum())
+                               .setStartdatumAttribuut(
+                                  RegiolijstDto.COL_STARTDATUM)
+                               .setStartdatumLabel(LBL_STARTDATUM)
+                               .setStartdatumRequired()
+                               .setStartdatumVerleden()
+                               .setEinddatum(regiolijst.getEinddatum())
+                               .setEinddatumAttribuut(
+                                  RegiolijstDto.COL_EINDDATUM)
+                               .setEinddatumLabel(LBL_EINDDATUM)
+                               .setEinddatumVerleden()
                                .valideer().getFouten());
 
     return fouten;

@@ -36,28 +36,31 @@ import org.junit.Test;
  * @author Marco de Booij
  */
 public class RegiolijstTest {
-  private static  Date          datum;
+  private static  Date          einddatum;
   private static  Date          gisteren;
   private static  Date          morgen;
   private static  Regiolijst    regiolijst;
   private static  RegiolijstDto regiolijstDto;
+  private static  Date          startdatum;
 
   @BeforeClass
   public static void setUpClass() throws ParseException {
-    datum         = Datum.stripTime(Datum.toDate(TestConstants.RUSHDATUM,
+    startdatum         = Datum.stripTime(Datum.toDate(TestConstants.RUSHDATUM,
                                                  TestConstants.FORMAAT));
 
     var kalender  = Calendar.getInstance();
-    kalender.setTime(datum);
+    kalender.setTime(startdatum);
     kalender.add(Calendar.DATE, -1);
     gisteren      = kalender.getTime();
     kalender.add(Calendar.DATE, 2);
     morgen        = kalender.getTime();
+    kalender.add(Calendar.DATE, 6);
+    einddatum     = kalender.getTime();
 
     regiolijst    = new Regiolijst();
     regiolijstDto = new RegiolijstDto();
 
-    regiolijst.setDatum(datum);
+    regiolijst.setStartdatum(startdatum);
     regiolijst.setOmschrijving(NatuurTestConstants.OMSCHRIJVING);
     regiolijst.setRegioId(NatuurTestConstants.REGIOID);
     regiolijst.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
@@ -72,13 +75,13 @@ public class RegiolijstTest {
     var kleiner = new Regiolijst();
 
     gelijk.setRegioId(regiolijst.getRegioId());
-    gelijk.setDatum(regiolijst.getDatum());
+    gelijk.setStartdatum(regiolijst.getStartdatum());
     gelijk.setRegiolijstId(regiolijst.getRegiolijstId());
     groter.setRegioId(regiolijst.getRegioId());
-    groter.setDatum(regiolijst.getDatum());
+    groter.setStartdatum(regiolijst.getStartdatum());
     groter.setRegiolijstId(regiolijst.getRegiolijstId() + 1);
     kleiner.setRegioId(regiolijst.getRegioId());
-    kleiner.setDatum(regiolijst.getDatum());
+    kleiner.setStartdatum(regiolijst.getStartdatum());
     kleiner.setRegiolijstId(regiolijst.getRegiolijstId() - 1);
 
     assertTrue(regiolijst.compareTo(groter) < 0);
@@ -86,11 +89,11 @@ public class RegiolijstTest {
     assertTrue(regiolijst.compareTo(kleiner) > 0);
 
     gelijk.setRegioId(regiolijst.getRegioId());
-    gelijk.setDatum(regiolijst.getDatum());
+    gelijk.setStartdatum(regiolijst.getStartdatum());
     groter.setRegioId(regiolijst.getRegioId());
-    groter.setDatum(morgen);
+    groter.setStartdatum(morgen);
     kleiner.setRegioId(regiolijst.getRegioId());
-    kleiner.setDatum(gisteren);
+    kleiner.setStartdatum(gisteren);
 
     assertTrue(regiolijst.compareTo(groter) < 0);
     assertEquals(0, regiolijst.compareTo(gelijk));
@@ -107,7 +110,7 @@ public class RegiolijstTest {
     assertNotEquals(regiolijst, instance);
 
     instance.setRegioId(regiolijst.getRegioId());
-    instance.setDatum(regiolijst.getDatum());
+    instance.setStartdatum(regiolijst.getStartdatum());
     instance.setRegiolijstId(regiolijst.getRegiolijstId());
     assertEquals(regiolijst, instance);
 
@@ -116,8 +119,8 @@ public class RegiolijstTest {
   }
 
   @Test
-  public void testGetDatum() {
-    assertEquals(datum, regiolijst.getDatum());
+  public void testGetEinddatum() {
+    assertNull(regiolijst.getEinddatum());
   }
 
   @Test
@@ -139,6 +142,11 @@ public class RegiolijstTest {
   }
 
   @Test
+  public void testGetStartdatum() {
+    assertEquals(startdatum, regiolijst.getStartdatum());
+  }
+
+  @Test
   public void testHashCode() {
     assertEquals(NatuurTestConstants.REGIOLIJST_HASH, regiolijst.hashCode());
   }
@@ -147,7 +155,7 @@ public class RegiolijstTest {
   public void testInit1() {
     var instance  = new Regiolijst();
 
-    assertNull(instance.getDatum());
+    assertNull(instance.getStartdatum());
     assertNull(instance.getOmschrijving());
     assertNull(instance.getRegioId());
   }
@@ -156,7 +164,7 @@ public class RegiolijstTest {
   public void testInit2() {
     var instance  = new Regiolijst(regiolijstDto);
 
-    assertEquals(regiolijstDto.getDatum(), instance.getDatum());
+    assertEquals(regiolijstDto.getStartdatum(), instance.getStartdatum());
     assertEquals(regiolijstDto.getOmschrijving(), instance.getOmschrijving());
     assertEquals(regiolijstDto.getRegioId(), instance.getRegioId());
   }
@@ -167,40 +175,40 @@ public class RegiolijstTest {
 
     regiolijst.persist(parameter);
 
-    assertEquals(regiolijst.getDatum(), parameter.getDatum());
+    assertEquals(regiolijst.getStartdatum(), parameter.getStartdatum());
     assertEquals(regiolijst.getOmschrijving(), parameter.getOmschrijving());
     assertEquals(regiolijst.getRegioId(), parameter.getRegioId());
 
     regiolijst.persist(parameter);
 
-    assertEquals(regiolijst.getDatum(), parameter.getDatum());
+    assertEquals(regiolijst.getStartdatum(), parameter.getStartdatum());
     assertEquals(regiolijst.getOmschrijving(), parameter.getOmschrijving());
     assertEquals(regiolijst.getRegioId(), parameter.getRegioId());
   }
 
   @Test
-  public void testSetDatum() {
+  public void testSetEinddatum() {
     var instance  = new Regiolijst();
 
-    assertNotEquals(datum, instance.getDatum());
+    assertNull(instance.getEinddatum());
 
-    instance.setDatum(datum);
+    instance.setEinddatum(einddatum);
 
-    assertEquals(datum, instance.getDatum());
+    assertEquals(einddatum, instance.getEinddatum());
 
     // Geen reference maar value?
-    Date  datum2  = instance.getDatum();
+    Date  datum = instance.getEinddatum();
 
-    assertEquals(datum2, instance.getDatum());
-    assertEquals(datum, instance.getDatum());
+    assertEquals(datum, instance.getEinddatum());
+    assertEquals(einddatum, instance.getEinddatum());
 
-    datum2.setTime(0);
+    datum.setTime(0);
 
-    assertNotEquals(datum2, instance.getDatum());
-    assertEquals(datum, instance.getDatum());
+    assertNotEquals(datum,   instance.getEinddatum());
+    assertEquals(einddatum, instance.getEinddatum());
 
-    instance.setDatum(null);
-    assertNull(instance.getDatum());
+    instance.setEinddatum(null);
+    assertNull(instance.getEinddatum());
   }
 
   @Test
@@ -240,5 +248,30 @@ public class RegiolijstTest {
     instance.setRegiolijstId(NatuurTestConstants.REGIOLIJSTID);
 
     assertEquals(NatuurTestConstants.REGIOLIJSTID, instance.getRegiolijstId());
+  }
+
+  @Test
+  public void testSetStartdatum() {
+    var instance  = new Regiolijst();
+
+    assertNotEquals(startdatum, instance.getStartdatum());
+
+    instance.setStartdatum(startdatum);
+
+    assertEquals(startdatum, instance.getStartdatum());
+
+    // Geen reference maar value?
+    Date  datum = instance.getStartdatum();
+
+    assertEquals(datum, instance.getStartdatum());
+    assertEquals(startdatum, instance.getStartdatum());
+
+    datum.setTime(0);
+
+    assertNotEquals(datum,   instance.getStartdatum());
+    assertEquals(startdatum, instance.getStartdatum());
+
+    instance.setStartdatum(null);
+    assertNull(instance.getStartdatum());
   }
 }
