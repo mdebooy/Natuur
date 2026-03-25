@@ -16,7 +16,6 @@
  */
 package eu.debooy.natuur.validator;
 
-import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
@@ -73,12 +72,13 @@ public class WaarnemingValidatorTest {
     kalender.add(Calendar.DAY_OF_YEAR, 1);
     morgen    = kalender.getTime();
 
-    errDatum  = new Message.Builder()
-                           .setAttribute(WaarnemingDto.COL_DATUM)
-                           .setSeverity(Message.ERROR)
-                           .setMessage(PersistenceConstants.FUTURE)
-                           .setParams(new Object[]{Datum.fromDate(morgen)})
-                           .build();
+    errDatum  =
+        new Message.Builder()
+                   .setAttribute(WaarnemingDto.COL_DATUM)
+                   .setSeverity(Message.ERROR)
+                   .setMessage(PersistenceConstants.FUTURE)
+                   .setParams(new Object[]{WaarnemingValidator.LBL_DATUM})
+                   .build();
 
     gebied    = NatuurTestUtils.getGebied();
     gebiedDto = NatuurTestUtils.getGebiedDto();

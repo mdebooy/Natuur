@@ -18,6 +18,7 @@ package eu.debooy.natuur.validator;
 
 import eu.debooy.doosutils.ComponentsUtils;
 import eu.debooy.doosutils.components.Message;
+import eu.debooy.doosutils.validator.ValiDatum;
 import eu.debooy.doosutils.validator.Validator;
 import eu.debooy.natuur.domain.WaarnemingDto;
 import eu.debooy.natuur.form.Waarneming;
@@ -57,12 +58,12 @@ public final class WaarnemingValidator extends NatuurValidator {
                                .setLabel(LBL_AANTAL)
                                .setMinWaarde(1L)
                                .valideer().getFouten());
-    fouten.addAll(new Validator.Builder()
-                               .setWaarde(waarneming.getDatum())
-                               .setAttribute(WaarnemingDto.COL_DATUM)
-                               .setLabel(LBL_DATUM)
-                               .setRequired()
-                               .setVerleden()
+    fouten.addAll(new ValiDatum.Builder()
+                               .setDatum(waarneming.getDatum())
+                               .setDatumAttribuut(WaarnemingDto.COL_DATUM)
+                               .setDatumLabel(LBL_DATUM)
+                               .setDatumRequired()
+                               .setDatumVerleden()
                                .valideer().getFouten());
     if (null == waarneming.getGebied()) {
       valideerGebiedId(null, fouten);
