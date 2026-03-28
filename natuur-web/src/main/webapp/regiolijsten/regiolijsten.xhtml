@@ -13,7 +13,7 @@
         var regiolijstenTabel = $('#regiolijstenTabel').DataTable( {
           ajax: { url: '/natuur/regiolijsten',
                   dataSrc: '' },
-          order: [[1, 'asc'], [2, 'asc']],
+          order: [[2, 'asc'], [3, 'asc']],
           pagingType: 'full_numbers',
           pageLength: #{properties.appValue('natuur.pagelength')},
           lengthChange: false,
@@ -82,7 +82,7 @@
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
-      <div class="column is-6">
+      <div class="column is-8">
         <h:form id="formRegiolijsten">
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.regiolijsten')}" />
 

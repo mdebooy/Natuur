@@ -51,6 +51,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 @Table(name="WAARNEMINGEN", schema="NATUUR")
 @NamedQuery(name="waarnemingenPerGebied", query="select w from WaarnemingDto w where w.gebied.gebiedId=:gebiedId")
 @NamedQuery(name="waarnemingenPerLand", query="select w from WaarnemingDto w where w.gebied.landId=:landId")
+@NamedQuery(name="waarnemingenPerPeriode", query="select w from WaarnemingDto w where w.datum between :startdatum and :einddatum")
 @NamedQuery(name="waarnemingenPerTaxon", query="select w from WaarnemingDto w, DetailDto d where w.taxon.taxonId=d.taxonId and d.parentId=:taxonId")
 @NamedQuery(name="waarnemingenTotalenPerLand",
             query="select w.gebied.landId, count(w.waarnemingId) from WaarnemingDto w group by w.gebied.landId")
@@ -65,14 +66,18 @@ public class WaarnemingDto
   public static final String  COL_TAXONID       = "taxonId";
   public static final String  COL_WAARNEMINGID  = "waarnemingId";
 
-  public static final String  PAR_GEBIEDID  = "gebiedId";
-  public static final String  PAR_LANDID    = "landId";
-  public static final String  PAR_TAXONID   = "taxonId";
+  public static final String  PAR_EINDDATUM   = "einddatum";
+  public static final String  PAR_GEBIEDID    = "gebiedId";
+  public static final String  PAR_LANDID      = "landId";
+  public static final String  PAR_STARTDATUM  = "startdatum";
+  public static final String  PAR_TAXONID     = "taxonId";
 
   public static final String  QRY_PERGEBIED   = "waarnemingenPerGebied";
   public static final String  QRY_PERLAND     = "waarnemingenPerLand";
+  public static final String  QRY_PERPERIODE  = "waarnemingenPerPeriode";
   public static final String  QRY_PERTAXON    = "waarnemingenPerTaxon";
-  public static final String  QRY_TAXON       = "select distinct w.taxon.taxonId from WaarnemingDto w";
+  public static final String  QRY_TAXON       =
+      "select distinct w.taxon.taxonId from WaarnemingDto w";
   public static final String  QRY_TOTPERLAND  = "waarnemingenTotalenPerLand";
 
   @Column(name="AANTAL")

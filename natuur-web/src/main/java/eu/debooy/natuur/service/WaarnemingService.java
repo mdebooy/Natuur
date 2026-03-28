@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.service;
 
+import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.components.Message;
 import eu.debooy.doosutils.errorhandling.exception.ObjectNotFoundException;
@@ -41,6 +42,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import org.slf4j.Logger;
@@ -143,6 +145,29 @@ public class WaarnemingService {
       return Response.ok().entity(waarnemingen).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new ArrayList<>()).build();
+    }
+  }
+
+  @GET
+  @Path("/periode/{startdatum}/{einddatum}/{taal}")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response getPeriodeWaarnemingen(
+                    @PathParam(WaarnemingDto.PAR_STARTDATUM) String startdatum,
+                    @PathParam(WaarnemingDto.PAR_EINDDATUM) String einddatum,
+                    @PathParam(TaxonnaamDto.COL_TAAL) String taal) {
+    try {
+      List<Waarneming>  waarnemingen  = new ArrayList<>();
+      waarnemingDao.getPerPeriode(Datum.toDate(startdatum),
+                                  Datum.toDate(einddatum))
+              .forEach(waarneming ->
+                          waarnemingen.add(new Waarneming(waarneming, taal)));
+      return Response.ok().entity(waarnemingen).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    } catch (ParseException e) {
+      LOGGER.error(e.getLocalizedMessage());
+      return Response.status(Response.Status.BAD_REQUEST)
+                     .entity(e.getLocalizedMessage()).build();
     }
   }
 

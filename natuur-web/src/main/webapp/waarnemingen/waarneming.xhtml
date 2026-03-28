@@ -69,8 +69,7 @@
             return;
           }
           var jsfCommandLink = document.getElementById("formWaarneming:linkFoto");
-          var param = jsfCommandLink.getAttribute('onclick').replace('XX', fotosTabel.row(this).data().fotoId);
-          jsfCommandLink.setAttribute('onclick', param);
+          alterParam(jsfCommandLink, fotosTabel.row(this).data().fotoId);
           jsfCommandLink.click();
         } );
         if (#{natuurWaarneming.aktie.wijzig and natuurWaarneming.user}) {

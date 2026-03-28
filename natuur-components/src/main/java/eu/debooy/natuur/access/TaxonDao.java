@@ -24,6 +24,7 @@ import jakarta.interceptor.Interceptors;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceContextType;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,14 @@ public class TaxonDao extends Dao<TaxonDto> {
   @Override
   protected EntityManager getEntityManager() {
     return em;
+  }
+
+  public List<TaxonDto> getPerPeriode(Date startdate, Date einddatum) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(TaxonDto.PAR_STARTDATUM, startdate);
+    params.put(TaxonDto.PAR_EINDDATUM, einddatum);
+
+    return namedQuery(TaxonDto.QRY_TAXAPERPERIODE, params);
   }
 
   public TaxonDto getTaxon(Long taxonId) {

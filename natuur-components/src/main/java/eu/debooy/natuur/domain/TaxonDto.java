@@ -60,6 +60,7 @@ import org.json.simple.JSONObject;
  */
 @Entity
 @Table(name="TAXA", schema="NATUUR")
+@NamedQuery(name="taxaPerPeriode", query="select distinct w.taxon from WaarnemingDto w where w.datum between :startdatum and :einddatum")
 @NamedQuery(name="taxonKinderen", query="select t from TaxonDto t where t.parentId=:ouder order by t.rang, t.volgnummer")
 @NamedQuery(name="taxonLatijnsenaam", query="select t from TaxonDto t where t.latijnsenaam=:latijnsenaam")
 @NamedQuery(name="taxonOuders", query="select t from TaxonDto t, RangDto r where t.rang=r.rang and r.niveau<:kind order by t.rang, t.volgnummer")
@@ -77,17 +78,20 @@ public class TaxonDto extends Dto implements Comparable<TaxonDto> {
   public static final String  COL_TAXONID       = "taxonId";
   public static final String  COL_VOLGNUMMER    = "volgnummer";
 
+  public static final String  PAR_EINDDATUM     = "einddatum";
   public static final String  PAR_KIND          = "kind";
   public static final String  PAR_LATIJNSENAAM  = "latijnsenaam";
   public static final String  PAR_OUDER         = "ouder";
+  public static final String  PAR_STARTDATUM    = "startdatum";
   public static final String  PAR_STATUS        = "status";
 
-  public static final String  QRY_KINDEREN      = "taxonKinderen";
-  public static final String  QRY_LATIJNSENAAM  = "taxonLatijnsenaam";
-  public static final String  QRY_OUDERS        = "taxonOuders";
-  public static final String  QRY_SOORT         = "taxonSoort";
-  public static final String  QRY_STATUS        = "taxonStatus";
-  public static final String  QRY_TALEN         = "taxonTalen";
+  public static final String  QRY_KINDEREN        = "taxonKinderen";
+  public static final String  QRY_LATIJNSENAAM    = "taxonLatijnsenaam";
+  public static final String  QRY_OUDERS          = "taxonOuders";
+  public static final String  QRY_SOORT           = "taxonSoort";
+  public static final String  QRY_STATUS          = "taxonStatus";
+  public static final String  QRY_TALEN           = "taxonTalen";
+  public static final String  QRY_TAXAPERPERIODE  = "taxaPerPeriode";
 
   @Transient
   private boolean   gezien  = false;

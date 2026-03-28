@@ -32,6 +32,8 @@ menu.waarnemingen           = Beobachtungen
 menu.waarnemingen.per.land  = Beobachtungen pro Land
 menu.zoeken                 = Suchen
 
+message.geen.periode  = Das ist keine Periode.
+
 natuur.latijnsenamen.herbenoemd = Wissenschaftlicher Name von {0} Taxa geändert.
 
 natuur.taxon.status.cd  = Schutzabhängig

@@ -22,6 +22,7 @@ import eu.debooy.doos.component.business.IDoosRemote;
 import eu.debooy.doos.model.ExportData;
 import eu.debooy.doos.model.I18nSelectItem;
 import eu.debooy.doosutils.ComponentsConstants;
+import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.PersistenceConstants;
 import eu.debooy.doosutils.errorhandling.exception.DuplicateObjectException;
@@ -54,6 +55,7 @@ import jakarta.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.LinkedList;
@@ -222,6 +224,17 @@ public class RegiolijstController extends Natuur {
     return dubbel;
   }
 
+  /**
+   * Indien geen einddatum dan de dag voor de startdatum gebruiken.
+   * @return '
+   */
+  public String getEinddatum() {
+    return Datum.fromDate(
+        DoosUtils.nullToValue(regiolijst.getEinddatum(),
+                              new Date(regiolijst.getStartdatum()
+                                                 .getTime() - 86400000)));
+  }
+
   private String getGezien(boolean gezien, boolean opFoto) {
     if (opFoto) {
       return NatuurUtils.getCamera(true);
@@ -252,6 +265,10 @@ public class RegiolijstController extends Natuur {
 
   public RegiolijstTaxon getRegiolijstTaxon() {
     return regiolijstTaxon;
+  }
+
+  public String getStartdatum() {
+    return Datum.fromDate(regiolijst.getStartdatum());
   }
 
   public Collection<SelectItem> getStatussen() {
@@ -432,8 +449,10 @@ public class RegiolijstController extends Natuur {
 
     var messages  = RegiolijstValidator.valideer(regiolijst);
     if (!messages.isEmpty()) {
-      addMessage(messages);
-      return;
+      var informatief = addMessage(messages);
+      if (informatief != messages.size()) {
+        return;
+      }
     }
 
     setRegio(regiolijst.getRegioId());
@@ -546,6 +565,42 @@ public class RegiolijstController extends Natuur {
     }
 
     return getTekst(STATUSSEN + "." + status);
+  }
+
+  public void synchroniseer() {
+    if (DoosUtils.isBlankOrNull(regiolijstDto.getEinddatum())) {
+      addInfo("message.geen.periode");
+      return;
+    }
+
+    List<Long>  inLijst       = new ArrayList<>();
+    var         regiolijstId  = regiolijstDto.getRegiolijstId();
+    int[]       toegevoegd    = new int[1];
+
+    toegevoegd[0] = 0;
+
+    getRegiolijstTaxonService().query(regiolijstId)
+                               .forEach(taxon ->
+                                            inLijst.add(taxon.getTaxonId()));
+    getTaxonService().getTaxaPerPeriode(regiolijstDto.getStartdatum(),
+                                        regiolijstDto.getEinddatum(),
+                                        getGebruikersTaalInIso6392t())
+                     .forEach(taxon -> {
+      var taxonId = taxon.getTaxonId();
+      if (!inLijst.contains(taxonId)) {
+        var nieuwe  = new RegiolijstTaxonDto();
+        nieuwe.setRegiolijstId(regiolijstId);
+        nieuwe.setTaxonId(taxonId);
+        try {
+          getRegiolijstTaxonService().save(nieuwe);
+          toegevoegd[0]++;
+        } catch (DuplicateObjectException e) {
+          addError(PersistenceConstants.DUPLICATE, taxon.getLatijnsenaam());
+        }
+      }
+    });
+
+    addInfo("message.toegevoegd", toegevoegd[0]);
   }
 
   private void taxonToJson(TaxonDto taxon, JSONObject json) {

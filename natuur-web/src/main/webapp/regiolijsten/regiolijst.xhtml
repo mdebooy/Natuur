@@ -61,6 +61,57 @@
             }
           ]
         } );
+        waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
+          ajax: { url: '/natuur/waarnemingen/periode/#{natuurRegiolijst.startdatum}/#{natuurRegiolijst.einddatum}/' + iso6392t,
+                  dataSrc: '' },
+          order: [[1, 'desc'], [3, 'asc']],
+          pagingType: 'full_numbers',
+          pageLength: #{properties.appValue('natuur.pagelength.tab')},
+          lengthChange: false,
+          stateSave: true,
+          language: {
+            paginate: {
+              first: '#{properties.appValue('natuur.pager.first')}',
+              last: '#{properties.appValue('natuur.pager.last')}',
+              next: '#{properties.appValue('natuur.pager.next')}',
+              previous: '#{properties.appValue('natuur.pager.previous')}'
+            },
+            search: '#{i18nTeksten.tekst('pager.search')}',
+            zeroRecords: '#{i18nTeksten.tekst('pager.zero.records')}',
+            loadingRecords: '#{i18nTeksten.tekst('pager.loading')}',
+            info: '#{i18nTeksten.tekst('pager.info')}',
+            infoEmpty: '#{i18nTeksten.tekst('pager.info.empty')}',
+            infoFiltered: '#{i18nTeksten.tekst('pager.info.filtered')}'
+          },
+          columns: [
+            { data: 'datum', visible: false,  searchable: false },
+            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', width: '50px', orderData: 0, render: function ( data, type, row ) {
+                return formatDatum(data.datum, taal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', render: function ( data, type, row ) {
+                if (data.hasOwnProperty('aantal')) {
+                  return data.aantal;
+                }
+                return '';
+              }
+            },
+            { data: 'taxon.naam', title: '#{i18nTeksten.tekst('label.naam')}' },
+            { data: 'taxon.latijnsenaam', title: '#{i18nTeksten.tekst('label.latijnsenaam')}', class: 'is-italic' },
+            { data: 'gebied.naam', title: '#{i18nTeksten.tekst('label.gebied')}' },
+            { data: null, title: '#{i18nTeksten.tekst('label.land')}', render: function ( data, type, row ) {
+                return getLandnaam(data.gebied.landId, iso6392t);
+              }
+            },
+            { data: null, title: '', width: '50px', class: 'has-text-centered', orderable: false, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('opmerking')) {
+                  return '<img src="/common/images/16x16/status/dialog-information.svg" alt="'+info+'" title="'+data.opmerking+'" />';
+                }
+                return '';
+              }
+            }
+          ]
+        } );
         $( '#regiolijstTaxaTabel tbody').on('click', 'tr', function() {
           if (regiolijstTaxaTabel.row(this).data() === undefined || #{!natuurRegiolijst.user} || #{!natuurRegiolijst.aktie.wijzig}) {
             return;
@@ -69,9 +120,20 @@
           alterParam(jsfCommandLink, regiolijstTaxaTabel.row(this).data().taxonId);
           jsfCommandLink.click();
         } );
+        $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formRegiolijst:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
+        } );
         if (#{natuurRegiolijst.aktie.wijzig and natuurRegiolijst.user}) {
           addInsertButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.nieuw')}');
           addUploadButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.upload')}');
+          if  (#{!empty natuurRegiolijst.regiolijst.einddatum}) {
+            addRefreshButton('waarnemingenTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.refresh')}');
+          }
         }
         if (#{!natuurRegiolijst.aktie.nieuw}) {
           initTabs();
@@ -79,12 +141,13 @@
         if (#{natuurRegiolijst.user or natuurRegiolijst.view}) {
           addPdfButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.PDF')}');
         }
+        initTabs();
       } );
     </script>
   </ui:define>
   <ui:define name="body">
     <div class="columns is-centered content">
-      <div class="column is-8">
+      <div class="column is-10">
         <h:form id="formRegiolijst">
           <d:titel titel="#{natuurRegiolijst.subTitel}" />
 
@@ -94,6 +157,12 @@
                 <d:label label="#{i18nTeksten.tekst('label.regio')}" />
                 <div class="field-body is-normal">
                   <d:listbox id="regioId" value="#{natuurRegiolijst.regiolijst.regioId}" fullwidth="true" readonly="#{!natuurRegiolijst.aktie.nieuw}" required="true" items="#{sedesRemote.selectRegios(natuurRegiolijst.gebruikersTaalInIso6392t)}" textvalue="#{natuurRegiolijst.regio.naam}" />
+                </div>
+              </div>
+              <div class="field is-horizontal">
+                <d:label label="#{i18nTeksten.tekst('label.land')}" />
+                <div class="field-body is-normal">
+                  <d:inputText id="landId" value="#{sedesRemote.i18nLandnaam(natuurRegiolijst.regio.landId)}" maxlength="100" size="100" required="true" readonly="true" />
                 </div>
               </div>
               <div class="field is-horizontal">
@@ -117,13 +186,31 @@
 
               <c:if test="#{!natuurRegiolijst.aktie.nieuw}">
                 <d:spacer />
-                <table id="regiolijstTaxaTabel" class="table is-striped is-narrow #{natuurRegiolijst.user ? 'is-hoverable' : ''}" aria-describedby="regiolijstTaxaTabel" />
-                <h:commandLink id="linkRegiolijstTaxon" class="is-hidden" action="#{natuurRegiolijst.retrieveDetail}">
-                  <f:param name="taxonId" value="XX" />
-                </h:commandLink>
-                <h:commandLink id="addRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.createDetail}" />
-                <h:commandLink id="uploadRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.batch}" />
-                <h:commandLink id="pdfRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.parameters}" />
+                <div id="rangTabs" class="tabs is-boxed">
+                  <ul>
+                    <li id="tabTaxa" class="tab-link is-active" onclick="switchToTab('Taxa')"><a>#{i18nTeksten.tekst('tab.taxa')}</a></li>
+                    <li id="tabWaarnemingen" class="tab-link" onclick="switchToTab('Waarnemingen')"><a>#{i18nTeksten.tekst('tab.waarnemingen')}</a></li>
+                  </ul>
+                </div>
+                <div class="tabs-details titel">
+                  <div id="conTaxa" class="tab-detail">
+                    <table id="regiolijstTaxaTabel" class="table is-striped is-narrow #{natuurRegiolijst.user ? 'is-hoverable' : ''}" aria-describedby="regiolijstTaxaTabel" />
+                    <h:commandLink id="linkRegiolijstTaxon" class="is-hidden" action="#{natuurRegiolijst.retrieveDetail}">
+                      <f:param name="taxonId" value="XX" />
+                    </h:commandLink>
+                    <h:commandLink id="addRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.createDetail}" />
+                    <h:commandLink id="uploadRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.batch}" />
+                    <h:commandLink id="pdfRegiolijstTaxa" class="is-hidden" action="#{natuurRegiolijst.parameters}" />
+                  </div>
+                  <div id="conWaarnemingen" class="tab-detail is-hidden">
+                    <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemingenTabel" />
+                    <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurWaarneming.retrieve}">
+                      <f:param name="waarnemingId" value="XX" />
+                      <f:param name="returnTo" value="/regiolijsten/regiolijst.xhtml" />
+                    </h:commandLink>
+                    <h:commandLink id="refreshWaarnemingen" class="is-hidden" action="#{natuurRegiolijst.synchroniseer}" />
+                  </div>
+                </div>
               </c:if>
             </div>
           </div>

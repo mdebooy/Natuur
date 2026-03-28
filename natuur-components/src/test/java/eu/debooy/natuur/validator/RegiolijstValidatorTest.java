@@ -38,21 +38,14 @@ public class RegiolijstValidatorTest {
   private static final  Message ERR_EINDDATUM_TKMST   =
       new Message.Builder()
                  .setAttribute(RegiolijstDto.COL_EINDDATUM)
-                 .setSeverity(Message.ERROR)
+                 .setSeverity(Message.WARNING)
                  .setMessage(PersistenceConstants.FUTURE)
                  .setParams(new Object[]{RegiolijstValidator.LBL_EINDDATUM})
                  .build();
-    private static final  Message ERR_STARTDATUM    =
-        new Message.Builder()
-                   .setAttribute(RegiolijstDto.COL_STARTDATUM)
-                   .setSeverity(Message.ERROR)
-                   .setMessage(PersistenceConstants.FUTURE)
-                   .setParams(new Object[]{RegiolijstValidator.LBL_STARTDATUM})
-                   .build();
   private static final  Message ERR_STARTDATUM_TKMST  =
       new Message.Builder()
                  .setAttribute(RegiolijstDto.COL_STARTDATUM)
-                 .setSeverity(Message.ERROR)
+                 .setSeverity(Message.WARNING)
                  .setMessage(PersistenceConstants.FUTURE)
                  .setParams(new Object[]{RegiolijstValidator.LBL_STARTDATUM})
                  .build();
@@ -131,7 +124,7 @@ public class RegiolijstValidatorTest {
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
     assertEquals(1, result.size());
-    assertEquals(ERR_STARTDATUM.toString(), result.get(0).toString());
+    assertEquals(ERR_STARTDATUM_TKMST.toString(), result.get(0).toString());
   }
 
   @Test
@@ -194,7 +187,7 @@ public class RegiolijstValidatorTest {
     List<Message> result    = RegiolijstValidator.valideer(instance);
 
     assertEquals(1, result.size());
-    assertEquals(ERR_STARTDATUM.toString(), result.get(0).toString());
+    assertEquals(ERR_STARTDATUM_TKMST.toString(), result.get(0).toString());
   }
 
   @Test

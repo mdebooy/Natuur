@@ -27,6 +27,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.PersistenceContextType;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -80,6 +81,14 @@ public class WaarnemingDao extends Dao<WaarnemingDto> {
     params.put(WaarnemingDto.PAR_LANDID, landId);
 
     return namedQuery(WaarnemingDto.QRY_PERLAND, params);
+  }
+
+  public List<WaarnemingDto> getPerPeriode(Date startdatum, Date einddatum) {
+    Map<String, Object> params  = new HashMap<>();
+    params.put(WaarnemingDto.PAR_EINDDATUM, einddatum);
+    params.put(WaarnemingDto.PAR_STARTDATUM, startdatum);
+
+    return namedQuery(WaarnemingDto.QRY_PERPERIODE, params);
   }
 
   public List<WaarnemingDto> getPerTaxon(Long taxonId) {

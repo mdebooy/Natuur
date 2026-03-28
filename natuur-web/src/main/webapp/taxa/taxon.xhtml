@@ -403,6 +403,7 @@
                     </h:commandLink>
                     <h:commandLink id="addWaarnemingen" class="is-hidden" action="#{natuurWaarneming.create}">
                       <f:param name="taxonId" value="#{natuurTaxon.taxon.taxonId}" />
+                      <f:param name="returnTo" value="/taxa/taxon.xhtml" />
                     </h:commandLink>
                   </div>
                   <div id="conFotos" class="tab-detail is-hidden">

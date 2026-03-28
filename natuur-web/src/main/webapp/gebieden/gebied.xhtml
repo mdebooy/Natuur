@@ -2,6 +2,7 @@
      xmlns="http://www.w3.org/1999/xhtml"
    xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
    xmlns:d="http://java.debooy.eu/jsf/facelets"
+   xmlns:f="http://xmlns.jcp.org/jsf/core"
    xmlns:h="http://xmlns.jcp.org/jsf/html"
   xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
   template="/WEB-INF/templates/template.xhtml">
@@ -11,7 +12,7 @@
         var info = '#{i18nTeksten.tekst('img.info')}';
         var taal = '#{gebruiker.locale.language}';
         var iso6392t = getISO6391ToISO6392t(taal);
-        $('#fotosTabel').DataTable( {
+        fotosTabel = $('#fotosTabel').DataTable( {
           ajax: { url: '/natuur/fotos/gebied/#{natuurGebied.gebied.gebiedId}/' + iso6392t,
                   dataSrc: '' },
           order: [[1, "desc"],[3, "asc"],[2, "asc"]],
@@ -61,7 +62,7 @@
             }
           ]
         } );
-        $('#taxaTabel').DataTable( {
+        taxaTabel = $('#taxaTabel').DataTable( {
           ajax: { url: '/natuur/details/gebied/#{natuurGebied.gebied.gebiedId}',
                   dataSrc: '' },
           order: [[0, 'asc'], [3, 'asc'], [2, 'asc']],
@@ -99,7 +100,7 @@
             }
           ]
         } );
-        $('#waarnemingenTabel').DataTable( {
+        waarnemingenTabel = $('#waarnemingenTabel').DataTable( {
           ajax: { url: '/natuur/waarnemingen/gebied/#{natuurGebied.gebied.gebiedId}/' + iso6392t,
                   dataSrc: '' },
           order: [[1, 'desc'], [3, 'asc']],
@@ -144,6 +145,30 @@
               }
             }
           ]
+        } );
+        $( '#fotosTabel tbody').on('click', 'tr', function() {
+          if (fotosTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById("formGebied:linkFoto");
+          alterParam(jsfCommandLink, fotosTabel.row(this).data().fotoId);
+          jsfCommandLink.click();
+        } );
+        $( '#taxaTabel tbody').on('click', 'tr', function() {
+          if (taxaTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formGebied:linkTaxon');
+          alterParam(jsfCommandLink, taxaTabel.row(this).data().taxonId);
+          jsfCommandLink.click();
+        } );
+        $( '#waarnemingenTabel tbody').on('click', 'tr', function() {
+          if (waarnemingenTabel.row(this).data() === undefined) {
+            return;
+          }
+          var jsfCommandLink = document.getElementById('formGebied:linkWaarneming');
+          alterParam(jsfCommandLink, waarnemingenTabel.row(this).data().waarnemingId);
+          jsfCommandLink.click();
         } );
         initTabs();
       } );
@@ -232,12 +257,24 @@
                 <div class="tabs-details titel">
                   <div id="conTaxa" class="tab-detail">
                     <table id="taxaTabel" class="table is-striped is-narrow" aria-describedby="taxaTabel" />
+                    <h:commandLink id="linkTaxon" class="is-hidden" action="#{natuurTaxon.retrieve}">
+                      <f:param name="taxonId" value="XX" />
+                      <f:param name="returnTo" value="/gebieden/gebied.xhtml" />
+                    </h:commandLink>
                   </div>
                   <div id="conWaarnemingen" class="tab-detail is-hidden">
                     <table id="waarnemingenTabel" class="table is-striped is-narrow" aria-describedby="waarnemingenTabel" />
+                    <h:commandLink id="linkWaarneming" class="is-hidden" action="#{natuurWaarneming.retrieve}">
+                      <f:param name="waarnemingId" value="XX" />
+                      <f:param name="returnTo" value="/gebieden/gebied.xhtml" />
+                    </h:commandLink>
                   </div>
                   <div id="conFotos" class="tab-detail is-hidden">
                     <table id="fotosTabel" class="table is-striped is-narrow" aria-describedby="fotosTabel" />
+                    <h:commandLink id="linkFoto" action="#{natuurFoto.retrieve}" style="display:none">
+                      <f:param name="fotoId" value="XX" />
+                      <f:param name="returnTo" value="/gebieden/gebied.xhtml" />
+                    </h:commandLink>
                   </div>
                 </div>
               </c:if>

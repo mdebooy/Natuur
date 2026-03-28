@@ -80,6 +80,7 @@ public class RegiolijstValidator extends NatuurValidator {
                                   RegiolijstDto.COL_EINDDATUM)
                                .setEinddatumLabel(LBL_EINDDATUM)
                                .setEinddatumVerleden()
+                               .setTijdstipAlsWarning()
                                .valideer().getFouten());
 
     return fouten;

@@ -41,6 +41,7 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,6 +294,22 @@ public class TaxonService {
     }
 
     return Response.ok().entity(items).build();
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Taxon> getTaxaPerPeriode(Date startdatum, Date einddatum,
+                                       String taal) {
+    List<Taxon> taxa  = new ArrayList<>();
+
+    try {
+      taxonDao.getPerPeriode(startdatum, einddatum)
+              .forEach(taxon ->
+                          taxa.add(new Taxon(taxon, taal)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+  
+    return taxa;
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)

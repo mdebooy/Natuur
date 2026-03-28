@@ -67,7 +67,7 @@
           <d:titel titel="#{i18nTeksten.tekst('natuur.titel.taxa')}" />
 
           <table id="taxaTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="taxaTabel" />
-          <h:commandLink id="linkTaxon" action="#{natuurTaxon.retrieve}" style="display:none">
+          <h:commandLink id="linkTaxon" class="is-hidden" action="#{natuurTaxon.retrieve}">
             <f:param name="taxonId" value="XX" />
             <f:param name="returnTo" value="/taxa/taxa.xhtml" />
           </h:commandLink>

@@ -19,14 +19,21 @@ package eu.debooy.natuur.domain;
 import eu.debooy.doosutils.Datum;
 import eu.debooy.doosutils.DoosUtils;
 import eu.debooy.doosutils.domain.Dto;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapKey;
 import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -64,6 +71,11 @@ public class RegiolijstDto
   private Long    regiolijstId;
   @Column(name="STARTDATUM", nullable=false)
   private Date    startdatum;
+
+  @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY, targetEntity=RegiolijstTaxonDto.class, orphanRemoval=true)
+  @JoinColumn(name="REGIOLIJST_ID", nullable=false, updatable=false, insertable=true)
+  @MapKey(name=RegiolijstTaxonDto.COL_TAXONID)
+  private Map<Long, RegiolijstTaxonDto>  taxa = new HashMap<>();
 
   @Override
   public int compareTo(RegiolijstDto regiolijstDto) {
@@ -119,6 +131,10 @@ public class RegiolijstDto
     }
 
     return new Date(startdatum.getTime());
+  }
+
+  public Map<Long, RegiolijstTaxonDto> getTaxa() {
+    return taxa;
   }
 
   @Override
