@@ -24,26 +24,37 @@ import java.util.Date;
  */
 public class AantalPerRegio {
   private final Long  aantal;
-  private final Date  datum;
+  private final Date  einddatum;
   private final Long  gezien;
   private final Long  regioId;
   private final Long  regiolijstId;
+  private final Date  startdatum;
 
   public AantalPerRegio(Long regiolijstId, Long regioId,
-                        Date datum, Long aantal, Long gezien) {
+                        Date startdatum, Date einddatum,
+                        Long aantal, Long gezien) {
     this.aantal       = aantal;
-    this.datum        = new Date(datum.getTime());
+    if (null != einddatum) {
+      this.einddatum  = new Date(einddatum.getTime());
+    } else {
+      this.einddatum  = null;
+    }
     this.gezien       = gezien;
     this.regioId      = regioId;
     this.regiolijstId = regiolijstId;
+    this.startdatum   = new Date(startdatum.getTime());
   }
 
   public Long getAantal() {
     return aantal;
   }
 
-  public Date getDatum() {
-    return new Date(datum.getTime());
+  public Date getEinddatum() {
+    if (null == einddatum) {
+      return null;
+    }
+
+    return new Date(einddatum.getTime());
   }
 
   public Long getGezien() {
@@ -56,5 +67,9 @@ public class AantalPerRegio {
 
   public Long getRegiolijstId() {
     return regiolijstId;
+  }
+
+  public Date getStartdatum() {
+    return new Date(startdatum.getTime());
   }
 }

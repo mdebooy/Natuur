@@ -33,11 +33,13 @@ public class AantalPerRegioTest {
     var instance  = new AantalPerRegio(NatuurTestConstants.REGIOLIJSTID,
                                        NatuurTestConstants.REGIOID,
                                        datum,
+                                       datum,
                                        NatuurTestConstants.AANTAL,
                                        NatuurTestConstants.GEZIEN);
 
     assertEquals(NatuurTestConstants.AANTAL, instance.getAantal());
-    assertEquals(datum, instance.getDatum());
+    assertEquals(datum, instance.getStartdatum());
+    assertEquals(datum, instance.getEinddatum());
     assertEquals(NatuurTestConstants.GEZIEN, instance.getGezien());
     assertEquals(NatuurTestConstants.REGIOID, instance.getRegioId());
     assertEquals(NatuurTestConstants.REGIOLIJSTID, instance.getRegiolijstId());

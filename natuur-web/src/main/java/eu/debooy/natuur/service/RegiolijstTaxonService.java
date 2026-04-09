@@ -88,8 +88,11 @@ public class RegiolijstTaxonService {
                                     Long.valueOf(String.valueOf(aantal[1])),
                                     new Date(((java.util.Date) aantal[2])
                                             .getTime()),
-                                    Long.valueOf(String.valueOf(aantal[3])),
-                                    Long.valueOf(String.valueOf(aantal[4])))));
+                                    null == aantal[3] ? 
+                             null : new Date(((java.util.Date) aantal[3])
+                                            .getTime()),
+                                    Long.valueOf(String.valueOf(aantal[4])),
+                                    Long.valueOf(String.valueOf(aantal[5])))));
       return Response.ok().entity(aantallen).build();
     } catch (ObjectNotFoundException e) {
       return Response.ok().entity(new RegiolijstDto()).build();

@@ -34,14 +34,28 @@
           },
           columns: [
             { data: 'aantal', visible: false },
-            { data: 'datum', visible: false,  searchable: false },
+            { data: 'startdatum', visible: false,  searchable: false },
+            { data: null, visible: false,  searchable: false, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('einddatum')) {
+                  return data.einddatum;
+                }
+                return null;
+              }
+            },
             { data: 'gezien', visible: false },
             { data: null, title: '#{i18nTeksten.tekst('label.regio')}', render: function ( data, type, row ) {
                 return getRegionaam(data.regioId, iso6392t);
               }
             },
-            { data: null, title: '#{i18nTeksten.tekst('label.datum')}', orderData: 0, render: function ( data, type, row ) {
-                return formatDatum(data.datum, taal);
+            { data: null, title: '#{i18nTeksten.tekst('label.vandatum')}', width: '75px', orderData: 1, render: function ( data, type, row ) {
+                return formatDatum(data.startdatum, taal);
+              }
+            },
+            { data: null, title: '#{i18nTeksten.tekst('label.totdatum')}', width: '75px', orderData: 2, render: function ( data, type, row ) {
+                if (data.hasOwnProperty('einddatum')) {
+                  return formatDatum(data.einddatum, taal);
+                }
+                return '';
               }
             },
             { data: null, title: '#{i18nTeksten.tekst('label.aantal')}', width: '50px', class: 'has-text-right', orderData: 1, render: function ( data, type, row ) {
@@ -52,7 +66,7 @@
                 return formatNumber(data.gezien);
               }
             },
-            { data: null, title: '', orderable: false, width: '50px', class: 'has-text-right', orderData: 2, render: function ( data, type, row ) {
+            { data: null, title: '', orderable: false, width: '50px', class: 'has-text-right', orderData: 0, render: function ( data, type, row ) {
                 return formatNumber(100*(data.gezien/data.aantal), 2)+'%';
               }
             }
