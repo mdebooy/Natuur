@@ -16,6 +16,7 @@
  */
 package eu.debooy.natuur.domain;
 
+import eu.debooy.doosutils.DoosConstants;
 import eu.debooy.doosutils.domain.Dto;
 import eu.debooy.natuur.NatuurConstants;
 import eu.debooy.natuur.NatuurUtils;
@@ -57,14 +58,15 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailPerGebied", query="select distinct d from DetailDto d, WaarnemingDto w where d.taxonId=w.taxon.taxonId and d.parentRang='kl' and w.gebied.gebiedId=:gebiedId")
-@NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.rang in ('so', 'oso')")
-@NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.rang in ('so', 'oso')")
+@NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.individu='J'")
+@NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.individu='J'")
 @NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.status = 'ex'")
-@NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regioLijstId=:regioLijstId")
+@NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regiolijstId=:regiolijstId")
 @NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
+  public static final String  COL_INDIVIDU            = "individu";
   public static final String  COL_LATIJNSENAAM        = "latijnsenaam";
   public static final String  COL_NIVEAU              = "niveau";
   public static final String  COL_OPFOTO              = "opFoto";
@@ -82,7 +84,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   public static final String  PAR_GEBIEDID      = "gebiedId";
   public static final String  PAR_PARENTID      = "parentId";
   public static final String  PAR_REGIOID       = "regioId";
-  public static final String  PAR_REGIOLIJSTID  = "regioId";
+  public static final String  PAR_REGIOLIJSTID  = "regiolijstId";
 
   public static final String  QRY_PERGEBIED             =
       "detailPerGebied";
@@ -99,45 +101,48 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
   @Transient
   private boolean gezien              = false;
   @ReadOnly
-  @Column(name="LATIJNSENAAM", insertable= false, updatable=false)
+  @Column(name="INDIVIDU", length=1, nullable=false)
+  private String  individu            = DoosConstants.ONWAAR;
+  @ReadOnly
+  @Column(name="LATIJNSENAAM", insertable=false, updatable=false)
   private String  latijnsenaam;
   @ReadOnly
-  @Column(name="NIVEAU", insertable= false, updatable=false)
+  @Column(name="NIVEAU", insertable=false, updatable=false)
   private Long    niveau;
   @ReadOnly
-  @Column(name="OP_FOTO", insertable= false, updatable=false)
+  @Column(name="OP_FOTO", insertable=false, updatable=false)
   private Integer opFoto;
   @ReadOnly
-  @Column(name="OPMERKING", insertable= false, updatable=false)
+  @Column(name="OPMERKING", insertable=false, updatable=false)
   private String  opmerking;
   @Id
   @ReadOnly
-  @Column(name="PARENT_ID", insertable= false, updatable=false)
+  @Column(name="PARENT_ID", insertable=false, updatable=false)
   private Long    parentId;
   @ReadOnly
-  @Column(name="PARENT_LATIJNSENAAM", insertable= false, updatable=false)
+  @Column(name="PARENT_LATIJNSENAAM", insertable=false, updatable=false)
   private String  parentLatijnsenaam;
   @ReadOnly
-  @Column(name="PARENT_RANG", insertable= false, updatable=false)
+  @Column(name="PARENT_RANG", insertable=false, updatable=false)
   private String  parentRang;
   @ReadOnly
-  @Column(name="PARENT_STATUS", insertable= false, updatable=false)
+  @Column(name="PARENT_STATUS", insertable=false, updatable=false)
   private String  parentStatus;
   @ReadOnly
-  @Column(name="PARENT_VOLGNUMMER", insertable= false, updatable=false)
+  @Column(name="PARENT_VOLGNUMMER", insertable=false, updatable=false)
   private Long    parentVolgnummer;
   @ReadOnly
-  @Column(name="RANG", insertable= false, updatable=false)
+  @Column(name="RANG", insertable=false, updatable=false)
   private String  rang;
   @ReadOnly
-  @Column(name="STATUS", insertable= false, updatable=false)
+  @Column(name="STATUS", insertable=false, updatable=false)
   private String  status;
   @Id
   @ReadOnly
-  @Column(name="TAXON_ID", insertable= false, updatable=false)
+  @Column(name="TAXON_ID", insertable=false, updatable=false)
   private Long    taxonId;
   @ReadOnly
-  @Column(name="VOLGNUMMER")
+  @Column(name="VOLGNUMMER", insertable=false, updatable=false)
   private Long    volgnummer;
 
   @ReadOnly
@@ -278,6 +283,10 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
     return new EqualsBuilder().append(parentId, detailDto.parentId)
                               .append(taxonId, detailDto.taxonId)
                               .isEquals();
+  }
+
+  public boolean getIndividu() {
+    return (DoosConstants.WAAR.equals(individu));
   }
 
   public String getLatijnsenaam() {

@@ -89,6 +89,8 @@ public class RegiolijstController extends Natuur {
   private static final  String  FMT_TITEL     = "%s (%s)";
   private static final  String  TIT_CREATE    =
       "natuur.titel.regiolijst.create";
+  private static final  String  TIT_REPORT    =
+      "natuur.titel.regiolijst.report";
   private static final  String  TIT_RETRIEVE  =
       "natuur.titel.regiolijst.retrieve";
   private static final  String  TIT_UPDATE    =
@@ -132,6 +134,7 @@ public class RegiolijstController extends Natuur {
       return;
     }
 
+    regio         = new Regio.Builder().build();
     regiolijst    = new Regiolijst();
     regiolijstDto = new RegiolijstDto();
     regiolijst.setStartdatum(new Date());
@@ -337,8 +340,7 @@ public class RegiolijstController extends Natuur {
                                           "taal1", "taal2", "taal3" });
     exportData.setType(getType());
     exportData.addVeld("ReportTitel",
-                       getTekst(TIT_RETRIEVE,
-                                regio.getNaam(), regiolijst.getPeriode()));
+                       getTekst(TIT_REPORT,regio.getNaam()));
     exportData.addVeld("LabelLatijnsenaam", getTekst("label.latijnsenaam"));
     exportData.addVeld("LabelTaal1",        doosRemote.getIso6392tNaam(taal1,
                                                                        taal1));
