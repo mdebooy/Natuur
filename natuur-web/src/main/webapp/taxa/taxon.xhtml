@@ -370,6 +370,7 @@
                     <table id="taxaTabel" class="table is-striped is-narrow is-hoverable" aria-describedby="taxaTabel" />
                     <h:commandLink id="linkKind" class="is-hidden" action="#{natuurTaxon.retrieve}">
                       <f:param name="taxonId" value="XX" />
+                      <f:param name="returnTo" value="#{natuurTaxon.returnTo}" />
                     </h:commandLink>
                     <h:commandLink id="addTaxa" class="is-hidden" action="#{natuurTaxon.create}">
                       <f:param name="taxonId" value="XX" />
