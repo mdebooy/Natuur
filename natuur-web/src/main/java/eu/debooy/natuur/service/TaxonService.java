@@ -257,7 +257,6 @@ public class TaxonService {
   public void save(TaxonDto taxon) {
     if (null == taxon.getTaxonId()) {
       taxonDao.create(taxon);
-      taxon.setTaxonId(taxon.getTaxonId());
     } else {
       taxonDao.update(taxon);
     }
