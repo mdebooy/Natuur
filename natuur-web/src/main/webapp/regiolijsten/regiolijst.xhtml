@@ -136,7 +136,7 @@
             addRefreshButton('waarnemingenTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.refresh')}');
           }
         }
-        if (#{natuurRegiolijst.user or natuurRegiolijst.view}) {
+        if (#{!natuurRegiolijst.aktie.nieuw and natuurRegiolijst.gerechtigd}) {
           addPdfButton('regiolijstTaxaTabel', 'formRegiolijst', '#{i18nTeksten.tekst('img.PDF')}');
         }
         initTabs();
