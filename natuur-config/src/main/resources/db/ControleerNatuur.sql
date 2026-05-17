@@ -19,12 +19,19 @@
 -- Author: Marco de Booij
 
 -- Controleer de hiërarchische structuur van de taxa.
-select   tax.latijnsenaam, tax.rang, par.latijnsenaam, par.rang
+select   tax.latijnsenaam, tax.rang, par.taxon_id, par.latijnsenaam, par.rang
 from     natuur.taxa tax join natuur.rangen rng on tax.rang     =rng.rang
                          join natuur.taxa par   on tax.parent_id=par.taxon_id,
          natuur.rangen rn1                                                  
 where    par.rang   =rn1.rang
-and      rng.niveau<=rn1.niveau;
+and      rng.niveau<=rn1.niveau
+order by par.taxon_id;
+
+-- 'repareer' de ondersoort
+-- update natuur.taxa 
+-- set    rang = 'oso'
+-- where  array_length(string_to_array(latijnsenaam , ' '), 1) = 3
+-- and    rang != 'oso';
 
 select   t.latijnsenaam, n.naam, t.rang, count(n1.taal)
 from     natuur.taxa t join natuur.taxonnamen n on t.taxon_id=n.taxon_id
