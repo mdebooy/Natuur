@@ -9,10 +9,8 @@
   <ui:define name="head">
     <script type="text/javascript" charset="utf-8">
       $(document).ready(function() {
-        var info = '#{i18nTeksten.tekst('img.info')}';
-        var taal = '#{gebruiker.locale.language}';
-        var waarnemingId = #{natuurWaarneming.waarneming.waarnemingId};
-        if (#{!natuurWaarneming.aktie.readonly}) {
+        var waarnemingId = #{natuurWaarneming.waarneming.waarnemingId} + 0;
+       if (#{!natuurWaarneming.aktie.readonly}) {
           $("#formWaarneming\\:datum").datepicker({dayNamesMin: [ #{i18nTeksten.tekst('kalender.dagen.kort')} ],
                                                    monthNames: [ #{i18nTeksten.tekst('kalender.maanden')} ],
                                                    dateFormat: "#{i18nTeksten.tekst('kalender.datum.formaat.datepicker')}"});
