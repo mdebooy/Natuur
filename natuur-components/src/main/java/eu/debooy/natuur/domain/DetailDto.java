@@ -62,7 +62,7 @@ import org.apache.openjpa.persistence.ReadOnly;
 @NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.individu='J'")
 @NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.status = 'ex'")
 @NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regiolijstId=:regiolijstId")
-@NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
+@NamedQuery(name="detailWaargenomen", query="select d from DetailDto d, SoortenlijstDto s where d.taxonId = s.taxonId and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 

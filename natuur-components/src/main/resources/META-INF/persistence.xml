@@ -16,6 +16,7 @@
     <class>eu.debooy.natuur.domain.RangnaamDto</class>
     <class>eu.debooy.natuur.domain.RegiolijstDto</class>
     <class>eu.debooy.natuur.domain.RegiolijstTaxonDto</class>
+    <class>eu.debooy.natuur.domain.SoortenlijstDto</class>
     <class>eu.debooy.natuur.domain.TaxonbeschrijvingDto</class>
     <class>eu.debooy.natuur.domain.TaxonDto</class>
     <class>eu.debooy.natuur.domain.TaxonnaamDto</class>

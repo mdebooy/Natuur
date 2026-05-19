@@ -100,6 +100,12 @@ FROM   DOOS.TALEN T
 WHERE  T.ISO_639_1 = RN.TAAL;
 
 -- Views
+CREATE OR REPLACE VIEW NATUUR.SOORT AS
+SELECT   R.NIVEAU, R.RANG
+FROM     NATUUR.RANGEN R
+WHERE    R.INDIVIDU = 'J'
+ORDER BY R.NIVEAU ASC LIMIT 1;
+
 CREATE OR REPLACE VIEW NATUUR.TAXONOMIE AS
 WITH RECURSIVE Q AS (
   SELECT H.*, 1 AS LEVEL, ARRAY[H.TAXON_ID] AS BREADCRUMB
@@ -151,17 +157,25 @@ WITH ZONDERFOTO AS (
 SELECT   D.PARENT_ID, D.PARENT_RANG, D.TAXON_ID
 FROM     NATUUR.DETAILS D JOIN ZONDERFOTO Z ON D.TAXON_ID=Z.TAXON_ID;
 
-CREATE OR REPLACE VIEW NATUUR.OVERZICHT AS
-WITH WNM AS (
-  SELECT   DISTINCT W.TAXON_ID
+CREATE OR REPLACE VIEW NATUUR.SOORTENLIJST AS
+WITH GEZIEN AS (
+  SELECT   DISTINCT TAXON_ID
   FROM     NATUUR.WAARNEMINGEN W)
+SELECT   D.PARENT_LATIJNSENAAM AS LATIJNSENAAM, MAX(D.OP_FOTO) AS OP_FOTO,
+         D.PARENT_RANG AS RANG, D.PARENT_ID AS TAXON_ID,
+         D.PARENT_VOLGNUMMER AS VOLGNUMMER
+FROM     NATUUR.DETAILS D JOIN GEZIEN G ON G.TAXON_ID = D.TAXON_ID
+                          JOIN NATUUR.SOORT S ON S.RANG = D.PARENT_RANG
+GROUP BY D.PARENT_ID, D.PARENT_LATIJNSENAAM ,D.PARENT_RANG, D.PARENT_VOLGNUMMER;
+
+CREATE OR REPLACE VIEW NATUUR.OVERZICHT AS
 SELECT   D.PARENT_ID, D.PARENT_VOLGNUMMER, D.PARENT_LATIJNSENAAM,
          D.PARENT_RANG, D.PARENT_STATUS, D.RANG, D.STATUS,
-         COUNT(D.TAXON_ID) AS TOTAAL, COUNT(WNM.TAXON_ID) AS WAARGENOMEN,
+         COUNT(D.TAXON_ID) AS TOTAAL, COUNT(L.TAXON_ID) AS WAARGENOMEN,
          SUM(D.OP_FOTO) AS OP_FOTO
 FROM     NATUUR.DETAILS D
-           LEFT JOIN WNM ON D.TAXON_ID = WNM.TAXON_ID
-           JOIN NATUUR.RANGEN R ON D.RANG = R.RANG and R.INDIVIDU = 'J'
+           JOIN NATUUR.SOORT S ON D.RANG = S.RANG
+           LEFT JOIN NATUUR.SOORTENLIJST L ON D.TAXON_ID = L.TAXON_ID AND D.RANG= S.RANG
 GROUP BY D.PARENT_ID, D.PARENT_VOLGNUMMER, D.PARENT_LATIJNSENAAM, D.PARENT_RANG,
          D.PARENT_STATUS, D.RANG, D.STATUS;
 
@@ -182,6 +196,8 @@ GRANT SELECT                         ON TABLE NATUUR.DETAILS              TO NAT
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT       TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO            TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.OVERZICHT            TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.SOORT                TO NATUUR_SEL;
+GRANT SELECT                         ON TABLE NATUUR.SOORTENLIJST         TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONBESCHRIJVINGEN  TO NATUUR_SEL;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE            TO NATUUR_SEL;
 
@@ -189,6 +205,8 @@ GRANT SELECT                         ON TABLE NATUUR.DETAILS              TO NAT
 GRANT SELECT                         ON TABLE NATUUR.FOTO_OVERZICHT       TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.GEEN_FOTO            TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.OVERZICHT            TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.SOORT                TO NATUUR_UPD;
+GRANT SELECT                         ON TABLE NATUUR.SOORTENLIJST         TO NATUUR_UPD;
 GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE NATUUR.TAXONBESCHRIJVINGEN  TO NATUUR_UPD;
 GRANT SELECT                         ON TABLE NATUUR.TAXONOMIE            TO NATUUR_UPD;
 
@@ -235,10 +253,6 @@ COMMENT ON VIEW   NATUUR.GEEN_FOTO                            IS 'Deze view beva
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_ID                  IS 'De sleutel van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.PARENT_RANG                IS 'De rang van de parent van de taxon.';
 COMMENT ON COLUMN NATUUR.GEEN_FOTO.TAXON_ID                   IS 'De sleutel van de taxon.';
-COMMENT ON COLUMN NATUUR.REGIOLIJST_TAXA.REGIOLIJST_ID        IS 'De sleutel van de regiolijst.';
-COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.EINDDATUM               IS 'De datum tot wanneer de lijst geldig is.';
-COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.REGIOLIJST_ID           IS 'De sleutel van de regiolijst.';
-COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.STARTDATUM              IS 'De datum vanaf wanneer de lijst geldig is.';
 COMMENT ON VIEW   NATUUR.OVERZICHT                            IS 'Deze view bevat een overzicht van alle rangen met info over aantal soorten, waarnemingen en foto''s.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_ID                  IS 'De sleutel van de taxon van de parent.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.PARENT_LATIJNSENAAM        IS 'De wetenschappelijke naam van de parent rang.';
@@ -250,6 +264,19 @@ COMMENT ON COLUMN NATUUR.OVERZICHT.STATUS                     IS 'De status van 
 COMMENT ON COLUMN NATUUR.OVERZICHT.TOTAAL                     IS 'Aantal soorten binnen de parent rang.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.WAARGENOMEN                IS 'Aantal soorten waargenomen binnen de parent rang.';
 COMMENT ON COLUMN NATUUR.OVERZICHT.OP_FOTO                    IS 'Aantal soorten gefotografeerd binnen de parent rang.';
+COMMENT ON COLUMN NATUUR.REGIOLIJST_TAXA.REGIOLIJST_ID        IS 'De sleutel van de regiolijst.';
+COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.EINDDATUM               IS 'De datum tot wanneer de lijst geldig is.';
+COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.REGIOLIJST_ID           IS 'De sleutel van de regiolijst.';
+COMMENT ON COLUMN NATUUR.REGIOLIJSTEN.STARTDATUM              IS 'De datum vanaf wanneer de lijst geldig is.';
+COMMENT ON VIEW   NATUUR.SOORT                                IS 'Deze view geeft de rang voor een soortenlijst.';
+COMMENT ON COLUMN NATUUR.SOORT.NIVEAU                         IS 'Het niveau rang.';
+COMMENT ON COLUMN NATUUR.SOORT.RANG                           IS 'De rang.';
+COMMENT ON VIEW   NATUUR.SOORTENLIJST                         IS 'Deze view bevat taxa, samengevat op het hoogste individu niveau, die gezien zijn.';
+COMMENT ON COLUMN NATUUR.SOORTENLIJST.LATIJNSENAAM            IS 'De wetenschappelijke naam van de taxon.';
+COMMENT ON COLUMN NATUUR.SOORTENLIJST.OP_FOTO                 IS 'Geeft aan of de taxon op foto staat (1) of niet (0).';
+COMMENT ON COLUMN NATUUR.SOORTENLIJST.RANG                    IS 'De rang van de taxon.';
+COMMENT ON COLUMN NATUUR.SOORTENLIJST.TAXON_ID                IS 'De sleutel van de taxon.';
+COMMENT ON COLUMN NATUUR.SOORTENLIJST.VOLGNUMMER              IS 'Het volgnummer dat gebruikt wordt in publicaties. Is 0 als er op (wetenschappelijke)naam gesorteerd wordt.';
 COMMENT ON COLUMN NATUUR.TAXA.LATIJNSENAAM                    IS 'De wetenschappelijke naam van de taxon.';
 COMMENT ON COLUMN NATUUR.TAXA.STATUS                          IS 'De status van de taxon.';
 COMMENT ON TABLE  NATUUR.TAXONBESCHRIJVINGEN                  IS 'Deze tabel bevat de beschrijvingen van de TAXA in verschillende types.';
