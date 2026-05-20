@@ -59,6 +59,10 @@ public class DetailDao extends Dao<DetailDto> {
     return namedQuery(DetailDto.QRY_PERGEBIED, params);
   }
 
+  public List<DetailDto> getSoortenlijst() {
+    return namedQuery(DetailDto.QRY_SOORTENLIJST);
+  }
+
   public List<DetailDto> getSoortenMetKlasse() {
     return namedQuery(DetailDto.QRY_SOORTMETKLASSE);
   }

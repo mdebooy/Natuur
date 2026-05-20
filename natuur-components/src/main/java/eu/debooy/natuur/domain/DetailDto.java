@@ -58,11 +58,12 @@ import org.apache.openjpa.persistence.ReadOnly;
 @Table(name="DETAILS", schema="NATUUR")
 @IdClass(DetailPK.class)
 @NamedQuery(name="detailPerGebied", query="select distinct d from DetailDto d, WaarnemingDto w where d.taxonId=w.taxon.taxonId and d.parentRang='kl' and w.gebied.gebiedId=:gebiedId")
+@NamedQuery(name="detailSoortenlijst", query="select d from DetailDto d, SoortenlijstDto s where d.taxonId = s.taxonId and d.parentRang='kl'")
 @NamedQuery(name="detailSoortMetKlasse", query="select d from DetailDto d where d.parentRang='kl' and d.individu='J'")
 @NamedQuery(name="detailSoortMetParent", query="select d from DetailDto d where d.parentId=:parentId and d.individu='J'")
 @NamedQuery(name="detailUitgestorvenPerKlasse", query="select d from DetailDto d where d.parentRang = 'kl' and d.status = 'ex'")
 @NamedQuery(name="detailVanRegiolijst", query="select d from DetailDto d, RegiolijstTaxonDto r where d.taxonId=r.taxonId and d.parentRang='kl' and r.regiolijstId=:regiolijstId")
-@NamedQuery(name="detailWaargenomen", query="select d from DetailDto d, SoortenlijstDto s where d.taxonId = s.taxonId and d.parentRang='kl'")
+@NamedQuery(name="detailWaargenomen", query="select d from DetailDto d where d.taxonId in (select distinct w.taxon.taxonId from WaarnemingDto w) and d.parentRang='kl'")
 public class DetailDto extends Dto implements Comparable<DetailDto> {
   private static final  long  serialVersionUID  = 1L;
 
@@ -88,6 +89,7 @@ public class DetailDto extends Dto implements Comparable<DetailDto> {
 
   public static final String  QRY_PERGEBIED             =
       "detailPerGebied";
+  public static final String  QRY_SOORTENLIJST          = "detailSoortenlijst";
   public static final String  QRY_SOORTMETKLASSE        =
       "detailSoortMetKlasse";
   public static final String  QRY_SOORTMETPARENT        =

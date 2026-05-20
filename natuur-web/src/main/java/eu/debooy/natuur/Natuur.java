@@ -121,6 +121,8 @@ public class Natuur extends DoosBean {
       "/regiolijsten/regiolijsttaxon.xhtml";
   protected static final  String  REGIOLIJSTUPLOAD_REDIRECT =
       "/regiolijsten/regiolijstupload.xhtml";
+  protected static final  String  SOORTENLIJST_REDIRECT     =
+      "/statistieken/soortenlijst.xhtml";
   protected static final  String  STATUSSEN                 =
       "natuur.taxon.status";
   protected static final  String  TAXA_REDIRECT             =
@@ -175,12 +177,14 @@ public class Natuur extends DoosBean {
       addMenuitem(FOTOS_REDIRECT,         "menu.fotos");
       addMenuitem(ZOEKEN_REDIRECT,        "menu.zoeken");
       addMenuitem("Dropdown." + DD_STATS, "menu.statistieken");
-      addDropdownmenuitem(DD_STATS, NAMENPERTAAL_REDIRECT,
-                                          "menu.namen.per.taal");
+      addDropdownmenuitem(DD_STATS, SOORTENLIJST_REDIRECT,
+                                          "menu.soortenlijst");
       addDropdownmenuitem(DD_STATS, WNMNPERLAND_REDIRECT,
                                           "menu.waarnemingen.per.land");
       addDropdownmenuitem(DD_STATS, AANTALPERREGIO_REDIRECT,
                                           "menu.aantal.per.regiolijst");
+      addDropdownmenuitem(DD_STATS, NAMENPERTAAL_REDIRECT,
+                                          "menu.namen.per.taal");
       addDropdownmenuitem(DD_STATS, UITGESTORVEN_REDIRECT,
                                           "menu.uitgestorven");
     }

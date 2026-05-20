@@ -67,6 +67,20 @@ public class DetailService {
   }
 
   @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public List<Taxon> getSoortenlijst(String taal) {
+    List<Taxon> soorten = new ArrayList<>();
+
+    try {
+      detailDao.getSoortenlijst()
+               .forEach(rij -> soorten.add(new Taxon(rij, taal)));
+    } catch (ObjectNotFoundException e) {
+      // Er wordt nu gewoon een lege ArrayList gegeven.
+    }
+
+    return soorten;
+  }
+
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
   public List<Taxon> getSoortenMetKlasse(String taal) {
     List<Taxon> details = new ArrayList<>();
 
@@ -151,6 +165,17 @@ public class DetailService {
     var gezien  = waarnemingDao.getTaxa();
 
     taxa.forEach(rij -> rij.setGezien(gezien.contains(rij.getTaxonId())));
+  }
+
+  @GET
+  @Path("/soortenlijst")
+  @TransactionAttribute(TransactionAttributeType.SUPPORTS)
+  public Response soortenlijst() {
+    try {
+      return Response.ok().entity(detailDao.getSoortenlijst()).build();
+    } catch (ObjectNotFoundException e) {
+      return Response.ok().entity(new ArrayList<>()).build();
+    }
   }
 
   @GET
