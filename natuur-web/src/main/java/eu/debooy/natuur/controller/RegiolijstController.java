@@ -666,7 +666,7 @@ public class RegiolijstController extends Natuur {
         uploadTaxon(latijnsenaam, status);
       }
 
-      addInfo("message.upload", bestand.getName());
+      addInfo("message.upload", getBestandnaam(bestand));
       addInfo("message.gelezen",
               dubbel.size() + nieuw.size() + onbekend.size());
     } catch (IOException e) {
